@@ -1,0 +1,54 @@
+{
+  "name": "@guanghechen/site-api",
+  "version": "0.0.0",
+  "description": "site api",
+  "homepage": "https://github.com/lemon-clown/static-site-api/tree/master/packages/site-api#readme",
+  "private": true,
+  "license": "MIT",
+  "main": "lib/cjs/index.js",
+  "types": "lib/types/index.d.ts",
+  "source": "src/index.ts",
+  "files": [
+    "lib/",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "!lib/**/*.js.map",
+    "!lib/**/*.d.ts.map"
+  ],
+  "author": {
+    "name": "lemon-clown",
+    "url": "https://github.com/lemon-clown/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lemon-clown/static-site-api.git"
+  },
+  "engines": {
+    "node": ">= 12.16.0"
+  },
+  "scripts": {
+    "start": "rollup -w -c rollup.config.js",
+    "prebuild": "rimraf lib/",
+    "build": "rollup -c rollup.config.js",
+    "test": "echo 'no test yet'",
+    "lint:fix": "eslint 'src/**/*.{ts,tsx}' --fix",
+    "prepublishOnly": "cross-env ROLLUP_USE_SOURCE_MAP=false yarn build"
+  },
+  "dependencies": {
+    "@barusu/util-option": "^0.0.39",
+    "@types/fs-extra": "^9.0.1",
+    "chokidar": "3.4.2",
+    "dayjs": "^1.9.1",
+    "fs-extra": "^9.0.1",
+    "globby": "11.0.1",
+    "tiny-invariant": "^1.0.2"
+  },
+  "devDependencies": {
+    "@barusu/eslint-config": "^0.0.39",
+    "@barusu/rollup-config": "^0.0.39",
+    "cross-env": "~7.0.2",
+    "rollup": "2.28.1"
+  }
+}
