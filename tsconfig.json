@@ -3,6 +3,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@guanghechen/blog-api": [
+        "packages/blog-api/src"
+      ],
+      "@guanghechen/site-api": [
+        "packages/site-api/src"
+      ],
     }
   }
 }
