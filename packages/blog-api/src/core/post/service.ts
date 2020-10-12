@@ -3,7 +3,8 @@ import type {
   AssetService,
   AssetUUID,
 } from '@guanghechen/site-api'
-import { PostAssetType, PostDataItem, PostEntity } from './entity'
+import { BlogSourceType } from '../../config/blog'
+import { PostDataItem, PostEntity } from './entity'
 import type { PostEntityManager } from './manager'
 
 
@@ -37,7 +38,7 @@ export class PostService {
     size: number,
   ): PostDataItem[] {
     const result: AssetDataItem[] = this.assetService
-      .fetchAssets(PostAssetType, page, size)
+      .fetchAssets(BlogSourceType.POST, page, size)
     return result as PostDataItem[]
   }
 }

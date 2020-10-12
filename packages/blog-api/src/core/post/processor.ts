@@ -16,7 +16,8 @@ import {
   resolveLocalPath,
   writeJSONSync,
 } from '@guanghechen/site-api'
-import { PostAssetType, PostDataItem, PostEntity } from './entity'
+import { BlogSourceType } from '../../config/blog'
+import { PostDataItem, PostEntity } from './entity'
 
 
 export class PostProcessor implements AssetProcessor {
@@ -87,7 +88,7 @@ export class PostProcessor implements AssetProcessor {
 
     const postEntity: PostEntity = {
       uuid,
-      type: PostAssetType,
+      type: BlogSourceType.POST,
       fingerprint: roughAsset.fingerprint,
       location: roughAsset.location,
       lastModifiedTime: roughAsset.lastModifiedTime,

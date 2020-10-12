@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import chokidar from 'chokidar'
 import fs from 'fs-extra'
-import type { SubSiteConfig } from '../config/sub-site'
+import type { SubSiteConfig } from '../config/sub-site/config'
 import type { CategoryDataItem } from './entity/category'
 import type { TagDataItem } from './entity/tag'
 import { AssetDataManager } from './manager/asset'

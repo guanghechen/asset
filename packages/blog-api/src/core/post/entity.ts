@@ -1,15 +1,11 @@
 import type { AssetDataItem, AssetUUID } from '@guanghechen/site-api'
-
-
-export const PostAssetType = 'post'
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PostAssetType = typeof PostAssetType
+import { BlogSourceType } from '../../config/blog'
 
 
 /**
  * Post data
  */
-export interface PostEntity extends AssetDataItem<PostAssetType> {
+export interface PostEntity extends AssetDataItem<BlogSourceType.POST> {
   /**
    * The type of the post document
    */
@@ -24,7 +20,7 @@ export interface PostEntity extends AssetDataItem<PostAssetType> {
 /**
  * Only include meta information of PostData
  */
-export interface PostDataItem extends AssetDataItem<PostAssetType> {
+export interface PostDataItem extends AssetDataItem<BlogSourceType.POST> {
   /**
    * The type of the post document
    */

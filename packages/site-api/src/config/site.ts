@@ -8,7 +8,7 @@ import {
   defaultDeployConfig,
   resolveDeployConfig,
 } from './deploy'
-import { SubSiteConfig, SubSiteConfigResolver } from './sub-site'
+import { SubSiteConfig, SubSiteConfigResolver } from './sub-site/config'
 
 
 /**
