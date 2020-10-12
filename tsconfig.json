@@ -8,7 +8,7 @@
       ],
       "@guanghechen/site-api": [
         "packages/site-api/src"
-      ],
+      ]
     }
   }
 }

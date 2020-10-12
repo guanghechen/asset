@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loadSiteConfig full-config 1`] = `
+Object {
+  "author": "Demo author",
+  "deploy": Object {
+    "branch": "master",
+    "email": "",
+    "name": "",
+    "repository": "",
+    "type": "git",
+  },
+  "description": "Demo description",
+  "sites": Object {
+    "barusu": Object {
+      "assetDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/asset.map.json",
+      "categoryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/category.map.json",
+      "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data",
+      "source": Object {
+        "image": Object {
+          "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/image",
+          "pattern": Array [
+            "**/*{.png,jpg}",
+          ],
+          "sourceRoot": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/source",
+        },
+      },
+      "sourceRoot": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/source",
+      "tagDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/tag.map.json",
+      "urlRoot": "/barusu",
+    },
+  },
+  "title": "Demo title",
+  "urlRoot": "/",
+  "workspace": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config",
+}
+`;
+
+exports[`resolveSubSiteConfig empty rawConfig 1`] = `
+Object {
+  "assetDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/asset.map.json",
+  "categoryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/category.map.json",
+  "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data",
+  "source": Object {
+    "image": Object {
+      "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/asset/image",
+      "pattern": Array [
+        "**/*{.png,jpg}",
+      ],
+      "sourceRoot": "<PACKAGE_ROOT_DIR>/__test__/case/demo/source/asset/image",
+    },
+  },
+  "sourceRoot": "<PACKAGE_ROOT_DIR>/__test__/case/demo/source",
+  "tagDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/tag.map.json",
+  "urlRoot": "/demo",
+}
+`;
+
+exports[`resolveSubSiteConfig full rawConfig 1`] = `
+Object {
+  "assetDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/asset.json",
+  "categoryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/category.json",
+  "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data",
+  "source": Object {
+    "image": Object {
+      "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/asset/image",
+      "pattern": Array [
+        "**/*{.png,jpg}",
+      ],
+      "sourceRoot": "<PACKAGE_ROOT_DIR>/__test__/case/emm/waw/source/asset/image",
+    },
+  },
+  "sourceRoot": "<PACKAGE_ROOT_DIR>/__test__/case/emm/waw/source",
+  "tagDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/tag.json",
+  "urlRoot": "/waw",
+}
+`;

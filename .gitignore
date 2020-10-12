@@ -13,9 +13,8 @@ artifacts
 *.tsbuildinfo
 tmp/
 
-# ignore workspace
-workspace/
-sites/**/script/data/
+# ignore cases data
+packages/**/__test__/cases/**/data/
 
 # local env files
 .env.local
