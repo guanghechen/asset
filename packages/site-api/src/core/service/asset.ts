@@ -23,25 +23,24 @@ export class AssetService {
   /**
    * Get all assets if size < 0, or get assets with pagination { page, size }
    *
-   * @param type  asset type
-   * @param page  page number
-   * @param size  page size
+   * @param type    asset type
+   * @param offset  start index
+   * @param limit   size of results
    */
-  public fetchAssets(type: AssetType, page = -1, size = -1): AssetDataItem[] {
+  public fetchAssets(type: AssetType, offset = 0, limit = -1): AssetDataItem[] {
     const dataMap: AssetDataMap = this.dataManager.toDataMap()
     const uuids = dataMap.uuids[type]
 
     invariant(uuids != null, `Unknown assetType (${ type })`)
 
     let result: AssetDataItem[]
-    if (size < 0) {
+    if (limit < 0) {
       result = uuids.map(uuid => dataMap.entities[uuid])
-    } else if (size === 0) {
+    } else if (limit === 0) {
       result = []
     } else {
-      const offset = (page - 1) * size
       result = uuids
-        .slice(offset, offset + size)
+        .slice(offset, offset + limit)
         .map(uuid => dataMap.entities[uuid])
     }
 

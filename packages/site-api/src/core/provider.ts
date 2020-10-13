@@ -2,8 +2,6 @@ import chalk from 'chalk'
 import chokidar from 'chokidar'
 import fs from 'fs-extra'
 import type { SubSiteConfig } from '../config/sub-site/config'
-import type { CategoryDataItem } from './entity/category'
-import type { TagDataItem } from './entity/tag'
 import { AssetDataManager } from './manager/asset'
 import { CategoryDataManager } from './manager/category'
 import { TagDataManager } from './manager/tag'
@@ -16,10 +14,11 @@ import { TagService } from './service/tag'
 
 export class AssetDataProvider<C extends SubSiteConfig> {
   protected readonly subSiteConfig: C
-  protected readonly assetService: AssetService
-  protected readonly tagService: TagService
-  protected readonly categoryService: CategoryService
   protected readonly assetParser: AssetParser
+
+  public readonly assetService: AssetService
+  public readonly tagService: TagService
+  public readonly categoryService: CategoryService
 
   public constructor(
     subSiteConfig: C,
@@ -105,13 +104,5 @@ export class AssetDataProvider<C extends SubSiteConfig> {
    */
   public close(): Promise<void> {
     return this.assetParser.close()
-  }
-
-  public fetchCategories(): CategoryDataItem[] {
-    return this.categoryService.fetchCategories()
-  }
-
-  public fetchTags(): TagDataItem[] {
-    return this.tagService.fetchTags()
   }
 }

@@ -29,16 +29,14 @@ export class PostService {
   }
 
   /**
-   * Fetch posts with pagination { page, size }
-   * @param page  page number
-   * @param size  page size
+   * Fetch posts with pagination { offset, limit }
+   *
+   * @param offset  start index
+   * @param limit   size of results
    */
-  public fetchPosts(
-    page: number,
-    size: number,
-  ): PostDataItem[] {
+  public fetchPosts(offset: number, limit:number): PostDataItem[] {
     const result: AssetDataItem[] = this.assetService
-      .fetchAssets(BlogSourceType.POST, page, size)
+      .fetchAssets(BlogSourceType.POST, offset, limit)
     return result as PostDataItem[]
   }
 }
