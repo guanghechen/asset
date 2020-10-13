@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AssetDataProvider full-config barusu build: asset -- image 1`] = `
+Array [
+  Object {
+    "categories": Array [
+      Array [
+        "math",
+        "waw",
+      ],
+      Array [
+        "200",
+      ],
+    ],
+    "createAt": "<string>",
+    "fingerprint": "e008e24d0dd5832b940f6b7de9d66f46c3aa8312",
+    "lastModifiedTime": "<number>",
+    "location": "a.image.json",
+    "tags": Array [
+      "png",
+    ],
+    "title": "a.image",
+    "type": "image",
+    "updateAt": "<string>",
+    "uuid": "83ec453c4c132281c357a235a8ed7541f1f28a09",
+  },
+]
+`;
+
+exports[`AssetDataProvider full-config barusu build: categories 1`] = `
+Array [
+  Object {
+    "assets": Array [],
+    "children": Array [
+      "waw",
+    ],
+    "parents": Array [],
+    "title": "math",
+    "uuid": "math",
+  },
+  Object {
+    "assets": Array [
+      "83ec453c4c132281c357a235a8ed7541f1f28a09",
+    ],
+    "children": Array [],
+    "parents": Array [
+      "math",
+    ],
+    "title": "waw",
+    "uuid": "waw",
+  },
+  Object {
+    "assets": Array [
+      "83ec453c4c132281c357a235a8ed7541f1f28a09",
+    ],
+    "children": Array [],
+    "parents": Array [],
+    "title": "200",
+    "uuid": "200",
+  },
+]
+`;
+
+exports[`AssetDataProvider full-config barusu build: console.info 1`] = `
+Array [
+  "[33mclearing <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data[39m",
+]
+`;
+
+exports[`AssetDataProvider full-config barusu build: tags 1`] = `
+Array [
+  Object {
+    "assets": Array [
+      "83ec453c4c132281c357a235a8ed7541f1f28a09",
+    ],
+    "title": "png",
+    "uuid": "png",
+  },
+]
+`;
+
+exports[`AssetDataProvider full-config barusu start: console.info 1`] = `
+Array [
+  "[32mrebuilding <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data[39m",
+]
+`;
+
+exports[`AssetDataProvider full-config barusu start: console.info 2`] = `
+Array [
+  "[33mclearing <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data[39m",
+]
+`;
+
+exports[`AssetDataProvider full-config barusu start: console.info 3`] = `
+Array [
+  "[32mloading <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data[39m",
+]
+`;
+
+exports[`AssetDataProvider full-config barusu start: console.info 4`] = `
+Array [
+  "[32mwatching <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/source[39m",
+]
+`;
+
+exports[`AssetDataProvider full-config barusu start: console.info 5`] = `
+Array [
+  "[32mclosing watch mode[39m",
+]
+`;

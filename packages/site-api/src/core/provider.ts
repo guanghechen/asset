@@ -63,8 +63,8 @@ export class AssetDataProvider<C extends SubSiteConfig> {
     const { assetParser, subSiteConfig } = this
 
     // clear dataRoot
-    if (clearDataRoot) {
-      console.log(chalk.yellow(`clearing ${ subSiteConfig.dataRoot }`))
+    if (clearDataRoot && fs.existsSync(subSiteConfig.dataRoot)) {
+      console.info(chalk.yellow(`clearing ${ subSiteConfig.dataRoot }`))
       await fs.remove(subSiteConfig.dataRoot)
     }
 
@@ -86,16 +86,16 @@ export class AssetDataProvider<C extends SubSiteConfig> {
 
     // building data
     if (clearStart) {
-      console.log(chalk.green(`rebuilding ${ subSiteConfig.dataRoot }`))
+      console.info(chalk.green(`rebuilding ${ subSiteConfig.dataRoot }`))
       await this.build(true)
     }
 
     // loading data
-    console.log(chalk.green(`loading ${ subSiteConfig.dataRoot }`))
+    console.info(chalk.green(`loading ${ subSiteConfig.dataRoot }`))
     await assetParser.load()
 
     // watching source change
-    console.log(chalk.green(`watching ${ subSiteConfig.sourceRoot }`))
+    console.info(chalk.green(`watching ${ subSiteConfig.sourceRoot }`))
     assetParser.watch(subSiteConfig.sourceRoot, watchOptions, () => assetParser.dump())
   }
 
@@ -103,6 +103,7 @@ export class AssetDataProvider<C extends SubSiteConfig> {
    * Close watcher
    */
   public close(): Promise<void> {
+    console.info(chalk.green('closing watch mode'))
     return this.assetParser.close()
   }
 }
