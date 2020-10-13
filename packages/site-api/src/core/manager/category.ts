@@ -118,13 +118,13 @@ export class CategoryDataManager {
           children: [],
         }
 
-        if (parent != null) {
-          current.parents.push(parent.uuid)
-          parent.children.push(current.uuid)
-        }
-
         this.dataMap[current.uuid] = current
         this.uuids.push(current.uuid)
+      }
+
+      if (parent != null && !current.parents.includes(parent.uuid)) {
+        current.parents.push(parent.uuid)
+        parent.children.push(current.uuid)
       }
 
       parent = current
