@@ -31,3 +31,21 @@ export function resolveLocalPath(
   const result = path.resolve(basePath, ...pathPieces)
   return result
 }
+
+
+/**
+ * Calculate filepath cross platform and repository
+ *
+ * @param workspace
+ * @param filepath
+ */
+export function resolveUniversalPath(
+  workspace: string,
+  filepath: string,
+): string {
+  const result = path
+    .normalize(path.relative(workspace, filepath))
+    .replace(/[\\/]+/g, '/')
+    .replace(/[/]$/, '')
+  return result
+}

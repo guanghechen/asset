@@ -9,7 +9,7 @@ import type { ImmutableTagDataManager } from './manager/tag'
 /**
  * Process asset source file
  */
-export interface AssetProcessor {
+export interface AssetProcessor<A extends AssetDataItem = AssetDataItem> {
   /**
    * Check whether the processor can handle this file
    *
@@ -34,5 +34,5 @@ export interface AssetProcessor {
     tagDataManager: ImmutableTagDataManager,
     categoryDataManager: ImmutableCategoryDataManager,
     assetDataManager: ImmutableAssetDataManager,
-  ): [AssetDataItem, TagDataItem[], CategoryDataItem[][]]
+  ): [A, TagDataItem[], CategoryDataItem[][]]
 }

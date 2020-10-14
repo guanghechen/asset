@@ -2,12 +2,13 @@ import crypto from 'crypto'
 
 
 /**
- * create uuid
+ * Calc hash value with sha1 algorithm
+ *
  * @param content
  */
-export function calcUUID(content: string): string {
+export function sha1(content: string | Buffer): string {
   const sha1 = crypto.createHash('sha1')
-  sha1.update(content.toString().trim())
+  sha1.update(content)
   return sha1.digest('hex')
 }
 
@@ -17,7 +18,5 @@ export function calcUUID(content: string): string {
  * @param content
  */
 export function calcFingerprint(content: Buffer): string {
-  const sha1 = crypto.createHash('sha1')
-  sha1.update(content)
-  return sha1.digest('hex')
+  return sha1(content)
 }

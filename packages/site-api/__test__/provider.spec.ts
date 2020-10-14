@@ -8,7 +8,6 @@ import {
   AssetProcessor,
   CategoryDataItem,
   TagDataItem,
-  calcUUID,
 } from '@guanghechen/site-api'
 import { cases } from './util/case'
 import { assetDataReplacer, desensitize } from './util/snapshot'
@@ -59,7 +58,6 @@ describe('AssetDataProvider', function () {
 
               const asset: AssetEntity = {
                 ...roughAsset,
-                uuid: calcUUID(filepath),
                 type: /\.([^.]+)\.json$/.exec(filepath)![1],
                 tags: tags.map(tag => tag.uuid),
                 categories: categories.map(cp => cp.map(c => c.uuid)),

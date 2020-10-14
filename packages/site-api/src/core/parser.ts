@@ -3,10 +3,10 @@ import dayjs from 'dayjs'
 import fs from 'fs-extra'
 import globby from 'globby'
 import path from 'path'
+import { calcFingerprint } from '../util/hash'
 import { resolveLocalPath } from '../util/path'
 import { createSerialExecutor } from '../util/sync'
-import { calcFingerprint } from '../util/uuid'
-import type { AssetLocation } from './entity/_types'
+import type { AssetLocation, AssetUUID } from './entity/_types'
 import type { AssetDataItem, RoughAssetDataItem } from './entity/asset'
 import { CategoryDataItem } from './entity/category'
 import { TagDataItem } from './entity/tag'
@@ -139,6 +139,7 @@ export class AssetParser {
     for (const processor of this.processors) {
       if (!processor.processable(filepath)) continue
 
+      const uuid: AssetUUID = assetDataManager.calcDefaultUUID(filepath)
       const location: AssetLocation = assetDataManager.calcLocation(filepath)
       const existedAsset = assetDataManager.locate(location)
       const stat = fs.statSync(filepath)
@@ -172,6 +173,7 @@ export class AssetParser {
         : path.parse(filepath).name
 
       const roughAsset: RoughAssetDataItem = {
+        uuid,
         fingerprint,
         location,
         lastModifiedTime,

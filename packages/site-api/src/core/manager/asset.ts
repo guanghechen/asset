@@ -1,8 +1,8 @@
-import crypto from 'crypto'
 import fs from 'fs-extra'
-import path from 'path'
 import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
+import { sha1 } from '../../util/hash'
+import { resolveUniversalPath } from '../../util/path'
 import type { AssetLocation, AssetType, AssetUUID } from '../entity/_types'
 import type { AssetDataItem, AssetDataMap } from '../entity/asset'
 
@@ -95,18 +95,25 @@ export class AssetDataManager {
    * @param filepath absolute filepath
    */
   public calcLocation(filepath: string): AssetLocation {
-    const location = path
-      .normalize(path.relative(this.workspace, filepath))
-      .replace(/[\\/]+/g, '/')
-      .replace(/[/]$/, '')
+    const location = resolveUniversalPath(this.workspace, filepath)
 
     if (this.shouldDesensitize) {
-      const sha1 = crypto.createHash('sha1')
-      sha1.update(location)
-      return sha1.digest('hex')
+      return sha1(location)
     }
 
     return location
+  }
+
+  /**
+   * Calc default asset uuid.
+   * The value obtained after hashing the relative file path of the
+   * reference working directory through the sha1 algorithm.
+   *
+   * @param filepath
+   */
+  public calcDefaultUUID(filepath: string): AssetUUID {
+    const location = resolveUniversalPath(this.workspace, filepath)
+    return sha1(location)
   }
 
   /**

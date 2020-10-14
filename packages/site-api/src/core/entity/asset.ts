@@ -63,7 +63,7 @@ export type AssetDataItem<T extends AssetType = AssetType> = AssetEntity<T>
 /**
  * Rough AssetDataItem
  */
-export type RoughAssetDataItem = Omit<AssetDataItem, 'uuid' | 'type'>
+export type RoughAssetDataItem = Omit<AssetDataItem, 'type'>
 
 
 /**

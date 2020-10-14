@@ -22,7 +22,7 @@ Array [
     "title": "a.image",
     "type": "image",
     "updateAt": "<string>",
-    "uuid": "83ec453c4c132281c357a235a8ed7541f1f28a09",
+    "uuid": "643297f8cb62042d714240ec6cb2190ee8586873",
   },
 ]
 `;
@@ -40,7 +40,7 @@ Array [
   },
   Object {
     "assets": Array [
-      "83ec453c4c132281c357a235a8ed7541f1f28a09",
+      "643297f8cb62042d714240ec6cb2190ee8586873",
     ],
     "children": Array [],
     "parents": Array [
@@ -51,7 +51,7 @@ Array [
   },
   Object {
     "assets": Array [
-      "83ec453c4c132281c357a235a8ed7541f1f28a09",
+      "643297f8cb62042d714240ec6cb2190ee8586873",
     ],
     "children": Array [],
     "parents": Array [],
@@ -71,7 +71,7 @@ exports[`AssetDataProvider full-config barusu build: tags 1`] = `
 Array [
   Object {
     "assets": Array [
-      "83ec453c4c132281c357a235a8ed7541f1f28a09",
+      "643297f8cb62042d714240ec6cb2190ee8586873",
     ],
     "title": "png",
     "uuid": "png",
