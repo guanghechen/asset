@@ -38,14 +38,11 @@
   },
   "dependencies": {
     "@barusu/util-option": "^0.0.39",
+    "@guanghechen/asset-markdown": "^0.0.0",
     "@guanghechen/site-api": "^0.0.0",
     "@types/fs-extra": "^9.0.1",
-    "@types/js-yaml": "^3.12.5",
     "@types/micromatch": "^4.0.1",
-    "dayjs": "^1.9.1",
     "fs-extra": "^9.0.1",
-    "globby": "11.0.1",
-    "js-yaml": "^3.14.0",
     "micromatch": "^4.0.2",
     "tiny-invariant": "^1.0.2"
   },

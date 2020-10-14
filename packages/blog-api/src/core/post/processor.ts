@@ -1,38 +1,41 @@
-import dayjs from 'dayjs'
-import yaml from 'js-yaml'
 import micromatch from 'micromatch'
-import invariant from 'tiny-invariant'
-import { isNotEmptyString } from '@barusu/util-option'
+import { AssetMarkdownProcessor } from '@guanghechen/asset-markdown'
 import {
-  AssetDataItem,
   AssetProcessor,
   CategoryDataItem,
+  ImmutableAssetDataManager,
   ImmutableCategoryDataManager,
   ImmutableTagDataManager,
-  RawCategoryDataItem,
-  RawTagDataItem,
   RoughAssetDataItem,
   TagDataItem,
   resolveLocalPath,
   writeJSONSync,
 } from '@guanghechen/site-api'
 import { BlogSourceType } from '../../config/blog'
-import { PostDataItem, PostEntity } from './entity'
+import { PostAssetEntity, PostDataItem, PostEntity } from './entity'
 
 
-export class PostProcessor implements AssetProcessor {
+export class PostProcessor implements AssetProcessor<PostDataItem> {
   protected readonly encoding: BufferEncoding
   protected readonly postDataRoot: string
   protected readonly postPattern: string[]
+  protected readonly realProcessors: AssetProcessor<PostAssetEntity>[]
 
   public constructor(
     encoding: BufferEncoding,
     postDataRoot: string,
     postPattern: string[],
+    realProcessors?: AssetProcessor<PostAssetEntity>[]
   ) {
     this.encoding = encoding
     this.postDataRoot = postDataRoot
     this.postPattern = postPattern
+    this.realProcessors = realProcessors != null
+      ? realProcessors
+      : [
+        new AssetMarkdownProcessor('utf-8'),
+      ]
+
   }
 
   /**
@@ -53,73 +56,36 @@ export class PostProcessor implements AssetProcessor {
     roughAsset: RoughAssetDataItem,
     tagDataManager: ImmutableTagDataManager,
     categoryDataManager: ImmutableCategoryDataManager,
-  ): [AssetDataItem, TagDataItem[], CategoryDataItem[][]] {
-    const rawContent: string = _rawContent.toString(this.encoding)
-    const match = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/.exec(rawContent)
+    assetDataManager: ImmutableAssetDataManager,
+  ): [PostDataItem, TagDataItem[], CategoryDataItem[][]] {
+    for (const processor of this.realProcessors) {
+      if (!processor.processable(filepath)) continue
+      const [postAssetEntity, tags, categories] = processor.process(
+        filepath, _rawContent, roughAsset,
+        tagDataManager, categoryDataManager, assetDataManager)
 
-    invariant(match != null, `No meta data found in ${ filepath }`)
+      const { summary, content, ...assetEntity } = postAssetEntity
+      const postEntity: PostEntity = {
+        ...assetEntity,
+        type: BlogSourceType.POST,
+        docType: postAssetEntity.type as any,
+        content,
+      }
 
-    const meta: Record<string, any> = yaml.safeLoad(match[1]) as any
-    invariant(isNotEmptyString(meta.uuid), `No uuid found in ${ filepath }`)
+      // save postEntity
+      const postFilepath = resolveLocalPath(this.postDataRoot, postEntity.uuid + '.json')
+      writeJSONSync(postFilepath, postEntity)
 
-    const uuid: string = meta.uuid
-    const title: string = meta.title || roughAsset.title
-    const createAt = meta.createAt != null
-      ? dayjs(meta.createAt).toDate().toISOString()
-      : roughAsset.createAt
-    const updateAt = meta.updateAt != null
-      ? dayjs(meta.updateAt).toDate().toISOString()
-      : roughAsset.updateAt
+      const postItem: PostDataItem = {
+        ...assetEntity,
+        type: BlogSourceType.POST,
+        docType: postAssetEntity.type as any,
+        summary,
+      }
 
-    // resolve tags
-    const rawTags = (meta.tags || []) as RawTagDataItem[]
-    const tags: TagDataItem[] = rawTags.map(rawTag => (
-      tagDataManager.normalize(rawTag)
-    ))
-
-    // resolve categories
-    const rawCategories = (meta.categories || []) as RawCategoryDataItem[][]
-    const categories: CategoryDataItem[][] = rawCategories.map(categoryPath => (
-      categoryPath.map(c => categoryDataManager.normalize(c))
-    ))
-
-    // resolve content
-    const content: string = rawContent.slice(match[0].length)
-
-    const postEntity: PostEntity = {
-      uuid,
-      type: BlogSourceType.POST,
-      fingerprint: roughAsset.fingerprint,
-      location: roughAsset.location,
-      lastModifiedTime: roughAsset.lastModifiedTime,
-      createAt,
-      updateAt,
-      title,
-      tags: tags.map(tag => tag.uuid),
-      categories: categories.map(cp => cp.map(c => c.uuid)),
-      docType: 'markdown',
-      content,
+      return [postItem, tags, categories]
     }
 
-    // save postEntity
-    const postFilepath = resolveLocalPath(this.postDataRoot, postEntity.uuid + '.json')
-    writeJSONSync(postFilepath, postEntity)
-
-    const postItem: PostDataItem = {
-      uuid: postEntity.uuid,
-      type: postEntity.type,
-      fingerprint: postEntity.fingerprint,
-      location: postEntity.location,
-      lastModifiedTime: roughAsset.lastModifiedTime,
-      createAt: postEntity.createAt,
-      updateAt: postEntity.updateAt,
-      title: postEntity.title,
-      tags: postEntity.tags,
-      categories: postEntity.categories,
-      docType: postEntity.docType,
-      summary: '',
-    }
-
-    return [postItem, tags, categories]
+    throw new Error(`no suitable AssetDataProcessor found for file ${ filepath }`)
   }
 }

@@ -3,6 +3,21 @@ import { BlogSourceType } from '../../config/blog'
 
 
 /**
+ * Post asset item
+ */
+export interface PostAssetEntity extends AssetDataItem {
+  /**
+   * Document body content
+   */
+  content: string
+  /**
+   * Summary content
+   */
+  summary: string
+}
+
+
+/**
  * Post data
  */
 export interface PostEntity extends AssetDataItem<BlogSourceType.POST> {
