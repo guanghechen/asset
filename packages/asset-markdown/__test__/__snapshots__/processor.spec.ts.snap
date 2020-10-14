@@ -1,0 +1,111 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`base process: a 1`] = `
+Array [
+  Object {
+    "categories": Array [],
+    "content": "$E = m \\\\\\\\cdot c^2$",
+    "createAt": "2019-12-31T16:00:00.000Z",
+    "fingerprint": "5d48a79a3e66a0b67d03c582501493d256004f1f",
+    "lastModifiedTime": 0,
+    "location": "a.md",
+    "summary": "",
+    "tags": Array [],
+    "title": "a.md",
+    "type": "markdown",
+    "updateAt": "2020-01-02T04:34:56.000Z",
+    "uuid": "5d48a79a3e66a0b67d03c582501493d256004f1f",
+  },
+  Array [],
+  Array [],
+]
+`;
+
+exports[`base process: b 1`] = `
+Array [
+  Object {
+    "categories": Array [
+      Array [
+        "A",
+        "B",
+      ],
+      Array [
+        "C",
+        "D",
+      ],
+      Array [
+        "E",
+      ],
+    ],
+    "content": "$E = m \\\\\\\\cdot c^2$",
+    "createAt": "2000-01-01T01:02:03.000Z",
+    "fingerprint": "bb801cb4e571ec0bc7a6ad6d316dacf27c7b107a",
+    "lastModifiedTime": 0,
+    "location": "b.md",
+    "summary": "",
+    "tags": Array [
+      "math",
+      "algorithm",
+    ],
+    "title": "b.md",
+    "type": "markdown",
+    "updateAt": "1982-12-22T04:07:02.000Z",
+    "uuid": "waw",
+  },
+  Array [
+    Object {
+      "assets": Array [],
+      "title": "math",
+      "uuid": "math",
+    },
+    Object {
+      "assets": Array [],
+      "title": "algorithm",
+      "uuid": "algorithm",
+    },
+  ],
+  Array [
+    Array [
+      Object {
+        "assets": Array [],
+        "children": Array [],
+        "parents": Array [],
+        "title": "A",
+        "uuid": "A",
+      },
+      Object {
+        "assets": Array [],
+        "children": Array [],
+        "parents": Array [],
+        "title": "B",
+        "uuid": "B",
+      },
+    ],
+    Array [
+      Object {
+        "assets": Array [],
+        "children": Array [],
+        "parents": Array [],
+        "title": "C",
+        "uuid": "C",
+      },
+      Object {
+        "assets": Array [],
+        "children": Array [],
+        "parents": Array [],
+        "title": "D",
+        "uuid": "D",
+      },
+    ],
+    Array [
+      Object {
+        "assets": Array [],
+        "children": Array [],
+        "parents": Array [],
+        "title": "E",
+        "uuid": "E",
+      },
+    ],
+  ],
+]
+`;
