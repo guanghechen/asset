@@ -3,6 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@guanghechen/asset-markdown": [
+        "packages/asset-markdown/src"
+      ],
       "@guanghechen/blog-api": [
         "packages/blog-api/src"
       ],
