@@ -14,16 +14,16 @@ const caseRootDir = path.resolve(__dirname, 'cases')
 
 describe('base', function () {
   test('processable', function () {
-    const processor = new AssetMarkdownProcessor('utf-8')
+    const processor = new AssetMarkdownProcessor({ encoding: 'utf-8' })
     expect(processor.processable('/a/a.md')).toBeTruthy()
     expect(processor.processable('.../a/a.md')).toBeTruthy()
     expect(processor.processable('a.txt.md')).toBeTruthy()
     expect(processor.processable('a.md.txt')).toBeFalsy()
 
-    const customProcessor = new AssetMarkdownProcessor(
-      'utf-8',
-      (filepath) => /\.(xmd|txt)$/.test(filepath)
-    )
+    const customProcessor = new AssetMarkdownProcessor({
+      encoding: 'utf-8',
+      processable: (filepath) => /\.(xmd|txt)$/.test(filepath),
+    })
     expect(customProcessor.processable('/a/a.md')).toBeFalsy()
     expect(customProcessor.processable('.../a/a.md')).toBeFalsy()
     expect(customProcessor.processable('a.txt.md')).toBeFalsy()
@@ -55,7 +55,10 @@ describe('base', function () {
       const tagDataManager = new TagDataManager('./tag.json')
       const categoryDataManager = new CategoryDataManager('./category.data.json')
 
-      const processor = new AssetMarkdownProcessor('utf-8')
+      const processor = new AssetMarkdownProcessor({
+        encoding: 'utf-8',
+        isMetaOptional: false,
+      })
       const result = processor.process(
         filepath,
         Buffer.from(rawContent),

@@ -14,16 +14,39 @@ import {
 import { AssetMarkdownEntity, AssetMarkdownType } from './entity'
 
 
+/**
+ * Props for building AssetMarkdownProcessor
+ */
+export interface AssetMarkdownProcessorProps {
+  /**
+   * Encoding of markdown files
+   */
+  encoding: BufferEncoding
+  /**
+   * Whether the meta data is optional
+   */
+  isMetaOptional?: boolean
+  /**
+   * Custom function to determine whether an asset file processable
+   */
+  processable?: AssetProcessor['processable']
+}
+
+
+/**
+ * Processor for handle markdown asset
+ */
 export class AssetMarkdownProcessor implements AssetProcessor<AssetMarkdownEntity> {
   protected readonly encoding: BufferEncoding
+  protected readonly isMetaOptional: boolean
 
-  public constructor(
-    encoding: BufferEncoding,
-    processable?: AssetProcessor['processable'],
-  ) {
+  public constructor(props: AssetMarkdownProcessorProps) {
+    const { encoding, isMetaOptional = true, processable } = props
     this.encoding = encoding
+    this.isMetaOptional = isMetaOptional
+
     if (processable != null) {
-      this.processable = processable
+      this.processable = processable.bind(this)
     }
   }
 
@@ -45,9 +68,13 @@ export class AssetMarkdownProcessor implements AssetProcessor<AssetMarkdownEntit
     categoryDataManager: ImmutableCategoryDataManager,
   ): [AssetMarkdownEntity, TagDataItem[], CategoryDataItem[][]] {
     const rawContent: string = _rawContent.toString(this.encoding)
-    const match = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/.exec(rawContent)
+    let match: string[] | null = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/.exec(rawContent)
 
-    invariant(match != null, `No meta data found in ${ filepath }`)
+    if (this.isMetaOptional) {
+      if (match == null) match = ['', '']
+    } else {
+      invariant(match != null, `No meta data found in ${ filepath }`)
+    }
 
     const meta: Record<string, any> = yaml.safeLoad(match[1]) || {} as any
     const uuid: string = meta.uuid || roughAsset.uuid

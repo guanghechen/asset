@@ -33,7 +33,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
     this.realProcessors = realProcessors != null
       ? realProcessors
       : [
-        new AssetMarkdownProcessor(encoding),
+        new AssetMarkdownProcessor({ encoding: 'utf-8', isMetaOptional: true }),
       ]
   }
 
