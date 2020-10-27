@@ -1,62 +1,54 @@
-import type { AssetDataItem, AssetUUID } from '@guanghechen/site-api'
-import { BlogSourceType } from '../../config/blog'
+import type { AssetDataItem } from '@guanghechen/site-api'
+import type { BlogSourceType } from '../../config/blog'
 
 
 /**
  * Post asset item
+ *
+ * Used within the PostProcessor, as the first data type of result returned
+ * by the `realProcessors[<index>].process()`
  */
 export interface PostAssetEntity extends AssetDataItem {
   /**
    * Document body content
    */
-  content: string
+  content: any
   /**
    * Summary content
    */
-  summary: string
+  summary: any
 }
 
 
 /**
  * Post data
  */
-export interface PostEntity extends AssetDataItem<BlogSourceType.POST> {
-  /**
-   * The type of the post document
-   */
-  docType: 'markdown'
-  /**
-   * Document body content
-   */
-  content: string
-}
+export type PostEntity = AssetDataItem<BlogSourceType.POST> & (
+  {
+    /**
+     * The type of the post document
+     */
+    docType: 'markdown'
+    /**
+     * Document body content
+     */
+    content: any
+  }
+)
 
 
 /**
  * Only include meta information of PostData
  */
-export interface PostDataItem extends AssetDataItem<BlogSourceType.POST> {
-  /**
-   * The type of the post document
-   */
-  docType: 'markdown'
-  /**
-   * Summary content
-   */
-  summary: string
-}
-
-
-/**
- * Post data map
- */
-export interface PostDataMap {
-  /**
-   * Post uuid list
-   */
-  uuids: AssetUUID[]
-  /**
-   * Post entities
-   */
-  entities: Record<AssetUUID, PostDataItem>
-}
+export type PostDataItem = AssetDataItem<BlogSourceType.POST> & (
+  {
+    /**
+     * The type of the post document
+     */
+    docType: 'markdown'
+    /**
+     * Summary content
+     */
+    summary: any
+  }
+)

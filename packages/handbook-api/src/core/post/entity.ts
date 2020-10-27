@@ -12,39 +12,43 @@ export interface PostAssetEntity extends AssetDataItem {
   /**
    * Document body content
    */
-  content: string
+  content: any
   /**
    * Summary content
    */
-  summary: string
+  summary: any
 }
 
 
 /**
  * Post data
  */
-export interface PostEntity extends AssetDataItem<HandbookSourceType.POST> {
-  /**
-   * The type of the post document
-   */
-  docType: 'markdown'
-  /**
-   * Document body content
-   */
-  content: string
-}
+export type PostEntity = AssetDataItem<HandbookSourceType.POST> & (
+  {
+    /**
+     * The type of the post document
+     */
+    docType: 'markdown'
+    /**
+     * Document body content
+     */
+    content: any
+  }
+)
 
 
 /**
  * Only include meta information of PostData
  */
-export interface PostDataItem extends AssetDataItem<HandbookSourceType.POST> {
-  /**
-   * The type of the post document
-   */
-  docType: 'markdown'
-  /**
-   * Summary content
-   */
-  summary: string
-}
+export type PostDataItem = AssetDataItem<HandbookSourceType.POST> & (
+  {
+    /**
+     * The type of the post document
+     */
+    docType: 'markdown'
+    /**
+     * Summary content
+     */
+    summary: any
+  }
+)

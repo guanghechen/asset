@@ -1,5 +1,8 @@
 import micromatch from 'micromatch'
-import { AssetMarkdownProcessor } from '@guanghechen/asset-markdown'
+import {
+  AssetMarkdownProcessor,
+  parseMarkdownToAst,
+} from '@guanghechen/asset-markdown'
 import {
   AssetProcessor,
   CategoryDataItem,
@@ -33,9 +36,12 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
     this.realProcessors = realProcessors != null
       ? realProcessors
       : [
-        new AssetMarkdownProcessor({ encoding: 'utf-8', isMetaOptional: false }),
+        new AssetMarkdownProcessor({
+          encoding: 'utf-8',
+          isMetaOptional: true,
+          parse: parseMarkdownToAst,
+        }),
       ]
-
   }
 
   /**
