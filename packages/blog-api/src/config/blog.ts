@@ -50,19 +50,22 @@ const defaultBlogConfig: BlogConfig = {
 
 /**
  * Resolve BlogConfig
+ *
  * @param rawConfig
+ * @param sitePathConfig
+ * @param defaultConfig
  */
 export const resolveBlogConfig: SubSiteConfigResolver<
   BlogSourceType,
   BlogSourceItem,
   BlogConfig
   > = (
+  rawConfig: Partial<BlogConfig> = {},
   sitePathConfig: SitePathConfig,
   defaultConfig: BlogConfig = defaultBlogConfig,
-  rawConfig: Partial<BlogConfig> = {},
 ): BlogConfig => {
   const subSiteConfig: SubSiteConfig = resolveSubSiteConfig<BlogSourceType, BlogSourceItem>(
-    blogSourceTypes, resolveSubSiteSourceItem, sitePathConfig, defaultConfig, rawConfig)
+    rawConfig, blogSourceTypes, resolveSubSiteSourceItem, sitePathConfig, defaultConfig)
 
   const result: BlogConfig = {
     ...subSiteConfig,

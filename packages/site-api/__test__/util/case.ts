@@ -43,8 +43,9 @@ export const cases: CaseItem[] = [
         undefined,
         undefined,
         {
-          barusu: function (sitePathConfig, defaultConfig, rawConfig) {
+          barusu: function (rawConfig, sitePathConfig, defaultConfig) {
             return resolveSubSiteConfig(
+              rawConfig,
               ['image'],
               resolveSubSiteSourceItem,
               sitePathConfig,
@@ -58,7 +59,6 @@ export const cases: CaseItem[] = [
                   }
                 },
               },
-              rawConfig
             )
           }
         }

@@ -46,8 +46,8 @@ export const defaultDeployConfig: DeployConfig = {
  * @param rawConfig
  */
 export function resolveDeployConfig(
-  defaultConfig: DeployConfig = defaultDeployConfig,
   rawConfig: Partial<DeployConfig> = {},
+  defaultConfig: DeployConfig = defaultDeployConfig,
 ): DeployConfig {
   // resolve type
   const type = cover<'git'>(

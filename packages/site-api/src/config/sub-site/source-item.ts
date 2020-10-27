@@ -34,26 +34,26 @@ export interface SubSiteSourceItem {
  * Resolve SubSiteSourceItem
  */
 export type SubSiteSourceItemResolver<T extends SubSiteSourceItem> = (
+  rawSource: Partial<T>,
   subSiteSourceRoot: string,
   subSiteDataRoot: string,
   defaultSource: T,
-  rawSource: Partial<T>,
 ) => T
 
 
 /**
  * Resolve SubSiteSourceItem
  *
- * @param subSiteSourceRoot   sourceRoot of sub-site
- * @param subSiteDataRoot     dataRoot of sub-site
- * @param defaultSource       default SubSiteSourceItem.source
- * @param rawSource           input SubSiteSourceItem.source
+ * @param rawSourceItem         input SubSiteSourceItem.source
+ * @param subSiteSourceRoot     sourceRoot of sub-site
+ * @param subSiteDataRoot       dataRoot of sub-site
+ * @param defaultSourceItem     default SubSiteSourceItem.source
  */
 export const resolveSubSiteSourceItem: SubSiteSourceItemResolver<SubSiteSourceItem> = (
+  rawSourceItem: Partial<SubSiteSourceItem> = {},
   subSiteSourceRoot: string,
   subSiteDataRoot: string,
   defaultSourceItem: SubSiteSourceItem,
-  rawSourceItem: Partial<SubSiteSourceItem> = {},
 ): SubSiteSourceItem => {
   // resolve sourceRoot (absolute filepath)
   const sourceRoot: string = resolveLocalPath(

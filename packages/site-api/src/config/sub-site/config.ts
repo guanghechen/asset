@@ -45,18 +45,18 @@ export interface SubSiteConfig<
 /**
  * Sub-site config resolver
  *
+ * @param rawConfig       raw sub-site config
  * @param sitePathConfig  site path config
  * @param defaultConfig   default sub-site config
- * @param rawConfig       raw sub-site config
  */
 export type SubSiteConfigResolver<
   SourceType extends string = string,
   SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
   T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<SourceType, SourceItem>,
   > = (
+    rawConfig: Partial<T>,
     sitePathConfig: SitePathConfig,
     defaultConfig?: T,
-    rawConfig?: Partial<T>,
   ) => T
 
 
@@ -80,18 +80,23 @@ export function createDefaultSubSiteConfig(name: string): SubSiteConfig {
 
 
 /**
- * Resolve BlogConfig
+ * Resolve sub site config
+ *
  * @param rawConfig
+ * @param sourceItemTypes
+ * @param resolveSourceItem
+ * @param sitePathConfig
+ * @param defaultConfig
  */
 export function resolveSubSiteConfig<
   SourceType extends string = string,
   SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
 >(
+  rawConfig: Partial<SubSiteConfig<SourceType, SourceItem>> = {},
   sourceItemTypes: SourceType[],
   resolveSourceItem: SubSiteSourceItemResolver<SourceItem>,
   sitePathConfig: SitePathConfig,
   defaultConfig: SubSiteConfig<SourceType, SourceItem>,
-  rawConfig: Partial<SubSiteConfig<SourceType, SourceItem>> = {},
 ): SubSiteConfig<SourceType, SourceItem> {
   // resolve urlRoot (absolute url path)
   const urlRoot = resolveUrlPath(
@@ -142,11 +147,11 @@ export function resolveSubSiteConfig<
   const source: Record<SourceType, SourceItem> = {} as any
   const rawSources: Record<SourceType, Partial<SourceItem>> = rawConfig.source || {} as any
   for (const sourceType of sourceItemTypes) {
-    source[sourceType] = resolveSourceItem!(
+    source[sourceType] = resolveSourceItem(
+      rawSources[sourceType],
       sourceRoot,
       dataRoot,
       defaultConfig.source[sourceType],
-      rawSources[sourceType],
     )
   }
 

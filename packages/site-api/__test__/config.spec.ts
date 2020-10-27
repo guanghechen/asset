@@ -12,7 +12,7 @@ import { desensitize } from './util/snapshot'
 describe('resolveSubSiteConfig', function () {
   const resolveConfig = (
     workspace: string,
-    rawSubSiteConfig?: Partial<SubSiteConfig>,
+    rawSubSiteConfig: Partial<SubSiteConfig>,
   ): SubSiteConfig => {
     const sourceItemTypes = ['image']
     const resolveSourceItem = resolveSubSiteSourceItem
@@ -29,11 +29,11 @@ describe('resolveSubSiteConfig', function () {
     }
 
     const subSiteConfig = resolveSubSiteConfig(
+      rawSubSiteConfig,
       sourceItemTypes,
       resolveSourceItem,
       sitePathConfig,
       defaultConfig,
-      rawSubSiteConfig
     )
     return subSiteConfig
   }
@@ -42,7 +42,8 @@ describe('resolveSubSiteConfig', function () {
     expect(
       desensitize(
         resolveConfig(
-          path.resolve(__dirname, 'case')
+          path.resolve(__dirname, 'case'),
+          {},
         )
       )
     ).toMatchSnapshot()

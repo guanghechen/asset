@@ -78,9 +78,9 @@ export const defaultSiteConfig: SiteConfig = {
  * @param sitesResolver
  */
 export function resolveSiteConfig(
+  rawConfig: Partial<SiteConfig> = {},
   cwd: string,
   defaultConfig: SiteConfig = defaultSiteConfig,
-  rawConfig: Partial<SiteConfig> = {},
   sitesResolver: Record<string, SubSiteConfigResolver> = {}
 ): SiteConfig {
   // resolve urlRoot (absolute url path)
@@ -105,7 +105,7 @@ export function resolveSiteConfig(
     defaultConfig.author, rawConfig.author, isNotEmptyString)
 
   // resolve deploy
-  const deploy = resolveDeployConfig(defaultConfig.deploy, rawConfig.deploy)
+  const deploy = resolveDeployConfig(rawConfig.deploy, defaultConfig.deploy)
 
   // resolve sites
   const rawSites = rawConfig.sites || {}
@@ -117,9 +117,9 @@ export function resolveSiteConfig(
       throw new Error(`Cannot find resolver for sub-site (${ key })`)
     }
     const subSite: SubSiteConfig = resolveSubSite(
+      rawSites[key],
       sitePathConfig,
       defaultConfig.sites[key],
-      rawSites[key],
     )
     sites[key] = subSite
   }
@@ -161,12 +161,12 @@ export function loadSiteConfig(
   switch (extname) {
     case '.yml':
     case '.yaml': {
-      const rawConfig: any = yaml.safeLoad(rawContent)
-      return resolveSiteConfig(cwd, defaultConfig, rawConfig, sitesResolver)
+      const rawConfig: any = yaml.safeLoad(rawContent) || {}
+      return resolveSiteConfig(rawConfig, cwd, defaultConfig, sitesResolver)
     }
     case '.json': {
       const rawConfig: any = JSON.parse(rawContent)
-      return resolveSiteConfig(cwd, defaultConfig, rawConfig, sitesResolver)
+      return resolveSiteConfig(rawConfig, cwd, defaultConfig, sitesResolver)
     }
   }
 
