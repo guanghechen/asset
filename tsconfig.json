@@ -9,6 +9,9 @@
       "@guanghechen/blog-api": [
         "packages/blog-api/src"
       ],
+      "@guanghechen/handbook-api": [
+        "packages/handbook-api/src"
+      ],
       "@guanghechen/site-api": [
         "packages/site-api/src"
       ]
