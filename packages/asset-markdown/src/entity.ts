@@ -6,16 +6,22 @@ export const AssetMarkdownType = 'markdown'
 export type AssetMarkdownType = typeof AssetMarkdownType
 
 
+export interface AssetMarkdownEntityContent<T extends unknown = unknown> {
+  /**
+   * Markdown body content
+   */
+  content: T
+  /**
+   * Markdown summary content
+   */
+  summary: T
+}
+
+
 /**
  * Post data
  */
-export interface AssetMarkdownEntity extends AssetDataItem<AssetMarkdownType> {
-  /**
-   * Document body content
-   */
-  content: string
-  /**
-   * Summary content
-   */
-  summary: string
+export interface AssetMarkdownEntity
+  extends AssetDataItem<AssetMarkdownType>, AssetMarkdownEntityContent {
+
 }

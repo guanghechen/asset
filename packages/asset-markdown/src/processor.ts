@@ -12,6 +12,7 @@ import {
   TagDataItem,
 } from '@guanghechen/site-api'
 import { AssetMarkdownEntity, AssetMarkdownType } from './entity'
+import { MarkdownParser, preserveMarkdown } from './parse'
 
 
 /**
@@ -30,6 +31,10 @@ export interface AssetMarkdownProcessorProps {
    * Custom function to determine whether an asset file processable
    */
   processable?: AssetProcessor['processable']
+  /**
+   * Parse markdown content
+   */
+  parse?: MarkdownParser
 }
 
 
@@ -39,15 +44,20 @@ export interface AssetMarkdownProcessorProps {
 export class AssetMarkdownProcessor implements AssetProcessor<AssetMarkdownEntity> {
   protected readonly encoding: BufferEncoding
   protected readonly isMetaOptional: boolean
+  protected readonly parse: MarkdownParser
 
   public constructor(props: AssetMarkdownProcessorProps) {
-    const { encoding, isMetaOptional = true, processable } = props
+    const { encoding, isMetaOptional = true, processable, parse } = props
     this.encoding = encoding
     this.isMetaOptional = isMetaOptional
 
     if (processable != null) {
       this.processable = processable.bind(this)
     }
+
+    this.parse = parse != null
+      ? this.parse = parse.bind(this)
+      : preserveMarkdown
   }
 
   /**
@@ -99,7 +109,7 @@ export class AssetMarkdownProcessor implements AssetProcessor<AssetMarkdownEntit
     ))
 
     // resolve content
-    const content: string = rawContent.slice(match[0].length).trim()
+    const { content, summary } = this.parse(rawContent.slice(match[0].length).trim())
 
     const entity: AssetMarkdownEntity = {
       uuid,
@@ -113,7 +123,7 @@ export class AssetMarkdownProcessor implements AssetProcessor<AssetMarkdownEntit
       tags: tags.map(tag => tag.uuid),
       categories: categories.map(cp => cp.map(c => c.uuid)),
       content,
-      summary: '',
+      summary,
     }
 
     return [entity, tags, categories]

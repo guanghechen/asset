@@ -9,6 +9,7 @@
     "kase",
     "mkdirs",
     "prebuild",
-    "squashable"
+    "squashable",
+    "unist"
   ]
 }
