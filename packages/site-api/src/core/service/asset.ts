@@ -1,5 +1,5 @@
 import invariant from 'tiny-invariant'
-import type { AssetType, AssetUUID } from '../entity/_types'
+import type { AssetLocation, AssetType, AssetUUID } from '../entity/_types'
 import type { AssetDataItem, AssetDataMap } from '../entity/asset'
 import type { AssetDataManager } from '../manager/asset'
 
@@ -9,6 +9,15 @@ export class AssetService {
 
   public constructor(dataManager: AssetDataManager) {
     this.dataManager = dataManager
+  }
+
+  /**
+   * Get asset by asset location
+   *
+   * @param location
+   */
+  public locate(location: AssetLocation): AssetDataItem | null {
+    return this.dataManager.locate(location)
   }
 
   /**
