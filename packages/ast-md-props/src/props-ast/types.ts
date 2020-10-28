@@ -2,7 +2,8 @@ import { AlignType } from 'mdast'
 import type { MdastDefinition } from '../mdast/types'
 
 
-export const DESCENDANT_KEYS: unique symbol = Symbol()
+// Symbol will be lost when convert to json data
+export const DESCENDANT_KEYS = 'DESCENDANT_KEYS'
 
 
 export type PropsAstContent =
@@ -128,7 +129,7 @@ export interface PropsAstBreak extends PropsAstNode {
 /**
  * Code
  */
-export interface PropsAstCode extends PropsAstNode {
+export interface PropsAstCode extends PropsAstLiteral {
   type: 'code'
   lang?: string
   meta?: string

@@ -114,6 +114,7 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
 
         const result: PropsAstCode = {
           type: 'code',
+          value: u.value,
           lang: u.lang || '',
           meta: u.meta,
           literal: metaData.literal,
