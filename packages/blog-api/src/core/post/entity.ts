@@ -1,3 +1,4 @@
+import type { MdastRoot } from '@guanghechen/ast-md-props'
 import type { AssetDataItem } from '@guanghechen/site-api'
 import type { BlogSourceType } from '../../config/blog'
 
@@ -13,10 +14,6 @@ export interface PostAssetEntity extends AssetDataItem {
    * Document body content
    */
   content: any
-  /**
-   * Summary content
-   */
-  summary: any
 }
 
 
@@ -32,7 +29,7 @@ export type PostEntity = AssetDataItem<BlogSourceType.POST> & (
     /**
      * Document body content
      */
-    content: any
+    content: MdastRoot
   }
 )
 
@@ -46,9 +43,5 @@ export type PostDataItem = AssetDataItem<BlogSourceType.POST> & (
      * The type of the post document
      */
     docType: 'markdown'
-    /**
-     * Summary content
-     */
-    summary: any
   }
 )

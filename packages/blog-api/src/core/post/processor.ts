@@ -1,8 +1,11 @@
 import micromatch from 'micromatch'
+import { AssetMarkdownProcessor } from '@guanghechen/asset-markdown'
 import {
-  AssetMarkdownProcessor,
-  parseMarkdownToAst,
-} from '@guanghechen/asset-markdown'
+  MdastRoot,
+  PropsAstRoot,
+  parseMdast,
+  parsePropsAst,
+} from '@guanghechen/ast-md-props'
 import {
   AssetProcessor,
   CategoryDataItem,
@@ -36,10 +39,14 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
     this.realProcessors = realProcessors != null
       ? realProcessors
       : [
-        new AssetMarkdownProcessor({
-          encoding: 'utf-8',
+        new AssetMarkdownProcessor<PropsAstRoot>({
+          encoding,
           isMetaOptional: true,
-          parse: parseMarkdownToAst,
+          parse: (rawContent: string): PropsAstRoot => {
+            const mdast: MdastRoot = parseMdast(rawContent)
+            const propsAst: PropsAstRoot = parsePropsAst(mdast)
+            return propsAst
+          }
         }),
       ]
   }
@@ -70,7 +77,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
         filepath, _rawContent, roughAsset,
         tagDataManager, categoryDataManager, assetDataManager)
 
-      const { summary, content, ...assetEntity } = postAssetEntity
+      const { content, ...assetEntity } = postAssetEntity
       const postEntity: PostEntity = {
         ...assetEntity,
         type: BlogSourceType.POST,
@@ -86,7 +93,6 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
         ...assetEntity,
         type: BlogSourceType.POST,
         docType: postAssetEntity.type as any,
-        summary,
       }
 
       return [postItem, tags, categories]

@@ -5,16 +5,33 @@ import { PostProcessor } from './core/post/processor'
 import { PostService } from './core/post/service'
 
 
+/**
+ * props for creating HandbookDataProvider
+ */
+export interface HandbookDataProviderProps {
+  /**
+   * Handbook asset processors
+   */
+  processors?: AssetProcessor[]
+}
+
+
 export class HandbookDataProvider extends AssetDataProvider<HandbookConfig> {
   public readonly postService: PostService
 
-  public constructor(handbookConfig: HandbookConfig) {
+  public constructor(
+    handbookConfig: HandbookConfig,
+    props: HandbookDataProviderProps = {},
+  ) {
     const { source } = handbookConfig
 
     // Create AssetParser
-    const postProcessor = new PostProcessor(
-      source.post.encoding!, source.post.dataRoot, source.post.pattern)
-    const processors: AssetProcessor[] = [postProcessor]
+    const postProcessor = new PostProcessor({
+      dataRoot: source.post.dataRoot,
+      patterns: source.post.pattern,
+      encoding: source.post.encoding,
+    })
+    const processors: AssetProcessor[] = props.processors || [postProcessor]
 
     // Build AssetDataProvider
     super(handbookConfig, processors)

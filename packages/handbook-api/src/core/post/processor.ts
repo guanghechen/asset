@@ -1,8 +1,11 @@
 import micromatch from 'micromatch'
+import { AssetMarkdownProcessor } from '@guanghechen/asset-markdown'
 import {
-  AssetMarkdownProcessor,
-  parseMarkdownToAst,
-} from '@guanghechen/asset-markdown'
+  MdastRoot,
+  PropsAstRoot,
+  parseMdast,
+  parsePropsAst,
+} from '@guanghechen/ast-md-props'
 import {
   AssetProcessor,
   CategoryDataItem,
@@ -18,30 +21,61 @@ import { HandbookSourceType } from '../../config/handbook'
 import { PostAssetEntity, PostDataItem, PostEntity } from './entity'
 
 
+/**
+ * Props for create PostProcessor
+ */
+export interface PostProcessorProps {
+  /**
+   * Root directory of post data
+   */
+  dataRoot: string
+  /**
+   * Glob pattern for matching post asset filepath
+   */
+  patterns: string[]
+  /**
+   * File encoding of post asset files
+   * In fact, I would like to (force) you to use a uniform file encoding
+   */
+  encoding?: BufferEncoding
+  /**
+   * Inner post data processors, such as AssetMarkdownProcessor
+   */
+  realProcessors?: AssetProcessor<PostAssetEntity>[]
+}
+
+
+/**
+ * Post asset processor
+ */
 export class PostProcessor implements AssetProcessor<PostDataItem> {
+  protected readonly dataRoot: string
+  protected readonly patterns: string[]
   protected readonly encoding: BufferEncoding
-  protected readonly postDataRoot: string
-  protected readonly postPattern: string[]
   protected readonly realProcessors: AssetProcessor<PostAssetEntity>[]
 
-  public constructor(
-    encoding: BufferEncoding,
-    postDataRoot: string,
-    postPattern: string[],
-    realProcessors?: AssetProcessor<PostAssetEntity>[]
-  ) {
-    this.encoding = encoding
-    this.postDataRoot = postDataRoot
-    this.postPattern = postPattern
-    this.realProcessors = realProcessors != null
-      ? realProcessors
-      : [
-        new AssetMarkdownProcessor({
-          encoding: 'utf-8',
+  public constructor(props: PostProcessorProps) {
+    const {
+      dataRoot,
+      patterns,
+      encoding = 'utf-8',
+      realProcessors = [
+        new AssetMarkdownProcessor<PropsAstRoot>({
+          encoding,
           isMetaOptional: true,
-          parse: parseMarkdownToAst,
+          parse: (rawContent: string): PropsAstRoot => {
+            const mdast: MdastRoot = parseMdast(rawContent)
+            const propsAst: PropsAstRoot = parsePropsAst(mdast)
+            return propsAst
+          }
         }),
       ]
+    } = props
+
+    this.encoding = encoding
+    this.dataRoot = dataRoot
+    this.patterns = patterns
+    this.realProcessors = realProcessors
   }
 
   /**
@@ -49,7 +83,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
    */
   public processable(filepath: string): boolean {
     const isMatched = micromatch.isMatch(
-      filepath, this.postPattern, { cwd: this.postDataRoot })
+      filepath, this.patterns, { cwd: this.dataRoot })
     return isMatched
   }
 
@@ -70,7 +104,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
         filepath, _rawContent, roughAsset,
         tagDataManager, categoryDataManager, assetDataManager)
 
-      const { summary, content, ...assetEntity } = postAssetEntity
+      const { content, ...assetEntity } = postAssetEntity
       const postEntity: PostEntity = {
         ...assetEntity,
         type: HandbookSourceType.POST,
@@ -79,14 +113,13 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
       }
 
       // save postEntity
-      const postFilepath = resolveLocalPath(this.postDataRoot, postEntity.uuid + '.json')
+      const postFilepath = resolveLocalPath(this.dataRoot, postEntity.uuid + '.json')
       writeJSONSync(postFilepath, postEntity)
 
       const postItem: PostDataItem = {
         ...assetEntity,
         type: HandbookSourceType.POST,
         docType: postAssetEntity.type as any,
-        summary,
       }
 
       return [postItem, tags, categories]
