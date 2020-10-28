@@ -3,6 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
+      "@guanghechen/ast-md-props": [
+        "packages/ast-md-props/src"
+      ],
       "@guanghechen/asset-markdown": [
         "packages/asset-markdown/src"
       ],
