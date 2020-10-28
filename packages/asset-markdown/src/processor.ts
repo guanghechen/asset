@@ -12,13 +12,12 @@ import {
   TagDataItem,
 } from '@guanghechen/site-api'
 import { AssetMarkdownEntity, AssetMarkdownType } from './entity'
-import { MarkdownParser, preserveMarkdown } from './parse'
 
 
 /**
  * Props for building AssetMarkdownProcessor
  */
-export interface AssetMarkdownProcessorProps {
+export interface AssetMarkdownProcessorProps<D> {
   /**
    * Encoding of markdown files
    */
@@ -34,30 +33,29 @@ export interface AssetMarkdownProcessorProps {
   /**
    * Parse markdown content
    */
-  parse?: MarkdownParser
+  parse?: (content: string) => D
 }
 
 
 /**
  * Processor for handle markdown asset
  */
-export class AssetMarkdownProcessor implements AssetProcessor<AssetMarkdownEntity> {
+export class AssetMarkdownProcessor<D>
+  implements AssetProcessor<AssetMarkdownEntity<D>> {
   protected readonly encoding: BufferEncoding
   protected readonly isMetaOptional: boolean
-  protected readonly parse: MarkdownParser
+  protected readonly parse: (content: string) => D
 
-  public constructor(props: AssetMarkdownProcessorProps) {
+  public constructor(props: AssetMarkdownProcessorProps<D>) {
     const { encoding, isMetaOptional = true, processable, parse } = props
     this.encoding = encoding
     this.isMetaOptional = isMetaOptional
 
     if (processable != null) {
-      this.processable = processable.bind(this)
+      this.processable = processable
     }
 
-    this.parse = parse != null
-      ? this.parse = parse.bind(this)
-      : preserveMarkdown
+    this.parse = parse != null ? this.parse = parse : (c) => c as any
   }
 
   /**
@@ -76,7 +74,7 @@ export class AssetMarkdownProcessor implements AssetProcessor<AssetMarkdownEntit
     roughAsset: RoughAssetDataItem,
     tagDataManager: ImmutableTagDataManager,
     categoryDataManager: ImmutableCategoryDataManager,
-  ): [AssetMarkdownEntity, TagDataItem[], CategoryDataItem[][]] {
+  ): [AssetMarkdownEntity<D>, TagDataItem[], CategoryDataItem[][]] {
     const rawContent: string = _rawContent.toString(this.encoding)
     let match: string[] | null = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/.exec(rawContent)
 
@@ -109,9 +107,9 @@ export class AssetMarkdownProcessor implements AssetProcessor<AssetMarkdownEntit
     ))
 
     // resolve content
-    const { content, summary } = this.parse(rawContent.slice(match[0].length).trim())
+    const content = this.parse(rawContent.slice(match[0].length).trim())
 
-    const entity: AssetMarkdownEntity = {
+    const entity: AssetMarkdownEntity<D> = {
       uuid,
       type: AssetMarkdownType,
       fingerprint: roughAsset.fingerprint,
@@ -123,7 +121,6 @@ export class AssetMarkdownProcessor implements AssetProcessor<AssetMarkdownEntit
       tags: tags.map(tag => tag.uuid),
       categories: categories.map(cp => cp.map(c => c.uuid)),
       content,
-      summary,
     }
 
     return [entity, tags, categories]

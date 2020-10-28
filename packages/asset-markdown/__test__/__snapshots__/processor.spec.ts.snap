@@ -9,7 +9,6 @@ Array [
     "fingerprint": "5d48a79a3e66a0b67d03c582501493d256004f1f",
     "lastModifiedTime": 0,
     "location": "a.md",
-    "summary": "",
     "tags": Array [],
     "title": "a.md",
     "type": "markdown",
@@ -42,7 +41,6 @@ Array [
     "fingerprint": "bb801cb4e571ec0bc7a6ad6d316dacf27c7b107a",
     "lastModifiedTime": 0,
     "location": "b.md",
-    "summary": "",
     "tags": Array [
       "math",
       "algorithm",

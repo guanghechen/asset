@@ -57,7 +57,7 @@ describe('base', function () {
 
       const processor = new AssetMarkdownProcessor({
         encoding: 'utf-8',
-        isMetaOptional: false,
+        isMetaOptional: true,
       })
       const result = processor.process(
         filepath,
