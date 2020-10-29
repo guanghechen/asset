@@ -104,21 +104,44 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
       }
       case 'code': {
         const u = o as MdastCode
+        let args: Record<string, unknown> = {}
+        if (u.meta != null) {
+          try {
+            // Try parsing as JSON data
+            args = JSON.parse(u.meta)
+          } catch (e) {
+            // Try parsing as dom attributes
+            args = {}
+            const regex = /\s*\b([a-z]\w*)(?:=([^\s'"`]+|'[^']*'|"[^"]*"|`[^`]`))?/g
+            u.meta.replace(regex, (m, p1, p2): string => {
+              const key: string = p1.toLowerCase()
+              const val: string | null = p2 == null
+                ? null
+                : p2.replace(/^(['"`])([\s\S]*?)\1$/, '$2')
 
-        let metaData: any = {}
-        try {
-          metaData = JSON.parse(u.meta || '')
-        } catch (e) {
-          metaData = {}
+              if (val != null) args[key] = val
+              else {
+                switch (key) {
+                  case 'literal':
+                  case 'embed':
+                  case 'live':
+                    args.mode = key
+                    break
+                }
+              }
+
+              return ''
+            })
+          }
         }
 
         const result: PropsAstCode = {
           type: 'code',
           value: u.value,
-          lang: u.lang || '',
+          lang: u.lang,
+          mode: ['literal', 'embed', 'live'].find((x): x is any => x === args.mode),
           meta: u.meta,
-          literal: metaData.literal,
-          preview: metaData.preview,
+          args,
         }
         return result
       }

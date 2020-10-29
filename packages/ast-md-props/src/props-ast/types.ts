@@ -131,10 +131,24 @@ export interface PropsAstBreak extends PropsAstNode {
  */
 export interface PropsAstCode extends PropsAstLiteral {
   type: 'code'
+  /**
+   * Language of code
+   */
   lang?: string
+  /**
+   * - {'literal'}  display the literal code with highlight (optional)
+   * - {'embed'}    render code as a component
+   * - {'live'}     create a live editor for both editing and preview
+   */
+  mode?: 'literal' | 'embed' | 'live'
+  /**
+   * Meta data of code
+   */
   meta?: string
-  literal?: boolean
-  preview?: boolean
+  /**
+   * Parsed meta data
+   */
+  args: Record<string, unknown>
 }
 
 
