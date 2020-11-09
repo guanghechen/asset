@@ -17,12 +17,11 @@
     "node": ">= 12.16.0"
   },
   "scripts": {
-    "pre:publish": "yarn find-inconsistent && yarn sort-imports",
-    ":publish": "lerna publish --no-private",
+    ":publish": "yarn format && yarn test && lerna publish --no-private",
     "start": "lerna run --parallel start",
-    "build": "lerna exec --concurrency 1 -- 'echo && pwd && yarn build'",
-    "test": "lerna exec --concurrency 1 -- 'echo && pwd && yarn test'",
+    "build": "lerna run --concurrency 1 build",
     "rebuild": "yarn clean && yarn build",
+    "test": "lerna run --parallel test",
     "clean": "lerna clean --yes && yarn install",
     "format": "yarn find-inconsistent && yarn sort-imports && yarn lint:fix",
     "lint:fix": "lerna run --parallel lint:fix",
