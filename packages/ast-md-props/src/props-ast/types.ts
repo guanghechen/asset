@@ -20,7 +20,7 @@ export type PropsAstBlockContent =
   | PropsAstHeading
   | PropsAstThematicBreak
   | PropsAstBlockquote
-  | PropsAstList
+  | PropsAstUnorderedList
   | PropsAstTable
   | PropsAstCode
 
@@ -259,11 +259,20 @@ export interface PropsAstLinkReference extends PropsAstParent {
 
 
 /**
- * List
+ * Unordered List
  */
-export interface PropsAstList extends PropsAstParent {
-  type: 'list'
-  ordered: boolean
+export interface PropsAstUnorderedList extends PropsAstParent {
+  type: 'ulist'
+  spread: boolean
+  children: PropsAstListContent[]
+}
+
+
+/**
+ * Ordered list
+ */
+export interface PropsAstOrderedList extends PropsAstParent {
+  type: 'olist'
   start?: number
   spread: boolean
   children: PropsAstListContent[]

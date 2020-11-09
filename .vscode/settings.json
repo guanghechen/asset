@@ -9,8 +9,10 @@
     "guanghechen",
     "kase",
     "mkdirs",
+    "olist",
     "prebuild",
     "squashable",
+    "ulist",
     "unist"
   ]
 }

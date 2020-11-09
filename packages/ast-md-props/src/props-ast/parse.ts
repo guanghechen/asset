@@ -27,7 +27,7 @@ import {
   PropsAstInlineCode,
   PropsAstInlineMath,
   PropsAstLink,
-  PropsAstList,
+  PropsAstUnorderedList,
   PropsAstListContent,
   PropsAstListItem,
   PropsAstMeta,
@@ -43,6 +43,7 @@ import {
   PropsAstTableRow,
   PropsAstText,
   PropsAstThematicBreak,
+  PropsAstOrderedList,
 } from './types'
 
 
@@ -224,14 +225,26 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
       }
       case 'list': {
         const u = o as MdastList
-        const result: PropsAstList = {
-          type: 'list',
-          ordered: Boolean(u.ordered),
-          start: u.start,
-          spread: Boolean(u.spread),
-          children: resolveChildren<PropsAstListContent>(),
+        const ordered = Boolean(u.ordered)
+        const spread = Boolean(u.spread)
+        const children = resolveChildren<PropsAstListContent>()
+
+        if (ordered) {
+          const result: PropsAstOrderedList = {
+            type: 'olist',
+            spread,
+            children,
+            start: u.start,
+          }
+          return result
+        } else {
+          const result: PropsAstUnorderedList = {
+            type: 'ulist',
+            spread,
+            children,
+          }
+          return result
         }
-        return result
       }
       case 'listItem': {
         const u = o as MdastListItem
