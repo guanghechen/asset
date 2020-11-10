@@ -63,7 +63,7 @@ Array [
 
 exports[`AssetDataProvider full-config barusu build: console.info 1`] = `
 Array [
-  "[33mclearing <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data[39m",
+  "clearing <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data",
 ]
 `;
 
@@ -81,30 +81,30 @@ Array [
 
 exports[`AssetDataProvider full-config barusu start: console.info 1`] = `
 Array [
-  "[32mrebuilding <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data[39m",
+  "rebuilding <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data",
 ]
 `;
 
 exports[`AssetDataProvider full-config barusu start: console.info 2`] = `
 Array [
-  "[33mclearing <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data[39m",
+  "clearing <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data",
 ]
 `;
 
 exports[`AssetDataProvider full-config barusu start: console.info 3`] = `
 Array [
-  "[32mloading <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data[39m",
+  "loading <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data",
 ]
 `;
 
 exports[`AssetDataProvider full-config barusu start: console.info 4`] = `
 Array [
-  "[32mwatching <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/source[39m",
+  "watching <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/source",
 ]
 `;
 
 exports[`AssetDataProvider full-config barusu start: console.info 5`] = `
 Array [
-  "[32mclosing watch mode[39m",
+  "closing watch mode",
 ]
 `;

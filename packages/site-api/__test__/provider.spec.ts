@@ -18,8 +18,8 @@ describe('AssetDataProvider', function () {
   jest
     .spyOn(global.console, 'info')
     .mockImplementation(function (...args: string[]): any {
-      expect(desensitize(args, assetDataReplacer))
-        .toMatchSnapshot('console.info')
+      const result = desensitize(args, assetDataReplacer)
+      expect(result).toMatchSnapshot('console.info')
     })
 
   for (const kase of cases) {

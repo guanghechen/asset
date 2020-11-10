@@ -52,6 +52,7 @@
     "@barusu/eslint-config": "^0.0.39",
     "@barusu/rollup-config": "^0.0.39",
     "cross-env": "~7.0.2",
-    "rollup": "2.28.1"
+    "rollup": "2.28.1",
+    "strip-ansi": "^6.0.0"
   }
 }

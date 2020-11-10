@@ -1,4 +1,5 @@
 import path from 'path'
+import stripAnsi from 'strip-ansi'
 
 
 const WORKSPACE_ROOT_DIR = path.resolve(__dirname, '../..')
@@ -13,7 +14,7 @@ export const assetDataReplacer = (key: string, value: unknown): unknown | undefi
   if (['createAt', 'lastModifiedTime', 'updateAt'].includes(key)) {
     return '<' + typeof value + '>'
   }
-  return value
+  return typeof value === 'string' ? stripAnsi(value) : value
 }
 
 
@@ -28,6 +29,7 @@ export function desensitize<D extends unknown = unknown>(
 ): D {
   // No replaceAll, so use .split().join as a alternative
   const str = JSON.stringify(data, replacer)
-    .split(WORKSPACE_ROOT_DIR).join('<PACKAGE_ROOT_DIR>')
+    .split(WORKSPACE_ROOT_DIR)
+    .join('<PACKAGE_ROOT_DIR>')
   return JSON.parse(str)
 }
