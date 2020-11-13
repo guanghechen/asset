@@ -14,7 +14,6 @@ import type {
   MdastText,
 } from '../mdast/types'
 import {
-  DESCENDANT_KEYS,
   PropsAstBlockContent,
   PropsAstBlockquote,
   PropsAstBreak,
@@ -261,7 +260,7 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
         const u = o as MdastTable
 
         const children = resolveChildren()
-        const [head, ...body] = children!.map((row, index): any => {
+        const rows = children!.map((row, index): any => {
           return {
             ...row,
             children: row.children.map((c: any, index: number) => ({
@@ -274,9 +273,7 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
 
         const result: PropsAstTable = {
           type: 'table',
-          head,
-          body,
-          [DESCENDANT_KEYS]: ['head', 'body'],
+          children: rows,
         }
         return result
       }

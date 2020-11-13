@@ -2,10 +2,6 @@ import { AlignType } from 'mdast'
 import type { MdastDefinition } from '../mdast/types'
 
 
-// Symbol will be lost when convert to json data
-export const DESCENDANT_KEYS = 'DESCENDANT_KEYS'
-
-
 export type PropsAstContent =
   | PropsAstTopLevelContent
   | PropsAstListContent
@@ -67,12 +63,6 @@ export interface PropsAstNode {
    * Data node type
    */
   type: string
-  /**
-   * Property keys pointer to the descendant nodes
-   *
-   * @default ['children']
-   */
-  [DESCENDANT_KEYS]?: string[]
   /**
    *
    */
@@ -303,8 +293,7 @@ export interface PropsAstStrong extends PropsAstParent {
  */
 export interface PropsAstTable extends PropsAstNode {
   type: 'table'
-  head: PropsAstTableRow
-  body: PropsAstTableRow[]
+  children: PropsAstTableRow[]
 }
 
 
