@@ -9,40 +9,40 @@ import type {
   MdastList,
   MdastListItem,
   MdastParent,
+  MdastPropsBlockContent,
+  MdastPropsBlockquote,
+  MdastPropsBreak,
+  MdastPropsCode,
+  MdastPropsCodeEmbed,
+  MdastPropsCodeLive,
+  MdastPropsDelete,
+  MdastPropsEmphasis,
+  MdastPropsFootnote,
+  MdastPropsHeading,
+  MdastPropsImage,
+  MdastPropsInlineCode,
+  MdastPropsInlineMath,
+  MdastPropsLink,
+  MdastPropsList,
+  MdastPropsListContent,
+  MdastPropsListItem,
+  MdastPropsMeta,
+  MdastPropsNode,
+  MdastPropsParagraph,
+  MdastPropsPhrasingContent,
+  MdastPropsRoot,
+  MdastPropsRowContent,
+  MdastPropsStaticPhrasingContent,
+  MdastPropsStrong,
+  MdastPropsTable,
+  MdastPropsTableCell,
+  MdastPropsTableRow,
+  MdastPropsText,
+  MdastPropsThematicBreak,
   MdastRoot,
   MdastTable,
   MdastText,
-} from '../mdast/types'
-import {
-  PropsAstBlockContent,
-  PropsAstBlockquote,
-  PropsAstBreak,
-  PropsAstCode,
-  PropsAstDelete,
-  PropsAstEmphasis,
-  PropsAstFootnote,
-  PropsAstHeading,
-  PropsAstImage,
-  PropsAstInlineCode,
-  PropsAstInlineMath,
-  PropsAstLink,
-  PropsAstList,
-  PropsAstListContent,
-  PropsAstListItem,
-  PropsAstMeta,
-  PropsAstNode,
-  PropsAstParagraph,
-  PropsAstPhrasingContent,
-  PropsAstRoot,
-  PropsAstRowContent,
-  PropsAstStaticPhrasingContent,
-  PropsAstStrong,
-  PropsAstTable,
-  PropsAstTableCell,
-  PropsAstTableRow,
-  PropsAstText,
-  PropsAstThematicBreak,
-} from './types'
+} from '../types'
 
 
 /**
@@ -51,8 +51,8 @@ import {
  *
  * @param root
  */
-export function parsePropsAstMeta(root: MdastRoot): PropsAstMeta {
-  const meta: PropsAstMeta = { definitions: {} }
+export function parseMdastPropsMeta(root: MdastRoot): MdastPropsMeta {
+  const meta: MdastPropsMeta = { definitions: {} }
   const resolve = (o: MdastNode) => {
     if (o.type === 'definition') {
       const { identifier, label, url, title, } = o as MdastDefinition
@@ -77,26 +77,30 @@ export function parsePropsAstMeta(root: MdastRoot): PropsAstMeta {
 /**
  *
  * @param root
+ * @param fallbackParser
  */
-export function parsePropsAst(root: MdastRoot): PropsAstRoot {
-  const meta: PropsAstMeta = parsePropsAstMeta(root)
+export function parseMdastProps(
+  root: MdastRoot,
+  fallbackParser?: (o: MdastNode) => MdastPropsNode,
+): MdastPropsRoot {
+  const meta: MdastPropsMeta = parseMdastPropsMeta(root)
 
-  const resolve = (o: MdastNode): PropsAstNode => {
-    const resolveChildren = <T extends PropsAstNode = PropsAstNode>(): T[] => {
+  const resolve = (o: MdastNode): MdastPropsNode => {
+    const resolveChildren = <T extends MdastPropsNode = MdastPropsNode>(): T[] => {
       if (o.children == null) return []
       return (o as MdastParent).children.map(resolve) as T[]
     }
 
     switch (o.type) {
       case 'blockquote': {
-        const result: PropsAstBlockquote = {
+        const result: MdastPropsBlockquote = {
           type: 'blockquote',
-          children: resolveChildren<PropsAstBlockContent>(),
+          children: resolveChildren<MdastPropsBlockContent>(),
         }
         return result
       }
       case 'break': {
-        const result: PropsAstBreak = {
+        const result: MdastPropsBreak = {
           type: 'break',
         }
         return result
@@ -104,6 +108,8 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
       case 'code': {
         const u = o as MdastCode
         let args: Record<string, unknown> = {}
+        let type: 'code' | 'codeEmbed' | 'codeLive' = 'code'
+
         if (u.meta != null) {
           try {
             // Try parsing as JSON data
@@ -122,9 +128,13 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
               else {
                 switch (key) {
                   case 'literal':
+                    type = 'code'
+                    break
                   case 'embed':
+                    type = 'codeEmbed'
+                    break
                   case 'live':
-                    args.mode = key
+                    type = 'codeLive'
                     break
                 }
               }
@@ -134,50 +144,49 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
           }
         }
 
-        const result: PropsAstCode = {
-          type: 'code',
+        const result: MdastPropsCode | MdastPropsCodeEmbed | MdastPropsCodeLive = {
+          type,
           value: u.value,
           lang: u.lang,
-          mode: ['literal', 'embed', 'live'].find((x): x is any => x === args.mode),
           meta: u.meta,
           args,
         }
         return result
       }
       case 'delete': {
-        const result: PropsAstDelete = {
+        const result: MdastPropsDelete = {
           type: 'delete',
-          children: resolveChildren<PropsAstPhrasingContent>(),
+          children: resolveChildren<MdastPropsPhrasingContent>(),
         }
         return result
       }
       case 'emphasis': {
-        const result: PropsAstEmphasis = {
+        const result: MdastPropsEmphasis = {
           type: 'emphasis',
-          children: resolveChildren<PropsAstPhrasingContent>(),
+          children: resolveChildren<MdastPropsPhrasingContent>(),
         }
         return result
       }
       case 'footnote': {
-        const result: PropsAstFootnote = {
+        const result: MdastPropsFootnote = {
           type: 'footnote',
-          children: resolveChildren<PropsAstPhrasingContent>(),
+          children: resolveChildren<MdastPropsPhrasingContent>(),
         }
         return result
       }
       case 'heading': {
         const u = o as MdastHeading
-        const result: PropsAstHeading = {
+        const result: MdastPropsHeading = {
           type: 'heading',
           level: u.depth,
-          children: resolveChildren<PropsAstPhrasingContent>(),
+          children: resolveChildren<MdastPropsPhrasingContent>(),
         }
         return result
       }
       case 'imageReference': {
         const u = o as MdastImageReference
         const ref = meta.definitions[u.identifier]
-        const result: PropsAstImage = {
+        const result: MdastPropsImage = {
           type: 'image',
           url: ref.url,
           title: ref.title,
@@ -187,14 +196,14 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
       }
       case 'inlineCode': {
         const u = o as MdastCode
-        const result: PropsAstInlineCode = {
+        const result: MdastPropsInlineCode = {
           type: 'inlineCode',
           value: u.value,
         }
         return result
       }
       case 'inlineMath': {
-        const result: PropsAstInlineMath = {
+        const result: MdastPropsInlineMath = {
           type: 'inlineMath',
           value: o.value as string,
         }
@@ -202,39 +211,39 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
       }
       case 'link': {
         const u = o as MdastLink
-        const result: PropsAstLink = {
+        const result: MdastPropsLink = {
           type: 'link',
           url: u.url,
           title: u.title,
-          children: resolveChildren<PropsAstStaticPhrasingContent>(),
+          children: resolveChildren<MdastPropsStaticPhrasingContent>(),
         }
         return result
       }
       case 'linkReference': {
         const u = o as MdastLinkReference
         const ref = meta.definitions[u.identifier]
-        const result: PropsAstLink = {
+        const result: MdastPropsLink = {
           type: 'link',
           url: ref.url,
           title: ref.title,
-          children: resolveChildren<PropsAstStaticPhrasingContent>(),
+          children: resolveChildren<MdastPropsStaticPhrasingContent>(),
         }
         return result
       }
       case 'list': {
         const u = o as MdastList
-        const result: PropsAstList = {
+        const result: MdastPropsList = {
           type: 'list',
           ordered: Boolean(u.ordered),
           start: u.start,
           spread: Boolean(u.spread),
-          children: resolveChildren<PropsAstListContent>(),
+          children: resolveChildren<MdastPropsListContent>(),
         }
         return result
       }
       case 'listItem': {
         const u = o as MdastListItem
-        const result: PropsAstListItem = {
+        const result: MdastPropsListItem = {
           type: 'listItem',
           checked: u.checked,
           spread: Boolean(u.spread),
@@ -243,16 +252,16 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
         return result
       }
       case 'paragraph': {
-        const result: PropsAstParagraph = {
+        const result: MdastPropsParagraph = {
           type: 'paragraph',
-          children: resolveChildren<PropsAstPhrasingContent>(),
+          children: resolveChildren<MdastPropsPhrasingContent>(),
         }
         return result
       }
       case 'strong': {
-        const result: PropsAstStrong = {
+        const result: MdastPropsStrong = {
           type: 'strong',
-          children: resolveChildren<PropsAstPhrasingContent>(),
+          children: resolveChildren<MdastPropsPhrasingContent>(),
         }
         return result
       }
@@ -271,43 +280,46 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
           }
         })
 
-        const result: PropsAstTable = {
+        const result: MdastPropsTable = {
           type: 'table',
           children: rows,
         }
         return result
       }
       case 'tableCell': {
-        const result: PropsAstTableCell = {
+        const result: MdastPropsTableCell = {
           type: 'tableCell',
           isHeader: o.isHeader,
           align: o.align as any,
-          children: resolveChildren<PropsAstPhrasingContent>(),
+          children: resolveChildren<MdastPropsPhrasingContent>(),
         }
         return result
       }
       case 'tableRow': {
-        const result: PropsAstTableRow = {
+        const result: MdastPropsTableRow = {
           type: 'tableRow',
-          children: resolveChildren<PropsAstRowContent>(),
+          children: resolveChildren<MdastPropsRowContent>(),
         }
         return result
       }
       case 'text': {
         const u = o as MdastText
-        const result: PropsAstText = {
+        const result: MdastPropsText = {
           type: 'text',
           value: u.value,
         }
         return result
       }
       case 'thematicBreak': {
-        const result: PropsAstThematicBreak = {
+        const result: MdastPropsThematicBreak = {
           type: 'thematicBreak',
         }
         return result
       }
       default: {
+        if (fallbackParser != null) {
+          return fallbackParser(o)
+        }
         const { position, ...data } = o
         return data
       }
@@ -315,6 +327,6 @@ export function parsePropsAst(root: MdastRoot): PropsAstRoot {
   }
 
   const children = (root.children || []).map(resolve)
-  const result: PropsAstRoot = { type: 'root', meta, children }
+  const result: MdastPropsRoot = { type: 'root', meta, children }
   return result
 }

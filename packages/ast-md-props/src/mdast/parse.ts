@@ -2,7 +2,7 @@ import gfm from 'remark-gfm'
 import math from 'remark-math'
 import markdown from 'remark-parse'
 import unified from 'unified'
-import type { MdastRoot } from './types'
+import type { MdastRoot } from '../types'
 
 
 const processor = unified().use(markdown).use(gfm).use(math)

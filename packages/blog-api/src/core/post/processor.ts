@@ -1,10 +1,10 @@
 import micromatch from 'micromatch'
 import { AssetMarkdownProcessor } from '@guanghechen/asset-markdown'
 import {
+  MdastPropsRoot,
   MdastRoot,
-  PropsAstRoot,
   parseMdast,
-  parsePropsAst,
+  parseMdastProps,
 } from '@guanghechen/ast-md-props'
 import {
   AssetProcessor,
@@ -39,13 +39,13 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
     this.realProcessors = realProcessors != null
       ? realProcessors
       : [
-        new AssetMarkdownProcessor<PropsAstRoot>({
+        new AssetMarkdownProcessor<MdastPropsRoot>({
           encoding,
           isMetaOptional: true,
-          parse: (rawContent: string): PropsAstRoot => {
+          parse: (rawContent: string): MdastPropsRoot => {
             const mdast: MdastRoot = parseMdast(rawContent)
-            const propsAst: PropsAstRoot = parsePropsAst(mdast)
-            return propsAst
+            const MdastProps: MdastPropsRoot = parseMdastProps(mdast)
+            return MdastProps
           }
         }),
       ]
