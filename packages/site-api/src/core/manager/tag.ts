@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
+import { uniqueText } from '../../util/hash'
 import { stringify } from '../../util/string'
 import type { AssetUUID, TagUUID } from '../entity/_types'
 import type { RawTagDataItem, TagDataItem, TagDataMap } from '../entity/tag'
@@ -57,7 +58,8 @@ export class TagDataManager {
    * @param tag
    */
   public normalize(tag: RawTagDataItem): TagDataItem {
-    const uuid: TagUUID = (typeof tag === 'string') ? tag : tag.uuid
+    const title: string = (typeof tag === 'string') ? tag : tag.uuid
+    const uuid: TagUUID = uniqueText(title)
 
     invariant(uuid != null, `Bad uuid. tag(${ stringify(tag) })`)
 
@@ -67,9 +69,9 @@ export class TagDataManager {
     if (result == null) {
       result = {
         uuid,
-        title: uuid,
+        title,
         assets: [],
-        ...((typeof tag !== 'string') ? result : undefined) as any
+        ...((typeof tag !== 'string') ? tag : undefined)
       }
     }
 

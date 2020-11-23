@@ -1,6 +1,7 @@
 import fs from 'fs-extra'
 import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
+import { uniqueText } from '../../util/hash'
 import { stringify } from '../../util/string'
 import type { AssetUUID, CategoryUUID } from '../entity/_types'
 import type {
@@ -61,7 +62,8 @@ export class CategoryDataManager {
    * @param category
    */
   public normalize(category: RawCategoryDataItem): CategoryDataItem {
-    const uuid: CategoryUUID = (typeof category === 'string') ? category : category.uuid
+    const title = (typeof category === 'string') ? category : category.uuid
+    const uuid: CategoryUUID = uniqueText(title)
 
     invariant(uuid != null, `Bad uuid. tag(${ stringify(category) })`)
 
@@ -71,11 +73,11 @@ export class CategoryDataManager {
     if (result == null) {
       result = {
         uuid,
-        title: uuid,
+        title,
         assets: [],
         parents: [],
         children: [],
-        ...((typeof category !== 'string') ? result : undefined) as any
+        ...((typeof category !== 'string') ? category : undefined)
       }
     }
 

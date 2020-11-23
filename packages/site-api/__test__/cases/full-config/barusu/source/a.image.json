@@ -1,14 +1,17 @@
 {
   "tags": [
-    "png"
+    "png",
+    "React image component"
   ],
   "categories": [
     [
       "math",
+      "React Context",
       "waw"
     ],
     [
-      "200"
+      "200",
+      " React context "
     ]
   ]
 }

@@ -6,18 +6,21 @@ Array [
     "categories": Array [
       Array [
         "math",
+        "react--context",
         "waw",
       ],
       Array [
         "200",
+        "react--context",
       ],
     ],
     "createAt": "<string>",
-    "fingerprint": "e008e24d0dd5832b940f6b7de9d66f46c3aa8312",
+    "fingerprint": "d85cbb58e6fad6d146139a90742163afeeedffee",
     "lastModifiedTime": "<number>",
     "location": "a.image.json",
     "tags": Array [
       "png",
+      "react--image--component",
     ],
     "title": "a.image",
     "type": "image",
@@ -32,7 +35,7 @@ Array [
   Object {
     "assets": Array [],
     "children": Array [
-      "waw",
+      "react--context",
     ],
     "parents": Array [],
     "title": "math",
@@ -42,18 +45,32 @@ Array [
     "assets": Array [
       "643297f8cb62042d714240ec6cb2190ee8586873",
     ],
-    "children": Array [],
+    "children": Array [
+      "waw",
+    ],
     "parents": Array [
       "math",
+      "200",
     ],
-    "title": "waw",
-    "uuid": "waw",
+    "title": "React Context",
+    "uuid": "react--context",
   },
   Object {
     "assets": Array [
       "643297f8cb62042d714240ec6cb2190ee8586873",
     ],
     "children": Array [],
+    "parents": Array [
+      "react--context",
+    ],
+    "title": "waw",
+    "uuid": "waw",
+  },
+  Object {
+    "assets": Array [],
+    "children": Array [
+      "react--context",
+    ],
     "parents": Array [],
     "title": "200",
     "uuid": "200",
@@ -75,6 +92,13 @@ Array [
     ],
     "title": "png",
     "uuid": "png",
+  },
+  Object {
+    "assets": Array [
+      "643297f8cb62042d714240ec6cb2190ee8586873",
+    ],
+    "title": "React image component",
+    "uuid": "react--image--component",
   },
 ]
 `;

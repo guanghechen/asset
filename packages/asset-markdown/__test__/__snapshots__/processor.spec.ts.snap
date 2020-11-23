@@ -25,15 +25,15 @@ Array [
   Object {
     "categories": Array [
       Array [
-        "A",
-        "B",
+        "a",
+        "b",
       ],
       Array [
-        "C",
-        "D",
+        "c",
+        "d",
       ],
       Array [
-        "E",
+        "e",
       ],
     ],
     "content": "$E = m \\\\\\\\cdot c^2$",
@@ -69,14 +69,14 @@ Array [
         "children": Array [],
         "parents": Array [],
         "title": "A",
-        "uuid": "A",
+        "uuid": "a",
       },
       Object {
         "assets": Array [],
         "children": Array [],
         "parents": Array [],
         "title": "B",
-        "uuid": "B",
+        "uuid": "b",
       },
     ],
     Array [
@@ -85,14 +85,14 @@ Array [
         "children": Array [],
         "parents": Array [],
         "title": "C",
-        "uuid": "C",
+        "uuid": "c",
       },
       Object {
         "assets": Array [],
         "children": Array [],
         "parents": Array [],
         "title": "D",
-        "uuid": "D",
+        "uuid": "d",
       },
     ],
     Array [
@@ -101,7 +101,7 @@ Array [
         "children": Array [],
         "parents": Array [],
         "title": "E",
-        "uuid": "E",
+        "uuid": "e",
       },
     ],
   ],
