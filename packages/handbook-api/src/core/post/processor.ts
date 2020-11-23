@@ -8,6 +8,7 @@ import {
 } from '@guanghechen/ast-md-props'
 import {
   AssetProcessor,
+  AssetType,
   CategoryDataItem,
   ImmutableAssetDataManager,
   ImmutableCategoryDataManager,
@@ -76,6 +77,13 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
     this.dataRoot = dataRoot
     this.patterns = patterns
     this.realProcessors = realProcessors
+  }
+
+  /**
+   * @override
+   */
+  public types(): AssetType[] {
+    return [HandbookSourceType.POST]
   }
 
   /**

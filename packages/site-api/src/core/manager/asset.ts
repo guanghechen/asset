@@ -38,6 +38,19 @@ export class AssetDataManager {
   }
 
   /**
+   * Only registered resource types are allowed to perform insert/query
+   * operations in the subsequent process, to prevent accidental addition or
+   * null pointer exceptions due to the absence of this type of file.
+   *
+   * @param assetType
+   */
+  public registerAssetType(assetType: AssetType): void {
+    if (this.uuids[assetType] == null) {
+      this.uuids[assetType] = []
+    }
+  }
+
+  /**
    * Load asset data map from assetDataMap filepath
    */
   public async load(): Promise<void> {
@@ -127,10 +140,10 @@ export class AssetDataManager {
       `Duplicated asset uuid (${ asset.uuid })`
     )
 
-    const uuids: AssetUUID[] = this.uuids[asset.type] || []
-    uuids.push(asset.uuid)
+    const uuids: AssetUUID[] = this.uuids[asset.type]
+    invariant(uuids != null, `Unknown assetType (${ asset.type })`)
 
-    this.uuids[asset.type] = uuids
+    uuids.push(asset.uuid)
     this.locations[asset.location] = asset.uuid
     this.dataMap[asset.uuid] = asset
   }

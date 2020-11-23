@@ -1,3 +1,4 @@
+import { AssetType } from './entity/_types'
 import type { AssetDataItem, RoughAssetDataItem } from './entity/asset'
 import type { CategoryDataItem } from './entity/category'
 import type { TagDataItem } from './entity/tag'
@@ -10,6 +11,11 @@ import type { ImmutableTagDataManager } from './manager/tag'
  * Process asset source file
  */
 export interface AssetProcessor<A extends AssetDataItem = AssetDataItem> {
+  /**
+   * Supported asset types
+   */
+  types?: () => AssetType[]
+
   /**
    * Check whether the processor can handle this file
    *

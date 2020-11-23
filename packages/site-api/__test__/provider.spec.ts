@@ -44,6 +44,7 @@ describe('AssetDataProvider', function () {
 
           const fakeEntityManagerMap: Record<string, AssetEntityManager<AssetEntity>> = {}
           const fakeProcessor: AssetProcessor = {
+            types: () => ['image'],
             processable: filepath => /\.([^.]+)\.json$/.test(filepath),
             process: (filepath, rawContent, roughAsset, tagDataManager, categoryDataManager) => {
               const data = JSON.parse(rawContent.toString('utf-8'))

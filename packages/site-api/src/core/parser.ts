@@ -33,6 +33,13 @@ export class AssetParser {
     this.assetDataManager = assetDataManager
     this.tagDataManager = tagDataManager
     this.categoryDataManager = categoryDataManager
+
+    for (const processor of this.processors) {
+      if (processor.types != null) {
+        const types = processor.types()
+        for (const t of types) this.assetDataManager.registerAssetType(t)
+      }
+    }
   }
 
   /**
