@@ -24,17 +24,21 @@ export interface SubSiteConfig<
    */
   dataRoot: string
   /**
+   * Filepath of the EntryDataMap
+   */
+  entryDataMapFilepath: string
+  /**
    * Filepath of the AssetDataMap
    */
   assetDataMapFilepath: string
   /**
-   * Filepath of the TagDataMap
-   */
-  tagDataMapFilepath: string
-  /**
    * Filepath of the CategoryDataMap
    */
   categoryDataMapFilepath: string
+  /**
+   * Filepath of the TagDataMap
+   */
+  tagDataMapFilepath: string
   /**
    * Source items
    */
@@ -70,9 +74,10 @@ export function createDefaultSubSiteConfig(name: string): SubSiteConfig {
     urlRoot: '/' + name,
     sourceRoot: name + '/source',
     dataRoot: name + '/data',
+    entryDataMapFilepath: 'entry.map.json',
     assetDataMapFilepath: 'asset.map.json',
-    tagDataMapFilepath: 'tag.map.json',
     categoryDataMapFilepath: 'category.map.json',
+    tagDataMapFilepath: 'tag.map.json',
     source: {},
   }
   return defaultConfig
@@ -113,6 +118,16 @@ export function resolveSubSiteConfig<
     sitePathConfig.workspace,
     coverString(defaultConfig.dataRoot, rawConfig.dataRoot, isNotEmptyString))
 
+  // resolve entryDataMapFilepath (absolute filepath)
+  const entryDataMapFilepath = resolveLocalPath(
+    dataRoot,
+    coverString(
+      defaultConfig.entryDataMapFilepath,
+      rawConfig.entryDataMapFilepath,
+      isNotEmptyString
+    )
+  )
+
   // resolve assetDataMapFilepath (absolute filepath)
   const assetDataMapFilepath = resolveLocalPath(
     dataRoot,
@@ -123,22 +138,22 @@ export function resolveSubSiteConfig<
     )
   )
 
-  // resolve tagDataMapFilepath (absolute filepath)
-  const tagDataMapFilepath = resolveLocalPath(
-    dataRoot,
-    coverString(
-      defaultConfig.tagDataMapFilepath,
-      rawConfig.tagDataMapFilepath,
-      isNotEmptyString
-    )
-  )
-
   // resolve categoryDataMapFilepath (absolute filepath)
   const categoryDataMapFilepath = resolveLocalPath(
     dataRoot,
     coverString(
       defaultConfig.categoryDataMapFilepath,
       rawConfig.categoryDataMapFilepath,
+      isNotEmptyString
+    )
+  )
+
+  // resolve tagDataMapFilepath (absolute filepath)
+  const tagDataMapFilepath = resolveLocalPath(
+    dataRoot,
+    coverString(
+      defaultConfig.tagDataMapFilepath,
+      rawConfig.tagDataMapFilepath,
       isNotEmptyString
     )
   )
@@ -159,9 +174,10 @@ export function resolveSubSiteConfig<
     urlRoot,
     sourceRoot,
     dataRoot,
+    entryDataMapFilepath,
     assetDataMapFilepath,
-    tagDataMapFilepath,
     categoryDataMapFilepath,
+    tagDataMapFilepath,
     source,
   }
   return result

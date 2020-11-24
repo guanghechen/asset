@@ -34,9 +34,10 @@ const defaultBlogConfig: BlogConfig = {
   urlRoot: '/blog',
   sourceRoot: 'blog/source',
   dataRoot: 'blog/data',
+  entryDataMapFilepath: 'entry.map.json',
   assetDataMapFilepath: 'asset.map.json',
-  tagDataMapFilepath: 'tag.map.json',
   categoryDataMapFilepath: 'category.map.json',
+  tagDataMapFilepath: 'tag.map.json',
   source: {
     post: {
       sourceRoot: 'post/',

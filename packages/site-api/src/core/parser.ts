@@ -8,31 +8,35 @@ import { resolveLocalPath } from '../util/path'
 import { createSerialExecutor } from '../util/sync'
 import type { AssetLocation, AssetUUID } from './entity/_types'
 import type { AssetDataItem, RoughAssetDataItem } from './entity/asset'
-import { CategoryDataItem } from './entity/category'
-import { TagDataItem } from './entity/tag'
+import type { CategoryDataItem } from './entity/category'
+import type { TagDataItem } from './entity/tag'
 import type { AssetDataManager } from './manager/asset'
 import type { CategoryDataManager } from './manager/category'
+import type { EntryDataManager } from './manager/entry'
 import type { TagDataManager } from './manager/tag'
 import type { AssetProcessor } from './processor'
 
 
 export class AssetParser {
   protected readonly processors: AssetProcessor[]
+  protected readonly entryDataManager: EntryDataManager
   protected readonly assetDataManager: AssetDataManager
-  protected readonly tagDataManager: TagDataManager
   protected readonly categoryDataManager: CategoryDataManager
+  protected readonly tagDataManager: TagDataManager
   protected watcher: chokidar.FSWatcher | null = null
 
   public constructor(
     processors: AssetProcessor[],
+    entryDataManager: EntryDataManager,
     assetDataManager: AssetDataManager,
-    tagDataManager: TagDataManager,
     categoryDataManager: CategoryDataManager,
+    tagDataManager: TagDataManager,
   ) {
     this.processors = processors
+    this.entryDataManager = entryDataManager
     this.assetDataManager = assetDataManager
-    this.tagDataManager = tagDataManager
     this.categoryDataManager = categoryDataManager
+    this.tagDataManager = tagDataManager
 
     for (const processor of this.processors) {
       if (processor.types != null) {
@@ -47,6 +51,7 @@ export class AssetParser {
    */
   public async load(): Promise<void> {
     await Promise.all([
+      this.entryDataManager.load(),
       this.assetDataManager.load(),
       this.tagDataManager.load(),
       this.categoryDataManager.load(),
@@ -58,6 +63,7 @@ export class AssetParser {
    */
   public async dump(): Promise<void> {
     await Promise.all([
+      this.entryDataManager.dump(),
       this.assetDataManager.dump(),
       this.tagDataManager.dump(),
       this.categoryDataManager.dump(),

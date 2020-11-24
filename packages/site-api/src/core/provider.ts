@@ -2,8 +2,10 @@ import chalk from 'chalk'
 import chokidar from 'chokidar'
 import fs from 'fs-extra'
 import type { SubSiteConfig } from '../config/sub-site/config'
+import { resolveUniversalPath, resolveUrlPath } from '../util/path'
 import { AssetDataManager } from './manager/asset'
 import { CategoryDataManager } from './manager/category'
+import { EntryDataManager } from './manager/entry'
 import { TagDataManager } from './manager/tag'
 import { AssetParser } from './parser'
 import { AssetProcessor } from './processor'
@@ -22,7 +24,10 @@ export class AssetDataProvider<C extends SubSiteConfig> {
 
   public constructor(subSiteConfig: C, processors: AssetProcessor[]) {
     const {
+      urlRoot,
+      dataRoot,
       sourceRoot,
+      entryDataMapFilepath,
       assetDataMapFilepath,
       categoryDataMapFilepath,
       tagDataMapFilepath,
@@ -32,17 +37,29 @@ export class AssetDataProvider<C extends SubSiteConfig> {
     const assetDataManager = new AssetDataManager(sourceRoot, assetDataMapFilepath)
     const assetService = new AssetService(assetDataManager)
 
-    // Create TagService
-    const tagDataManager = new TagDataManager(tagDataMapFilepath)
-    const tagService = new TagService(tagDataManager)
-
     // Create CategoryService
     const categoryDataManager = new CategoryDataManager(categoryDataMapFilepath)
     const categoryService = new CategoryService(categoryDataManager)
 
+    // Create TagService
+    const tagDataManager = new TagDataManager(tagDataMapFilepath)
+    const tagService = new TagService(tagDataManager)
+
+    // Create EntryDataManager
+    const entryDataManager = new EntryDataManager(
+      entryDataMapFilepath,
+      urlRoot,
+      resolveUrlPath(urlRoot, resolveUniversalPath(dataRoot, assetDataMapFilepath)),
+      resolveUrlPath(urlRoot, resolveUniversalPath(dataRoot, categoryDataMapFilepath)),
+      resolveUrlPath(urlRoot, resolveUniversalPath(dataRoot, tagDataMapFilepath)),
+    )
+
     // Create AssetParser
     const assetParser = new AssetParser(
-      processors, assetDataManager, tagDataManager, categoryDataManager)
+      processors,
+      entryDataManager, assetDataManager,
+      categoryDataManager, tagDataManager
+    )
 
     this.subSiteConfig = subSiteConfig
     this.assetService = assetService
