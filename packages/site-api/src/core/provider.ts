@@ -20,10 +20,7 @@ export class AssetDataProvider<C extends SubSiteConfig> {
   public readonly tagService: TagService
   public readonly categoryService: CategoryService
 
-  public constructor(
-    subSiteConfig: C,
-    processors: AssetProcessor[],
-  ) {
+  public constructor(subSiteConfig: C, processors: AssetProcessor[]) {
     const {
       sourceRoot,
       assetDataMapFilepath,
@@ -32,7 +29,7 @@ export class AssetDataProvider<C extends SubSiteConfig> {
     } = subSiteConfig
 
     // Create AssetService
-    const assetDataManager = new AssetDataManager(sourceRoot, assetDataMapFilepath, false)
+    const assetDataManager = new AssetDataManager(sourceRoot, assetDataMapFilepath)
     const assetService = new AssetService(assetDataManager)
 
     // Create TagService

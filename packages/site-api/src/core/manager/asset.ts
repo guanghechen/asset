@@ -17,19 +17,13 @@ export type ImmutableAssetDataManager = Pick<AssetDataManager, 'find' | 'locate'
  * Manage AssetDataItems
  */
 export class AssetDataManager {
-  protected readonly shouldDesensitize: boolean
   protected readonly workspace: string
   protected readonly dataMapFilepath: string
   protected readonly uuids: Record<AssetType, AssetUUID[]>
   protected readonly locations: Record<AssetLocation, AssetUUID>
   protected readonly dataMap: Record<AssetUUID, AssetDataItem>
 
-  public constructor(
-    workspace: string,
-    dataMapFilepath: string,
-    shouldDesensitize = false
-    ) {
-    this.shouldDesensitize = shouldDesensitize
+  public constructor(workspace: string, dataMapFilepath: string) {
     this.workspace = workspace
     this.dataMapFilepath = dataMapFilepath
     this.uuids = {}
@@ -109,11 +103,6 @@ export class AssetDataManager {
    */
   public calcLocation(filepath: string): AssetLocation {
     const location = resolveUniversalPath(this.workspace, filepath)
-
-    if (this.shouldDesensitize) {
-      return sha1(location)
-    }
-
     return location
   }
 
