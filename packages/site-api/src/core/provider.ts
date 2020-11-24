@@ -3,15 +3,40 @@ import chokidar from 'chokidar'
 import fs from 'fs-extra'
 import type { SubSiteConfig } from '../config/sub-site/config'
 import { resolveUniversalPath, resolveUrlPath } from '../util/path'
-import { AssetDataManager } from './manager/asset'
-import { CategoryDataManager } from './manager/category'
-import { EntryDataManager } from './manager/entry'
-import { TagDataManager } from './manager/tag'
+import { AssetDataManager, AssetDataManagerConstructor } from './manager/asset'
+import {
+  CategoryDataManager,
+  CategoryDataManagerConstructor,
+} from './manager/category'
+import { EntryDataManager, EntryDataManagerConstructor } from './manager/entry'
+import { TagDataManager, TagDataManagerConstructor } from './manager/tag'
 import { AssetParser } from './parser'
 import { AssetProcessor } from './processor'
-import { AssetService } from './service/asset'
-import { CategoryService } from './service/category'
-import { TagService } from './service/tag'
+import { AssetService, AssetServiceConstructor } from './service/asset'
+import {
+  CategoryService,
+  CategoryServiceConstructor,
+} from './service/category'
+import { TagService, TagServiceConstructor } from './service/tag'
+
+
+export interface AssetDataProviderProps<C extends SubSiteConfig> {
+  /**
+   * Sub site config
+   */
+  subSiteConfig: C
+  /**
+   * Asset processors
+   */
+  processors: AssetProcessor[]
+  AssetDataManagerImpl?: AssetDataManagerConstructor
+  CategoryDataManagerImpl?: CategoryDataManagerConstructor
+  EntryDataManagerImpl?: EntryDataManagerConstructor
+  TagDataManagerImpl?: TagDataManagerConstructor
+  AssetServiceImpl?: AssetServiceConstructor
+  CategoryServiceImpl?: CategoryServiceConstructor
+  TagServiceImpl?: TagServiceConstructor
+}
 
 
 export class AssetDataProvider<C extends SubSiteConfig> {
@@ -19,10 +44,22 @@ export class AssetDataProvider<C extends SubSiteConfig> {
   protected readonly assetParser: AssetParser
 
   public readonly assetService: AssetService
-  public readonly tagService: TagService
   public readonly categoryService: CategoryService
+  public readonly tagService: TagService
 
-  public constructor(subSiteConfig: C, processors: AssetProcessor[]) {
+  public constructor(props: AssetDataProviderProps<C>) {
+    const {
+      subSiteConfig,
+      processors,
+      AssetDataManagerImpl = AssetDataManager,
+      CategoryDataManagerImpl = CategoryDataManager,
+      EntryDataManagerImpl = EntryDataManager,
+      TagDataManagerImpl = TagDataManager,
+      AssetServiceImpl = AssetService,
+      CategoryServiceImpl = CategoryService,
+      TagServiceImpl = TagService,
+    } = props
+
     const {
       urlRoot,
       dataRoot,
@@ -34,24 +71,27 @@ export class AssetDataProvider<C extends SubSiteConfig> {
     } = subSiteConfig
 
     // Create AssetService
-    const assetDataManager = new AssetDataManager(sourceRoot, assetDataMapFilepath)
-    const assetService = new AssetService(assetDataManager)
+    const assetDataManager = new AssetDataManagerImpl(sourceRoot, assetDataMapFilepath)
+    const assetService: AssetService = new AssetServiceImpl(assetDataManager)
 
     // Create CategoryService
-    const categoryDataManager = new CategoryDataManager(categoryDataMapFilepath)
-    const categoryService = new CategoryService(categoryDataManager)
+    const categoryDataManager = new CategoryDataManagerImpl(categoryDataMapFilepath)
+    const categoryService: CategoryService = new CategoryServiceImpl(categoryDataManager)
 
     // Create TagService
-    const tagDataManager = new TagDataManager(tagDataMapFilepath)
-    const tagService = new TagService(tagDataManager)
+    const tagDataManager = new TagDataManagerImpl(tagDataMapFilepath)
+    const tagService: TagService = new TagServiceImpl(tagDataManager)
 
     // Create EntryDataManager
-    const entryDataManager = new EntryDataManager(
+    const entryDataManager = new EntryDataManagerImpl(
       entryDataMapFilepath,
       urlRoot,
       resolveUrlPath(urlRoot, resolveUniversalPath(dataRoot, assetDataMapFilepath)),
       resolveUrlPath(urlRoot, resolveUniversalPath(dataRoot, categoryDataMapFilepath)),
       resolveUrlPath(urlRoot, resolveUniversalPath(dataRoot, tagDataMapFilepath)),
+      assetService,
+      categoryService,
+      tagService,
     )
 
     // Create AssetParser

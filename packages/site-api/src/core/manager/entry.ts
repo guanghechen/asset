@@ -1,6 +1,36 @@
 import fs from 'fs-extra'
 import { writeJSON } from '../../util/fs'
 import type { EntryDataMap } from '../entity/entry'
+import { AssetService } from '../service/asset'
+import { CategoryService } from '../service/category'
+import { TagService } from '../service/tag'
+
+
+/**
+ * EntryDataManager constructor
+ */
+export interface EntryDataManagerConstructor {
+  /**
+   * @param dataMapFilepath     filepath of EntryDataMap
+   * @param urlRoot             url prefix
+   * @param assetDataMapUrl     url for fetching asset.data.map
+   * @param categoryDataMapUrl  url for fetching category.data.map
+   * @param tagDataMapUrl       url for fetching tag.data.map
+   * @param assetService
+   * @param categoryService
+   * @param tagService
+   */
+  new (
+    dataMapFilepath: string,
+    urlRoot: string,
+    assetDataMapUrl: string,
+    categoryDataMapUrl: string,
+    tagDataMapUrl: string,
+    assetService: AssetService,
+    categoryService: CategoryService,
+    tagService: TagService,
+  ): EntryDataManager
+}
 
 
 /**
@@ -12,6 +42,9 @@ export class EntryDataManager {
   protected readonly assetDataMapUrl: string
   protected readonly categoryDataMapUrl: string
   protected readonly tagDataMapUrl: string
+  protected readonly assetService: AssetService
+  protected readonly categoryService: CategoryService
+  protected readonly tagService: TagService
 
   public constructor(
     dataMapFilepath: string,
@@ -19,12 +52,18 @@ export class EntryDataManager {
     assetDataMapUrl: string,
     categoryDataMapUrl: string,
     tagDataMapUrl: string,
+    assetService: AssetService,
+    categoryService: CategoryService,
+    tagService: TagService,
   ) {
     this.dataMapFilepath = dataMapFilepath
     this.urlRoot = urlRoot
     this.assetDataMapUrl = assetDataMapUrl
     this.categoryDataMapUrl = categoryDataMapUrl
     this.tagDataMapUrl = tagDataMapUrl
+    this.assetService = assetService
+    this.categoryService = categoryService
+    this.tagService = tagService
   }
 
   /**

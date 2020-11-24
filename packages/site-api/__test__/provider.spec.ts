@@ -135,7 +135,7 @@ describe('AssetDataProvider', function () {
           }
 
           test('build', async function () {
-            const provider = new AssetDataProvider(subSiteConfig, [fakeProcessor])
+            const provider = new AssetDataProvider({ subSiteConfig, processors: [fakeProcessor] })
             await provider.build(true)
 
             // test tags
@@ -156,7 +156,7 @@ describe('AssetDataProvider', function () {
           })
 
           test('start', async function () {
-            const provider = new AssetDataProvider(subSiteConfig, [fakeProcessor])
+            const provider = new AssetDataProvider({ subSiteConfig, processors: [fakeProcessor] })
             await provider.watch(true)
             baseTest(provider)
             const initialData = getCurrentData(provider)

@@ -13,6 +13,17 @@ import type { RawTagDataItem, TagDataItem, TagDataMap } from '../entity/tag'
 export type ImmutableTagDataManager = Pick<TagDataManager, 'find' | 'normalize'>
 
 
+/**
+ * TagDataManager constructor
+ */
+export interface TagDataManagerConstructor {
+  /**
+   * @param dataMapFilepath filepath of TagDataMap
+   */
+  new (dataMapFilepath: string): TagDataManager
+}
+
+
 export class TagDataManager {
   protected readonly dataMapFilepath: string
   protected readonly uuids: TagUUID[]

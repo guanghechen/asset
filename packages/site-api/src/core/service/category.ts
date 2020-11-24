@@ -3,6 +3,17 @@ import type { CategoryDataItem, CategoryDataMap } from '../entity/category'
 import type { CategoryDataManager } from '../manager/category'
 
 
+/**
+ * CategoryService constructor
+ */
+export interface CategoryServiceConstructor {
+  /**
+   * @param dataManager
+   */
+  new (dataManager: CategoryDataManager): CategoryService
+}
+
+
 export class CategoryService {
   protected readonly dataManager: CategoryDataManager
 

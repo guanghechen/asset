@@ -17,6 +17,17 @@ import type {
 export type ImmutableCategoryDataManager = Pick<CategoryDataManager, 'find' | 'normalize'>
 
 
+/**
+ * CategoryDataManager constructor
+ */
+export interface CategoryDataManagerConstructor {
+  /**
+   * @param dataMapFilepath filepath of CategoryDataMap
+   */
+  new (dataMapFilepath: string): CategoryDataManager
+}
+
+
 export class CategoryDataManager {
   protected readonly dataMapFilepath: string
   protected readonly uuids: CategoryUUID[]

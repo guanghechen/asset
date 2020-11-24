@@ -34,7 +34,10 @@ export class HandbookDataProvider extends AssetDataProvider<HandbookConfig> {
     const processors: AssetProcessor[] = props.processors || [postProcessor]
 
     // Build AssetDataProvider
-    super(handbookConfig, processors)
+    super({
+      subSiteConfig: handbookConfig,
+      processors,
+    })
 
     // Create PostService
     const postDataManager = new PostEntityManager(source.post.dataRoot)

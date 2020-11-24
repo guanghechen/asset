@@ -4,6 +4,17 @@ import type { AssetDataItem, AssetDataMap } from '../entity/asset'
 import type { AssetDataManager } from '../manager/asset'
 
 
+/**
+ * AssetService constructor
+ */
+export interface AssetServiceConstructor {
+  /**
+   * @param dataManager
+   */
+  new (dataManager: AssetDataManager): AssetService
+}
+
+
 export class AssetService {
   protected readonly dataManager: AssetDataManager
 

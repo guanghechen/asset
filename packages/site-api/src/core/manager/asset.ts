@@ -14,6 +14,18 @@ export type ImmutableAssetDataManager = Pick<AssetDataManager, 'find' | 'locate'
 
 
 /**
+ * AssetDataManager constructor
+ */
+export interface AssetDataManagerConstructor {
+  /**
+   * @param workspace
+   * @param dataMapFilepath filepath of AssetDataMap
+   */
+  new (workspace: string, dataMapFilepath: string): AssetDataManager
+}
+
+
+/**
  * Manage AssetDataItems
  */
 export class AssetDataManager {

@@ -3,6 +3,17 @@ import type { TagDataItem, TagDataMap } from '../entity/tag'
 import type { TagDataManager } from '../manager/tag'
 
 
+/**
+ * TagService constructor
+ */
+export interface TagServiceConstructor {
+  /**
+   * @param dataManager
+   */
+  new (dataManager: TagDataManager): TagService
+}
+
+
 export class TagService {
   protected readonly dataManager: TagDataManager
 

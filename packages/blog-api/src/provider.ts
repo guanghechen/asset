@@ -17,7 +17,7 @@ export class BlogDataProvider extends AssetDataProvider<BlogConfig> {
     const processors: AssetProcessor[] = [postProcessor]
 
     // Build AssetDataProvider
-    super(blogConfig, processors)
+    super({ subSiteConfig: blogConfig, processors })
 
     // Create PostService
     const postDataManager = new PostEntityManager(source.post.dataRoot)

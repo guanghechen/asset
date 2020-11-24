@@ -16,6 +16,7 @@ Object {
       "assetDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/asset.map.json",
       "categoryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/category.map.json",
       "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data",
+      "entryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/entry.map.json",
       "source": Object {
         "image": Object {
           "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/image",
@@ -41,6 +42,7 @@ Object {
   "assetDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/asset.map.json",
   "categoryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/category.map.json",
   "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data",
+  "entryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/entry.map.json",
   "source": Object {
     "image": Object {
       "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/asset/image",
@@ -61,6 +63,7 @@ Object {
   "assetDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/asset.json",
   "categoryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/category.json",
   "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data",
+  "entryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/entry.map.json",
   "source": Object {
     "image": Object {
       "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/asset/image",
