@@ -1,11 +1,6 @@
 import micromatch from 'micromatch'
 import { AssetMarkdownProcessor } from '@guanghechen/asset-markdown'
-import {
-  MdastPropsRoot,
-  MdastRoot,
-  parseMdast,
-  parseMdastProps,
-} from '@guanghechen/asset-markdown-parser'
+import MdParser, { MdastPropsRoot } from '@guanghechen/asset-markdown-parser'
 import {
   AssetProcessor,
   CategoryDataItem,
@@ -42,11 +37,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
         new AssetMarkdownProcessor<MdastPropsRoot>({
           encoding,
           isMetaOptional: true,
-          parse: (rawContent: string): MdastPropsRoot => {
-            const mdast: MdastRoot = parseMdast(rawContent)
-            const MdastProps: MdastPropsRoot = parseMdastProps(mdast)
-            return MdastProps
-          }
+          parse: MdParser,
         }),
       ]
   }

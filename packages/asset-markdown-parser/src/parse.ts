@@ -2,7 +2,7 @@ import gfm from 'remark-gfm'
 import math from 'remark-math'
 import markdown from 'remark-parse'
 import unified from 'unified'
-import type { MdastRoot } from '../types'
+import type { MdastRoot } from './types/mdast'
 
 
 const processor = unified().use(markdown).use(gfm).use(math)
@@ -11,11 +11,14 @@ const processor = unified().use(markdown).use(gfm).use(math)
 /**
  * Parse markdown to ast
  *
- * @param rawContent
+ * @param content
  */
-export const parseMdast = (rawContent: string): MdastRoot => {
+export const parseMd = (content: string): MdastRoot => {
   // resolve content
   const result: MdastRoot = processor
-    .runSync(processor.parse(rawContent)) as MdastRoot
+    .runSync(processor.parse(content)) as MdastRoot
   return result
 }
+
+
+export default parseMd

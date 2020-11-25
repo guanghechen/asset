@@ -9,6 +9,11 @@ import type {
   MdastList,
   MdastListItem,
   MdastParent,
+  MdastRoot,
+  MdastTable,
+  MdastText,
+} from './types/mdast'
+import type {
   MdastPropsBlockContent,
   MdastPropsBlockquote,
   MdastPropsBreak,
@@ -39,10 +44,7 @@ import type {
   MdastPropsTableRow,
   MdastPropsText,
   MdastPropsThematicBreak,
-  MdastRoot,
-  MdastTable,
-  MdastText,
-} from '../types'
+} from './types/mdast-props'
 
 
 /**
@@ -51,7 +53,7 @@ import type {
  *
  * @param root
  */
-export function parseMdastPropsMeta(root: MdastRoot): MdastPropsMeta {
+export function resolveMdastPropsMeta(root: MdastRoot): MdastPropsMeta {
   const meta: MdastPropsMeta = { definitions: {} }
   const resolve = (o: MdastNode) => {
     if (o.type === 'definition') {
@@ -79,11 +81,11 @@ export function parseMdastPropsMeta(root: MdastRoot): MdastPropsMeta {
  * @param root
  * @param fallbackParser
  */
-export function parseMdastProps(
+export function resolveMdastProps(
   root: MdastRoot,
   fallbackParser?: (o: MdastNode) => MdastPropsNode,
 ): MdastPropsRoot {
-  const meta: MdastPropsMeta = parseMdastPropsMeta(root)
+  const meta: MdastPropsMeta = resolveMdastPropsMeta(root)
 
   const resolve = (o: MdastNode): MdastPropsNode => {
     const resolveChildren = <T extends MdastPropsNode = MdastPropsNode>(): T[] => {
