@@ -26,6 +26,10 @@ export interface AssetProcessor<A extends AssetDataItem = AssetDataItem> {
   /**
    * Process source file to AssetEntity
    *
+   *  - yield {[asset, tags, categories]}
+   *  - return {Promise<void>|void} (post processing)
+   *  - can be passed in A
+   *
    * @param filename            file path of the asset
    * @param rawContent          raw content of the asset (Buffer)
    * @param roughAsset          rough AssetDataItem
@@ -40,5 +44,5 @@ export interface AssetProcessor<A extends AssetDataItem = AssetDataItem> {
     tagDataManager: ImmutableTagDataManager,
     categoryDataManager: ImmutableCategoryDataManager,
     assetDataManager: ImmutableAssetDataManager,
-  ): [A, TagDataItem[], CategoryDataItem[][]]
+  ): Generator<[A, TagDataItem[], CategoryDataItem[][]], Promise<void> | void, A>
 }

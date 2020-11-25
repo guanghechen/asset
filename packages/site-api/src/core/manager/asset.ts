@@ -10,7 +10,8 @@ import type { AssetDataItem, AssetDataMap } from '../entity/asset'
 /**
  * Only export no side-effect funcs from AssetDataManager
  */
-export type ImmutableAssetDataManager = Pick<AssetDataManager, 'find' | 'locate'>
+export type ImmutableAssetDataManager = Pick<
+  AssetDataManager, 'find' | 'locate' | 'calcLocation' | 'calcDefaultUUID'>
 
 
 /**

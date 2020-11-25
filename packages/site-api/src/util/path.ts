@@ -44,7 +44,7 @@ export function resolveUniversalPath(
   filepath: string,
 ): string {
   const result = path
-    .normalize(path.relative(workspace, filepath))
+    .normalize(path.relative(workspace, path.resolve(workspace, filepath)))
     .replace(/[\\/]+/g, '/')
     .replace(/[/]$/, '')
   return result

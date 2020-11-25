@@ -1,9 +1,10 @@
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
 import invariant from 'tiny-invariant'
-import {
+import type {
   AssetProcessor,
   CategoryDataItem,
+  ImmutableAssetDataManager,
   ImmutableCategoryDataManager,
   ImmutableTagDataManager,
   RawCategoryDataItem,
@@ -11,13 +12,13 @@ import {
   RoughAssetDataItem,
   TagDataItem,
 } from '@guanghechen/site-api'
-import { AssetMarkdownEntity, AssetMarkdownType } from './entity'
+import { MarkdownAssetDataItem, MarkdownAssetType } from './entity'
 
 
 /**
  * Props for building AssetMarkdownProcessor
  */
-export interface AssetMarkdownProcessorProps<D> {
+export interface AssetMarkdownProcessorProps {
   /**
    * Encoding of markdown files
    */
@@ -31,23 +32,30 @@ export interface AssetMarkdownProcessorProps<D> {
    */
   processable?: AssetProcessor['processable']
   /**
-   * Parse markdown content
+   * Deeply processing the content
    */
-  parse?: (content: string) => D
+  resolve?: (
+    content: string,
+    asset: MarkdownAssetDataItem,
+    tagDataManager: ImmutableTagDataManager,
+    categoryDataManager: ImmutableCategoryDataManager,
+    assetDataManager: ImmutableAssetDataManager,
+  ) => Promise<void> | void
 }
 
 
 /**
  * Processor for handle markdown asset
  */
-export class AssetMarkdownProcessor<D>
-  implements AssetProcessor<AssetMarkdownEntity<D>> {
+export class AssetMarkdownProcessor
+  implements AssetProcessor<MarkdownAssetDataItem> {
   protected readonly encoding: BufferEncoding
   protected readonly isMetaOptional: boolean
-  protected readonly parse: (content: string) => D
+  protected readonly resolve: AssetMarkdownProcessorProps['resolve']
+  protected readonly pattern: RegExp = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
 
-  public constructor(props: AssetMarkdownProcessorProps<D>) {
-    const { encoding, isMetaOptional = true, processable, parse } = props
+  public constructor(props: AssetMarkdownProcessorProps) {
+    const { encoding, isMetaOptional = true, processable, resolve } = props
     this.encoding = encoding
     this.isMetaOptional = isMetaOptional
 
@@ -55,7 +63,7 @@ export class AssetMarkdownProcessor<D>
       this.processable = processable
     }
 
-    this.parse = parse != null ? this.parse = parse : (c) => c as any
+    this.resolve = resolve
   }
 
   /**
@@ -68,15 +76,20 @@ export class AssetMarkdownProcessor<D>
   /**
    * @override
    */
-  public process(
+  public * process(
     filepath: string,
     _rawContent: Buffer,
     roughAsset: RoughAssetDataItem,
     tagDataManager: ImmutableTagDataManager,
     categoryDataManager: ImmutableCategoryDataManager,
-  ): [AssetMarkdownEntity<D>, TagDataItem[], CategoryDataItem[][]] {
+    assetDataManager: ImmutableAssetDataManager,
+  ): Generator<
+    [MarkdownAssetDataItem, TagDataItem[], CategoryDataItem[][]],
+    Promise<void> | void,
+    MarkdownAssetDataItem
+  > {
     const rawContent: string = _rawContent.toString(this.encoding)
-    let match: string[] | null = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/.exec(rawContent)
+    let match: string[] | null = this.pattern.exec(rawContent)
 
     if (this.isMetaOptional) {
       if (match == null) match = ['', '']
@@ -106,12 +119,9 @@ export class AssetMarkdownProcessor<D>
       categoryPath.map(c => categoryDataManager.normalize(c))
     ))
 
-    // resolve content
-    const content = this.parse(rawContent.slice(match[0].length).trim())
-
-    const entity: AssetMarkdownEntity<D> = {
+    const asset: MarkdownAssetDataItem = {
       uuid,
-      type: AssetMarkdownType,
+      type: MarkdownAssetType,
       fingerprint: roughAsset.fingerprint,
       location: roughAsset.location,
       lastModifiedTime: roughAsset.lastModifiedTime,
@@ -120,9 +130,16 @@ export class AssetMarkdownProcessor<D>
       title,
       tags: tags.map(tag => tag.uuid),
       categories: categories.map(cp => cp.map(c => c.uuid)),
-      content,
     }
 
-    return [entity, tags, categories]
+    const resolvedAsset = yield [asset, tags, categories]
+
+    // resolve content
+    const content = rawContent.substring(match[0].length)
+    if (this.resolve == null) return
+    return this.resolve(
+      content, resolvedAsset,
+      tagDataManager, categoryDataManager, assetDataManager
+    )
   }
 }

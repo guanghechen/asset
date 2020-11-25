@@ -1,7 +1,7 @@
 import { AssetEntityManager } from '@guanghechen/site-api'
-import type { PostEntity } from './entity'
+import type { PostAssetEntity } from './entity'
 
 
-export class PostEntityManager extends AssetEntityManager<PostEntity> {
+export class PostEntityManager extends AssetEntityManager<PostAssetEntity> {
 
 }

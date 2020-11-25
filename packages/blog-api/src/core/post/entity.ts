@@ -1,47 +1,24 @@
-import type { MdastRoot } from '@guanghechen/asset-markdown-parser'
 import type { AssetDataItem } from '@guanghechen/site-api'
 import type { BlogSourceType } from '../../config/blog'
 
 
 /**
- * Post asset item
- *
- * Used within the PostProcessor, as the first data type of result returned
- * by the `realProcessors[<index>].process()`
+ * Post data item
  */
-export interface PostAssetEntity extends AssetDataItem {
+export interface PostDataItem extends AssetDataItem<BlogSourceType.POST> {
   /**
-   * Document body content
+   * Detailed classification of the post-document
    */
-  content: any
+  docType: 'markdown' | string
 }
 
 
 /**
- * Post data
+ * Post asset entity
  */
-export type PostEntity = AssetDataItem<BlogSourceType.POST> & (
-  {
-    /**
-     * The type of the post document
-     */
-    docType: 'markdown'
-    /**
-     * Document body content
-     */
-    content: MdastRoot
-  }
-)
-
-
-/**
- * Only include meta information of PostData
- */
-export type PostDataItem = AssetDataItem<BlogSourceType.POST> & (
-  {
-    /**
-     * The type of the post document
-     */
-    docType: 'markdown'
-  }
-)
+export interface PostAssetEntity extends AssetDataItem<BlogSourceType.POST> {
+  /**
+   * Detailed classification of the post-document
+   */
+  docType: 'markdown' | string
+}

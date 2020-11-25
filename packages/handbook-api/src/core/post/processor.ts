@@ -1,9 +1,11 @@
 import micromatch from 'micromatch'
+import path from 'path'
+import invariant from 'tiny-invariant'
 import {
-  AssetMarkdownEntity,
   AssetMarkdownProcessor,
+  MarkdownAssetDataItem,
 } from '@guanghechen/asset-markdown'
-import parseMd, { MdastPropsRoot } from '@guanghechen/asset-markdown-parser'
+import parseMd from '@guanghechen/asset-markdown-parser'
 import {
   AssetProcessor,
   AssetType,
@@ -14,10 +16,11 @@ import {
   RoughAssetDataItem,
   TagDataItem,
   resolveLocalPath,
-  writeJSONSync,
+  resolveUrlPath,
+  writeJSON,
 } from '@guanghechen/site-api'
 import { HandbookSourceType } from '../../config/handbook'
-import { PostAssetEntity, PostDataItem, PostEntity } from './entity'
+import { PostDataItem } from './entity'
 
 
 /**
@@ -42,17 +45,13 @@ export interface PostProcessorProps {
    */
   encoding?: BufferEncoding
   /**
-   * Resolve url
-   */
-  resolveUrl?: (url: string, urlRoot: string) => string
-  /**
    * Process markdown asset
    */
-  markdownProcessor?: AssetProcessor<AssetMarkdownEntity<MdastPropsRoot>>
+  markdownProcessor?: AssetProcessor<MarkdownAssetDataItem>
   /**
    * Extra inner post data processors, such as parsing assets
    */
-  extraProcessors?: AssetProcessor<PostAssetEntity>[]
+  extraProcessors?: AssetProcessor<PostDataItem>[]
 }
 
 
@@ -64,7 +63,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
   protected readonly dataRoot: string
   protected readonly patterns: string[]
   protected readonly encoding: BufferEncoding
-  protected readonly realProcessors: AssetProcessor<PostAssetEntity>[]
+  protected readonly realProcessors: AssetProcessor<PostDataItem>[]
 
   public constructor(props: PostProcessorProps) {
     const {
@@ -73,23 +72,45 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
       patterns,
       encoding = 'utf-8',
       extraProcessors = [],
-      resolveUrl: customUrlResolver,
     } = props
 
-    const resolveUrl = customUrlResolver != null
-      ? (url: string) => customUrlResolver(url, urlRoot)
-      : (url: string): string => url.replace(/^[\s/]*~\//, urlRoot + '/')
-
     const {
-      markdownProcessor = new AssetMarkdownProcessor<MdastPropsRoot>({
+      markdownProcessor = new AssetMarkdownProcessor({
         encoding,
         isMetaOptional: true,
-        parse: (content) => parseMd(content, resolveUrl),
+        resolve: async (content, asset, _tdm, _cdm, assetDataManager) => {
+          const resolveUrl = (url: string): string => {
+            // absolute alias '~'
+            const m = /^[\s/]*~\/([\s\S]+)$/.exec(url)
+            if (m != null) {
+              const location = assetDataManager.calcLocation(m[1])
+              const target = assetDataManager.locate(location)
+              if (target == null) return resolveUrlPath(urlRoot, m[1])
+              return resolveUrlPath(urlRoot, target.type, target.uuid)
+            }
+
+            // relative filepath
+            if (/^[.]/.test(url)) {
+              const filepath = path.join(path.dirname(asset.location), url)
+              const location = assetDataManager.calcLocation(filepath)
+              const target = assetDataManager.locate(location)
+              if (target != null) {
+                return resolveLocalPath(urlRoot, target.type, target.uuid)
+              }
+            }
+
+            return url
+          }
+
+          const data = parseMd(content, resolveUrl)
+          const postFilepath = resolveLocalPath(dataRoot, asset.uuid + '.json')
+          await writeJSON(postFilepath, { ...asset, content: data })
+        }
       }),
     } = props
 
-    const realProcessors = [
-      markdownProcessor,
+    const realProcessors: AssetProcessor<PostDataItem>[] = [
+      markdownProcessor as AssetProcessor<any>,
       ...extraProcessors,
     ]
 
@@ -119,39 +140,43 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
   /**
    * @override
    */
-  public process(
+  public * process(
     filepath: string,
     _rawContent: Buffer,
     roughAsset: RoughAssetDataItem,
     tagDataManager: ImmutableTagDataManager,
     categoryDataManager: ImmutableCategoryDataManager,
     assetDataManager: ImmutableAssetDataManager,
-  ): [PostDataItem, TagDataItem[], CategoryDataItem[][]] {
+  ): Generator<
+    [PostDataItem, TagDataItem[], CategoryDataItem[][]],
+    Promise<void> | void,
+    PostDataItem
+  > {
     for (const processor of this.realProcessors) {
       if (!processor.processable(filepath)) continue
-      const [postAssetEntity, tags, categories] = processor.process(
+      const process = processor.process(
         filepath, _rawContent, roughAsset,
         tagDataManager, categoryDataManager, assetDataManager)
 
-      const { content, ...assetEntity } = postAssetEntity
-      const postEntity: PostEntity = {
-        ...assetEntity,
-        type: HandbookSourceType.POST,
-        docType: postAssetEntity.type as any,
-        content,
-      }
+      const firstResult = process.next()
+      invariant(
+        !firstResult.done,
+        'processor.process() first call should yield a triple'
+      )
 
-      // save postEntity
-      const postFilepath = resolveLocalPath(this.dataRoot, postEntity.uuid + '.json')
-      writeJSONSync(postFilepath, postEntity)
-
+      const [PostDataItem, tags, categories] = firstResult.value
       const postItem: PostDataItem = {
-        ...assetEntity,
+        ...PostDataItem,
         type: HandbookSourceType.POST,
-        docType: postAssetEntity.type as any,
+        docType: PostDataItem.type,
       }
+      yield [postItem, tags, categories]
 
-      return [postItem, tags, categories]
+      // post processing
+      while (true) {
+        const result = process.next(postItem)
+        if (result.done) return result.value
+      }
     }
 
     throw new Error(`no suitable AssetDataProcessor found for file ${ filepath }`)

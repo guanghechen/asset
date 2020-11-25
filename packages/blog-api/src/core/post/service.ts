@@ -4,7 +4,7 @@ import type {
   AssetUUID,
 } from '@guanghechen/site-api'
 import { BlogSourceType } from '../../config/blog'
-import { PostDataItem, PostEntity } from './entity'
+import type { PostAssetEntity, PostDataItem } from './entity'
 import type { PostEntityManager } from './manager'
 
 
@@ -24,7 +24,7 @@ export class PostService {
    * Fetch post by uuid
    * @param uuid
    */
-  public fetchPost(uuid: AssetUUID): PostEntity | null {
+  public fetchPost(uuid: AssetUUID): PostAssetEntity | null {
     return this.postEntityManager.find(uuid)
   }
 

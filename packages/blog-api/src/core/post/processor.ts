@@ -1,8 +1,14 @@
 import micromatch from 'micromatch'
-import { AssetMarkdownProcessor } from '@guanghechen/asset-markdown'
-import MdParser, { MdastPropsRoot } from '@guanghechen/asset-markdown-parser'
+import path from 'path'
+import invariant from 'tiny-invariant'
+import {
+  AssetMarkdownProcessor,
+  MarkdownAssetDataItem,
+} from '@guanghechen/asset-markdown'
+import parseMd from '@guanghechen/asset-markdown-parser'
 import {
   AssetProcessor,
+  AssetType,
   CategoryDataItem,
   ImmutableAssetDataManager,
   ImmutableCategoryDataManager,
@@ -10,36 +16,116 @@ import {
   RoughAssetDataItem,
   TagDataItem,
   resolveLocalPath,
-  writeJSONSync,
+  resolveUrlPath,
+  writeJSON,
 } from '@guanghechen/site-api'
 import { BlogSourceType } from '../../config/blog'
-import { PostAssetEntity, PostDataItem, PostEntity } from './entity'
+import { PostDataItem } from './entity'
 
 
+/**
+ * Props for create PostProcessor
+ */
+export interface PostProcessorProps {
+  /**
+   * url prefix
+   */
+  urlRoot: string
+  /**
+   * Root directory of post data
+   */
+  dataRoot: string
+  /**
+   * Glob pattern for matching post asset filepath
+   */
+  patterns: string[]
+  /**
+   * File encoding of post asset files
+   * In fact, I would like to (force) you to use a uniform file encoding
+   */
+  encoding?: BufferEncoding
+  /**
+   * Process markdown asset
+   */
+  markdownProcessor?: AssetProcessor<MarkdownAssetDataItem>
+  /**
+   * Extra inner post data processors, such as parsing assets
+   */
+  extraProcessors?: AssetProcessor<PostDataItem>[]
+}
+
+
+/**
+ * Post asset processor
+ */
 export class PostProcessor implements AssetProcessor<PostDataItem> {
+  protected readonly urlRoot: string
+  protected readonly dataRoot: string
+  protected readonly patterns: string[]
   protected readonly encoding: BufferEncoding
-  protected readonly postDataRoot: string
-  protected readonly postPattern: string[]
-  protected readonly realProcessors: AssetProcessor<PostAssetEntity>[]
+  protected readonly realProcessors: AssetProcessor<PostDataItem>[]
 
-  public constructor(
-    encoding: BufferEncoding,
-    postDataRoot: string,
-    postPattern: string[],
-    realProcessors?: AssetProcessor<PostAssetEntity>[]
-  ) {
+  public constructor(props: PostProcessorProps) {
+    const {
+      urlRoot,
+      dataRoot,
+      patterns,
+      encoding = 'utf-8',
+      extraProcessors = [],
+    } = props
+
+    const {
+      markdownProcessor = new AssetMarkdownProcessor({
+        encoding,
+        isMetaOptional: true,
+        resolve: async (content, asset, _tdm, _cdm, assetDataManager) => {
+          const resolveUrl = (url: string): string => {
+            // absolute alias '~'
+            const m = /^[\s/]*~\/([\s\S]+)$/.exec(url)
+            if (m != null) {
+              const location = assetDataManager.calcLocation(m[1])
+              const target = assetDataManager.locate(location)
+              if (target == null) return resolveUrlPath(urlRoot, m[1])
+              return resolveUrlPath(urlRoot, target.type, target.uuid)
+            }
+
+            // relative filepath
+            if (/^[.]/.test(url)) {
+              const filepath = path.join(path.dirname(asset.location), url)
+              const location = assetDataManager.calcLocation(filepath)
+              const target = assetDataManager.locate(location)
+              if (target != null) {
+                return resolveLocalPath(urlRoot, target.type, target.uuid)
+              }
+            }
+
+            return url
+          }
+
+          const data = parseMd(content, resolveUrl)
+          const postFilepath = resolveLocalPath(dataRoot, asset.uuid + '.json')
+          await writeJSON(postFilepath, { ...asset, content: data })
+        }
+      }),
+    } = props
+
+    const realProcessors: AssetProcessor<PostDataItem>[] = [
+      markdownProcessor as AssetProcessor<any>,
+      ...extraProcessors,
+    ]
+
+    this.urlRoot = urlRoot
+    this.dataRoot = dataRoot
+    this.patterns = patterns
     this.encoding = encoding
-    this.postDataRoot = postDataRoot
-    this.postPattern = postPattern
-    this.realProcessors = realProcessors != null
-      ? realProcessors
-      : [
-        new AssetMarkdownProcessor<MdastPropsRoot>({
-          encoding,
-          isMetaOptional: true,
-          parse: MdParser,
-        }),
-      ]
+    this.realProcessors = realProcessors
+  }
+
+  /**
+   * @override
+   */
+  public types(): AssetType[] {
+    return [BlogSourceType.POST]
   }
 
   /**
@@ -47,46 +133,46 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
    */
   public processable(filepath: string): boolean {
     const isMatched = micromatch.isMatch(
-      filepath, this.postPattern, { cwd: this.postDataRoot })
+      filepath, this.patterns, { cwd: this.dataRoot })
     return isMatched
   }
 
   /**
    * @override
    */
-  public process(
+  public * process(
     filepath: string,
     _rawContent: Buffer,
     roughAsset: RoughAssetDataItem,
     tagDataManager: ImmutableTagDataManager,
     categoryDataManager: ImmutableCategoryDataManager,
     assetDataManager: ImmutableAssetDataManager,
-  ): [PostDataItem, TagDataItem[], CategoryDataItem[][]] {
+  ): Generator<[PostDataItem, TagDataItem[], CategoryDataItem[][]], Promise<void> | void> {
     for (const processor of this.realProcessors) {
       if (!processor.processable(filepath)) continue
-      const [postAssetEntity, tags, categories] = processor.process(
+      const process = processor.process(
         filepath, _rawContent, roughAsset,
         tagDataManager, categoryDataManager, assetDataManager)
 
-      const { content, ...assetEntity } = postAssetEntity
-      const postEntity: PostEntity = {
-        ...assetEntity,
-        type: BlogSourceType.POST,
-        docType: postAssetEntity.type as any,
-        content,
-      }
+      const firstResult = process.next()
+      invariant(
+        !firstResult.done,
+        'processor.process() first call should yield a triple'
+      )
 
-      // save postEntity
-      const postFilepath = resolveLocalPath(this.postDataRoot, postEntity.uuid + '.json')
-      writeJSONSync(postFilepath, postEntity)
-
+      const [PostDataItem, tags, categories] = firstResult.value
       const postItem: PostDataItem = {
-        ...assetEntity,
+        ...PostDataItem,
         type: BlogSourceType.POST,
-        docType: postAssetEntity.type as any,
+        docType: PostDataItem.type,
       }
+      yield [postItem, tags, categories]
 
-      return [postItem, tags, categories]
+      // post processing
+      while (true) {
+        const result = process.next(postItem)
+        if (result.done) return result.value
+      }
     }
 
     throw new Error(`no suitable AssetDataProcessor found for file ${ filepath }`)

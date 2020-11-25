@@ -1,17 +1,14 @@
 import type { AssetDataItem } from '@guanghechen/site-api'
 
 
-export const AssetMarkdownType = 'markdown'
+export const MarkdownAssetType = 'markdown'
 // eslint-disable-next-line @typescript-eslint/no-redeclare
-export type AssetMarkdownType = typeof AssetMarkdownType
+export type MarkdownAssetType = typeof MarkdownAssetType
 
 
 /**
  * Markdown data
  */
-export interface AssetMarkdownEntity<D> extends AssetDataItem<AssetMarkdownType> {
-  /**
-   * Markdown body content
-   */
-  content: D
+export interface MarkdownAssetDataItem extends AssetDataItem<MarkdownAssetType> {
+
 }

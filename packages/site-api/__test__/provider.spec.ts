@@ -46,7 +46,13 @@ describe('AssetDataProvider', function () {
           const fakeProcessor: AssetProcessor = {
             types: () => ['image'],
             processable: filepath => /\.([^.]+)\.json$/.test(filepath),
-            process: (filepath, rawContent, roughAsset, tagDataManager, categoryDataManager) => {
+            process: function* (
+              filepath,
+              rawContent,
+              roughAsset,
+              tagDataManager,
+              categoryDataManager,
+            ) {
               const data = JSON.parse(rawContent.toString('utf-8'))
 
               const tags: TagDataItem[] = (data.tags || []).map((rawTag: string) => (
@@ -71,7 +77,7 @@ describe('AssetDataProvider', function () {
 
               const entityManager = fakeEntityManagerMap[asset.type]
               entityManager.insert(asset)
-              return [asset, tags, categories]
+              yield [asset, tags, categories]
             }
           }
 

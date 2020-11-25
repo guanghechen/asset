@@ -40,7 +40,7 @@ export class AssetEntityManager<T extends AssetEntity<any>> {
   /**
    * Calc post data file path by post.uuid
    *
-   * @param uuid    uuid of PostEntity
+   * @param uuid    uuid of AssetEntity
    */
   protected calcFilepath(uuid: AssetUUID): string {
     const filepath = resolveLocalPath(this.dataRoot, uuid + '.json')

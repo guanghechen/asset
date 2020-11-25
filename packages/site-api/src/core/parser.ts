@@ -3,6 +3,7 @@ import dayjs from 'dayjs'
 import fs from 'fs-extra'
 import globby from 'globby'
 import path from 'path'
+import invariant from 'tiny-invariant'
 import { calcFingerprint } from '../util/hash'
 import { resolveLocalPath } from '../util/path'
 import { createSerialExecutor } from '../util/sync'
@@ -81,10 +82,18 @@ export class AssetParser {
       onlyFiles: true,
     })
 
+    const tasks: (() => Promise<void> | void)[] = []
     for (const filepath of filepaths) {
       const absoluteFilepath = resolveLocalPath(srcRoot, filepath)
-      this.touchFile(absoluteFilepath)
+      const postProcessTask = this.processFile(absoluteFilepath)
+      tasks.push(postProcessTask)
     }
+
+    /**
+     * Perform post-process task after all of the potential
+     * asset files proceed (for generating the uuid table)
+     */
+    await Promise.all(tasks.map(task => task()))
   }
 
   /**
@@ -110,6 +119,16 @@ export class AssetParser {
       afterChanged
     )
 
+    /**
+     * Trigger parsing operation when the file changes
+     *
+     * @param filepath
+     */
+    const touchFile = (filepath: string): Promise<void> | void => {
+      const postProcess = this.processFile(filepath)
+      return postProcess()
+    }
+
     this.watcher = chokidar.watch(rootDir, {
       persistent: true,
       ...watchOptions,
@@ -117,13 +136,13 @@ export class AssetParser {
       .on('add', (filepath: string) => {
         serialExecutor.addTask({
           data: { type: 'touch', filepath },
-          execute: () => this.touchFile(filepath),
+          execute: () => touchFile(filepath),
         })
       })
       .on('change', (filepath: string) => {
         serialExecutor.addTask({
           data: { type: 'touch', filepath },
-          execute: () => this.touchFile(filepath),
+          execute: () => touchFile(filepath),
         })
       })
       .on('unlink', (filepath: string) => {
@@ -147,7 +166,7 @@ export class AssetParser {
    *
    * @param filepath
    */
-  public touchFile(filepath: string): void {
+  public processFile(filepath: string): (() => Promise<void> | void) {
     const { assetDataManager, tagDataManager, categoryDataManager } = this
     for (const processor of this.processors) {
       if (!processor.processable(filepath)) continue
@@ -197,14 +216,36 @@ export class AssetParser {
         categories: existedAsset != null ? existedAsset.categories : [],
       }
 
-      const [asset, tags, categoriesList] = processor.process(
+      const process = processor.process(
         filepath, rawContent, roughAsset,
-        tagDataManager, categoryDataManager, assetDataManager)
+        tagDataManager, categoryDataManager, assetDataManager
+      )
 
+      /**
+       * First step, generate asset data item (building uuid map)
+       */
+      const firstResult = process.next()
+      invariant(
+        !firstResult.done,
+        'processor.process() first call should yield a triple'
+      )
+
+      const [asset, tags, categoriesList] = firstResult.value
       if (existedAsset != null) this._remove(existedAsset)
       this._insert(asset, tags, categoriesList)
-      break
+
+      /**
+       * Second step
+       */
+      return (): Promise<void> | void => {
+        while (true) {
+          const result = process.next()
+          if (result.done) return result.value
+        }
+      }
     }
+
+    return () => {}
   }
 
   /**
