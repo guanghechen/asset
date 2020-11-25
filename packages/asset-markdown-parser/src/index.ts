@@ -1,18 +1,24 @@
-import parseMd from './parse'
+import type { Node as MdastNode } from 'unist'
+import { parseToMdast } from './parse'
 import { resolveMdastProps } from './resolve'
-import { MdastRoot } from './types/mdast'
-import { MdastPropsRoot } from './types/mdast-props'
+import type { MdastRoot } from './types/mdast'
+import type { MdastPropsNode, MdastPropsRoot } from './types/mdast-props'
 export * from './parse'
 export * from './resolve'
 export * from './types/mdast'
 export * from './types/mdast-props'
 
 
-export function MdParser(content: string): MdastPropsRoot {
-  const mdast: MdastRoot = parseMd(content)
-  const MdastProps: MdastPropsRoot = resolveMdastProps(mdast)
+export function parse(
+  content: string,
+  resolveUrl: ((url: string) => string) = (url => url),
+  fallbackParser?: (o: MdastNode) => MdastPropsNode,
+): MdastPropsRoot {
+  const mdast: MdastRoot = parseToMdast(content)
+  const MdastProps: MdastPropsRoot = resolveMdastProps(
+    mdast, resolveUrl, fallbackParser)
   return MdastProps
 }
 
 
-export default MdParser
+export default parse

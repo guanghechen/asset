@@ -1,6 +1,9 @@
 import micromatch from 'micromatch'
-import { AssetMarkdownProcessor } from '@guanghechen/asset-markdown'
-import MdParser, { MdastPropsRoot } from '@guanghechen/asset-markdown-parser'
+import {
+  AssetMarkdownEntity,
+  AssetMarkdownProcessor,
+} from '@guanghechen/asset-markdown'
+import parseMd, { MdastPropsRoot } from '@guanghechen/asset-markdown-parser'
 import {
   AssetProcessor,
   AssetType,
@@ -22,6 +25,10 @@ import { PostAssetEntity, PostDataItem, PostEntity } from './entity'
  */
 export interface PostProcessorProps {
   /**
+   * url prefix
+   */
+  urlRoot: string
+  /**
    * Root directory of post data
    */
   dataRoot: string
@@ -35,9 +42,17 @@ export interface PostProcessorProps {
    */
   encoding?: BufferEncoding
   /**
-   * Inner post data processors, such as AssetMarkdownProcessor
+   * Resolve url
    */
-  realProcessors?: AssetProcessor<PostAssetEntity>[]
+  resolveUrl?: (url: string, urlRoot: string) => string
+  /**
+   * Process markdown asset
+   */
+  markdownProcessor?: AssetProcessor<AssetMarkdownEntity<MdastPropsRoot>>
+  /**
+   * Extra inner post data processors, such as parsing assets
+   */
+  extraProcessors?: AssetProcessor<PostAssetEntity>[]
 }
 
 
@@ -45,6 +60,7 @@ export interface PostProcessorProps {
  * Post asset processor
  */
 export class PostProcessor implements AssetProcessor<PostDataItem> {
+  protected readonly urlRoot: string
   protected readonly dataRoot: string
   protected readonly patterns: string[]
   protected readonly encoding: BufferEncoding
@@ -52,21 +68,35 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
 
   public constructor(props: PostProcessorProps) {
     const {
+      urlRoot,
       dataRoot,
       patterns,
       encoding = 'utf-8',
-      realProcessors = [
-        new AssetMarkdownProcessor<MdastPropsRoot>({
-          encoding,
-          isMetaOptional: true,
-          parse: MdParser,
-        }),
-      ]
+      extraProcessors = [],
+      resolveUrl: customUrlResolver,
     } = props
 
-    this.encoding = encoding
+    const resolveUrl = customUrlResolver != null
+      ? (url: string) => customUrlResolver(url, urlRoot)
+      : (url: string): string => url.replace(/^[\s/]*~\//, urlRoot + '/')
+
+    const {
+      markdownProcessor = new AssetMarkdownProcessor<MdastPropsRoot>({
+        encoding,
+        isMetaOptional: true,
+        parse: (content) => parseMd(content, resolveUrl),
+      }),
+    } = props
+
+    const realProcessors = [
+      markdownProcessor,
+      ...extraProcessors,
+    ]
+
+    this.urlRoot = urlRoot
     this.dataRoot = dataRoot
     this.patterns = patterns
+    this.encoding = encoding
     this.realProcessors = realProcessors
   }
 

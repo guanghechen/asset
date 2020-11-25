@@ -3,6 +3,7 @@ import type {
   MdastCode,
   MdastDefinition,
   MdastHeading,
+  MdastImage,
   MdastImageReference,
   MdastLink,
   MdastLinkReference,
@@ -79,10 +80,12 @@ export function resolveMdastPropsMeta(root: MdastRoot): MdastPropsMeta {
 /**
  *
  * @param root
+ * @param resolveUrl      resolve link url and image src
  * @param fallbackParser
  */
 export function resolveMdastProps(
   root: MdastRoot,
+  resolveUrl: (url: string) => string,
   fallbackParser?: (o: MdastNode) => MdastPropsNode,
 ): MdastPropsRoot {
   const meta: MdastPropsMeta = resolveMdastPropsMeta(root)
@@ -185,12 +188,22 @@ export function resolveMdastProps(
         }
         return result
       }
+      case 'image': {
+        const u = o as MdastImage
+        const result: MdastPropsImage = {
+          type: 'image',
+          url: resolveUrl(u.url),
+          title: u.title,
+          alt: u.alt,
+        }
+        return result
+      }
       case 'imageReference': {
         const u = o as MdastImageReference
         const ref = meta.definitions[u.identifier]
         const result: MdastPropsImage = {
           type: 'image',
-          url: ref.url,
+          url: resolveUrl(ref.url),
           title: ref.title,
           alt: u.alt,
         }
@@ -215,7 +228,7 @@ export function resolveMdastProps(
         const u = o as MdastLink
         const result: MdastPropsLink = {
           type: 'link',
-          url: u.url,
+          url: resolveUrl(u.url),
           title: u.title,
           children: resolveChildren<MdastPropsStaticPhrasingContent>(),
         }
@@ -226,7 +239,7 @@ export function resolveMdastProps(
         const ref = meta.definitions[u.identifier]
         const result: MdastPropsLink = {
           type: 'link',
-          url: ref.url,
+          url: resolveUrl(ref.url),
           title: ref.title,
           children: resolveChildren<MdastPropsStaticPhrasingContent>(),
         }

@@ -18,6 +18,10 @@ export interface HandbookDataProviderProps {
    * The prefix of 'pathname' of HandbookMenuLeafNode
    */
   routePrefix?: string
+  /**
+   * Resolve url
+   */
+  resolveUrl?: (url: string, urlRoot: string) => string
 }
 
 
@@ -33,9 +37,11 @@ export class HandbookDataProvider extends AssetDataProvider<HandbookConfig> {
 
     // Create AssetParser
     const postProcessor = new PostProcessor({
+      urlRoot: handbookConfig.urlRoot,
       dataRoot: source.post.dataRoot,
       patterns: source.post.pattern,
       encoding: source.post.encoding,
+      resolveUrl: props.resolveUrl,
     })
     const processors: AssetProcessor[] = props.processors || [postProcessor]
 
