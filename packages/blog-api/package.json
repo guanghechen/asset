@@ -39,7 +39,7 @@
   "dependencies": {
     "@barusu/util-option": "^0.0.39",
     "@guanghechen/asset-markdown": "^0.0.0",
-    "@guanghechen/ast-md-props": "^0.0.0",
+    "@guanghechen/asset-markdown-parser": "^0.0.0",
     "@guanghechen/site-api": "^0.0.0",
     "@types/fs-extra": "^9.0.1",
     "@types/micromatch": "^4.0.1",

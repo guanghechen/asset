@@ -1,8 +1,8 @@
 {
-  "name": "@guanghechen/ast-md-props",
+  "name": "@guanghechen/asset-markdown-parser",
   "version": "0.0.0",
   "description": "parse markdown to component props ast",
-  "homepage": "https://github.com/lemon-clown/static-site-api/tree/master/packages/ast-md-props",
+  "homepage": "https://github.com/lemon-clown/static-site-api/tree/master/packages/asset-markdown-parser",
   "private": true,
   "license": "MIT",
   "main": "lib/cjs/index.js",

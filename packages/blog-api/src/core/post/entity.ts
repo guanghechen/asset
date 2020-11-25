@@ -1,4 +1,4 @@
-import type { MdastRoot } from '@guanghechen/ast-md-props'
+import type { MdastRoot } from '@guanghechen/asset-markdown-parser'
 import type { AssetDataItem } from '@guanghechen/site-api'
 import type { BlogSourceType } from '../../config/blog'
 

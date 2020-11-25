@@ -5,7 +5,7 @@ import {
   MdastRoot,
   parseMdast,
   parseMdastProps,
-} from '@guanghechen/ast-md-props'
+} from '@guanghechen/asset-markdown-parser'
 import {
   AssetProcessor,
   CategoryDataItem,
