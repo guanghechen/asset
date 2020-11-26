@@ -44,6 +44,7 @@ describe('base', function () {
       const roughAsset: RoughAssetDataItem = {
         uuid: sha1(filepath),
         location: filepath,
+        extname: path.extname(filepath),
         fingerprint: sha1(filepath),
         lastModifiedTime: lastModifiedDate.getMilliseconds(),
         createAt: createDate.toISOString(),

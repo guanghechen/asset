@@ -124,6 +124,7 @@ export class AssetMarkdownProcessor
       type: MarkdownAssetType,
       fingerprint: roughAsset.fingerprint,
       location: roughAsset.location,
+      extname: '.json',
       lastModifiedTime: roughAsset.lastModifiedTime,
       createAt,
       updateAt,

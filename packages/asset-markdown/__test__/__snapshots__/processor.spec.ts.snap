@@ -7,6 +7,7 @@ Object {
     Object {
       "categories": Array [],
       "createAt": "2019-12-31T16:00:00.000Z",
+      "extname": ".json",
       "fingerprint": "5d48a79a3e66a0b67d03c582501493d256004f1f",
       "lastModifiedTime": 0,
       "location": "a.md",
@@ -41,6 +42,7 @@ Object {
         ],
       ],
       "createAt": "2000-01-01T01:02:03.000Z",
+      "extname": ".json",
       "fingerprint": "bb801cb4e571ec0bc7a6ad6d316dacf27c7b107a",
       "lastModifiedTime": 0,
       "location": "b.md",

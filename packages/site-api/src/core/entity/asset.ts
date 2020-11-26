@@ -28,6 +28,10 @@ export interface AssetEntity<T extends AssetType = AssetType> {
    */
   location: AssetLocation
   /**
+   * Asset extname (such as '.json', '.png')
+   */
+  extname: string
+  /**
    * The timestamp of the last time the file was modified (Millisecond)
    */
   lastModifiedTime: number

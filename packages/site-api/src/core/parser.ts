@@ -200,14 +200,15 @@ export class AssetParser {
         ? existedAsset.updateAt
         : dayjs(stat.mtimeMs).toDate().toISOString()
 
-      const title = existedAsset != null
-        ? existedAsset.title
-        : path.parse(filepath).name
+      const { name: _filename, ext: _extname } = path.parse(filepath)
+      const title = existedAsset != null ? existedAsset.title : _filename
+      const extname = existedAsset != null ? existedAsset.extname : _extname
 
       const roughAsset: RoughAssetDataItem = {
         uuid,
         fingerprint,
         location,
+        extname,
         lastModifiedTime,
         createAt,
         updateAt,

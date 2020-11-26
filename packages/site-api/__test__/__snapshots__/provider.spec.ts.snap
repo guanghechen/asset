@@ -15,6 +15,7 @@ Array [
       ],
     ],
     "createAt": "<string>",
+    "extname": ".json",
     "fingerprint": "d85cbb58e6fad6d146139a90742163afeeedffee",
     "lastModifiedTime": "<number>",
     "location": "a.image.json",
