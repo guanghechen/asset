@@ -85,8 +85,9 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
             if (m != null) {
               const location = assetDataManager.calcLocation(m[1])
               const target = assetDataManager.locate(location)
-              if (target == null) return resolveUrlPath(urlRoot, m[1])
-              return resolveUrlPath(urlRoot, target.type, target.uuid)
+              if (target != null) {
+                return resolveUrlPath(urlRoot, target.type, target.uuid + target.extname)
+              }
             }
 
             // relative filepath
@@ -95,13 +96,12 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
               const location = assetDataManager.calcLocation(filepath)
               const target = assetDataManager.locate(location)
               if (target != null) {
-                return resolveLocalPath(urlRoot, target.type, target.uuid)
+                return resolveLocalPath(urlRoot, target.type, target.uuid + target.extname)
               }
             }
 
             return url
           }
-
           const data = parseMd(content, resolveUrl)
           const postFilepath = resolveLocalPath(dataRoot, asset.uuid + '.json')
           await writeJSON(postFilepath, { ...asset, content: data })
