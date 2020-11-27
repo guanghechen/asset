@@ -30,6 +30,7 @@ export class HandbookDataProvider extends AssetDataProvider<HandbookConfig> {
     const postProcessor = new PostProcessor({
       routeRoot: handbookConfig.routeRoot,
       urlRoot: handbookConfig.urlRoot,
+      sourceRoot: source.post.sourceRoot,
       dataRoot: source.post.dataRoot,
       patterns: source.post.pattern,
       encoding: source.post.encoding,

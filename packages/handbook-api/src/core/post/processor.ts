@@ -36,6 +36,10 @@ export interface PostProcessorProps {
    */
   urlRoot: string
   /**
+   * Root directory of the source files (basedir of the patterns)
+   */
+  sourceRoot: string
+  /**
    * Root directory of post data
    */
   dataRoot: string
@@ -65,6 +69,7 @@ export interface PostProcessorProps {
 export class PostProcessor implements AssetProcessor<PostDataItem> {
   protected readonly routeRoot: string
   protected readonly urlRoot: string
+  protected readonly sourceRoot: string
   protected readonly dataRoot: string
   protected readonly patterns: string[]
   protected readonly encoding: BufferEncoding
@@ -74,6 +79,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
     const {
       routeRoot,
       urlRoot,
+      sourceRoot,
       dataRoot,
       patterns,
       encoding = 'utf-8',
@@ -136,6 +142,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
 
     this.routeRoot = routeRoot
     this.urlRoot = urlRoot
+    this.sourceRoot = sourceRoot
     this.dataRoot = dataRoot
     this.patterns = patterns
     this.encoding = encoding
@@ -154,7 +161,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
    */
   public processable(filepath: string): boolean {
     const isMatched = micromatch.isMatch(
-      filepath, this.patterns, { cwd: this.dataRoot })
+      filepath, this.patterns, { cwd: this.sourceRoot })
     return isMatched
   }
 
