@@ -16,10 +16,14 @@ import { SubSiteConfig, SubSiteConfigResolver } from './sub-site/config'
  */
 export interface SitePathConfig {
   /**
-   * The root path of the site
+   * The root route path of the site
    * @default '/''
    */
-  urlRoot: string
+  routeRoot: string
+  /**
+   * The root api url path of the site
+   */
+  apiUrlRoot: string
   /**
    * Reference path of all paths under the site
    * @default '.'
@@ -59,7 +63,8 @@ export interface SiteConfig extends SitePathConfig {
  * Default site config
  */
 export const defaultSiteConfig: SiteConfig = {
-  urlRoot: '/',
+  routeRoot: '/',
+  apiUrlRoot: '/',
   workspace: '.',
   title: 'Demo',
   description: 'demo',
@@ -83,9 +88,13 @@ export function resolveSiteConfig(
   defaultConfig: SiteConfig = defaultSiteConfig,
   sitesResolver: Record<string, SubSiteConfigResolver> = {}
 ): SiteConfig {
-  // resolve urlRoot (absolute url path)
-  const urlRoot = resolveUrlPath(
-    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNotEmptyString))
+  // resolve routeRoot (absolute url path)
+  const routeRoot = resolveUrlPath(
+    coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNotEmptyString))
+
+  // resolve apiUrlRoot (absolute url path)
+  const apiUrlRoot = resolveUrlPath(
+    coverString(defaultConfig.apiUrlRoot, rawConfig.apiUrlRoot, isNotEmptyString))
 
   // resolve workspace (absolute filepath)
   const workspace = resolveLocalPath(
@@ -110,7 +119,12 @@ export function resolveSiteConfig(
   // resolve sites
   const rawSites = rawConfig.sites || {}
   const sites: Record<string, SubSiteConfig> = {}
-  const sitePathConfig: SitePathConfig = { urlRoot, workspace }
+  const sitePathConfig: SitePathConfig = {
+    routeRoot,
+    apiUrlRoot,
+    workspace,
+  }
+
   for (const key of Object.getOwnPropertyNames(rawSites)) {
     const resolveSubSite = sitesResolver[key]
     if (resolveSubSite == null) {
@@ -125,7 +139,8 @@ export function resolveSiteConfig(
   }
 
   const result: SiteConfig = {
-    urlRoot,
+    routeRoot,
+    apiUrlRoot,
     workspace,
     sites,
     title,

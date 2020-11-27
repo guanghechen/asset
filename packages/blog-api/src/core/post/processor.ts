@@ -28,9 +28,13 @@ import { PostDataItem } from './entity'
  */
 export interface PostProcessorProps {
   /**
-   * url prefix
+   * Route url prefix
    */
-  urlRoot: string
+  routeRoot: string
+  /**
+   * Api url prefix
+   */
+  apiUrlRoot: string
   /**
    * Root directory of post data
    */
@@ -59,7 +63,8 @@ export interface PostProcessorProps {
  * Post asset processor
  */
 export class PostProcessor implements AssetProcessor<PostDataItem> {
-  protected readonly urlRoot: string
+  protected readonly routeRoot: string
+  protected readonly apiUrlRoot: string
   protected readonly dataRoot: string
   protected readonly patterns: string[]
   protected readonly encoding: BufferEncoding
@@ -67,7 +72,8 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
 
   public constructor(props: PostProcessorProps) {
     const {
-      urlRoot,
+      routeRoot,
+      apiUrlRoot,
       dataRoot,
       patterns,
       encoding = 'utf-8',
@@ -79,31 +85,45 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
         encoding,
         isMetaOptional: true,
         resolve: async (content, asset, _tdm, _cdm, assetDataManager) => {
-          const resolveUrl = (url: string): string => {
-            // absolute alias '~'
-            const m = /^[\s/]*~\/([\s\S]+)$/.exec(url)
-            if (m != null) {
-              const location = assetDataManager.calcLocation(m[1])
+          const apiUrlRegex = /^[\s/]*(api:)/
+          const absoluteUrlRegex = /^~\/([\s\S]+)$/
+          const relativeUrlRegex = /^[.]/
+
+          const resolveUrl = (_url: string): string => {
+            const isApi = apiUrlRegex.test(_url)
+            const url = _url.replace(apiUrlRegex, '').replace(/^\s*/, '')
+
+            const resolveApiUrl = (urlPath: string): string => {
+              const location = assetDataManager.calcLocation(urlPath)
               const target = assetDataManager.locate(location)
-              if (target != null) {
-                return resolveUrlPath(urlRoot, target.type, target.uuid + target.extname)
+              if (target == null) return url
+              return resolveUrlPath(apiUrlRoot, target.type, target.uuid + target.extname)
+            }
+
+            // absolute alias '~'
+            const absoluteMatch = absoluteUrlRegex.exec(url)
+            if (absoluteMatch != null) {
+              if (isApi) {
+                return resolveApiUrl(absoluteMatch[1])
               }
+              return resolveUrlPath(routeRoot, absoluteMatch[1])
             }
 
             // relative filepath
-            if (/^[.]/.test(url)) {
-              const filepath = path.join(path.dirname(asset.location), url)
-              const location = assetDataManager.calcLocation(filepath)
-              const target = assetDataManager.locate(location)
-              if (target != null) {
-                return resolveLocalPath(urlRoot, target.type, target.uuid + target.extname)
+            const relativeMatch = relativeUrlRegex.exec(url)
+            if (relativeMatch != null) {
+              if (isApi) {
+                const urlPath = path.join(path.dirname(asset.location), url)
+                return resolveApiUrl(urlPath)
               }
+              return resolveLocalPath(routeRoot, url)
             }
 
             return url
           }
+
           const data = parseMd(content, resolveUrl)
-          const postFilepath = resolveLocalPath(dataRoot, asset.uuid + '.json')
+          const postFilepath = resolveLocalPath(dataRoot, asset.uuid + asset.extname)
           await writeJSON(postFilepath, { ...asset, content: data })
         }
       }),
@@ -114,7 +134,8 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
       ...extraProcessors,
     ]
 
-    this.urlRoot = urlRoot
+    this.routeRoot = routeRoot
+    this.apiUrlRoot = apiUrlRoot
     this.dataRoot = dataRoot
     this.patterns = patterns
     this.encoding = encoding

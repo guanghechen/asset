@@ -27,7 +27,8 @@ export class BlogDataProvider extends AssetDataProvider<BlogConfig> {
 
     // Create AssetParser
     const postProcessor = new PostProcessor({
-      urlRoot: blogConfig.urlRoot,
+      routeRoot: blogConfig.routeRoot,
+      apiUrlRoot: blogConfig.apiUrlRoot,
       dataRoot: source.post.dataRoot,
       patterns: source.post.pattern,
       encoding: source.post.encoding,

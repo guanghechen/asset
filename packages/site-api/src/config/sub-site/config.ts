@@ -1,7 +1,10 @@
 import { coverString, isNotEmptyString } from '@barusu/util-option'
 import { resolveLocalPath, resolveUrlPath } from '../../util/path'
 import type { SitePathConfig } from '../site'
-import { SubSiteSourceItem, SubSiteSourceItemResolver } from './source-item'
+import type {
+  SubSiteSourceItem,
+  SubSiteSourceItemResolver,
+} from './source-item'
 
 
 /**
@@ -12,9 +15,13 @@ export interface SubSiteConfig<
   SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
 > {
   /**
-   * The root path of the sub-site
+   * The root route path of the sub-site
    */
-  urlRoot: string
+  routeRoot: string
+  /**
+   * The root api url path of the sub-site
+   */
+  apiUrlRoot: string
   /**
    * The root directory where the source files are located
    */
@@ -71,7 +78,8 @@ export type SubSiteConfigResolver<
  */
 export function createDefaultSubSiteConfig(name: string): SubSiteConfig {
   const defaultConfig: SubSiteConfig = {
-    urlRoot: '/' + name,
+    routeRoot: '/' + name,
+    apiUrlRoot: '/' + name,
     sourceRoot: name + '/source',
     dataRoot: name + '/data',
     entryDataMapFilepath: 'entry.map.json',
@@ -103,10 +111,15 @@ export function resolveSubSiteConfig<
   sitePathConfig: SitePathConfig,
   defaultConfig: SubSiteConfig<SourceType, SourceItem>,
 ): SubSiteConfig<SourceType, SourceItem> {
-  // resolve urlRoot (absolute url path)
-  const urlRoot = resolveUrlPath(
-    sitePathConfig.urlRoot,
-    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNotEmptyString))
+  // resolve routeRoot (absolute url path)
+  const routeRoot = resolveUrlPath(
+    sitePathConfig.routeRoot,
+    coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNotEmptyString))
+
+  // resolve apiUrlRoot (absolute url path)
+  const apiUrlRoot = resolveUrlPath(
+    sitePathConfig.apiUrlRoot,
+    coverString(defaultConfig.apiUrlRoot, rawConfig.apiUrlRoot, isNotEmptyString))
 
   // resolve sourceRoot (absolute filepath)
   const sourceRoot = resolveLocalPath(
@@ -171,7 +184,8 @@ export function resolveSubSiteConfig<
   }
 
   const result: SubSiteConfig<SourceType, SourceItem> = {
-    urlRoot,
+    routeRoot,
+    apiUrlRoot,
     sourceRoot,
     dataRoot,
     entryDataMapFilepath,

@@ -3,11 +3,15 @@
  */
 export interface EntryDataMap {
   /**
+   * The root route path of the site
+   */
+  routeRoot: string
+  /**
    * urls
    */
   api: {
     /**
-     * The root url path of the site
+     * The root api url path of the site
      */
     prefix: string
     /**

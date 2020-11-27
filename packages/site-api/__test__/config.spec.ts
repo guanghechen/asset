@@ -16,7 +16,7 @@ describe('resolveSubSiteConfig', function () {
   ): SubSiteConfig => {
     const sourceItemTypes = ['image']
     const resolveSourceItem = resolveSubSiteSourceItem
-    const sitePathConfig = { urlRoot: '/', workspace }
+    const sitePathConfig = { routeRoot: '/', apiUrlRoot: '/', workspace }
     const defaultConfig: SubSiteConfig = {
       ...createDefaultSubSiteConfig('demo'),
       source: {
@@ -55,7 +55,7 @@ describe('resolveSubSiteConfig', function () {
         resolveConfig(
           path.resolve(__dirname, 'case'),
           {
-            urlRoot: '/waw',
+            routeRoot: '/waw',
             sourceRoot: 'emm/waw/source',
             dataRoot: 'waw/emm/data',
             assetDataMapFilepath: 'asset.json',

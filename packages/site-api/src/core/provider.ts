@@ -61,7 +61,8 @@ export class AssetDataProvider<C extends SubSiteConfig> {
     } = props
 
     const {
-      urlRoot,
+      routeRoot,
+      apiUrlRoot,
       dataRoot,
       sourceRoot,
       entryDataMapFilepath,
@@ -84,11 +85,12 @@ export class AssetDataProvider<C extends SubSiteConfig> {
 
     // Create EntryDataManager
     const entryDataManager = new EntryDataManagerImpl(
+      routeRoot,
+      apiUrlRoot,
       entryDataMapFilepath,
-      urlRoot,
-      resolveUrlPath(urlRoot, resolveUniversalPath(dataRoot, assetDataMapFilepath)),
-      resolveUrlPath(urlRoot, resolveUniversalPath(dataRoot, categoryDataMapFilepath)),
-      resolveUrlPath(urlRoot, resolveUniversalPath(dataRoot, tagDataMapFilepath)),
+      resolveUrlPath(routeRoot, resolveUniversalPath(dataRoot, assetDataMapFilepath)),
+      resolveUrlPath(routeRoot, resolveUniversalPath(dataRoot, categoryDataMapFilepath)),
+      resolveUrlPath(routeRoot, resolveUniversalPath(dataRoot, tagDataMapFilepath)),
       assetService,
       categoryService,
       tagService,

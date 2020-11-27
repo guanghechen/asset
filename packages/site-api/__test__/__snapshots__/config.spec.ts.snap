@@ -2,6 +2,7 @@
 
 exports[`loadSiteConfig full-config 1`] = `
 Object {
+  "apiUrlRoot": "/",
   "author": "Demo author",
   "deploy": Object {
     "branch": "master",
@@ -11,12 +12,15 @@ Object {
     "type": "git",
   },
   "description": "Demo description",
+  "routeRoot": "/",
   "sites": Object {
     "barusu": Object {
+      "apiUrlRoot": "/barusu",
       "assetDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/asset.map.json",
       "categoryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/category.map.json",
       "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data",
       "entryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/entry.map.json",
+      "routeRoot": "/barusu",
       "source": Object {
         "image": Object {
           "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/image",
@@ -28,21 +32,21 @@ Object {
       },
       "sourceRoot": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/source",
       "tagDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data/tag.map.json",
-      "urlRoot": "/barusu",
     },
   },
   "title": "Demo title",
-  "urlRoot": "/",
   "workspace": "<PACKAGE_ROOT_DIR>/__test__/cases/full-config",
 }
 `;
 
 exports[`resolveSubSiteConfig empty rawConfig 1`] = `
 Object {
+  "apiUrlRoot": "/demo",
   "assetDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/asset.map.json",
   "categoryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/category.map.json",
   "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data",
   "entryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/entry.map.json",
+  "routeRoot": "/demo",
   "source": Object {
     "image": Object {
       "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/asset/image",
@@ -54,16 +58,17 @@ Object {
   },
   "sourceRoot": "<PACKAGE_ROOT_DIR>/__test__/case/demo/source",
   "tagDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/demo/data/tag.map.json",
-  "urlRoot": "/demo",
 }
 `;
 
 exports[`resolveSubSiteConfig full rawConfig 1`] = `
 Object {
+  "apiUrlRoot": "/demo",
   "assetDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/asset.json",
   "categoryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/category.json",
   "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data",
   "entryDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/entry.map.json",
+  "routeRoot": "/waw",
   "source": Object {
     "image": Object {
       "dataRoot": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/asset/image",
@@ -75,6 +80,5 @@ Object {
   },
   "sourceRoot": "<PACKAGE_ROOT_DIR>/__test__/case/emm/waw/source",
   "tagDataMapFilepath": "<PACKAGE_ROOT_DIR>/__test__/case/waw/emm/data/tag.json",
-  "urlRoot": "/waw",
 }
 `;
