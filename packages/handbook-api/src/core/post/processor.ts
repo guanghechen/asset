@@ -85,13 +85,13 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
         encoding,
         isMetaOptional: true,
         resolve: async (content, asset, _tdm, _cdm, assetDataManager) => {
-          const apiUrlRegex = /^[\s/]*(api:)/
+          const routeRegex = /^[\s]*(route:)/
           const absoluteUrlRegex = /^~\/([\s\S]+)$/
           const relativeUrlRegex = /^[.]/
 
           const resolveUrl = (_url: string): string => {
-            const isApi = apiUrlRegex.test(_url)
-            const url = _url.replace(apiUrlRegex, '').replace(/^\s*/, '')
+            const isRoute = routeRegex.test(_url)
+            const url = _url.trim().replace(routeRegex, '')
 
             const resolveApiUrl = (urlPath: string): string => {
               const location = assetDataManager.calcLocation(urlPath)
@@ -103,20 +103,20 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
             // absolute alias '~'
             const absoluteMatch = absoluteUrlRegex.exec(url)
             if (absoluteMatch != null) {
-              if (isApi) {
-                return resolveApiUrl(absoluteMatch[1])
+              if (isRoute) {
+                return resolveUrlPath(routeRoot, absoluteMatch[1])
               }
-              return resolveUrlPath(routeRoot, absoluteMatch[1])
+              return resolveApiUrl(absoluteMatch[1])
             }
 
             // relative filepath
             const relativeMatch = relativeUrlRegex.exec(url)
             if (relativeMatch != null) {
-              if (isApi) {
-                const urlPath = path.join(path.dirname(asset.location), url)
-                return resolveApiUrl(urlPath)
+              if (isRoute) {
+                return resolveUrl(path.join(routeRoot, url))
               }
-              return resolveLocalPath(routeRoot, url)
+              const urlPath = path.join(path.dirname(asset.location), url)
+              return resolveApiUrl(urlPath)
             }
 
             return url

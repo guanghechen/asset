@@ -14,6 +14,7 @@ export function resolveUrlPath(
   const result = (prefixPath + '/' + pathPieces.join('/'))
     .replace(/[\\/]+/g, '/')
     .replace(/^[/]?/, '/')
+    .replace(/[/]$/, '')
   return result
 }
 
