@@ -32,7 +32,7 @@ export interface HandbookConfig extends SubSiteConfig<HandbookSourceType, Handbo
 
 const defaultHandbookConfig: HandbookConfig = {
   routeRoot: '/handbook',
-  apiUrlRoot: '/handbook',
+  urlRoot: '/handbook',
   sourceRoot: 'handbook/source',
   dataRoot: 'handbook/data',
   entryDataMapFilepath: 'entry.map.json',

@@ -34,7 +34,7 @@ export interface PostProcessorProps {
   /**
    * Api url prefix
    */
-  apiUrlRoot: string
+  urlRoot: string
   /**
    * Root directory of post data
    */
@@ -64,7 +64,7 @@ export interface PostProcessorProps {
  */
 export class PostProcessor implements AssetProcessor<PostDataItem> {
   protected readonly routeRoot: string
-  protected readonly apiUrlRoot: string
+  protected readonly urlRoot: string
   protected readonly dataRoot: string
   protected readonly patterns: string[]
   protected readonly encoding: BufferEncoding
@@ -73,7 +73,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
   public constructor(props: PostProcessorProps) {
     const {
       routeRoot,
-      apiUrlRoot,
+      urlRoot,
       dataRoot,
       patterns,
       encoding = 'utf-8',
@@ -97,7 +97,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
               const location = assetDataManager.calcLocation(urlPath)
               const target = assetDataManager.locate(location)
               if (target == null) return url
-              return resolveUrlPath(apiUrlRoot, target.type, target.uuid + target.extname)
+              return resolveUrlPath(urlRoot, target.type, target.uuid + target.extname)
             }
 
             // absolute alias '~'
@@ -135,7 +135,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
     ]
 
     this.routeRoot = routeRoot
-    this.apiUrlRoot = apiUrlRoot
+    this.urlRoot = urlRoot
     this.dataRoot = dataRoot
     this.patterns = patterns
     this.encoding = encoding

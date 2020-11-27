@@ -12,7 +12,7 @@ import { TagService } from '../service/tag'
 export interface EntryDataManagerConstructor {
   /**
    * @param routeRoot           route path prefix
-   * @param apiUrlRoot          api url prefix
+   * @param urlRoot          api url prefix
    * @param dataMapFilepath     filepath of EntryDataMap
    * @param assetDataMapUrl     url for fetching asset.data.map
    * @param categoryDataMapUrl  url for fetching category.data.map
@@ -23,7 +23,7 @@ export interface EntryDataManagerConstructor {
    */
   new (
     routeRoot: string,
-    apiUrlRoot: string,
+    urlRoot: string,
     dataMapFilepath: string,
     assetDataMapUrl: string,
     categoryDataMapUrl: string,
@@ -40,7 +40,7 @@ export interface EntryDataManagerConstructor {
  */
 export class EntryDataManager {
   protected readonly routeRoot: string
-  protected readonly apiUrlRoot: string
+  protected readonly urlRoot: string
   protected readonly dataMapFilepath: string
   protected readonly assetDataMapUrl: string
   protected readonly categoryDataMapUrl: string
@@ -51,7 +51,7 @@ export class EntryDataManager {
 
   public constructor(
     routeRoot: string,
-    apiUrlRoot: string,
+    urlRoot: string,
     dataMapFilepath: string,
     assetDataMapUrl: string,
     categoryDataMapUrl: string,
@@ -61,7 +61,7 @@ export class EntryDataManager {
     tagService: TagService,
   ) {
     this.routeRoot = routeRoot
-    this.apiUrlRoot = apiUrlRoot
+    this.urlRoot = urlRoot
     this.dataMapFilepath = dataMapFilepath
     this.assetDataMapUrl = assetDataMapUrl
     this.categoryDataMapUrl = categoryDataMapUrl
@@ -77,7 +77,7 @@ export class EntryDataManager {
   public async load(): Promise<void> {
     const data: EntryDataMap = await fs.readJSON(this.dataMapFilepath)
     ; (this.routeRoot as string) = data.routeRoot
-    ; (this.apiUrlRoot as string) = data.api.prefix
+    ; (this.urlRoot as string) = data.api.prefix
     ; (this.assetDataMapUrl as string) = data.api.assetDataMap
     ; (this.categoryDataMapUrl as string) = data.api.categoryDatMap
     ; (this.tagDataMapUrl as string) = data.api.tagDataMap
@@ -98,7 +98,7 @@ export class EntryDataManager {
     const data: EntryDataMap = {
       routeRoot: this.routeRoot,
       api: {
-        prefix: this.apiUrlRoot,
+        prefix: this.urlRoot,
         assetDataMap: this.assetDataMapUrl,
         categoryDatMap: this.categoryDataMapUrl,
         tagDataMap: this.tagDataMapUrl,

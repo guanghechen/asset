@@ -83,7 +83,7 @@ export class HandbookEntryDataManager extends EntryDataManager {
               title,
               pathname: resolveUrlPath(this.routeRoot, p, title),
               source: resolveUrlPath(
-                this.apiUrlRoot, HandbookSourceType.POST, location.uuid + location.extname),
+                this.urlRoot, HandbookSourceType.POST, location.uuid + location.extname),
             }
           }
           children.push(child)

@@ -29,7 +29,7 @@ export class HandbookDataProvider extends AssetDataProvider<HandbookConfig> {
     // Create AssetParser
     const postProcessor = new PostProcessor({
       routeRoot: handbookConfig.routeRoot,
-      apiUrlRoot: handbookConfig.apiUrlRoot,
+      urlRoot: handbookConfig.urlRoot,
       dataRoot: source.post.dataRoot,
       patterns: source.post.pattern,
       encoding: source.post.encoding,

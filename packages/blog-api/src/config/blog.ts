@@ -32,7 +32,7 @@ export interface BlogConfig extends SubSiteConfig<BlogSourceType, BlogSourceItem
 
 const defaultBlogConfig: BlogConfig = {
   routeRoot: '/blog',
-  apiUrlRoot: '/blog',
+  urlRoot: '/blog',
   sourceRoot: 'blog/source',
   dataRoot: 'blog/data',
   entryDataMapFilepath: 'entry.map.json',

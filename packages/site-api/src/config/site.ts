@@ -16,14 +16,14 @@ import { SubSiteConfig, SubSiteConfigResolver } from './sub-site/config'
  */
 export interface SitePathConfig {
   /**
-   * The root route path of the site
+   * The root route (spa) path of the site
    * @default '/''
    */
   routeRoot: string
   /**
-   * The root api url path of the site
+   * The root url path of the site
    */
-  apiUrlRoot: string
+  urlRoot: string
   /**
    * Reference path of all paths under the site
    * @default '.'
@@ -64,7 +64,7 @@ export interface SiteConfig extends SitePathConfig {
  */
 export const defaultSiteConfig: SiteConfig = {
   routeRoot: '/',
-  apiUrlRoot: '/',
+  urlRoot: '/',
   workspace: '.',
   title: 'Demo',
   description: 'demo',
@@ -92,9 +92,9 @@ export function resolveSiteConfig(
   const routeRoot = resolveUrlPath(
     coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNotEmptyString))
 
-  // resolve apiUrlRoot (absolute url path)
-  const apiUrlRoot = resolveUrlPath(
-    coverString(defaultConfig.apiUrlRoot, rawConfig.apiUrlRoot, isNotEmptyString))
+  // resolve urlRoot (absolute url path)
+  const urlRoot = resolveUrlPath(
+    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNotEmptyString))
 
   // resolve workspace (absolute filepath)
   const workspace = resolveLocalPath(
@@ -121,7 +121,7 @@ export function resolveSiteConfig(
   const sites: Record<string, SubSiteConfig> = {}
   const sitePathConfig: SitePathConfig = {
     routeRoot,
-    apiUrlRoot,
+    urlRoot,
     workspace,
   }
 
@@ -140,7 +140,7 @@ export function resolveSiteConfig(
 
   const result: SiteConfig = {
     routeRoot,
-    apiUrlRoot,
+    urlRoot,
     workspace,
     sites,
     title,

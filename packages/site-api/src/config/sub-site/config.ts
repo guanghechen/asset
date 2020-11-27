@@ -15,13 +15,13 @@ export interface SubSiteConfig<
   SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
 > {
   /**
-   * The root route path of the sub-site
+   * The root route (spa) path of the sub-site
    */
   routeRoot: string
   /**
-   * The root api url path of the sub-site
+   * The root url path of the sub-site
    */
-  apiUrlRoot: string
+  urlRoot: string
   /**
    * The root directory where the source files are located
    */
@@ -79,7 +79,7 @@ export type SubSiteConfigResolver<
 export function createDefaultSubSiteConfig(name: string): SubSiteConfig {
   const defaultConfig: SubSiteConfig = {
     routeRoot: '/' + name,
-    apiUrlRoot: '/' + name,
+    urlRoot: '/' + name,
     sourceRoot: name + '/source',
     dataRoot: name + '/data',
     entryDataMapFilepath: 'entry.map.json',
@@ -116,10 +116,10 @@ export function resolveSubSiteConfig<
     sitePathConfig.routeRoot,
     coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNotEmptyString))
 
-  // resolve apiUrlRoot (absolute url path)
-  const apiUrlRoot = resolveUrlPath(
-    sitePathConfig.apiUrlRoot,
-    coverString(defaultConfig.apiUrlRoot, rawConfig.apiUrlRoot, isNotEmptyString))
+  // resolve urlRoot (absolute url path)
+  const urlRoot = resolveUrlPath(
+    sitePathConfig.urlRoot,
+    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNotEmptyString))
 
   // resolve sourceRoot (absolute filepath)
   const sourceRoot = resolveLocalPath(
@@ -185,7 +185,7 @@ export function resolveSubSiteConfig<
 
   const result: SubSiteConfig<SourceType, SourceItem> = {
     routeRoot,
-    apiUrlRoot,
+    urlRoot,
     sourceRoot,
     dataRoot,
     entryDataMapFilepath,
