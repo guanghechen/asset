@@ -65,7 +65,7 @@ export type SubSiteConfigResolver<
   SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
   T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<SourceType, SourceItem>,
   > = (
-    rawConfig: Partial<T>,
+    rawConfig: Partial<Omit<T, 'source'>> & { source?: Partial<T['source']> },
     sitePathConfig: SitePathConfig,
     defaultConfig?: T,
   ) => T
@@ -104,8 +104,9 @@ export function createDefaultSubSiteConfig(name: string): SubSiteConfig {
 export function resolveSubSiteConfig<
   SourceType extends string = string,
   SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
+  T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<SourceType, SourceItem>,
 >(
-  rawConfig: Partial<SubSiteConfig<SourceType, SourceItem>> = {},
+  rawConfig: (Partial<Omit<T, 'source'>> & { source?: Partial<T['source']> }) = {},
   sourceItemTypes: SourceType[],
   resolveSourceItem: SubSiteSourceItemResolver<SourceItem>,
   sitePathConfig: SitePathConfig,

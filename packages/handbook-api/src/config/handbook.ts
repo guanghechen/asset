@@ -62,9 +62,9 @@ export const resolveHandbookConfig: SubSiteConfigResolver<
   HandbookSourceItem,
   HandbookConfig
 > = (
-  rawConfig: Partial<HandbookConfig> = {},
-  sitePathConfig: SitePathConfig,
-  defaultConfig: HandbookConfig = defaultHandbookConfig,
+  rawConfig = {},
+  sitePathConfig,
+  defaultConfig = defaultHandbookConfig,
 ): HandbookConfig => {
   const subSiteConfig: SubSiteConfig =
     resolveSubSiteConfig<HandbookSourceType, HandbookSourceItem>(

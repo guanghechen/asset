@@ -240,7 +240,7 @@ export class AssetParser {
        */
       return (): Promise<void> | void => {
         while (true) {
-          const result = process.next()
+          const result = process.next(asset)
           if (result.done) return result.value
         }
       }
