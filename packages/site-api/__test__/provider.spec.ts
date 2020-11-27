@@ -44,7 +44,7 @@ describe('AssetDataProvider', function () {
 
           const fakeEntityManagerMap: Record<string, AssetEntityManager<AssetEntity>> = {}
           const fakeProcessor: AssetProcessor = {
-            types: () => ['image'],
+            types: () => [{ type: 'image', assetDataRoot: subSiteConfig.source.image.dataRoot }],
             processable: filepath => /\.([^.]+)\.json$/.test(filepath),
             process: function* (
               filepath,

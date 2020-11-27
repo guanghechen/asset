@@ -7,6 +7,18 @@ import type { ImmutableCategoryDataManager } from './manager/category'
 import type { ImmutableTagDataManager } from './manager/tag'
 
 
+export interface AssetTypeItem {
+  /**
+   * Asset type
+   */
+  type: AssetType
+  /**
+   * Root filepath of the type asset
+   */
+  assetDataRoot: string
+}
+
+
 /**
  * Process asset source file
  */
@@ -14,7 +26,7 @@ export interface AssetProcessor<A extends AssetDataItem = AssetDataItem> {
   /**
    * Supported asset types
    */
-  types?: () => AssetType[]
+  types?: () => AssetTypeItem[]
 
   /**
    * Check whether the processor can handle this file

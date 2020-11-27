@@ -8,14 +8,13 @@ import {
 import parseMd from '@guanghechen/asset-markdown-parser'
 import {
   AssetProcessor,
-  AssetType,
+  AssetTypeItem,
   CategoryDataItem,
   ImmutableAssetDataManager,
   ImmutableCategoryDataManager,
   ImmutableTagDataManager,
   RoughAssetDataItem,
   TagDataItem,
-  resolveLocalPath,
   resolveUrlPath,
   writeJSON,
 } from '@guanghechen/site-api'
@@ -35,6 +34,10 @@ export interface PostProcessorProps {
    * Api url prefix
    */
   urlRoot: string
+  /**
+   * Root directory of the data files of the sub-site
+   */
+  subSiteDataRoot: string
   /**
    * Root directory of the source files (basedir of the patterns)
    */
@@ -79,6 +82,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
     const {
       routeRoot,
       urlRoot,
+      subSiteDataRoot,
       sourceRoot,
       dataRoot,
       patterns,
@@ -103,7 +107,12 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
               const location = assetDataManager.calcLocation(urlPath)
               const target = assetDataManager.locate(location)
               if (target == null) return url
-              return resolveUrlPath(urlRoot, target.type, target.uuid + target.extname)
+
+              const assetFilepath = assetDataManager.resolveFilepath(target)
+              if (assetFilepath == null) return url
+
+              const relativeFilepath = path.relative(subSiteDataRoot, assetFilepath)
+              return resolveUrlPath(urlRoot, relativeFilepath)
             }
 
             // absolute alias '~'
@@ -129,7 +138,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
           }
 
           const data = parseMd(content, resolveUrl)
-          const postFilepath = resolveLocalPath(dataRoot, asset.uuid + asset.extname)
+          const postFilepath = assetDataManager.resolveFilepath(asset)!
           await writeJSON(postFilepath, { ...asset, content: data })
         }
       }),
@@ -152,8 +161,10 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
   /**
    * @override
    */
-  public types(): AssetType[] {
-    return [BlogSourceType.POST]
+  public types(): AssetTypeItem[] {
+    return [
+      { type: BlogSourceType.POST, assetDataRoot: this.dataRoot },
+    ]
   }
 
   /**

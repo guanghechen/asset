@@ -2,7 +2,7 @@ import fs from 'fs-extra'
 import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
 import { sha1 } from '../../util/hash'
-import { resolveUniversalPath } from '../../util/path'
+import { resolveLocalPath, resolveUniversalPath } from '../../util/path'
 import type { AssetLocation, AssetType, AssetUUID } from '../entity/_types'
 import type { AssetDataItem, AssetDataMap } from '../entity/asset'
 
@@ -11,7 +11,7 @@ import type { AssetDataItem, AssetDataMap } from '../entity/asset'
  * Only export no side-effect funcs from AssetDataManager
  */
 export type ImmutableAssetDataManager = Pick<
-  AssetDataManager, 'find' | 'locate' | 'calcLocation' | 'calcDefaultUUID'>
+  AssetDataManager, 'find' | 'locate' | 'calcLocation' | 'calcDefaultUUID' | 'resolveFilepath'>
 
 
 /**
@@ -32,6 +32,7 @@ export interface AssetDataManagerConstructor {
 export class AssetDataManager {
   protected readonly workspace: string
   protected readonly dataMapFilepath: string
+  protected readonly assetLocationMap: Record<string, { dataRoot: string }>
   protected readonly uuids: Record<AssetType, AssetUUID[]>
   protected readonly locations: Record<AssetLocation, AssetUUID>
   protected readonly dataMap: Record<AssetUUID, AssetDataItem>
@@ -39,6 +40,7 @@ export class AssetDataManager {
   public constructor(workspace: string, dataMapFilepath: string) {
     this.workspace = workspace
     this.dataMapFilepath = dataMapFilepath
+    this.assetLocationMap = {}
     this.uuids = {}
     this.locations = {}
     this.dataMap = {}
@@ -49,10 +51,12 @@ export class AssetDataManager {
    * operations in the subsequent process, to prevent accidental addition or
    * null pointer exceptions due to the absence of this type of file.
    *
-   * @param assetType
+   * @param assetType asset type
+   * @param dataRoot  the root directory of the asset data
    */
-  public registerAssetType(assetType: AssetType): void {
+  public registerAssetType(assetType: AssetType, dataRoot: string): void {
     if (this.uuids[assetType] == null) {
+      this.assetLocationMap[assetType] = { dataRoot }
       this.uuids[assetType] = []
     }
   }
@@ -117,6 +121,19 @@ export class AssetDataManager {
   public calcLocation(filepath: string): AssetLocation {
     const location = resolveUniversalPath(this.workspace, filepath)
     return location
+  }
+
+  /**
+   * Calc absolute filepath of asset
+   *
+   * @param asset
+   */
+  public resolveFilepath(
+    asset: Pick<AssetDataItem, 'uuid' | 'type' | 'extname'>,
+  ): string | null {
+    const item = this.assetLocationMap[asset.type]
+    if (item == null) return null
+    return resolveLocalPath(item.dataRoot, asset.uuid + asset.extname)
   }
 
   /**

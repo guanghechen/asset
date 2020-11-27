@@ -29,6 +29,7 @@ export class BlogDataProvider extends AssetDataProvider<BlogConfig> {
     const postProcessor = new PostProcessor({
       routeRoot: blogConfig.routeRoot,
       urlRoot: blogConfig.urlRoot,
+      subSiteDataRoot: blogConfig.dataRoot,
       sourceRoot: source.post.sourceRoot,
       dataRoot: source.post.dataRoot,
       patterns: source.post.pattern,
