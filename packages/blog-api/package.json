@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@barusu/util-option": "^0.0.39",
+    "@guanghechen/asset-file": "^0.0.0",
     "@guanghechen/asset-markdown": "^0.0.0",
     "@guanghechen/asset-markdown-parser": "^0.0.0",
     "@guanghechen/site-api": "^0.0.0",

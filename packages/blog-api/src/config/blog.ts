@@ -13,12 +13,22 @@ export enum BlogSourceType {
    * Post Asset
    */
   POST = 'post',
+  /**
+   * Image Asset
+   */
+  IMAGE = 'image',
+  /**
+   * fallback asset
+   */
+  FILE = 'file',
 }
 
 
 export type BlogSourceItem = SubSiteSourceItem
 export const blogSourceTypes: BlogSourceType[] = [
-  BlogSourceType.POST
+  BlogSourceType.POST,
+  BlogSourceType.IMAGE,
+  BlogSourceType.FILE,
 ]
 
 
@@ -45,7 +55,23 @@ const defaultBlogConfig: BlogConfig = {
       dataRoot: 'post/',
       pattern: ['**/*.md'],
       encoding: 'utf-8',
-    }
+    },
+    image: {
+      sourceRoot: 'resource',
+      dataRoot: 'resource/image/',
+      pattern: [
+        '**/*.png',
+        '**/*.jpg',
+        '**/*.jpeg',
+        '**/*.gif',
+        '**/*.svg',
+      ],
+    },
+    file: {
+      sourceRoot: 'resource',
+      dataRoot: 'resource/file/',
+      pattern: ['**/*'],
+    },
   },
 }
 

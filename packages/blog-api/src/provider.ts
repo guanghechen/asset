@@ -1,5 +1,6 @@
+import { AssetFileProcessor } from '@guanghechen/asset-file'
 import { AssetDataProvider, AssetProcessor } from '@guanghechen/site-api'
-import type { BlogConfig } from './config/blog'
+import { BlogConfig, BlogSourceType } from './config/blog'
 import { PostEntityManager } from './core/post/manager'
 import { PostProcessor } from './core/post/processor'
 import { PostService } from './core/post/service'
@@ -35,7 +36,23 @@ export class BlogDataProvider extends AssetDataProvider<BlogConfig> {
       patterns: source.post.pattern,
       encoding: source.post.encoding,
     })
-    const processors: AssetProcessor[] = props.processors || [postProcessor]
+    const processors: AssetProcessor[] = (
+      props.processors || [
+        postProcessor,
+        new AssetFileProcessor({
+          sourceRoot: source.image.sourceRoot,
+          dataRoot: source.image.dataRoot,
+          patterns: source.image.pattern,
+          assetType: BlogSourceType.IMAGE,
+        }),
+        new AssetFileProcessor({
+          sourceRoot: source.image.sourceRoot,
+          dataRoot: source.file.dataRoot,
+          patterns: source.file.pattern,
+          assetType: BlogSourceType.FILE,
+        }),
+      ]
+    )
 
     // Build AssetDataProvider
     super({

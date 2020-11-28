@@ -13,12 +13,22 @@ export enum HandbookSourceType {
    * Post Asset
    */
   POST = 'post',
+  /**
+   * Image Asset
+   */
+  IMAGE = 'image',
+  /**
+   * fallback asset
+   */
+  FILE = 'file',
 }
 
 
 export type HandbookSourceItem = SubSiteSourceItem
 export const handbookSourceTypes: HandbookSourceType[] = [
-  HandbookSourceType.POST
+  HandbookSourceType.POST,
+  HandbookSourceType.IMAGE,
+  HandbookSourceType.FILE,
 ]
 
 
@@ -45,7 +55,23 @@ const defaultHandbookConfig: HandbookConfig = {
       dataRoot: 'post/',
       pattern: ['**/*.md'],
       encoding: 'utf-8',
-    }
+    },
+    image: {
+      sourceRoot: 'resource',
+      dataRoot: 'resource/image/',
+      pattern: [
+        '**/*.png',
+        '**/*.jpg',
+        '**/*.jpeg',
+        '**/*.gif',
+        '**/*.svg',
+      ],
+    },
+    file: {
+      sourceRoot: 'resource',
+      dataRoot: 'resource/file/',
+      pattern: ['**/*'],
+    },
   },
 }
 

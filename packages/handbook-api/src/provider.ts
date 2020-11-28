@@ -1,5 +1,6 @@
+import { AssetFileProcessor } from '@guanghechen/asset-file'
 import { AssetDataProvider, AssetProcessor } from '@guanghechen/site-api'
-import type { HandbookConfig } from './config/handbook'
+import { HandbookConfig, HandbookSourceType } from './config/handbook'
 import { HandbookEntryDataManager } from './core/entry/manager'
 import { PostEntityManager } from './core/post/manager'
 import { PostProcessor } from './core/post/processor'
@@ -36,7 +37,23 @@ export class HandbookDataProvider extends AssetDataProvider<HandbookConfig> {
       patterns: source.post.pattern,
       encoding: source.post.encoding,
     })
-    const processors: AssetProcessor[] = props.processors || [postProcessor]
+    const processors: AssetProcessor[] = (
+      props.processors || [
+        postProcessor,
+        new AssetFileProcessor({
+          sourceRoot: source.image.sourceRoot,
+          dataRoot: source.image.dataRoot,
+          patterns: source.image.pattern,
+          assetType: HandbookSourceType.IMAGE,
+        }),
+        new AssetFileProcessor({
+          sourceRoot: source.image.sourceRoot,
+          dataRoot: source.file.dataRoot,
+          patterns: source.file.pattern,
+          assetType: HandbookSourceType.FILE,
+        }),
+      ]
+    )
 
     // Build AssetDataProvider
     super({
