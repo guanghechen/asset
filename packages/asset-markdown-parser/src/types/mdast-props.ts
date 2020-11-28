@@ -202,7 +202,7 @@ export interface MdastPropsHeading extends MdastPropsParent {
  */
 export interface MdastPropsImage extends MdastPropsNode {
   type: 'image'
-  url: string
+  src: string
   title?: string
   alt?: string
 }

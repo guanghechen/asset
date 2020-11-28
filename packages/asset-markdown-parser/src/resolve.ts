@@ -192,7 +192,7 @@ export function resolveMdastProps(
         const u = o as MdastImage
         const result: MdastPropsImage = {
           type: 'image',
-          url: resolveUrl(u.url),
+          src: resolveUrl(u.url),
           title: u.title,
           alt: u.alt,
         }
@@ -203,7 +203,7 @@ export function resolveMdastProps(
         const ref = meta.definitions[u.identifier]
         const result: MdastPropsImage = {
           type: 'image',
-          url: resolveUrl(ref.url),
+          src: resolveUrl(ref.url),
           title: ref.title,
           alt: u.alt,
         }
