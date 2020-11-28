@@ -67,7 +67,11 @@ export function createSerialExecutor<D extends unknown = unknown>(
     } finally {
       // Run hooks
       if (error != null) {
-        if (onTaskFailure) await onTaskFailure(error)
+        if (onTaskFailure) {
+          await onTaskFailure(error)
+        } else {
+          throw error
+        }
       } else {
         if (onTaskSuccess) await onTaskSuccess()
       }
