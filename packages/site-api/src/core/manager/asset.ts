@@ -176,7 +176,7 @@ export class AssetDataManager {
     const asset = this.dataMap[uuid]
     if (asset != null) {
       const uuids = this.uuids[asset.type].filter(id => id !== uuid)
-      this.uuids[asset.type] = uuids.length <= 0 ? undefined as any : uuids
+      this.uuids[asset.type] = uuids.length <= 0 ? [] : uuids
       this.locations[asset.location] = undefined as any
       this.dataMap[uuid] = undefined as any
     }
