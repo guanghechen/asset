@@ -14,6 +14,30 @@ export function ensurePathExists(dirpath: string): void {
 
 
 /**
+ * Output into file
+ *
+ * @param filepath
+ * @param data
+ */
+export async function writeFile(filepath: string, data: Buffer): Promise<void> {
+  ensurePathExists(path.dirname(filepath))
+  await fs.writeFile(filepath, data)
+}
+
+
+/**
+ * Output into file (synchronous)
+ *
+ * @param filepath
+ * @param data
+ */
+export function writeFileSync(filepath: string, data: Buffer): void {
+  ensurePathExists(path.dirname(filepath))
+  fs.writeFileSync(filepath, data)
+}
+
+
+/**
  * Output into json file
  *
  * @param filepath
