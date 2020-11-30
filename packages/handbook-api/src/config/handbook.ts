@@ -1,5 +1,4 @@
 import {
-  SitePathConfig,
   SubSiteConfig,
   SubSiteConfigResolver,
   SubSiteSourceItem,

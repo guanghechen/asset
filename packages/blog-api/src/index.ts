@@ -1,4 +1,3 @@
-export * from '@guanghechen/site-api'
 export * from './config/blog'
 export * from './core/post/entity'
 export * from './core/post/manager'
