@@ -44,11 +44,34 @@ export type MdastPropsStaticPhrasingContent =
 
 
 /**
+ * Anchor meta data
+ */
+export interface MdastMetaAnchor {
+  /**
+   * Anchor id
+   */
+  id: string
+  /**
+   * Anchor title
+   */
+  title: MdastPropsPhrasingContent[]
+  /**
+   * Sub anchors
+   */
+  children?: MdastMetaAnchor[]
+}
+
+
+/**
  *
  */
 export interface MdastPropsMeta {
   /**
-   * definition map
+   * Table of Contents
+   */
+  toc: MdastMetaAnchor[]
+  /**
+   * Definition map
    */
   definitions: Record<string, MdastDefinition>
 }
@@ -62,10 +85,6 @@ export interface MdastPropsNode {
    * Data node type
    */
   type: string
-  /**
-   *
-   */
-  [key: string]: any
 }
 
 
@@ -193,6 +212,7 @@ export interface MdastPropsFootnoteReference extends MdastPropsParent {
 export interface MdastPropsHeading extends MdastPropsParent {
   type: 'heading'
   level: 1 | 2 | 3 | 4 | 5 | 6
+  identifier: string
   children: MdastPropsPhrasingContent[]
 }
 
@@ -311,6 +331,7 @@ export interface MdastPropsTable extends MdastPropsNode {
  */
 export interface MdastPropsTableCell extends MdastPropsParent {
   type: 'tableCell'
+  isHeader: boolean
   align?: AlignType
   children: MdastPropsPhrasingContent[]
 }

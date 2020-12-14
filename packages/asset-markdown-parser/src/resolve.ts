@@ -15,6 +15,7 @@ import type {
   MdastText,
 } from './types/mdast'
 import type {
+  MdastMetaAnchor,
   MdastPropsBlockContent,
   MdastPropsBlockquote,
   MdastPropsBreak,
@@ -46,6 +47,7 @@ import type {
   MdastPropsText,
   MdastPropsThematicBreak,
 } from './types/mdast-props'
+import { calcIdentifierForHeading } from './util'
 
 
 /**
@@ -55,10 +57,14 @@ import type {
  * @param root
  */
 export function resolveMdastPropsMeta(root: MdastRoot): MdastPropsMeta {
-  const meta: MdastPropsMeta = { definitions: {} }
+  const meta: MdastPropsMeta = {
+    toc: [],
+    definitions: {},
+  }
+
   const resolve = (o: MdastNode) => {
     if (o.type === 'definition') {
-      const { identifier, label, url, title, } = o as MdastDefinition
+      const { identifier, label, url, title } = o as MdastDefinition
 
       // eslint-disable-next-line no-param-reassign
       meta.definitions[identifier] = { identifier, label, url, title } as any
@@ -72,6 +78,7 @@ export function resolveMdastPropsMeta(root: MdastRoot): MdastPropsMeta {
       }
     }
   }
+
   resolve(root)
   return meta
 }
@@ -89,6 +96,13 @@ export function resolveMdastProps(
   fallbackParser?: (o: MdastNode) => MdastPropsNode,
 ): MdastPropsRoot {
   const meta: MdastPropsMeta = resolveMdastPropsMeta(root)
+
+  type AnchorHolder = {
+    depth: number,
+    anchor: MdastMetaAnchor
+    parent: AnchorHolder | null,
+  }
+  let currentAnchorHolder: AnchorHolder | null = null
 
   const resolve = (o: MdastNode): MdastPropsNode => {
     const resolveChildren = <T extends MdastPropsNode = MdastPropsNode>(): T[] => {
@@ -180,13 +194,45 @@ export function resolveMdastProps(
         return result
       }
       case 'heading': {
-        const u = o as MdastHeading
-        const result: MdastPropsHeading = {
+        const { depth } = o as MdastHeading
+        const children = resolveChildren<MdastPropsPhrasingContent>()
+        const identifier: string = calcIdentifierForHeading(children)
+
+        const heading: MdastPropsHeading = {
           type: 'heading',
-          level: u.depth,
-          children: resolveChildren<MdastPropsPhrasingContent>(),
+          level: depth,
+          identifier,
+          children,
         }
-        return result
+
+        const anchor: MdastMetaAnchor = {
+          id: heading.identifier,
+          title: heading.children,
+        }
+
+        for (; currentAnchorHolder != null && currentAnchorHolder.depth >= depth;) {
+          currentAnchorHolder = currentAnchorHolder.parent
+        }
+
+        const nextAnchorHolder: AnchorHolder = {
+          anchor,
+          depth,
+          parent: currentAnchorHolder
+        }
+
+        // new top anchor
+        if (currentAnchorHolder == null) {
+          meta.toc.push(anchor)
+          currentAnchorHolder = nextAnchorHolder
+        } else {
+          // append to parent anchor
+          const children = currentAnchorHolder.anchor.children || []
+          children.push(anchor)
+          currentAnchorHolder.anchor.children = children
+          currentAnchorHolder = nextAnchorHolder
+        }
+
+        return heading
       }
       case 'image': {
         const u = o as MdastImage
@@ -287,7 +333,7 @@ export function resolveMdastProps(
         const rows = children!.map((row, index): any => {
           return {
             ...row,
-            children: row.children.map((c: any, index: number) => ({
+            children: (row as any).children.map((c: any, index: number) => ({
               isHeader: index <= 0,
               align: u.align![index],
               ...c,
@@ -302,10 +348,11 @@ export function resolveMdastProps(
         return result
       }
       case 'tableCell': {
+        const { align, isHeader } = o as any
         const result: MdastPropsTableCell = {
           type: 'tableCell',
-          isHeader: o.isHeader,
-          align: o.align as any,
+          isHeader,
+          align,
           children: resolveChildren<MdastPropsPhrasingContent>(),
         }
         return result
