@@ -196,11 +196,11 @@ export class AssetParser {
 
       const createAt = existedAsset != null
         ? existedAsset.createAt
-        : dayjs(stat.atimeMs).toDate().toISOString()
+        : dayjs(stat.atimeMs).toISOString()
 
       const updateAt = existedAsset != null
         ? existedAsset.updateAt
-        : dayjs(stat.mtimeMs).toDate().toISOString()
+        : dayjs(stat.mtimeMs).toISOString()
 
       const { name: _filename, ext: _extname } = path.parse(filepath)
       const title = existedAsset != null ? existedAsset.title : _filename

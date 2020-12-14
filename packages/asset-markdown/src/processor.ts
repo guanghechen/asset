@@ -101,10 +101,10 @@ export class AssetMarkdownProcessor
     const uuid: string = meta.uuid || roughAsset.uuid
     const title: string = meta.title || roughAsset.title
     const createAt = meta.createAt != null
-      ? dayjs(meta.createAt).toDate().toISOString()
+      ? dayjs(meta.createAt).toISOString()
       : roughAsset.createAt
     const updateAt = meta.updateAt != null
-      ? dayjs(meta.updateAt).toDate().toISOString()
+      ? dayjs(meta.updateAt).toISOString()
       : roughAsset.updateAt
 
     // resolve tags
