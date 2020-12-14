@@ -7,6 +7,7 @@ export * from './parse'
 export * from './resolve'
 export * from './types/mdast'
 export * from './types/mdast-props'
+export * from './util'
 
 
 export function parse(
