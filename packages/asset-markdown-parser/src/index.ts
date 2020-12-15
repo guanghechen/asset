@@ -16,9 +16,9 @@ export function parse(
   fallbackParser?: (o: MdastNode) => MdastPropsNode,
 ): MdastPropsRoot {
   const mdast: MdastRoot = parseToMdast(content)
-  const MdastProps: MdastPropsRoot = resolveMdastProps(
+  const result: MdastPropsRoot = resolveMdastProps(
     mdast, resolveUrl, fallbackParser)
-  return MdastProps
+  return result
 }
 
 

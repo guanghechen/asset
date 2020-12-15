@@ -44,40 +44,6 @@ export type MdastPropsStaticPhrasingContent =
 
 
 /**
- * Anchor meta data
- */
-export interface MdastMetaAnchor {
-  /**
-   * Anchor id
-   */
-  id: string
-  /**
-   * Anchor title
-   */
-  title: MdastPropsPhrasingContent[]
-  /**
-   * Sub anchors
-   */
-  children?: MdastMetaAnchor[]
-}
-
-
-/**
- *
- */
-export interface MdastPropsMeta {
-  /**
-   * Table of Contents
-   */
-  toc: MdastMetaAnchor[]
-  /**
-   * Definition map
-   */
-  definitions: Record<string, MdastDefinition>
-}
-
-
-/**
  *
  */
 export interface MdastPropsNode {
@@ -99,6 +65,47 @@ export interface MdastPropsLiteral extends MdastPropsNode {
 
 
 /**
+ * Meta data of Mdast
+ */
+export interface MdastPropsMeta {
+  /**
+   * Definition map
+   */
+  definitions: Record<string, MdastDefinition>
+}
+
+
+/**
+ * Anchor data of toc (Table of Contents)
+ */
+export interface MdastPropsTocAnchor {
+  /**
+   * Anchor id
+   */
+  id: string
+  /**
+   * Anchor title
+   */
+  title: MdastPropsPhrasingContent[]
+  /**
+   * Sub anchors
+   */
+  children?: MdastPropsTocAnchor[]
+}
+
+
+/**
+ * Table of contents of mdast
+ */
+export interface MdastPropsToc {
+  /**
+   * Anchors of toc
+   */
+  anchors: MdastPropsTocAnchor[]
+}
+
+
+/**
  * Mdast props ast
  */
 export interface MdastPropsRoot {
@@ -110,6 +117,10 @@ export interface MdastPropsRoot {
    * MdastProps meta data
    */
   meta: MdastPropsMeta
+  /**
+   * Table of contents
+   */
+  toc: MdastPropsToc
   /**
    * Child nodes
    */

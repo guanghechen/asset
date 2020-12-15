@@ -1,7 +1,4 @@
-import type {
-  MdastPropsPhrasingContent,
-  MdastPropsRoot,
-} from './types/mdast-props'
+import type { MdastPropsPhrasingContent } from './types/mdast-props'
 
 
 /**
@@ -27,19 +24,4 @@ export function calcIdentifierForHeading(contents: MdastPropsPhrasingContent[]):
     .replace(/(?:\s|\p{P})+/gu, '-')
     .replace(/(?:^[-]|[-]$)/g, '')
   return 'heading-' + identifier
-}
-
-
-/**
- * Create empty mdast props root
- */
-export function createEmptyMdastPropsRoot(): MdastPropsRoot {
-  return {
-    type: 'root',
-    meta: {
-      definitions: {},
-      toc: [],
-    },
-    children: [],
-  }
 }

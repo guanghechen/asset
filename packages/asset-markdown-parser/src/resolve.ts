@@ -15,7 +15,6 @@ import type {
   MdastText,
 } from './types/mdast'
 import type {
-  MdastMetaAnchor,
   MdastPropsBlockContent,
   MdastPropsBlockquote,
   MdastPropsBreak,
@@ -46,6 +45,8 @@ import type {
   MdastPropsTableRow,
   MdastPropsText,
   MdastPropsThematicBreak,
+  MdastPropsToc,
+  MdastPropsTocAnchor,
 } from './types/mdast-props'
 import { calcIdentifierForHeading } from './util'
 
@@ -58,7 +59,6 @@ import { calcIdentifierForHeading } from './util'
  */
 export function resolveMdastPropsMeta(root: MdastRoot): MdastPropsMeta {
   const meta: MdastPropsMeta = {
-    toc: [],
     definitions: {},
   }
 
@@ -96,10 +96,11 @@ export function resolveMdastProps(
   fallbackParser?: (o: MdastNode) => MdastPropsNode,
 ): MdastPropsRoot {
   const meta: MdastPropsMeta = resolveMdastPropsMeta(root)
+  const toc: MdastPropsToc = { anchors: [] }
 
   type AnchorHolder = {
     depth: number,
-    anchor: MdastMetaAnchor
+    anchor: MdastPropsTocAnchor
     parent: AnchorHolder | null,
   }
   let currentAnchorHolder: AnchorHolder | null = null
@@ -205,7 +206,7 @@ export function resolveMdastProps(
           children,
         }
 
-        const anchor: MdastMetaAnchor = {
+        const anchor: MdastPropsTocAnchor = {
           id: heading.identifier,
           title: heading.children,
         }
@@ -222,7 +223,7 @@ export function resolveMdastProps(
 
         // new top anchor
         if (currentAnchorHolder == null) {
-          meta.toc.push(anchor)
+          toc.anchors.push(anchor)
           currentAnchorHolder = nextAnchorHolder
         } else {
           // append to parent anchor
@@ -389,6 +390,11 @@ export function resolveMdastProps(
   }
 
   const children = (root.children || []).map(resolve)
-  const result: MdastPropsRoot = { type: 'root', meta, children }
+  const result: MdastPropsRoot = {
+    type: 'root',
+    meta,
+    toc,
+    children,
+  }
   return result
 }
