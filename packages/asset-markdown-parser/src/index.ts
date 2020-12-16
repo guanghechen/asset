@@ -1,22 +1,22 @@
 import type { Node as MdastNode } from 'unist'
 import { parseToMdast } from './parse'
-import { resolveMdastProps } from './resolve'
+import { resolveMdDocument } from './resolve'
 import type { MdastRoot } from './types/mdast'
-import type { MdastPropsNode, MdastPropsRoot } from './types/mdast-props'
+import type { MdDocument, MdocNode } from './types/mdoc'
 export * from './parse'
 export * from './resolve'
 export * from './types/mdast'
-export * from './types/mdast-props'
+export * from './types/mdoc'
 export * from './util'
 
 
 export function parse(
   content: string,
   resolveUrl: ((url: string) => string) = (url => url),
-  fallbackParser?: (o: MdastNode) => MdastPropsNode,
-): MdastPropsRoot {
+  fallbackParser?: (o: MdastNode) => MdocNode,
+): MdDocument {
   const mdast: MdastRoot = parseToMdast(content)
-  const result: MdastPropsRoot = resolveMdastProps(
+  const result: MdDocument = resolveMdDocument(
     mdast, resolveUrl, fallbackParser)
   return result
 }

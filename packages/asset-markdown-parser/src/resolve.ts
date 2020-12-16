@@ -15,39 +15,39 @@ import type {
   MdastText,
 } from './types/mdast'
 import type {
-  MdastPropsBlockContent,
-  MdastPropsBlockquote,
-  MdastPropsBreak,
-  MdastPropsCode,
-  MdastPropsCodeEmbed,
-  MdastPropsCodeLive,
-  MdastPropsDelete,
-  MdastPropsEmphasis,
-  MdastPropsFootnote,
-  MdastPropsHeading,
-  MdastPropsImage,
-  MdastPropsInlineCode,
-  MdastPropsInlineMath,
-  MdastPropsLink,
-  MdastPropsList,
-  MdastPropsListContent,
-  MdastPropsListItem,
-  MdastPropsMeta,
-  MdastPropsNode,
-  MdastPropsParagraph,
-  MdastPropsPhrasingContent,
-  MdastPropsRoot,
-  MdastPropsRowContent,
-  MdastPropsStaticPhrasingContent,
-  MdastPropsStrong,
-  MdastPropsTable,
-  MdastPropsTableCell,
-  MdastPropsTableRow,
-  MdastPropsText,
-  MdastPropsThematicBreak,
-  MdastPropsToc,
-  MdastPropsTocAnchor,
-} from './types/mdast-props'
+  MdDocument,
+  MdDocumentMeta,
+  MdDocumentToc,
+  MdDocumentTocAnchor,
+  MdocBlockContent,
+  MdocBlockquote,
+  MdocBreak,
+  MdocCode,
+  MdocCodeEmbed,
+  MdocCodeLive,
+  MdocDelete,
+  MdocEmphasis,
+  MdocFootnote,
+  MdocHeading,
+  MdocImage,
+  MdocInlineCode,
+  MdocInlineMath,
+  MdocLink,
+  MdocList,
+  MdocListContent,
+  MdocListItem,
+  MdocNode,
+  MdocParagraph,
+  MdocPhrasingContent,
+  MdocRowContent,
+  MdocStaticPhrasingContent,
+  MdocStrong,
+  MdocTable,
+  MdocTableCell,
+  MdocTableRow,
+  MdocText,
+  MdocThematicBreak,
+} from './types/mdoc'
 import { calcIdentifierForHeading } from './util'
 
 
@@ -57,8 +57,8 @@ import { calcIdentifierForHeading } from './util'
  *
  * @param root
  */
-export function resolveMdastPropsMeta(root: MdastRoot): MdastPropsMeta {
-  const meta: MdastPropsMeta = {
+export function resolveMdDocumentMeta(root: MdastRoot): MdDocumentMeta {
+  const meta: MdDocumentMeta = {
     definitions: {},
   }
 
@@ -90,37 +90,37 @@ export function resolveMdastPropsMeta(root: MdastRoot): MdastPropsMeta {
  * @param resolveUrl      resolve link url and image src
  * @param fallbackParser
  */
-export function resolveMdastProps(
+export function resolveMdDocument(
   root: MdastRoot,
   resolveUrl: (url: string) => string,
-  fallbackParser?: (o: MdastNode) => MdastPropsNode,
-): MdastPropsRoot {
-  const meta: MdastPropsMeta = resolveMdastPropsMeta(root)
-  const toc: MdastPropsToc = { anchors: [] }
+  fallbackParser?: (o: MdastNode) => MdocNode,
+): MdDocument {
+  const meta: MdDocumentMeta = resolveMdDocumentMeta(root)
+  const toc: MdDocumentToc = { anchors: [] }
 
   type AnchorHolder = {
     depth: number,
-    anchor: MdastPropsTocAnchor
+    anchor: MdDocumentTocAnchor
     parent: AnchorHolder | null,
   }
   let currentAnchorHolder: AnchorHolder | null = null
 
-  const resolve = (o: MdastNode): MdastPropsNode => {
-    const resolveChildren = <T extends MdastPropsNode = MdastPropsNode>(): T[] => {
+  const resolve = (o: MdastNode): MdocNode => {
+    const resolveChildren = <T extends MdocNode = MdocNode>(): T[] => {
       if (o.children == null) return []
       return (o as MdastParent).children.map(resolve) as T[]
     }
 
     switch (o.type) {
       case 'blockquote': {
-        const result: MdastPropsBlockquote = {
+        const result: MdocBlockquote = {
           type: 'blockquote',
-          children: resolveChildren<MdastPropsBlockContent>(),
+          children: resolveChildren<MdocBlockContent>(),
         }
         return result
       }
       case 'break': {
-        const result: MdastPropsBreak = {
+        const result: MdocBreak = {
           type: 'break',
         }
         return result
@@ -164,7 +164,7 @@ export function resolveMdastProps(
           }
         }
 
-        const result: MdastPropsCode | MdastPropsCodeEmbed | MdastPropsCodeLive = {
+        const result: MdocCode | MdocCodeEmbed | MdocCodeLive = {
           type,
           value: u.value,
           lang: u.lang,
@@ -174,39 +174,39 @@ export function resolveMdastProps(
         return result
       }
       case 'delete': {
-        const result: MdastPropsDelete = {
+        const result: MdocDelete = {
           type: 'delete',
-          children: resolveChildren<MdastPropsPhrasingContent>(),
+          children: resolveChildren<MdocPhrasingContent>(),
         }
         return result
       }
       case 'emphasis': {
-        const result: MdastPropsEmphasis = {
+        const result: MdocEmphasis = {
           type: 'emphasis',
-          children: resolveChildren<MdastPropsPhrasingContent>(),
+          children: resolveChildren<MdocPhrasingContent>(),
         }
         return result
       }
       case 'footnote': {
-        const result: MdastPropsFootnote = {
+        const result: MdocFootnote = {
           type: 'footnote',
-          children: resolveChildren<MdastPropsPhrasingContent>(),
+          children: resolveChildren<MdocPhrasingContent>(),
         }
         return result
       }
       case 'heading': {
         const { depth } = o as MdastHeading
-        const children = resolveChildren<MdastPropsPhrasingContent>()
+        const children = resolveChildren<MdocPhrasingContent>()
         const identifier: string = calcIdentifierForHeading(children)
 
-        const heading: MdastPropsHeading = {
+        const heading: MdocHeading = {
           type: 'heading',
           level: depth,
           identifier,
           children,
         }
 
-        const anchor: MdastPropsTocAnchor = {
+        const anchor: MdDocumentTocAnchor = {
           id: heading.identifier,
           title: heading.children,
         }
@@ -237,7 +237,7 @@ export function resolveMdastProps(
       }
       case 'image': {
         const u = o as MdastImage
-        const result: MdastPropsImage = {
+        const result: MdocImage = {
           type: 'image',
           src: resolveUrl(u.url),
           title: u.title,
@@ -248,7 +248,7 @@ export function resolveMdastProps(
       case 'imageReference': {
         const u = o as MdastImageReference
         const ref = meta.definitions[u.identifier]
-        const result: MdastPropsImage = {
+        const result: MdocImage = {
           type: 'image',
           src: resolveUrl(ref.url),
           title: ref.title,
@@ -258,14 +258,14 @@ export function resolveMdastProps(
       }
       case 'inlineCode': {
         const u = o as MdastCode
-        const result: MdastPropsInlineCode = {
+        const result: MdocInlineCode = {
           type: 'inlineCode',
           value: u.value,
         }
         return result
       }
       case 'inlineMath': {
-        const result: MdastPropsInlineMath = {
+        const result: MdocInlineMath = {
           type: 'inlineMath',
           value: o.value as string,
         }
@@ -273,39 +273,39 @@ export function resolveMdastProps(
       }
       case 'link': {
         const u = o as MdastLink
-        const result: MdastPropsLink = {
+        const result: MdocLink = {
           type: 'link',
           url: resolveUrl(u.url),
           title: u.title,
-          children: resolveChildren<MdastPropsStaticPhrasingContent>(),
+          children: resolveChildren<MdocStaticPhrasingContent>(),
         }
         return result
       }
       case 'linkReference': {
         const u = o as MdastLinkReference
         const ref = meta.definitions[u.identifier]
-        const result: MdastPropsLink = {
+        const result: MdocLink = {
           type: 'link',
           url: resolveUrl(ref.url),
           title: ref.title,
-          children: resolveChildren<MdastPropsStaticPhrasingContent>(),
+          children: resolveChildren<MdocStaticPhrasingContent>(),
         }
         return result
       }
       case 'list': {
         const u = o as MdastList
-        const result: MdastPropsList = {
+        const result: MdocList = {
           type: 'list',
           ordered: Boolean(u.ordered),
           start: u.start,
           spread: Boolean(u.spread),
-          children: resolveChildren<MdastPropsListContent>(),
+          children: resolveChildren<MdocListContent>(),
         }
         return result
       }
       case 'listItem': {
         const u = o as MdastListItem
-        const result: MdastPropsListItem = {
+        const result: MdocListItem = {
           type: 'listItem',
           checked: u.checked,
           spread: Boolean(u.spread),
@@ -314,16 +314,16 @@ export function resolveMdastProps(
         return result
       }
       case 'paragraph': {
-        const result: MdastPropsParagraph = {
+        const result: MdocParagraph = {
           type: 'paragraph',
-          children: resolveChildren<MdastPropsPhrasingContent>(),
+          children: resolveChildren<MdocPhrasingContent>(),
         }
         return result
       }
       case 'strong': {
-        const result: MdastPropsStrong = {
+        const result: MdocStrong = {
           type: 'strong',
-          children: resolveChildren<MdastPropsPhrasingContent>(),
+          children: resolveChildren<MdocPhrasingContent>(),
         }
         return result
       }
@@ -342,7 +342,7 @@ export function resolveMdastProps(
           }
         })
 
-        const result: MdastPropsTable = {
+        const result: MdocTable = {
           type: 'table',
           children: rows,
         }
@@ -350,31 +350,31 @@ export function resolveMdastProps(
       }
       case 'tableCell': {
         const { align, isHeader } = o as any
-        const result: MdastPropsTableCell = {
+        const result: MdocTableCell = {
           type: 'tableCell',
           isHeader,
           align,
-          children: resolveChildren<MdastPropsPhrasingContent>(),
+          children: resolveChildren<MdocPhrasingContent>(),
         }
         return result
       }
       case 'tableRow': {
-        const result: MdastPropsTableRow = {
+        const result: MdocTableRow = {
           type: 'tableRow',
-          children: resolveChildren<MdastPropsRowContent>(),
+          children: resolveChildren<MdocRowContent>(),
         }
         return result
       }
       case 'text': {
         const u = o as MdastText
-        const result: MdastPropsText = {
+        const result: MdocText = {
           type: 'text',
           value: u.value,
         }
         return result
       }
       case 'thematicBreak': {
-        const result: MdastPropsThematicBreak = {
+        const result: MdocThematicBreak = {
           type: 'thematicBreak',
         }
         return result
@@ -390,11 +390,13 @@ export function resolveMdastProps(
   }
 
   const children = (root.children || []).map(resolve)
-  const result: MdastPropsRoot = {
-    type: 'root',
-    meta,
+  const result: MdDocument = {
     toc,
-    children,
+    meta,
+    ast: {
+      type: 'root',
+      children,
+    }
   }
   return result
 }

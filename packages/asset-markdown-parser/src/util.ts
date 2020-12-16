@@ -1,13 +1,13 @@
-import type { MdastPropsPhrasingContent } from './types/mdast-props'
+import type { MdocPhrasingContent } from './types/mdoc'
 
 
 /**
  * Calc link identifier for heading
  */
-export function calcIdentifierForHeading(contents: MdastPropsPhrasingContent[]): string {
+export function calcIdentifierForHeading(contents: MdocPhrasingContent[]): string {
   const textList: string[] = []
 
-  const resolveText = (nodes: MdastPropsPhrasingContent[]): void => {
+  const resolveText = (nodes: MdocPhrasingContent[]): void => {
     for (const o of nodes) {
       const { value, children } = o as any
       if (value != null) {
