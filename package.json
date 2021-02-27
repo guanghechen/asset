@@ -23,16 +23,17 @@
     "rebuild": "yarn clean && yarn build",
     "test": "lerna run --parallel test",
     "clean": "lerna clean --yes && yarn install",
-    "format": "yarn find-inconsistent && yarn sort-imports && yarn lint:fix",
-    "lint:fix": "lerna run --parallel lint:fix",
-    "find-inconsistent": "barusu-find-inconsistent .",
-    "sort-imports": "barusu-sort-imports ."
+    "format": "yarn format:find-inconsistent && yarn format:sort-imports && format:yarn lint:fix",
+    "format:find-inconsistent": "barusu-find-inconsistent .",
+    "format:lint:fix": "eslint . --fix",
+    "format:sort-imports": "barusu-sort-imports ."
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
     "@types/jest": "^26.0.14",
+    "@barusu/eslint-config": "^0.0.46",
     "@barusu/tool-find-inconsistent": "^0.0.46",
     "@barusu/tool-sort-imports": "^0.0.46",
     "@types/node": "^13.7.6",

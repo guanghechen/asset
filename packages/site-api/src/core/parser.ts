@@ -240,6 +240,7 @@ export class AssetParser {
        * Second step
        */
       return (): Promise<void> | void => {
+        // eslint-disable-next-line no-constant-condition
         while (true) {
           const result = process.next(asset)
           if (result.done) return result.value

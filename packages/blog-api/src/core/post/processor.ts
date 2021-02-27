@@ -211,6 +211,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
       yield [postItem, tags, categories]
 
       // post processing
+      // eslint-disable-next-line no-constant-condition
       while (true) {
         const result = process.next(postItem)
         if (result.done) return result.value
