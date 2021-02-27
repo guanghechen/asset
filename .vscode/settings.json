@@ -1,6 +1,7 @@
 {
   "cSpell.words": [
     "Mdast",
+    "Parens",
     "barusu",
     "dirpath",
     "downlevel",
@@ -10,9 +11,14 @@
     "kase",
     "mkdirs",
     "olist",
+    "pinst",
+    "postpublish",
     "prebuild",
     "squashable",
     "ulist",
     "unist"
-  ]
+  ],
+  "files.associations": {
+    ".prettierrc": "yaml"
+  }
 }
