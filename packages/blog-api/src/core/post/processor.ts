@@ -21,7 +21,6 @@ import {
 import { BlogSourceType } from '../../config/blog'
 import { PostDataItem } from './entity'
 
-
 /**
  * Props for create PostProcessor
  */

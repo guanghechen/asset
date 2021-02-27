@@ -10,7 +10,6 @@ import {
 } from './deploy'
 import { SubSiteConfig, SubSiteConfigResolver } from './sub-site/config'
 
-
 /**
  * Site path config
  */

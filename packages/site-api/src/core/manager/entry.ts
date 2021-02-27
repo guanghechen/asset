@@ -1,10 +1,9 @@
+import type { EntryDataMap } from '../entity/entry'
 import fs from 'fs-extra'
 import { writeJSON } from '../../util/fs'
-import type { EntryDataMap } from '../entity/entry'
 import { AssetService } from '../service/asset'
 import { CategoryService } from '../service/category'
 import { TagService } from '../service/tag'
-
 
 /**
  * EntryDataManager constructor

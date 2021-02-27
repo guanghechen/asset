@@ -1,6 +1,5 @@
 import crypto from 'crypto'
 
-
 /**
  * Calc hash value with sha1 algorithm
  *

@@ -6,7 +6,6 @@ import {
   resolveSubSiteSourceItem,
 } from '@guanghechen/site-api'
 
-
 export enum HandbookSourceType {
   /**
    * Post Asset

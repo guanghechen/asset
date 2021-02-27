@@ -13,7 +13,6 @@ import { cases } from './util/case'
 import { assetDataReplacer, desensitize } from './util/snapshot'
 import { noop } from './util/sys'
 
-
 describe('AssetDataProvider', function () {
   jest
     .spyOn(global.console, 'info')

@@ -8,7 +8,6 @@ import {
 import { cases } from './util/case'
 import { desensitize } from './util/snapshot'
 
-
 describe('resolveSubSiteConfig', function () {
   const resolveConfig = (
     workspace: string,

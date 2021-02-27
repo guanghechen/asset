@@ -21,7 +21,6 @@ import {
 import { HandbookSourceType } from '../../config/handbook'
 import { PostDataItem } from './entity'
 
-
 /**
  * Props for create PostProcessor
  */

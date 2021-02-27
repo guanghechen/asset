@@ -2,7 +2,6 @@ import type { TagUUID } from '../entity/_types'
 import type { TagDataItem, TagDataMap } from '../entity/tag'
 import type { TagDataManager } from '../manager/tag'
 
-
 /**
  * TagService constructor
  */

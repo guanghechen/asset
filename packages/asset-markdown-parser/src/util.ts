@@ -1,6 +1,5 @@
 import type { MdocPhrasingContent } from './types/mdoc'
 
-
 /**
  * Calc link identifier for heading
  */

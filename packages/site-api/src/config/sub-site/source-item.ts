@@ -6,7 +6,6 @@ import {
 } from '@barusu/util-option'
 import { resolveLocalPath } from '../../util/path'
 
-
 /**
  * Source item of sub site
  */

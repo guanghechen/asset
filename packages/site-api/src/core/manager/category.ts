@@ -1,15 +1,14 @@
-import fs from 'fs-extra'
-import invariant from 'tiny-invariant'
-import { writeJSON } from '../../util/fs'
-import { uniqueText } from '../../util/hash'
-import { stringify } from '../../util/string'
 import type { AssetUUID, CategoryUUID } from '../entity/_types'
 import type {
   CategoryDataItem,
   CategoryDataMap,
   RawCategoryDataItem,
 } from '../entity/category'
-
+import fs from 'fs-extra'
+import invariant from 'tiny-invariant'
+import { writeJSON } from '../../util/fs'
+import { uniqueText } from '../../util/hash'
+import { stringify } from '../../util/string'
 
 /**
  * Only export no side-effect funcs from CategoryDataManager

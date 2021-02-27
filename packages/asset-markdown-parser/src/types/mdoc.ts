@@ -1,6 +1,5 @@
 import type { AlignType, Definition as MdastDefinition } from 'mdast'
 
-
 /**
  * Anchor data of toc (Table of Contents)
  */

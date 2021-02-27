@@ -5,7 +5,6 @@ import { PostEntityManager } from './core/post/manager'
 import { PostProcessor } from './core/post/processor'
 import { PostService } from './core/post/service'
 
-
 /**
  * props for creating BlogDataProvider
  */

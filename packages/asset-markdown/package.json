@@ -45,8 +45,8 @@
     "tiny-invariant": "^1.0.2"
   },
   "devDependencies": {
-    "@barusu/eslint-config": "^0.0.47",
-    "@barusu/rollup-config": "^0.0.47",
+    "@barusu/eslint-config": "^0.0.46",
+    "@barusu/rollup-config": "^0.0.46",
     "cross-env": "~7.0.2",
     "rollup": "2.28.1"
   }

@@ -7,7 +7,6 @@ import {
   resolveSubSiteSourceItem,
 } from '../../src'
 
-
 const caseRootDir = path.resolve(__dirname, '../cases')
 const resolveCasePath = (...relativePieces: string[]): string => (
   path.resolve(caseRootDir, ...relativePieces))

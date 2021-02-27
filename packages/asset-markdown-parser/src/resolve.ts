@@ -50,7 +50,6 @@ import type {
 } from './types/mdoc'
 import { calcIdentifierForHeading } from './util'
 
-
 /**
  * Preprocess mdast tree
  *    - collect definitions

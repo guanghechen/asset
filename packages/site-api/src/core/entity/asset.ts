@@ -6,7 +6,6 @@ import type {
   TagUUID,
 } from './_types'
 
-
 /**
  * Asset item
  */

@@ -2,7 +2,6 @@ import type { CategoryUUID } from '../entity/_types'
 import type { CategoryDataItem, CategoryDataMap } from '../entity/category'
 import type { CategoryDataManager } from '../manager/category'
 
-
 /**
  * CategoryService constructor
  */

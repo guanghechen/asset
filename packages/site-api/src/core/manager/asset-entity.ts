@@ -1,9 +1,8 @@
+import type { AssetUUID } from '../entity/_types'
+import type { AssetEntity } from '../entity/asset'
 import fs from 'fs-extra'
 import { writeJSON } from '../../util/fs'
 import { resolveLocalPath } from '../../util/path'
-import type { AssetUUID } from '../entity/_types'
-import type { AssetEntity } from '../entity/asset'
-
 
 /**
  * Manage AssetEntities

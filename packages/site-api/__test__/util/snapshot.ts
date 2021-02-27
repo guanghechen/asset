@@ -1,7 +1,6 @@
 import path from 'path'
 import stripAnsi from 'strip-ansi'
 
-
 const WORKSPACE_ROOT_DIR = path.resolve(__dirname, '../..')
 
 

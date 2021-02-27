@@ -1,11 +1,10 @@
-import { AssetType } from './entity/_types'
 import type { AssetDataItem, RoughAssetDataItem } from './entity/asset'
 import type { CategoryDataItem } from './entity/category'
 import type { TagDataItem } from './entity/tag'
 import type { ImmutableAssetDataManager } from './manager/asset'
 import type { ImmutableCategoryDataManager } from './manager/category'
 import type { ImmutableTagDataManager } from './manager/tag'
-
+import { AssetType } from './entity/_types'
 
 export interface AssetTypeItem {
   /**

@@ -2,7 +2,6 @@ import type { MdDocument } from '@guanghechen/asset-markdown-parser'
 import type { AssetDataItem } from '@guanghechen/site-api'
 import type { HandbookSourceType } from '../../config/handbook'
 
-
 /**
  * Post data item
  */

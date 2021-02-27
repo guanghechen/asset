@@ -2,7 +2,6 @@ import type { MdDocument } from '@guanghechen/asset-markdown-parser'
 import type { AssetDataItem } from '@guanghechen/site-api'
 import type { BlogSourceType } from '../../config/blog'
 
-
 /**
  * Post data item
  */

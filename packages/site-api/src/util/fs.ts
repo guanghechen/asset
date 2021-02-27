@@ -1,7 +1,6 @@
 import fs from 'fs-extra'
 import path from 'path'
 
-
 /**
  * Ensure the dirpath exists
  * @param dirpath

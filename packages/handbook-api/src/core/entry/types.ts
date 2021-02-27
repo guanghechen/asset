@@ -1,6 +1,5 @@
 import { EntryDataMap } from '@guanghechen/site-api'
 
-
 /**
  * Parent node of HandbookMenu
  */

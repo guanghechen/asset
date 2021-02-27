@@ -1,7 +1,7 @@
+import type { SubSiteConfig } from '../config/sub-site/config'
 import chalk from 'chalk'
 import chokidar from 'chokidar'
 import fs from 'fs-extra'
-import type { SubSiteConfig } from '../config/sub-site/config'
 import { resolveUniversalPath, resolveUrlPath } from '../util/path'
 import { AssetDataManager, AssetDataManagerConstructor } from './manager/asset'
 import {
@@ -13,12 +13,8 @@ import { TagDataManager, TagDataManagerConstructor } from './manager/tag'
 import { AssetParser } from './parser'
 import { AssetProcessor } from './processor'
 import { AssetService, AssetServiceConstructor } from './service/asset'
-import {
-  CategoryService,
-  CategoryServiceConstructor,
-} from './service/category'
+import { CategoryService, CategoryServiceConstructor } from './service/category'
 import { TagService, TagServiceConstructor } from './service/tag'
-
 
 export interface AssetDataProviderProps<C extends SubSiteConfig> {
   /**

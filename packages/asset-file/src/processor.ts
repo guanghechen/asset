@@ -11,7 +11,6 @@ import {
 } from '@guanghechen/site-api'
 import { FileAssetDataItem, FileAssetType } from './entity'
 
-
 /**
  * Props for building AssetFileProcessor
  */

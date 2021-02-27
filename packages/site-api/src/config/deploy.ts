@@ -1,6 +1,5 @@
 import { cover, coverString, isNotEmptyString } from '@barusu/util-option'
 
-
 /**
  * Deploy configuration
  */

@@ -37,7 +37,7 @@
     "prepublishOnly": "cross-env ROLLUP_USE_SOURCE_MAP=false yarn build"
   },
   "dependencies": {
-    "@barusu/util-option": "^0.0.47",
+    "@barusu/util-option": "^0.0.46",
     "@guanghechen/asset-file": "^0.0.0",
     "@guanghechen/asset-markdown": "^0.0.0",
     "@guanghechen/asset-markdown-parser": "^0.0.0",
@@ -48,8 +48,8 @@
     "micromatch": "^4.0.2"
   },
   "devDependencies": {
-    "@barusu/eslint-config": "^0.0.47",
-    "@barusu/rollup-config": "^0.0.47",
+    "@barusu/eslint-config": "^0.0.46",
+    "@barusu/rollup-config": "^0.0.46",
     "cross-env": "~7.0.2",
     "rollup": "2.28.1"
   }

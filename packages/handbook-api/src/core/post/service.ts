@@ -2,7 +2,6 @@ import type { AssetService, AssetUUID } from '@guanghechen/site-api'
 import type { PostAssetEntity } from './entity'
 import type { PostEntityManager } from './manager'
 
-
 export class PostService {
   protected readonly postEntityManager: PostEntityManager
   protected readonly assetService: AssetService

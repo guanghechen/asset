@@ -1,6 +1,5 @@
 import type { AssetUUID, CategoryUUID } from './_types'
 
-
 /**
  *
  */
