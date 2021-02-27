@@ -38,10 +38,7 @@
   },
   "dependencies": {
     "@types/mdast": "^3.0.3",
-    "remark-gfm": "^1.0.0",
-    "remark-math": "^4.0.0",
-    "remark-parse": "^9.0.0",
-    "unified": "^9.2.0"
+    "@yozora/parser-gfm": "^1.0.0-alpha.6"
   },
   "devDependencies": {
     "@barusu/rollup-config": "^0.0.46",

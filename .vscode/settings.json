@@ -16,7 +16,8 @@
     "prebuild",
     "squashable",
     "ulist",
-    "unist"
+    "unist",
+    "yozora"
   ],
   "files.associations": {
     ".prettierrc": "yaml"

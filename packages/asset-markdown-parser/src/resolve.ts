@@ -1,7 +1,6 @@
 import type { Node as MdastNode } from 'unist'
 import type {
   MdastCode,
-  MdastDefinition,
   MdastHeading,
   MdastImage,
   MdastImageReference,
@@ -51,38 +50,6 @@ import type {
 import { calcIdentifierForHeading } from './util'
 
 /**
- * Preprocess mdast tree
- *    - collect definitions
- *
- * @param root
- */
-export function resolveMdDocumentMeta(root: MdastRoot): MdDocumentMeta {
-  const meta: MdDocumentMeta = {
-    definitions: {},
-  }
-
-  const resolve = (o: MdastNode) => {
-    if (o.type === 'definition') {
-      const { identifier, label, url, title } = o as MdastDefinition
-
-      // eslint-disable-next-line no-param-reassign
-      meta.definitions[identifier] = { identifier, label, url, title } as any
-      return
-    }
-
-    if (o.children != null) {
-      const u = o as MdastParent
-      for (const v of u.children) {
-        resolve(v)
-      }
-    }
-  }
-
-  resolve(root)
-  return meta
-}
-
-/**
  *
  * @param root
  * @param resolveUrl      resolve link url and image src
@@ -93,7 +60,7 @@ export function resolveMdDocument(
   resolveUrl: (url: string) => string,
   fallbackParser?: (o: MdastNode) => MdocNode,
 ): MdDocument {
-  const meta: MdDocumentMeta = resolveMdDocumentMeta(root)
+  const meta: MdDocumentMeta = (root as any).meta
   const toc: MdDocumentToc = { anchors: [] }
 
   type AnchorHolder = {
@@ -123,7 +90,8 @@ export function resolveMdDocument(
         }
         return result
       }
-      case 'code': {
+      case 'indentedCode':
+      case 'fencedCode': {
         const u = o as MdastCode
         let args: Record<string, unknown> = {}
         let type: 'code' | 'codeEmbed' | 'codeLive' = 'code'
@@ -155,7 +123,6 @@ export function resolveMdDocument(
                     break
                 }
               }
-
               return ''
             })
           }
@@ -208,10 +175,9 @@ export function resolveMdDocument(
           title: heading.children,
         }
 
-        for (
-          ;
-          currentAnchorHolder != null && currentAnchorHolder.depth >= depth;
-
+        while (
+          currentAnchorHolder != null &&
+          currentAnchorHolder.depth >= depth
         ) {
           currentAnchorHolder = currentAnchorHolder.parent
         }
@@ -248,7 +214,7 @@ export function resolveMdDocument(
       }
       case 'imageReference': {
         const u = o as MdastImageReference
-        const ref = meta.definitions[u.identifier]
+        const ref = meta.definition[u.identifier]
         const result: MdocImage = {
           type: 'image',
           src: resolveUrl(ref.url),
@@ -284,7 +250,7 @@ export function resolveMdDocument(
       }
       case 'linkReference': {
         const u = o as MdastLinkReference
-        const ref = meta.definitions[u.identifier]
+        const ref = meta.definition[u.identifier]
         const result: MdocLink = {
           type: 'link',
           url: resolveUrl(ref.url),
@@ -297,7 +263,7 @@ export function resolveMdDocument(
         const u = o as MdastList
         const result: MdocList = {
           type: 'list',
-          ordered: Boolean(u.ordered),
+          ordered: u.listType === 'ordered',
           start: u.start,
           spread: Boolean(u.spread),
           children: resolveChildren<MdocListContent>(),
@@ -332,12 +298,13 @@ export function resolveMdDocument(
         const u = o as MdastTable
 
         const children = resolveChildren()
+        const align = (u as any).columns
         const rows = children!.map((row, index): any => {
           return {
             ...row,
             children: (row as any).children.map((c: any, index: number) => ({
               isHeader: index <= 0,
-              align: u.align![index],
+              align: align![index],
               ...c,
             })),
           }

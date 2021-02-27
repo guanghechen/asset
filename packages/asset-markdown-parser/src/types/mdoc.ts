@@ -35,7 +35,7 @@ export interface MdDocumentMeta {
   /**
    * Definition map
    */
-  definitions: Record<string, MdastDefinition>
+  definition: Record<string, MdastDefinition>
 }
 
 /**
