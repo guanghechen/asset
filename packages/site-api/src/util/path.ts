@@ -10,13 +10,13 @@ export function resolveUrlPath(
   prefixPath: string,
   ...pathPieces: string[]
 ): string {
-  const result = path.join(prefixPath, ...pathPieces)
+  const result = path
+    .join(prefixPath, ...pathPieces)
     .replace(/[\\/]+/g, '/')
     .replace(/^[/]?/, '/')
     .replace(/[/]$/, '')
   return result
 }
-
 
 /**
  * Resolve local data path
@@ -31,7 +31,6 @@ export function resolveLocalPath(
   const result = path.resolve(basePath, ...pathPieces)
   return result
 }
-
 
 /**
  * Calculate filepath cross platform and repository

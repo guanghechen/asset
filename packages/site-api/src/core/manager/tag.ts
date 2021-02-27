@@ -11,7 +11,6 @@ import { stringify } from '../../util/string'
  */
 export type ImmutableTagDataManager = Pick<TagDataManager, 'find' | 'normalize'>
 
-
 /**
  * TagDataManager constructor
  */
@@ -21,7 +20,6 @@ export interface TagDataManagerConstructor {
    */
   new (dataMapFilepath: string): TagDataManager
 }
-
 
 export class TagDataManager {
   protected readonly dataMapFilepath: string
@@ -38,9 +36,9 @@ export class TagDataManager {
    * Load tag data map from tagDataMap filepath
    */
   public async load(): Promise<void> {
-    const data: TagDataMap = await fs.readJSON(this.dataMapFilepath);
-    (this.uuids as TagUUID[]) = data.uuids;
-    (this.dataMap as Record<TagUUID, TagDataItem>) = data.entities
+    const data: TagDataMap = await fs.readJSON(this.dataMapFilepath)
+    ;(this.uuids as TagUUID[]) = data.uuids
+    ;(this.dataMap as Record<TagUUID, TagDataItem>) = data.entities
   }
 
   /**
@@ -68,10 +66,10 @@ export class TagDataManager {
    * @param tag
    */
   public normalize(tag: RawTagDataItem): TagDataItem {
-    const title: string = (typeof tag === 'string') ? tag : tag.uuid
+    const title: string = typeof tag === 'string' ? tag : tag.uuid
     const uuid: TagUUID = uniqueText(title)
 
-    invariant(uuid != null, `Bad uuid. tag(${ stringify(tag) })`)
+    invariant(uuid != null, `Bad uuid. tag(${stringify(tag)})`)
 
     let result: TagDataItem = this.dataMap[uuid]
 
@@ -81,7 +79,7 @@ export class TagDataManager {
         uuid,
         title,
         assets: [],
-        ...((typeof tag !== 'string') ? tag : undefined)
+        ...(typeof tag !== 'string' ? tag : undefined),
       }
     }
 
@@ -151,7 +149,7 @@ export class TagDataManager {
    * @param uuid
    */
   protected _drop(uuid: TagUUID): void {
-    (this.uuids as TagUUID[]) = this.uuids.filter(id => id !== uuid)
+    ;(this.uuids as TagUUID[]) = this.uuids.filter(id => id !== uuid)
     this.dataMap[uuid] = undefined as any
   }
 }

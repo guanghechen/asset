@@ -103,11 +103,11 @@ export class AssetParser {
   public watch(
     rootDir: string,
     watchOptions: chokidar.WatchOptions,
-    afterChanged?: () => void | Promise<void>
+    afterChanged?: () => void | Promise<void>,
   ): void {
     if (this.watcher != null) return
 
-    type TaskData = { type: 'touch' | 'remove', filepath: string }
+    type TaskData = { type: 'touch' | 'remove'; filepath: string }
     const squashable = (currentData: TaskData, nextData: TaskData): boolean => {
       if (currentData.filepath !== nextData.filepath) return false
       if (currentData.type === nextData.type) return true
@@ -117,7 +117,7 @@ export class AssetParser {
 
     const serialExecutor = createSerialExecutor<TaskData>(
       squashable,
-      afterChanged
+      afterChanged,
     )
 
     /**
@@ -130,10 +130,11 @@ export class AssetParser {
       return postProcess()
     }
 
-    this.watcher = chokidar.watch(rootDir, {
-      persistent: true,
-      ...watchOptions,
-    })
+    this.watcher = chokidar
+      .watch(rootDir, {
+        persistent: true,
+        ...watchOptions,
+      })
       .on('add', (filepath: string) => {
         serialExecutor.addTask({
           data: { type: 'touch', filepath },
@@ -149,7 +150,7 @@ export class AssetParser {
       .on('unlink', (filepath: string) => {
         serialExecutor.addTask({
           data: { type: 'remove', filepath },
-          execute: () => this.removeFile(filepath)
+          execute: () => this.removeFile(filepath),
         })
       })
   }
@@ -167,7 +168,7 @@ export class AssetParser {
    *
    * @param filepath
    */
-  public processFile(filepath: string): (() => Promise<void> | void) {
+  public processFile(filepath: string): () => Promise<void> | void {
     const { assetDataManager, tagDataManager, categoryDataManager } = this
     for (const processor of this.processors) {
       if (!processor.processable(filepath)) continue
@@ -193,13 +194,15 @@ export class AssetParser {
         if (existedAsset.fingerprint === fingerprint) continue
       }
 
-      const createAt = existedAsset != null
-        ? existedAsset.createAt
-        : dayjs(stat.atimeMs).toISOString()
+      const createAt =
+        existedAsset != null
+          ? existedAsset.createAt
+          : dayjs(stat.atimeMs).toISOString()
 
-      const updateAt = existedAsset != null
-        ? existedAsset.updateAt
-        : dayjs(stat.mtimeMs).toISOString()
+      const updateAt =
+        existedAsset != null
+          ? existedAsset.updateAt
+          : dayjs(stat.mtimeMs).toISOString()
 
       const { name: _filename, ext: _extname } = path.parse(filepath)
       const title = existedAsset != null ? existedAsset.title : _filename
@@ -219,8 +222,12 @@ export class AssetParser {
       }
 
       const process = processor.process(
-        filepath, rawContent, roughAsset,
-        tagDataManager, categoryDataManager, assetDataManager
+        filepath,
+        rawContent,
+        roughAsset,
+        tagDataManager,
+        categoryDataManager,
+        assetDataManager,
       )
 
       /**
@@ -229,7 +236,7 @@ export class AssetParser {
       const firstResult = process.next()
       invariant(
         !firstResult.done,
-        'processor.process() first call should yield a triple'
+        'processor.process() first call should yield a triple',
       )
 
       const [asset, tags, categoriesList] = firstResult.value

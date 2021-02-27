@@ -12,11 +12,11 @@ export interface PostDataItem extends AssetDataItem<HandbookSourceType.POST> {
   docType: 'markdown' | string
 }
 
-
 /**
  * Post asset entity
  */
-export interface PostAssetEntity extends AssetDataItem<HandbookSourceType.POST> {
+export interface PostAssetEntity
+  extends AssetDataItem<HandbookSourceType.POST> {
   /**
    * Detailed classification of the post-document
    */

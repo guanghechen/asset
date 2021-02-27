@@ -10,8 +10,9 @@ import { resolveLocalPath, resolveUniversalPath } from '../../util/path'
  * Only export no side-effect funcs from AssetDataManager
  */
 export type ImmutableAssetDataManager = Pick<
-  AssetDataManager, 'find' | 'locate' | 'calcLocation' | 'calcDefaultUUID' | 'resolveFilepath'>
-
+  AssetDataManager,
+  'find' | 'locate' | 'calcLocation' | 'calcDefaultUUID' | 'resolveFilepath'
+>
 
 /**
  * AssetDataManager constructor
@@ -23,7 +24,6 @@ export interface AssetDataManagerConstructor {
    */
   new (workspace: string, dataMapFilepath: string): AssetDataManager
 }
-
 
 /**
  * Manage AssetDataItems
@@ -64,10 +64,10 @@ export class AssetDataManager {
    * Load asset data map from assetDataMap filepath
    */
   public async load(): Promise<void> {
-    const data: AssetDataMap = await fs.readJSON(this.dataMapFilepath);
-    (this.uuids as Record<AssetType, AssetUUID[]>) = data.uuids;
-    (this.locations as Record<AssetLocation, AssetUUID>) = data.locations;
-    (this.dataMap as Record<AssetUUID, AssetDataItem>) = data.entities
+    const data: AssetDataMap = await fs.readJSON(this.dataMapFilepath)
+    ;(this.uuids as Record<AssetType, AssetUUID[]>) = data.uuids
+    ;(this.locations as Record<AssetLocation, AssetUUID>) = data.locations
+    ;(this.dataMap as Record<AssetUUID, AssetDataItem>) = data.entities
   }
 
   /**
@@ -155,11 +155,11 @@ export class AssetDataManager {
   public insert(asset: AssetDataItem): void {
     invariant(
       this.dataMap[asset.uuid] == null,
-      `Duplicated asset uuid (${ asset.uuid })`
+      `Duplicated asset uuid (${asset.uuid})`,
     )
 
     const uuids: AssetUUID[] = this.uuids[asset.type]
-    invariant(uuids != null, `Unknown assetType (${ asset.type })`)
+    invariant(uuids != null, `Unknown assetType (${asset.type})`)
 
     uuids.push(asset.uuid)
     this.locations[asset.location] = asset.uuid

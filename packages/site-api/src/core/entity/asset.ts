@@ -56,18 +56,15 @@ export interface AssetEntity<T extends AssetType = AssetType> {
   categories: CategoryUUID[][]
 }
 
-
 /**
  * Asset item of AssetDataMap
  */
 export type AssetDataItem<T extends AssetType = AssetType> = AssetEntity<T>
 
-
 /**
  * Rough AssetDataItem
  */
 export type RoughAssetDataItem = Omit<AssetDataItem, 'type'>
-
 
 /**
  * Asset data map

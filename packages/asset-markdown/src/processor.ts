@@ -42,7 +42,6 @@ export interface AssetMarkdownProcessorProps {
   ) => Promise<void> | void
 }
 
-
 /**
  * Processor for handle markdown asset
  */
@@ -75,7 +74,7 @@ export class AssetMarkdownProcessor
   /**
    * @override
    */
-  public * process(
+  public *process(
     filepath: string,
     _rawContent: Buffer,
     roughAsset: RoughAssetDataItem,
@@ -93,30 +92,32 @@ export class AssetMarkdownProcessor
     if (this.isMetaOptional) {
       if (match == null) match = ['', '']
     } else {
-      invariant(match != null, `No meta data found in ${ filepath }`)
+      invariant(match != null, `No meta data found in ${filepath}`)
     }
 
-    const meta: Record<string, any> = yaml.safeLoad(match[1]) || {} as any
+    const meta: Record<string, any> = yaml.safeLoad(match[1]) || ({} as any)
     const uuid: string = meta.uuid || roughAsset.uuid
     const title: string = meta.title || roughAsset.title
-    const createAt = meta.createAt != null
-      ? dayjs(meta.createAt).toISOString()
-      : roughAsset.createAt
-    const updateAt = meta.updateAt != null
-      ? dayjs(meta.updateAt).toISOString()
-      : roughAsset.updateAt
+    const createAt =
+      meta.createAt != null
+        ? dayjs(meta.createAt).toISOString()
+        : roughAsset.createAt
+    const updateAt =
+      meta.updateAt != null
+        ? dayjs(meta.updateAt).toISOString()
+        : roughAsset.updateAt
 
     // resolve tags
     const rawTags = (meta.tags || []) as RawTagDataItem[]
-    const tags: TagDataItem[] = rawTags.map(rawTag => (
-      tagDataManager.normalize(rawTag)
-    ))
+    const tags: TagDataItem[] = rawTags.map(rawTag =>
+      tagDataManager.normalize(rawTag),
+    )
 
     // resolve categories
     const rawCategories = (meta.categories || []) as RawCategoryDataItem[][]
-    const categories: CategoryDataItem[][] = rawCategories.map(categoryPath => (
-      categoryPath.map(c => categoryDataManager.normalize(c))
-    ))
+    const categories: CategoryDataItem[][] = rawCategories.map(categoryPath =>
+      categoryPath.map(c => categoryDataManager.normalize(c)),
+    )
 
     const asset: MarkdownAssetDataItem = {
       uuid,
@@ -138,8 +139,11 @@ export class AssetMarkdownProcessor
     const content = rawContent.substring(match[0].length)
     if (this.resolve == null) return
     return this.resolve(
-      content, resolvedAsset,
-      tagDataManager, categoryDataManager, assetDataManager
+      content,
+      resolvedAsset,
+      tagDataManager,
+      categoryDataManager,
+      assetDataManager,
     )
   }
 }

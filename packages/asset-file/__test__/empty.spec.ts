@@ -1,3 +1,1 @@
-test('empty', function () {
-
-})
+test('empty', function () {})

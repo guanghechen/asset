@@ -21,7 +21,6 @@ export enum BlogSourceType {
   FILE = 'file',
 }
 
-
 export type BlogSourceItem = SubSiteSourceItem
 export const blogSourceTypes: BlogSourceType[] = [
   BlogSourceType.POST,
@@ -29,14 +28,11 @@ export const blogSourceTypes: BlogSourceType[] = [
   BlogSourceType.FILE,
 ]
 
-
 /**
  * Configuration of the blog
  */
-export interface BlogConfig extends SubSiteConfig<BlogSourceType, BlogSourceItem> {
-
-}
-
+export interface BlogConfig
+  extends SubSiteConfig<BlogSourceType, BlogSourceItem> {}
 
 const defaultBlogConfig: BlogConfig = {
   routeRoot: '/blog',
@@ -57,13 +53,7 @@ const defaultBlogConfig: BlogConfig = {
     image: {
       sourceRoot: 'resource',
       dataRoot: 'resource/image/',
-      pattern: [
-        '**/*.png',
-        '**/*.jpg',
-        '**/*.jpeg',
-        '**/*.gif',
-        '**/*.svg',
-      ],
+      pattern: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
     },
     file: {
       sourceRoot: 'resource',
@@ -72,7 +62,6 @@ const defaultBlogConfig: BlogConfig = {
     },
   },
 }
-
 
 /**
  * Resolve BlogConfig
@@ -90,8 +79,16 @@ export const resolveBlogConfig: SubSiteConfigResolver<
   sitePathConfig,
   defaultConfig = defaultBlogConfig,
 ): BlogConfig => {
-  const subSiteConfig: SubSiteConfig = resolveSubSiteConfig<BlogSourceType, BlogSourceItem>(
-    rawConfig, blogSourceTypes, resolveSubSiteSourceItem, sitePathConfig, defaultConfig)
+  const subSiteConfig: SubSiteConfig = resolveSubSiteConfig<
+    BlogSourceType,
+    BlogSourceItem
+  >(
+    rawConfig,
+    blogSourceTypes,
+    resolveSubSiteSourceItem,
+    sitePathConfig,
+    defaultConfig,
+  )
 
   const result: BlogConfig = {
     ...subSiteConfig,

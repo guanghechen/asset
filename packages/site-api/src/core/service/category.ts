@@ -12,7 +12,6 @@ export interface CategoryServiceConstructor {
   new (dataManager: CategoryDataManager): CategoryService
 }
 
-
 export class CategoryService {
   protected readonly dataManager: CategoryDataManager
 
@@ -34,8 +33,9 @@ export class CategoryService {
    */
   public fetchCategories(): CategoryDataItem[] {
     const dataMap: CategoryDataMap = this.dataManager.toDataMap()
-    const result: CategoryDataItem[] = dataMap.uuids
-      .map(uuid => dataMap.entities[uuid])
+    const result: CategoryDataItem[] = dataMap.uuids.map(
+      uuid => dataMap.entities[uuid],
+    )
     return result
   }
 }

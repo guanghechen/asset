@@ -11,14 +11,16 @@ export * from './util'
 
 export function parse(
   content: string,
-  resolveUrl: ((url: string) => string) = (url => url),
+  resolveUrl: (url: string) => string = url => url,
   fallbackParser?: (o: MdastNode) => MdocNode,
 ): MdDocument {
   const mdast: MdastRoot = parseToMdast(content)
   const result: MdDocument = resolveMdDocument(
-    mdast, resolveUrl, fallbackParser)
+    mdast,
+    resolveUrl,
+    fallbackParser,
+  )
   return result
 }
-
 
 export default parse

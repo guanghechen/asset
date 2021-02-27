@@ -14,7 +14,6 @@ export interface HandbookMenuParentNode {
   children: (HandbookMenuParentNode | HandbookMenuLeafNode)[]
 }
 
-
 /**
  * Leaf node of HandbookMenu
  */
@@ -32,7 +31,6 @@ export interface HandbookMenuLeafNode {
    */
   source: string
 }
-
 
 /**
  * Handbook entry data

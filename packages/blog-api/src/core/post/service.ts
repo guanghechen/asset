@@ -33,9 +33,12 @@ export class PostService {
    * @param offset  start index
    * @param limit   size of results
    */
-  public fetchPosts(offset: number, limit:number): PostDataItem[] {
-    const result: AssetDataItem[] = this.assetService
-      .fetchAssets(BlogSourceType.POST, offset, limit)
+  public fetchPosts(offset: number, limit: number): PostDataItem[] {
+    const result: AssetDataItem[] = this.assetService.fetchAssets(
+      BlogSourceType.POST,
+      offset,
+      limit,
+    )
     return result as PostDataItem[]
   }
 }

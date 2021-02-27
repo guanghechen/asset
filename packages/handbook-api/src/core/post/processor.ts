@@ -64,7 +64,6 @@ export interface PostProcessorProps {
   extraProcessors?: AssetProcessor<PostDataItem>[]
 }
 
-
 /**
  * Post asset processor
  */
@@ -110,7 +109,10 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
               const assetFilepath = assetDataManager.resolveFilepath(target)
               if (assetFilepath == null) return url
 
-              const relativeFilepath = path.relative(subSiteDataRoot, assetFilepath)
+              const relativeFilepath = path.relative(
+                subSiteDataRoot,
+                assetFilepath,
+              )
               return resolveUrlPath(urlRoot, relativeFilepath)
             }
 
@@ -139,7 +141,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
           const data = parseMd(content, resolveUrl)
           const postFilepath = assetDataManager.resolveFilepath(asset)!
           await writeJSON(postFilepath, { ...asset, content: data })
-        }
+        },
       }),
     } = props
 
@@ -161,24 +163,23 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
    * @override
    */
   public types(): AssetTypeItem[] {
-    return [
-      { type: HandbookSourceType.POST, assetDataRoot: this.dataRoot },
-    ]
+    return [{ type: HandbookSourceType.POST, assetDataRoot: this.dataRoot }]
   }
 
   /**
    * @override
    */
   public processable(filepath: string): boolean {
-    const isMatched = micromatch.isMatch(
-      filepath, this.patterns, { cwd: this.sourceRoot })
+    const isMatched = micromatch.isMatch(filepath, this.patterns, {
+      cwd: this.sourceRoot,
+    })
     return isMatched
   }
 
   /**
    * @override
    */
-  public * process(
+  public *process(
     filepath: string,
     _rawContent: Buffer,
     roughAsset: RoughAssetDataItem,
@@ -193,13 +194,18 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
     for (const processor of this.realProcessors) {
       if (!processor.processable(filepath)) continue
       const process = processor.process(
-        filepath, _rawContent, roughAsset,
-        tagDataManager, categoryDataManager, assetDataManager)
+        filepath,
+        _rawContent,
+        roughAsset,
+        tagDataManager,
+        categoryDataManager,
+        assetDataManager,
+      )
 
       const firstResult = process.next()
       invariant(
         !firstResult.done,
-        'processor.process() first call should yield a triple'
+        'processor.process() first call should yield a triple',
       )
 
       const [PostDataItem, tags, categories] = firstResult.value
@@ -218,6 +224,6 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
       }
     }
 
-    throw new Error(`no suitable AssetDataProcessor found for file ${ filepath }`)
+    throw new Error(`no suitable AssetDataProcessor found for file ${filepath}`)
   }
 }

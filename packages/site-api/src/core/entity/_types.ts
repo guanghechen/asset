@@ -13,12 +13,10 @@ export type AssetType = string
  */
 export type AssetLocation = string
 
-
 /**
  * Universally Unique Identifier of Category
  */
 export type CategoryUUID = string
-
 
 /**
  * Universally Unique Identifier of Tag

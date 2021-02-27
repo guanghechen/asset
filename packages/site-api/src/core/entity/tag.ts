@@ -5,7 +5,6 @@ import type { AssetUUID, TagUUID } from './_types'
  */
 export type RawTagDataItem = TagUUID | Pick<TagDataItem, 'uuid'>
 
-
 /**
  * Tag item
  */
@@ -23,7 +22,6 @@ export interface TagDataItem {
    */
   assets: AssetUUID[]
 }
-
 
 /**
  * Tag data map

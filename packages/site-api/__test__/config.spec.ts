@@ -23,8 +23,8 @@ describe('resolveSubSiteConfig', function () {
           sourceRoot: 'asset/image',
           dataRoot: 'asset/image',
           pattern: ['**/*{.png,jpg}'],
-        }
-      }
+        },
+      },
     }
 
     const subSiteConfig = resolveSubSiteConfig(
@@ -39,34 +39,25 @@ describe('resolveSubSiteConfig', function () {
 
   test('empty rawConfig', function () {
     expect(
-      desensitize(
-        resolveConfig(
-          path.resolve(__dirname, 'case'),
-          {},
-        )
-      )
+      desensitize(resolveConfig(path.resolve(__dirname, 'case'), {})),
     ).toMatchSnapshot()
   })
 
   test('full rawConfig', function () {
     expect(
       desensitize(
-        resolveConfig(
-          path.resolve(__dirname, 'case'),
-          {
-            routeRoot: '/waw',
-            sourceRoot: 'emm/waw/source',
-            dataRoot: 'waw/emm/data',
-            assetDataMapFilepath: 'asset.json',
-            tagDataMapFilepath: 'tag.json',
-            categoryDataMapFilepath: 'category.json',
-          }
-        )
-      )
+        resolveConfig(path.resolve(__dirname, 'case'), {
+          routeRoot: '/waw',
+          sourceRoot: 'emm/waw/source',
+          dataRoot: 'waw/emm/data',
+          assetDataMapFilepath: 'asset.json',
+          tagDataMapFilepath: 'tag.json',
+          categoryDataMapFilepath: 'category.json',
+        }),
+      ),
     ).toMatchSnapshot()
   })
 })
-
 
 describe('loadSiteConfig', function () {
   for (const kase of cases) {

@@ -11,7 +11,7 @@ import { resolveLocalPath, resolveUrlPath } from '../../util/path'
  */
 export interface SubSiteConfig<
   SourceType extends string = string,
-  SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
+  SourceItem extends SubSiteSourceItem = SubSiteSourceItem
 > {
   /**
    * The root route (spa) path of the sub-site
@@ -51,7 +51,6 @@ export interface SubSiteConfig<
   source: Record<SourceType, SourceItem>
 }
 
-
 /**
  * Sub-site config resolver
  *
@@ -62,13 +61,15 @@ export interface SubSiteConfig<
 export type SubSiteConfigResolver<
   SourceType extends string = string,
   SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
-  T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<SourceType, SourceItem>,
-  > = (
-    rawConfig: Partial<Omit<T, 'source'>> & { source?: Partial<T['source']> },
-    sitePathConfig: SitePathConfig,
-    defaultConfig?: T,
-  ) => T
-
+  T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<
+    SourceType,
+    SourceItem
+  >
+> = (
+  rawConfig: Partial<Omit<T, 'source'>> & { source?: Partial<T['source']> },
+  sitePathConfig: SitePathConfig,
+  defaultConfig?: T,
+) => T
 
 /**
  * Create default sub site config
@@ -90,7 +91,6 @@ export function createDefaultSubSiteConfig(name: string): SubSiteConfig {
   return defaultConfig
 }
 
-
 /**
  * Resolve sub site config
  *
@@ -103,9 +103,14 @@ export function createDefaultSubSiteConfig(name: string): SubSiteConfig {
 export function resolveSubSiteConfig<
   SourceType extends string = string,
   SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
-  T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<SourceType, SourceItem>,
+  T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<
+    SourceType,
+    SourceItem
+  >
 >(
-  rawConfig: (Partial<Omit<T, 'source'>> & { source?: Partial<T['source']> }) = {},
+  rawConfig: Partial<Omit<T, 'source'>> & {
+    source?: Partial<T['source']>
+  } = {},
   sourceItemTypes: SourceType[],
   resolveSourceItem: SubSiteSourceItemResolver<SourceItem>,
   sitePathConfig: SitePathConfig,
@@ -114,22 +119,30 @@ export function resolveSubSiteConfig<
   // resolve routeRoot (absolute url path)
   const routeRoot = resolveUrlPath(
     sitePathConfig.routeRoot,
-    coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNotEmptyString))
+    coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNotEmptyString),
+  )
 
   // resolve urlRoot (absolute url path)
   const urlRoot = resolveUrlPath(
     sitePathConfig.urlRoot,
-    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNotEmptyString))
+    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNotEmptyString),
+  )
 
   // resolve sourceRoot (absolute filepath)
   const sourceRoot = resolveLocalPath(
     sitePathConfig.workspace,
-    coverString(defaultConfig.sourceRoot, rawConfig.sourceRoot, isNotEmptyString))
+    coverString(
+      defaultConfig.sourceRoot,
+      rawConfig.sourceRoot,
+      isNotEmptyString,
+    ),
+  )
 
   // resolve dataRoot (absolute filepath)
   const dataRoot = resolveLocalPath(
     sitePathConfig.workspace,
-    coverString(defaultConfig.dataRoot, rawConfig.dataRoot, isNotEmptyString))
+    coverString(defaultConfig.dataRoot, rawConfig.dataRoot, isNotEmptyString),
+  )
 
   // resolve entryDataMapFilepath (absolute filepath)
   const entryDataMapFilepath = resolveLocalPath(
@@ -137,8 +150,8 @@ export function resolveSubSiteConfig<
     coverString(
       defaultConfig.entryDataMapFilepath,
       rawConfig.entryDataMapFilepath,
-      isNotEmptyString
-    )
+      isNotEmptyString,
+    ),
   )
 
   // resolve assetDataMapFilepath (absolute filepath)
@@ -147,8 +160,8 @@ export function resolveSubSiteConfig<
     coverString(
       defaultConfig.assetDataMapFilepath,
       rawConfig.assetDataMapFilepath,
-      isNotEmptyString
-    )
+      isNotEmptyString,
+    ),
   )
 
   // resolve categoryDataMapFilepath (absolute filepath)
@@ -157,8 +170,8 @@ export function resolveSubSiteConfig<
     coverString(
       defaultConfig.categoryDataMapFilepath,
       rawConfig.categoryDataMapFilepath,
-      isNotEmptyString
-    )
+      isNotEmptyString,
+    ),
   )
 
   // resolve tagDataMapFilepath (absolute filepath)
@@ -167,13 +180,14 @@ export function resolveSubSiteConfig<
     coverString(
       defaultConfig.tagDataMapFilepath,
       rawConfig.tagDataMapFilepath,
-      isNotEmptyString
-    )
+      isNotEmptyString,
+    ),
   )
 
   // resolve source
   const source: Record<SourceType, SourceItem> = {} as any
-  const rawSources: Record<SourceType, Partial<SourceItem>> = rawConfig.source || {} as any
+  const rawSources: Record<SourceType, Partial<SourceItem>> =
+    rawConfig.source || ({} as any)
   for (const sourceType of sourceItemTypes) {
     source[sourceType] = resolveSourceItem(
       rawSources[sourceType],

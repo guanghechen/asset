@@ -18,7 +18,6 @@ export interface MdDocumentTocAnchor {
   children?: MdDocumentTocAnchor[]
 }
 
-
 /**
  * Table of contents of Markdown Document
  */
@@ -29,7 +28,6 @@ export interface MdDocumentToc {
   anchors: MdDocumentTocAnchor[]
 }
 
-
 /**
  * Meta data of Markdown Document
  */
@@ -39,7 +37,6 @@ export interface MdDocumentMeta {
    */
   definitions: Record<string, MdastDefinition>
 }
-
 
 /**
  * Markdown document
@@ -59,7 +56,6 @@ export interface MdDocument {
   ast: MdocRoot
 }
 
-
 /**
  * Mdast props ast
  */
@@ -73,7 +69,6 @@ export interface MdocRoot {
    */
   children: MdocNode[]
 }
-
 
 export type MdocContent =
   | MdocTopLevelContent
@@ -116,7 +111,6 @@ export type MdocStaticPhrasingContent =
   | MdocFootnote
   | MdocFootnoteReference
 
-
 /**
  *
  */
@@ -127,16 +121,13 @@ export interface MdocNode {
   type: string
 }
 
-
 export interface MdocParent extends MdocNode {
   children: MdocNode[]
 }
 
-
 export interface MdocLiteral extends MdocNode {
   value: string
 }
-
 
 /**
  * Blockquote
@@ -146,14 +137,12 @@ export interface MdocBlockquote extends MdocParent {
   children: MdocBlockContent[]
 }
 
-
 /**
  * Break
  */
 export interface MdocBreak extends MdocNode {
   type: 'break'
 }
-
 
 /**
  * Code
@@ -174,7 +163,6 @@ export interface MdocCode extends MdocLiteral {
   args: Record<string, unknown>
 }
 
-
 /**
  * Similar to Code, but render code as a prepared component
  */
@@ -182,14 +170,12 @@ export interface MdocCodeEmbed extends Omit<MdocCode, 'type'> {
   type: 'codeEmbed'
 }
 
-
 /**
  * Similar to Code, but create a live editor for both editing and preview
  */
 export interface MdocCodeLive extends Omit<MdocCode, 'type'> {
   type: 'codeLive'
 }
-
 
 /**
  * Delete
@@ -199,7 +185,6 @@ export interface MdocDelete extends MdocParent {
   children: MdocPhrasingContent[]
 }
 
-
 /**
  * Emphasis
  */
@@ -207,7 +192,6 @@ export interface MdocEmphasis extends MdocParent {
   type: 'emphasis'
   children: MdocPhrasingContent[]
 }
-
 
 /**
  * Footnote
@@ -217,7 +201,6 @@ export interface MdocFootnote extends MdocParent {
   children: MdocPhrasingContent[]
 }
 
-
 /**
  * FootnoteReference
  */
@@ -225,7 +208,6 @@ export interface MdocFootnoteReference extends MdocParent {
   type: 'footnoteReference'
   children: MdocPhrasingContent[]
 }
-
 
 /**
  * Heading
@@ -237,7 +219,6 @@ export interface MdocHeading extends MdocParent {
   children: MdocPhrasingContent[]
 }
 
-
 /**
  * Image
  */
@@ -247,7 +228,6 @@ export interface MdocImage extends MdocNode {
   title?: string
   alt?: string
 }
-
 
 /**
  * ImageReference
@@ -259,7 +239,6 @@ export interface MdocImageReference extends MdocNode {
   alt?: string
 }
 
-
 /**
  * InlineCode
  */
@@ -267,14 +246,12 @@ export interface MdocInlineCode extends MdocLiteral {
   type: 'inlineCode'
 }
 
-
 /**
  * InlineMath
  */
 export interface MdocInlineMath extends MdocLiteral {
   type: 'inlineMath'
 }
-
 
 /**
  * Link
@@ -286,7 +263,6 @@ export interface MdocLink extends MdocParent {
   children: MdocStaticPhrasingContent[]
 }
 
-
 /**
  * Link reference
  */
@@ -296,7 +272,6 @@ export interface MdocLinkReference extends MdocParent {
   title?: string
   children: MdocStaticPhrasingContent[]
 }
-
 
 /**
  * List
@@ -309,7 +284,6 @@ export interface MdocList extends MdocParent {
   children: MdocListContent[]
 }
 
-
 /**
  * List item
  */
@@ -319,7 +293,6 @@ export interface MdocListItem extends MdocParent {
   spread: boolean
 }
 
-
 /**
  * Paragraph
  */
@@ -327,7 +300,6 @@ export interface MdocParagraph extends MdocParent {
   type: 'paragraph'
   children: MdocPhrasingContent[]
 }
-
 
 /**
  * Strong
@@ -337,7 +309,6 @@ export interface MdocStrong extends MdocParent {
   children: MdocPhrasingContent[]
 }
 
-
 /**
  * Table
  */
@@ -345,7 +316,6 @@ export interface MdocTable extends MdocNode {
   type: 'table'
   children: MdocTableRow[]
 }
-
 
 /**
  * Table cell
@@ -357,7 +327,6 @@ export interface MdocTableCell extends MdocParent {
   children: MdocPhrasingContent[]
 }
 
-
 /**
  * Table row
  */
@@ -366,14 +335,12 @@ export interface MdocTableRow extends MdocParent {
   children: MdocRowContent[]
 }
 
-
 /**
  * Text
  */
 export interface MdocText extends MdocLiteral {
   type: 'text'
 }
-
 
 /**
  * Thematic break

@@ -11,7 +11,6 @@ export function ensurePathExists(dirpath: string): void {
   }
 }
 
-
 /**
  * Output into file
  *
@@ -23,7 +22,6 @@ export async function writeFile(filepath: string, data: Buffer): Promise<void> {
   await fs.writeFile(filepath, data)
 }
 
-
 /**
  * Output into file (synchronous)
  *
@@ -34,7 +32,6 @@ export function writeFileSync(filepath: string, data: Buffer): void {
   ensurePathExists(path.dirname(filepath))
   fs.writeFileSync(filepath, data)
 }
-
 
 /**
  * Output into json file
@@ -50,7 +47,6 @@ export async function writeJSON<T extends unknown = unknown>(
   await fs.writeJSON(filepath, data)
   return data
 }
-
 
 /**
  * Output into json file (synchronous)

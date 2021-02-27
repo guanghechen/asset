@@ -9,9 +9,8 @@ export interface AsyncTask<D extends unknown = unknown> {
   /**
    * Execute task
    */
-  execute: () => (void | Promise<void>)
+  execute: () => void | Promise<void>
 }
-
 
 /**
  * Executor to execute asynchronous tasks serially
@@ -22,7 +21,6 @@ export interface SerialExecutor<D extends unknown = unknown> {
    */
   addTask: (task: AsyncTask<D>) => void
 }
-
 
 /**
  * Create a SerialExecutor to execute asynchronous tasks serially
@@ -43,46 +41,46 @@ export function createSerialExecutor<D extends unknown = unknown>(
 
   const runTask = async () => {
     // If running or no task remain, no operation will be performed
-    if (running || tasks.length <= 0) return;
+    if (running || tasks.length <= 0) return
 
     // Ready to start task
-    running = true;
-    const task = tasks.shift()!;
+    running = true
+    const task = tasks.shift()!
 
     // Optimization: check if current task could be skipped
     if (tasks.length > 0) {
-      const nextTask = tasks[0];
+      const nextTask = tasks[0]
       if (squashable != null && squashable(task.data, nextTask.data)) {
-        running = false;
-        await runTask();
-        return;
+        running = false
+        await runTask()
+        return
       }
     }
 
-    let error: any | undefined;
+    let error: any | undefined
     try {
-      await task.execute();
+      await task.execute()
     } catch (err) {
-      error = err;
+      error = err
     }
 
     // Run hooks
     if (error != null) {
       if (onTaskFailure) {
-        await onTaskFailure(error);
+        await onTaskFailure(error)
       } else {
-        throw error;
+        throw error
       }
     } else {
-      if (onTaskSuccess) await onTaskSuccess();
+      if (onTaskSuccess) await onTaskSuccess()
     }
-    if (onTaskCompleted) await onTaskCompleted(error);
+    if (onTaskCompleted) await onTaskCompleted(error)
 
     // Release lock
-    running = false;
+    running = false
 
     // Start next task
-    if (tasks.length > 0) await runTask();
+    if (tasks.length > 0) await runTask()
   }
 
   const addTask = (task: AsyncTask<D>) => {

@@ -12,7 +12,6 @@ export interface TagServiceConstructor {
   new (dataManager: TagDataManager): TagService
 }
 
-
 export class TagService {
   protected readonly dataManager: TagDataManager
 
@@ -34,8 +33,9 @@ export class TagService {
    */
   public fetchTags(): TagDataItem[] {
     const dataMap: TagDataMap = this.dataManager.toDataMap()
-    const result: TagDataItem[] = dataMap.uuids
-      .map(uuid => dataMap.entities[uuid])
+    const result: TagDataItem[] = dataMap.uuids.map(
+      uuid => dataMap.entities[uuid],
+    )
     return result
   }
 }

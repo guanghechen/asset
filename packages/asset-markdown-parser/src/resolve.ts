@@ -82,7 +82,6 @@ export function resolveMdDocumentMeta(root: MdastRoot): MdDocumentMeta {
   return meta
 }
 
-
 /**
  *
  * @param root
@@ -98,9 +97,9 @@ export function resolveMdDocument(
   const toc: MdDocumentToc = { anchors: [] }
 
   type AnchorHolder = {
-    depth: number,
+    depth: number
     anchor: MdDocumentTocAnchor
-    parent: AnchorHolder | null,
+    parent: AnchorHolder | null
   }
   let currentAnchorHolder: AnchorHolder | null = null
 
@@ -139,9 +138,8 @@ export function resolveMdDocument(
             const regex = /\s*\b([a-z]\w*)(?:=([^\s'"`]+|'[^']*'|"[^"]*"|`[^`]`))?/g
             u.meta.replace(regex, (m, p1, p2): string => {
               const key: string = p1.toLowerCase()
-              const val: string | null = p2 == null
-                ? null
-                : p2.replace(/^(['"`])([\s\S]*?)\1$/, '$2')
+              const val: string | null =
+                p2 == null ? null : p2.replace(/^(['"`])([\s\S]*?)\1$/, '$2')
 
               if (val != null) args[key] = val
               else {
@@ -210,14 +208,18 @@ export function resolveMdDocument(
           title: heading.children,
         }
 
-        for (; currentAnchorHolder != null && currentAnchorHolder.depth >= depth;) {
+        for (
+          ;
+          currentAnchorHolder != null && currentAnchorHolder.depth >= depth;
+
+        ) {
           currentAnchorHolder = currentAnchorHolder.parent
         }
 
         const nextAnchorHolder: AnchorHolder = {
           anchor,
           depth,
-          parent: currentAnchorHolder
+          parent: currentAnchorHolder,
         }
 
         // new top anchor
@@ -337,7 +339,7 @@ export function resolveMdDocument(
               isHeader: index <= 0,
               align: u.align![index],
               ...c,
-            }))
+            })),
           }
         })
 
@@ -395,7 +397,7 @@ export function resolveMdDocument(
     ast: {
       type: 'root',
       children,
-    }
+    },
   }
   return result
 }

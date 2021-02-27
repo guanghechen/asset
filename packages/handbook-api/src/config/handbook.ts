@@ -21,7 +21,6 @@ export enum HandbookSourceType {
   FILE = 'file',
 }
 
-
 export type HandbookSourceItem = SubSiteSourceItem
 export const handbookSourceTypes: HandbookSourceType[] = [
   HandbookSourceType.POST,
@@ -29,14 +28,11 @@ export const handbookSourceTypes: HandbookSourceType[] = [
   HandbookSourceType.FILE,
 ]
 
-
 /**
  * Configuration of the handbook
  */
-export interface HandbookConfig extends SubSiteConfig<HandbookSourceType, HandbookSourceItem> {
-
-}
-
+export interface HandbookConfig
+  extends SubSiteConfig<HandbookSourceType, HandbookSourceItem> {}
 
 const defaultHandbookConfig: HandbookConfig = {
   routeRoot: '/handbook',
@@ -57,13 +53,7 @@ const defaultHandbookConfig: HandbookConfig = {
     image: {
       sourceRoot: 'resource',
       dataRoot: 'resource/image/',
-      pattern: [
-        '**/*.png',
-        '**/*.jpg',
-        '**/*.jpeg',
-        '**/*.gif',
-        '**/*.svg',
-      ],
+      pattern: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.svg'],
     },
     file: {
       sourceRoot: 'resource',
@@ -72,7 +62,6 @@ const defaultHandbookConfig: HandbookConfig = {
     },
   },
 }
-
 
 /**
  * Resolve HandbookConfig
@@ -90,11 +79,16 @@ export const resolveHandbookConfig: SubSiteConfigResolver<
   sitePathConfig,
   defaultConfig = defaultHandbookConfig,
 ): HandbookConfig => {
-  const subSiteConfig: SubSiteConfig =
-    resolveSubSiteConfig<HandbookSourceType, HandbookSourceItem>(
-      rawConfig, handbookSourceTypes, resolveSubSiteSourceItem,
-      sitePathConfig, defaultConfig
-    )
+  const subSiteConfig: SubSiteConfig = resolveSubSiteConfig<
+    HandbookSourceType,
+    HandbookSourceItem
+  >(
+    rawConfig,
+    handbookSourceTypes,
+    resolveSubSiteSourceItem,
+    sitePathConfig,
+    defaultConfig,
+  )
 
   const result: HandbookConfig = {
     ...subSiteConfig,

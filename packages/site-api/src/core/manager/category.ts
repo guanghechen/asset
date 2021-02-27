@@ -13,8 +13,10 @@ import { stringify } from '../../util/string'
 /**
  * Only export no side-effect funcs from CategoryDataManager
  */
-export type ImmutableCategoryDataManager = Pick<CategoryDataManager, 'find' | 'normalize'>
-
+export type ImmutableCategoryDataManager = Pick<
+  CategoryDataManager,
+  'find' | 'normalize'
+>
 
 /**
  * CategoryDataManager constructor
@@ -25,7 +27,6 @@ export interface CategoryDataManagerConstructor {
    */
   new (dataMapFilepath: string): CategoryDataManager
 }
-
 
 export class CategoryDataManager {
   protected readonly dataMapFilepath: string
@@ -42,9 +43,9 @@ export class CategoryDataManager {
    * Load category data map from categoryDataMap filepath
    */
   public async load(): Promise<void> {
-    const data: CategoryDataMap = await fs.readJSON(this.dataMapFilepath);
-    (this.uuids as CategoryUUID[]) = data.uuids;
-    (this.dataMap as Record<CategoryUUID, CategoryDataItem>) = data.entities
+    const data: CategoryDataMap = await fs.readJSON(this.dataMapFilepath)
+    ;(this.uuids as CategoryUUID[]) = data.uuids
+    ;(this.dataMap as Record<CategoryUUID, CategoryDataItem>) = data.entities
   }
 
   /**
@@ -72,10 +73,10 @@ export class CategoryDataManager {
    * @param category
    */
   public normalize(category: RawCategoryDataItem): CategoryDataItem {
-    const title = (typeof category === 'string') ? category : category.uuid
+    const title = typeof category === 'string' ? category : category.uuid
     const uuid: CategoryUUID = uniqueText(title)
 
-    invariant(uuid != null, `Bad uuid. tag(${ stringify(category) })`)
+    invariant(uuid != null, `Bad uuid. tag(${stringify(category)})`)
 
     let result: CategoryDataItem = this.dataMap[uuid]
 
@@ -87,7 +88,7 @@ export class CategoryDataManager {
         assets: [],
         parents: [],
         children: [],
-        ...((typeof category !== 'string') ? category : undefined)
+        ...(typeof category !== 'string' ? category : undefined),
       }
     }
 
@@ -173,7 +174,7 @@ export class CategoryDataManager {
    * @param uuid
    */
   protected _drop(uuid: CategoryUUID, parents: CategoryUUID[]): void {
-    (this.uuids as CategoryUUID[]) = this.uuids.filter(id => id !== uuid)
+    ;(this.uuids as CategoryUUID[]) = this.uuids.filter(id => id !== uuid)
     this.dataMap[uuid] = undefined as any
 
     for (const parentUUID of parents) {

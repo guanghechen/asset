@@ -12,7 +12,6 @@ export interface PostDataItem extends AssetDataItem<BlogSourceType.POST> {
   docType: 'markdown' | string
 }
 
-
 /**
  * Post asset entity
  */

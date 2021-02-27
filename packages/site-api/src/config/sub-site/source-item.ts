@@ -28,7 +28,6 @@ export interface SubSiteSourceItem {
   encoding?: BufferEncoding
 }
 
-
 /**
  * Resolve SubSiteSourceItem
  */
@@ -38,7 +37,6 @@ export type SubSiteSourceItemResolver<T extends SubSiteSourceItem> = (
   subSiteDataRoot: string,
   defaultSource: T,
 ) => T
-
 
 /**
  * Resolve SubSiteSourceItem
@@ -57,20 +55,34 @@ export const resolveSubSiteSourceItem: SubSiteSourceItemResolver<SubSiteSourceIt
   // resolve sourceRoot (absolute filepath)
   const sourceRoot: string = resolveLocalPath(
     subSiteSourceRoot,
-    coverString(defaultSourceItem.sourceRoot, rawSourceItem.sourceRoot, isNotEmptyString))
+    coverString(
+      defaultSourceItem.sourceRoot,
+      rawSourceItem.sourceRoot,
+      isNotEmptyString,
+    ),
+  )
 
   // resolve dataRoot (absolute filepath)
   const dataRoot: string = resolveLocalPath(
     subSiteDataRoot,
-    coverString(defaultSourceItem.dataRoot, rawSourceItem.dataRoot, isNotEmptyString))
+    coverString(
+      defaultSourceItem.dataRoot,
+      rawSourceItem.dataRoot,
+      isNotEmptyString,
+    ),
+  )
 
   // resolve pattern
   const pattern: string[] = cover<string[]>(
-    defaultSourceItem.pattern, rawSourceItem.pattern, isNotEmptyArray)
+    defaultSourceItem.pattern,
+    rawSourceItem.pattern,
+    isNotEmptyArray,
+  )
 
   // resolve encoding
-  const encoding: BufferEncoding | undefined = cover<BufferEncoding | undefined>(
-    defaultSourceItem.encoding, rawSourceItem.encoding, isNotEmptyString)
+  const encoding: BufferEncoding | undefined = cover<
+    BufferEncoding | undefined
+  >(defaultSourceItem.encoding, rawSourceItem.encoding, isNotEmptyString)
 
   return { sourceRoot: sourceRoot, dataRoot: dataRoot, pattern, encoding }
 }

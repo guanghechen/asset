@@ -5,7 +5,6 @@ import type { AssetUUID, CategoryUUID } from './_types'
  */
 export type RawCategoryDataItem = CategoryUUID | Pick<CategoryDataItem, 'uuid'>
 
-
 /**
  * Category item
  */
@@ -43,7 +42,6 @@ export interface CategoryDataItem {
    */
   children: CategoryUUID[]
 }
-
 
 /**
  * Category data map

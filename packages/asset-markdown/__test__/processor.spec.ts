@@ -11,7 +11,6 @@ import { AssetMarkdownProcessor } from '../src'
 
 const caseRootDir = path.resolve(__dirname, 'cases')
 
-
 describe('base', function () {
   test('processable', function () {
     const processor = new AssetMarkdownProcessor({ encoding: 'utf-8' })
@@ -22,7 +21,7 @@ describe('base', function () {
 
     const customProcessor = new AssetMarkdownProcessor({
       encoding: 'utf-8',
-      processable: (filepath) => /\.(xmd|txt)$/.test(filepath),
+      processable: filepath => /\.(xmd|txt)$/.test(filepath),
     })
     expect(customProcessor.processable('/a/a.md')).toBeFalsy()
     expect(customProcessor.processable('.../a/a.md')).toBeFalsy()
@@ -54,8 +53,13 @@ describe('base', function () {
       }
 
       const tagDataManager = new TagDataManager('./tag.json')
-      const categoryDataManager = new CategoryDataManager('./category.data.json')
-      const assetDataManager = new AssetDataManager(caseRootDir, './asset.data.json')
+      const categoryDataManager = new CategoryDataManager(
+        './category.data.json',
+      )
+      const assetDataManager = new AssetDataManager(
+        caseRootDir,
+        './asset.data.json',
+      )
 
       const processor = new AssetMarkdownProcessor({
         encoding: 'utf-8',

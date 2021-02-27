@@ -30,7 +30,6 @@ export interface SitePathConfig {
   workspace: string
 }
 
-
 /**
  * Site config
  */
@@ -57,7 +56,6 @@ export interface SiteConfig extends SitePathConfig {
   deploy: DeployConfig
 }
 
-
 /**
  * Default site config
  */
@@ -72,7 +70,6 @@ export const defaultSiteConfig: SiteConfig = {
   deploy: defaultDeployConfig,
 }
 
-
 /**
  * Resolve SiteConfig
  *
@@ -85,32 +82,44 @@ export function resolveSiteConfig(
   rawConfig: Partial<SiteConfig> = {},
   cwd: string,
   defaultConfig: SiteConfig = defaultSiteConfig,
-  sitesResolver: Record<string, SubSiteConfigResolver> = {}
+  sitesResolver: Record<string, SubSiteConfigResolver> = {},
 ): SiteConfig {
   // resolve routeRoot (absolute url path)
   const routeRoot = resolveUrlPath(
-    coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNotEmptyString))
+    coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNotEmptyString),
+  )
 
   // resolve urlRoot (absolute url path)
   const urlRoot = resolveUrlPath(
-    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNotEmptyString))
+    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNotEmptyString),
+  )
 
   // resolve workspace (absolute filepath)
   const workspace = resolveLocalPath(
     cwd,
-    coverString(defaultConfig.workspace, rawConfig.workspace, isNotEmptyString))
+    coverString(defaultConfig.workspace, rawConfig.workspace, isNotEmptyString),
+  )
 
   // resolve title
   const title: string = coverString(
-    defaultConfig.title, rawConfig.title, isNotEmptyString)
+    defaultConfig.title,
+    rawConfig.title,
+    isNotEmptyString,
+  )
 
   // resolve description
   const description: string = coverString(
-    defaultConfig.description, rawConfig.description, isNotEmptyString)
+    defaultConfig.description,
+    rawConfig.description,
+    isNotEmptyString,
+  )
 
   // resolve author
   const author: string = coverString(
-    defaultConfig.author, rawConfig.author, isNotEmptyString)
+    defaultConfig.author,
+    rawConfig.author,
+    isNotEmptyString,
+  )
 
   // resolve deploy
   const deploy = resolveDeployConfig(rawConfig.deploy, defaultConfig.deploy)
@@ -127,7 +136,7 @@ export function resolveSiteConfig(
   for (const key of Object.getOwnPropertyNames(rawSites)) {
     const resolveSubSite = sitesResolver[key]
     if (resolveSubSite == null) {
-      throw new Error(`Cannot find resolver for sub-site (${ key })`)
+      throw new Error(`Cannot find resolver for sub-site (${key})`)
     }
     const subSite: SubSiteConfig = resolveSubSite(
       rawSites[key],
@@ -150,7 +159,6 @@ export function resolveSiteConfig(
   return result
 }
 
-
 /**
  * Load site config
  *
@@ -164,10 +172,10 @@ export function loadSiteConfig(
   filepath: string,
   encoding: BufferEncoding = 'utf-8',
   defaultConfig: SiteConfig = defaultSiteConfig,
-  sitesResolver: Record<string, SubSiteConfigResolver> = {}
+  sitesResolver: Record<string, SubSiteConfigResolver> = {},
 ): SiteConfig {
   if (!fs.existsSync(filepath)) {
-    throw new Error(`Cannot find siteConfig. no such file: ${ filepath }`)
+    throw new Error(`Cannot find siteConfig. no such file: ${filepath}`)
   }
   const rawContent = fs.readFileSync(filepath, encoding)
   const extname = path.extname(filepath)
@@ -184,5 +192,5 @@ export function loadSiteConfig(
     }
   }
 
-  throw new Error(`Only yaml / json supported. filepath: ${ filepath }`)
+  throw new Error(`Only yaml / json supported. filepath: ${filepath}`)
 }

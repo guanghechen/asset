@@ -34,7 +34,6 @@ export interface AssetDataProviderProps<C extends SubSiteConfig> {
   TagServiceImpl?: TagServiceConstructor
 }
 
-
 export class AssetDataProvider<C extends SubSiteConfig> {
   protected readonly subSiteConfig: C
   protected readonly assetParser: AssetParser
@@ -68,12 +67,19 @@ export class AssetDataProvider<C extends SubSiteConfig> {
     } = subSiteConfig
 
     // Create AssetService
-    const assetDataManager = new AssetDataManagerImpl(sourceRoot, assetDataMapFilepath)
+    const assetDataManager = new AssetDataManagerImpl(
+      sourceRoot,
+      assetDataMapFilepath,
+    )
     const assetService: AssetService = new AssetServiceImpl(assetDataManager)
 
     // Create CategoryService
-    const categoryDataManager = new CategoryDataManagerImpl(categoryDataMapFilepath)
-    const categoryService: CategoryService = new CategoryServiceImpl(categoryDataManager)
+    const categoryDataManager = new CategoryDataManagerImpl(
+      categoryDataMapFilepath,
+    )
+    const categoryService: CategoryService = new CategoryServiceImpl(
+      categoryDataManager,
+    )
 
     // Create TagService
     const tagDataManager = new TagDataManagerImpl(tagDataMapFilepath)
@@ -84,9 +90,18 @@ export class AssetDataProvider<C extends SubSiteConfig> {
       routeRoot,
       urlRoot,
       entryDataMapFilepath,
-      resolveUrlPath(routeRoot, resolveUniversalPath(dataRoot, assetDataMapFilepath)),
-      resolveUrlPath(routeRoot, resolveUniversalPath(dataRoot, categoryDataMapFilepath)),
-      resolveUrlPath(routeRoot, resolveUniversalPath(dataRoot, tagDataMapFilepath)),
+      resolveUrlPath(
+        routeRoot,
+        resolveUniversalPath(dataRoot, assetDataMapFilepath),
+      ),
+      resolveUrlPath(
+        routeRoot,
+        resolveUniversalPath(dataRoot, categoryDataMapFilepath),
+      ),
+      resolveUrlPath(
+        routeRoot,
+        resolveUniversalPath(dataRoot, tagDataMapFilepath),
+      ),
       assetService,
       categoryService,
       tagService,
@@ -95,8 +110,10 @@ export class AssetDataProvider<C extends SubSiteConfig> {
     // Create AssetParser
     const assetParser = new AssetParser(
       processors,
-      entryDataManager, assetDataManager,
-      categoryDataManager, tagDataManager
+      entryDataManager,
+      assetDataManager,
+      categoryDataManager,
+      tagDataManager,
     )
 
     this.subSiteConfig = subSiteConfig
@@ -116,7 +133,7 @@ export class AssetDataProvider<C extends SubSiteConfig> {
 
     // clear dataRoot
     if (clearDataRoot && fs.existsSync(subSiteConfig.dataRoot)) {
-      console.info(chalk.yellow(`clearing ${ subSiteConfig.dataRoot }`))
+      console.info(chalk.yellow(`clearing ${subSiteConfig.dataRoot}`))
       await fs.remove(subSiteConfig.dataRoot)
     }
 
@@ -138,17 +155,19 @@ export class AssetDataProvider<C extends SubSiteConfig> {
 
     // building data
     if (clearStart) {
-      console.info(chalk.green(`rebuilding ${ subSiteConfig.dataRoot }`))
+      console.info(chalk.green(`rebuilding ${subSiteConfig.dataRoot}`))
       await this.build(true)
     }
 
     // loading data
-    console.info(chalk.green(`loading ${ subSiteConfig.dataRoot }`))
+    console.info(chalk.green(`loading ${subSiteConfig.dataRoot}`))
     await assetParser.load()
 
     // watching source change
-    console.info(chalk.green(`watching ${ subSiteConfig.sourceRoot }`))
-    assetParser.watch(subSiteConfig.sourceRoot, watchOptions, () => assetParser.dump())
+    console.info(chalk.green(`watching ${subSiteConfig.sourceRoot}`))
+    assetParser.watch(subSiteConfig.sourceRoot, watchOptions, () =>
+      assetParser.dump(),
+    )
   }
 
   /**

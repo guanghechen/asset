@@ -3,19 +3,20 @@ import stripAnsi from 'strip-ansi'
 
 const WORKSPACE_ROOT_DIR = path.resolve(__dirname, '../..')
 
-
 /**
  *
  * @param key
  * @param value
  */
-export const assetDataReplacer = (key: string, value: unknown): unknown | undefined => {
+export const assetDataReplacer = (
+  key: string,
+  value: unknown,
+): unknown | undefined => {
   if (['createAt', 'lastModifiedTime', 'updateAt'].includes(key)) {
     return '<' + typeof value + '>'
   }
   return typeof value === 'string' ? stripAnsi(value) : value
 }
-
 
 /**
  * Remove sensitive data

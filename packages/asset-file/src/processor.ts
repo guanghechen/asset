@@ -38,7 +38,6 @@ export interface AssetFileProcessorProps {
   processable?: AssetProcessor['processable']
 }
 
-
 /**
  * Processor for handle file asset
  */
@@ -70,24 +69,23 @@ export class AssetFileProcessor implements AssetProcessor<FileAssetDataItem> {
    * @override
    */
   public types(): AssetTypeItem[] {
-    return [
-      { type: this.assetType, assetDataRoot: this.dataRoot },
-    ]
+    return [{ type: this.assetType, assetDataRoot: this.dataRoot }]
   }
 
   /**
    * @override
    */
   public processable(filepath: string): boolean {
-    const isMatched = micromatch.isMatch(
-      filepath, this.patterns, { cwd: this.sourceRoot })
+    const isMatched = micromatch.isMatch(filepath, this.patterns, {
+      cwd: this.sourceRoot,
+    })
     return isMatched
   }
 
   /**
    * @override
    */
-  public * process(
+  public *process(
     filepath: string,
     rawContent: Buffer,
     roughAsset: RoughAssetDataItem,
@@ -114,7 +112,9 @@ export class AssetFileProcessor implements AssetProcessor<FileAssetDataItem> {
 
     // resolve content
     const assetFilepath = resolveLocalPath(
-      this.dataRoot, resolvedAsset.uuid + resolvedAsset.extname)
+      this.dataRoot,
+      resolvedAsset.uuid + resolvedAsset.extname,
+    )
     return writeFile(assetFilepath, rawContent)
   }
 }

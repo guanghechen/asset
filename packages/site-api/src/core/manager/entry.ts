@@ -33,7 +33,6 @@ export interface EntryDataManagerConstructor {
   ): EntryDataManager
 }
 
-
 /**
  * Manage EntryDataItems
  */
@@ -75,11 +74,11 @@ export class EntryDataManager {
    */
   public async load(): Promise<void> {
     const data: EntryDataMap = await fs.readJSON(this.dataMapFilepath)
-    ; (this.routeRoot as string) = data.routeRoot
-    ; (this.urlRoot as string) = data.api.prefix
-    ; (this.assetDataMapUrl as string) = data.api.assetDataMap
-    ; (this.categoryDataMapUrl as string) = data.api.categoryDatMap
-    ; (this.tagDataMapUrl as string) = data.api.tagDataMap
+    ;(this.routeRoot as string) = data.routeRoot
+    ;(this.urlRoot as string) = data.api.prefix
+    ;(this.assetDataMapUrl as string) = data.api.assetDataMap
+    ;(this.categoryDataMapUrl as string) = data.api.categoryDatMap
+    ;(this.tagDataMapUrl as string) = data.api.tagDataMap
   }
 
   /**
@@ -101,7 +100,7 @@ export class EntryDataManager {
         assetDataMap: this.assetDataMapUrl,
         categoryDatMap: this.categoryDataMapUrl,
         tagDataMap: this.tagDataMapUrl,
-      }
+      },
     }
     return data
   }

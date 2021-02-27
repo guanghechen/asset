@@ -13,7 +13,6 @@ export interface AssetServiceConstructor {
   new (dataManager: AssetDataManager): AssetService
 }
 
-
 export class AssetService {
   protected readonly dataManager: AssetDataManager
 
@@ -50,7 +49,7 @@ export class AssetService {
     const dataMap: AssetDataMap = this.dataManager.toDataMap()
     const uuids = dataMap.uuids[type]
 
-    invariant(uuids != null, `Unknown assetType (${ type })`)
+    invariant(uuids != null, `Unknown assetType (${type})`)
 
     let result: AssetDataItem[]
     if (limit < 0) {

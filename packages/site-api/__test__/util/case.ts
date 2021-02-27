@@ -8,9 +8,8 @@ import {
 } from '../../src'
 
 const caseRootDir = path.resolve(__dirname, '../cases')
-const resolveCasePath = (...relativePieces: string[]): string => (
-  path.resolve(caseRootDir, ...relativePieces))
-
+const resolveCasePath = (...relativePieces: string[]): string =>
+  path.resolve(caseRootDir, ...relativePieces)
 
 export interface CaseItem {
   /**
@@ -27,7 +26,6 @@ export interface CaseItem {
   getSiteConfig: () => SiteConfig
 }
 
-
 export const cases: CaseItem[] = [
   // load full config
   ((): CaseItem => {
@@ -36,34 +34,28 @@ export const cases: CaseItem[] = [
     const configFilepath = path.resolve(workspace, '_config.yml')
 
     const getSiteConfig = (): SiteConfig => {
-      return loadSiteConfig(
-        workspace,
-        configFilepath,
-        undefined,
-        undefined,
-        {
-          barusu: function (rawConfig, sitePathConfig, defaultConfig) {
-            return resolveSubSiteConfig(
-              rawConfig,
-              ['image'],
-              resolveSubSiteSourceItem,
-              sitePathConfig,
-              {
-                ...createDefaultSubSiteConfig('barusu'),
-                source: {
-                  image: {
-                    sourceRoot: 'asset/image',
-                    dataRoot: 'asset/image',
-                    pattern: ['**/*{.png,jpg}'],
-                  }
+      return loadSiteConfig(workspace, configFilepath, undefined, undefined, {
+        barusu: function (rawConfig, sitePathConfig, defaultConfig) {
+          return resolveSubSiteConfig(
+            rawConfig,
+            ['image'],
+            resolveSubSiteSourceItem,
+            sitePathConfig,
+            {
+              ...createDefaultSubSiteConfig('barusu'),
+              source: {
+                image: {
+                  sourceRoot: 'asset/image',
+                  dataRoot: 'asset/image',
+                  pattern: ['**/*{.png,jpg}'],
                 },
               },
-            )
-          }
-        }
-      )
+            },
+          )
+        },
+      })
     }
 
     return { title, workspace, getSiteConfig }
-  })()
+  })(),
 ]

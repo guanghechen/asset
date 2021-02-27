@@ -30,7 +30,6 @@ export interface DeployConfig {
   email: string
 }
 
-
 export const defaultDeployConfig: DeployConfig = {
   type: 'git',
   branch: 'master',
@@ -38,7 +37,6 @@ export const defaultDeployConfig: DeployConfig = {
   name: '',
   email: '',
 }
-
 
 /**
  * Resolve DeployConfig
@@ -50,23 +48,34 @@ export function resolveDeployConfig(
 ): DeployConfig {
   // resolve type
   const type = cover<'git'>(
-    defaultConfig.type, rawConfig.type, isNotEmptyString)
+    defaultConfig.type,
+    rawConfig.type,
+    isNotEmptyString,
+  )
 
   // resolve branch
   const branch = coverString(
-    defaultConfig.branch, rawConfig.branch, isNotEmptyString)
+    defaultConfig.branch,
+    rawConfig.branch,
+    isNotEmptyString,
+  )
 
   // resolve repository
   const repository = coverString(
-    defaultConfig.repository, rawConfig.repository, isNotEmptyString)
+    defaultConfig.repository,
+    rawConfig.repository,
+    isNotEmptyString,
+  )
 
   // resolve name
-  const name = coverString(
-    defaultConfig.name, rawConfig.name, isNotEmptyString)
+  const name = coverString(defaultConfig.name, rawConfig.name, isNotEmptyString)
 
   // resolve email
   const email = coverString(
-    defaultConfig.email, rawConfig.name, isNotEmptyString)
+    defaultConfig.email,
+    rawConfig.name,
+    isNotEmptyString,
+  )
 
   const result: DeployConfig = {
     type,

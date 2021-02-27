@@ -6,7 +6,6 @@ import unified from 'unified'
 
 const processor = unified().use(markdown).use(gfm).use(math)
 
-
 /**
  * Parse markdown to ast
  *
@@ -14,7 +13,8 @@ const processor = unified().use(markdown).use(gfm).use(math)
  */
 export const parseToMdast = (content: string): MdastRoot => {
   // resolve content
-  const result: MdastRoot = processor
-    .runSync(processor.parse(content)) as MdastRoot
+  const result: MdastRoot = processor.runSync(
+    processor.parse(content),
+  ) as MdastRoot
   return result
 }

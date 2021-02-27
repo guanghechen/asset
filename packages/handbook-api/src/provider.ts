@@ -16,7 +16,6 @@ export interface HandbookDataProviderProps {
   processors?: AssetProcessor[]
 }
 
-
 export class HandbookDataProvider extends AssetDataProvider<HandbookConfig> {
   public readonly postService: PostService
 
@@ -36,23 +35,21 @@ export class HandbookDataProvider extends AssetDataProvider<HandbookConfig> {
       patterns: source.post.pattern,
       encoding: source.post.encoding,
     })
-    const processors: AssetProcessor[] = (
-      props.processors || [
-        postProcessor,
-        new AssetFileProcessor({
-          sourceRoot: source.image.sourceRoot,
-          dataRoot: source.image.dataRoot,
-          patterns: source.image.pattern,
-          assetType: HandbookSourceType.IMAGE,
-        }),
-        new AssetFileProcessor({
-          sourceRoot: source.image.sourceRoot,
-          dataRoot: source.file.dataRoot,
-          patterns: source.file.pattern,
-          assetType: HandbookSourceType.FILE,
-        }),
-      ]
-    )
+    const processors: AssetProcessor[] = props.processors || [
+      postProcessor,
+      new AssetFileProcessor({
+        sourceRoot: source.image.sourceRoot,
+        dataRoot: source.image.dataRoot,
+        patterns: source.image.pattern,
+        assetType: HandbookSourceType.IMAGE,
+      }),
+      new AssetFileProcessor({
+        sourceRoot: source.image.sourceRoot,
+        dataRoot: source.file.dataRoot,
+        patterns: source.file.pattern,
+        assetType: HandbookSourceType.FILE,
+      }),
+    ]
 
     // Build AssetDataProvider
     super({

@@ -15,7 +15,6 @@ export interface BlogDataProviderProps {
   processors?: AssetProcessor[]
 }
 
-
 export class BlogDataProvider extends AssetDataProvider<BlogConfig> {
   public readonly postService: PostService
 
@@ -35,23 +34,21 @@ export class BlogDataProvider extends AssetDataProvider<BlogConfig> {
       patterns: source.post.pattern,
       encoding: source.post.encoding,
     })
-    const processors: AssetProcessor[] = (
-      props.processors || [
-        postProcessor,
-        new AssetFileProcessor({
-          sourceRoot: source.image.sourceRoot,
-          dataRoot: source.image.dataRoot,
-          patterns: source.image.pattern,
-          assetType: BlogSourceType.IMAGE,
-        }),
-        new AssetFileProcessor({
-          sourceRoot: source.image.sourceRoot,
-          dataRoot: source.file.dataRoot,
-          patterns: source.file.pattern,
-          assetType: BlogSourceType.FILE,
-        }),
-      ]
-    )
+    const processors: AssetProcessor[] = props.processors || [
+      postProcessor,
+      new AssetFileProcessor({
+        sourceRoot: source.image.sourceRoot,
+        dataRoot: source.image.dataRoot,
+        patterns: source.image.pattern,
+        assetType: BlogSourceType.IMAGE,
+      }),
+      new AssetFileProcessor({
+        sourceRoot: source.image.sourceRoot,
+        dataRoot: source.file.dataRoot,
+        patterns: source.file.pattern,
+        assetType: BlogSourceType.FILE,
+      }),
+    ]
 
     // Build AssetDataProvider
     super({
