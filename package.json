@@ -26,7 +26,10 @@
     "format": "yarn format:find-inconsistent && yarn format:sort-imports && format:yarn lint:fix",
     "format:find-inconsistent": "barusu-find-inconsistent .",
     "format:lint:fix": "eslint . --fix",
-    "format:sort-imports": "barusu-sort-imports ."
+    "format:sort-imports": "barusu-sort-imports .",
+    "postinstall": "run-p postinstall:**",
+    "postinstall:main": "yarn update:lock",
+    "update:lock": "yarn-deduplicate"
   },
   "workspaces": [
     "packages/*"
@@ -38,13 +41,15 @@
     "@barusu/tool-sort-imports": "^0.0.46",
     "@types/node": "^13.7.6",
     "cross-env": "~7.0.2",
-    "lerna": "~3.22.1",
     "jest": "^26.5.3",
+    "lerna": "~3.22.1",
+    "npm-run-all": "^4.1.5",
     "rimraf": "~3.0.2",
     "ts-jest": "^26.4.1",
     "ts-node": "~9.0.0",
     "tsconfig-paths": "~3.9.0",
-    "typescript": "~4.0.3"
+    "typescript": "~4.0.3",
+    "yarn-deduplicate": "^3.1.0"
   },
   "@barusu/tool-sort-imports": {
     "logLevel": "verbose",
