@@ -50,7 +50,7 @@
   "devDependencies": {
     "@barusu/rollup-config": "^0.0.46",
     "cross-env": "~7.0.2",
-    "rollup": "2.28.1",
+    "rollup": "2.39.1",
     "strip-ansi": "^6.0.0"
   }
 }
