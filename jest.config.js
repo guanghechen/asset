@@ -19,13 +19,14 @@ module.exports = {
   moduleNameMapper,
   globals: {
     'ts-jest': {
-      packageJson: '<rootDir>/package.json',
-      tsConfig: '<rootDir>/tsconfig.json',
+      tsconfig: '<rootDir>/tsconfig.json',
     },
   },
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
+  testURL: 'http://localhost/',
+  testEnvironment: 'node',
   testRegex: '/(__test__)/[^/]+\\.spec\\.tsx?$',
   testPathIgnorePatterns: [
     '/node_modules/',
@@ -44,28 +45,14 @@ module.exports = {
     '/script/',
   ],
   collectCoverage: true,
+  coverageDirectory: '<rootDir>/coverage/',
   collectCoverageFrom: [
     '**/src/**/*.{js,jsx,ts,tsx}',
     '**/src/*.{js,jsx,ts,tsx}',
     '!**/src/cli.ts',
     '!**/src/command/_util.ts',
-    '!**/test/cases/**',
-    '!**/__test__/cases/**',
-    '!**/node_modules/**',
-    '!**/lib/**',
-    '!**/dist/**',
-    '!**/build/**',
-    '!**/target/**',
-    '!**/vendor/**',
-    '!**/release/**',
-    '!**/example/**',
-    '!**/demo/**',
-    '!**/doc/**',
-    '!**/tmp/**',
-    '!**/__tmp__/**',
-    '!**/script/**',
-    '!**/coverage/**',
   ],
+  coveragePathIgnorePatterns: [],
   coverageThreshold: {
     global: {
       branches: 0,
