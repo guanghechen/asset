@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@types/mdast": "^3.0.3",
-    "@yozora/parser-gfm": "^1.0.0-alpha.6"
+    "@yozora/parser-gfm": "^1.0.0-alpha.8"
   },
   "devDependencies": {
     "fs-extra": "^9.1.0"
