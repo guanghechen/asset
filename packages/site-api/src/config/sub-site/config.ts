@@ -1,4 +1,4 @@
-import { coverString, isNotEmptyString } from '@barusu/util-option'
+import { coverString, isNonBlankString } from '@guanghechen/option-helper'
 import { resolveLocalPath, resolveUrlPath } from '../../util/path'
 import type { SitePathConfig } from '../site'
 import type {
@@ -119,13 +119,13 @@ export function resolveSubSiteConfig<
   // resolve routeRoot (absolute url path)
   const routeRoot = resolveUrlPath(
     sitePathConfig.routeRoot,
-    coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNotEmptyString),
+    coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNonBlankString),
   )
 
   // resolve urlRoot (absolute url path)
   const urlRoot = resolveUrlPath(
     sitePathConfig.urlRoot,
-    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNotEmptyString),
+    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNonBlankString),
   )
 
   // resolve sourceRoot (absolute filepath)
@@ -134,14 +134,14 @@ export function resolveSubSiteConfig<
     coverString(
       defaultConfig.sourceRoot,
       rawConfig.sourceRoot,
-      isNotEmptyString,
+      isNonBlankString,
     ),
   )
 
   // resolve dataRoot (absolute filepath)
   const dataRoot = resolveLocalPath(
     sitePathConfig.workspace,
-    coverString(defaultConfig.dataRoot, rawConfig.dataRoot, isNotEmptyString),
+    coverString(defaultConfig.dataRoot, rawConfig.dataRoot, isNonBlankString),
   )
 
   // resolve entryDataMapFilepath (absolute filepath)
@@ -150,7 +150,7 @@ export function resolveSubSiteConfig<
     coverString(
       defaultConfig.entryDataMapFilepath,
       rawConfig.entryDataMapFilepath,
-      isNotEmptyString,
+      isNonBlankString,
     ),
   )
 
@@ -160,7 +160,7 @@ export function resolveSubSiteConfig<
     coverString(
       defaultConfig.assetDataMapFilepath,
       rawConfig.assetDataMapFilepath,
-      isNotEmptyString,
+      isNonBlankString,
     ),
   )
 
@@ -170,7 +170,7 @@ export function resolveSubSiteConfig<
     coverString(
       defaultConfig.categoryDataMapFilepath,
       rawConfig.categoryDataMapFilepath,
-      isNotEmptyString,
+      isNonBlankString,
     ),
   )
 
@@ -180,7 +180,7 @@ export function resolveSubSiteConfig<
     coverString(
       defaultConfig.tagDataMapFilepath,
       rawConfig.tagDataMapFilepath,
-      isNotEmptyString,
+      isNonBlankString,
     ),
   )
 

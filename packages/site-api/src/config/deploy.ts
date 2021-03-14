@@ -1,4 +1,8 @@
-import { cover, coverString, isNotEmptyString } from '@barusu/util-option'
+import {
+  cover,
+  coverString,
+  isNonBlankString,
+} from '@guanghechen/option-helper'
 
 /**
  * Deploy configuration
@@ -50,31 +54,31 @@ export function resolveDeployConfig(
   const type = cover<'git'>(
     defaultConfig.type,
     rawConfig.type,
-    isNotEmptyString,
+    isNonBlankString,
   )
 
   // resolve branch
   const branch = coverString(
     defaultConfig.branch,
     rawConfig.branch,
-    isNotEmptyString,
+    isNonBlankString,
   )
 
   // resolve repository
   const repository = coverString(
     defaultConfig.repository,
     rawConfig.repository,
-    isNotEmptyString,
+    isNonBlankString,
   )
 
   // resolve name
-  const name = coverString(defaultConfig.name, rawConfig.name, isNotEmptyString)
+  const name = coverString(defaultConfig.name, rawConfig.name, isNonBlankString)
 
   // resolve email
   const email = coverString(
     defaultConfig.email,
     rawConfig.name,
-    isNotEmptyString,
+    isNonBlankString,
   )
 
   const result: DeployConfig = {

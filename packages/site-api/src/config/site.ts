@@ -1,4 +1,4 @@
-import { coverString, isNotEmptyString } from '@barusu/util-option'
+import { coverString, isNonBlankString } from '@guanghechen/option-helper'
 import fs from 'fs-extra'
 import yaml from 'js-yaml'
 import path from 'path'
@@ -83,39 +83,39 @@ export function resolveSiteConfig(
 ): SiteConfig {
   // resolve routeRoot (absolute url path)
   const routeRoot = resolveUrlPath(
-    coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNotEmptyString),
+    coverString(defaultConfig.routeRoot, rawConfig.routeRoot, isNonBlankString),
   )
 
   // resolve urlRoot (absolute url path)
   const urlRoot = resolveUrlPath(
-    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNotEmptyString),
+    coverString(defaultConfig.urlRoot, rawConfig.urlRoot, isNonBlankString),
   )
 
   // resolve workspace (absolute filepath)
   const workspace = resolveLocalPath(
     cwd,
-    coverString(defaultConfig.workspace, rawConfig.workspace, isNotEmptyString),
+    coverString(defaultConfig.workspace, rawConfig.workspace, isNonBlankString),
   )
 
   // resolve title
   const title: string = coverString(
     defaultConfig.title,
     rawConfig.title,
-    isNotEmptyString,
+    isNonBlankString,
   )
 
   // resolve description
   const description: string = coverString(
     defaultConfig.description,
     rawConfig.description,
-    isNotEmptyString,
+    isNonBlankString,
   )
 
   // resolve author
   const author: string = coverString(
     defaultConfig.author,
     rawConfig.author,
-    isNotEmptyString,
+    isNonBlankString,
   )
 
   // resolve deploy

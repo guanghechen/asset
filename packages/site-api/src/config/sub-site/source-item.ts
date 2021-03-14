@@ -1,9 +1,9 @@
 import {
   cover,
   coverString,
+  isNonBlankString,
   isNotEmptyArray,
-  isNotEmptyString,
-} from '@barusu/util-option'
+} from '@guanghechen/option-helper'
 import { resolveLocalPath } from '../../util/path'
 
 /**
@@ -58,7 +58,7 @@ export const resolveSubSiteSourceItem: SubSiteSourceItemResolver<SubSiteSourceIt
     coverString(
       defaultSourceItem.sourceRoot,
       rawSourceItem.sourceRoot,
-      isNotEmptyString,
+      isNonBlankString,
     ),
   )
 
@@ -68,7 +68,7 @@ export const resolveSubSiteSourceItem: SubSiteSourceItemResolver<SubSiteSourceIt
     coverString(
       defaultSourceItem.dataRoot,
       rawSourceItem.dataRoot,
-      isNotEmptyString,
+      isNonBlankString,
     ),
   )
 
@@ -82,7 +82,7 @@ export const resolveSubSiteSourceItem: SubSiteSourceItemResolver<SubSiteSourceIt
   // resolve encoding
   const encoding: BufferEncoding | undefined = cover<
     BufferEncoding | undefined
-  >(defaultSourceItem.encoding, rawSourceItem.encoding, isNotEmptyString)
+  >(defaultSourceItem.encoding, rawSourceItem.encoding, isNonBlankString)
 
   return { sourceRoot: sourceRoot, dataRoot: dataRoot, pattern, encoding }
 }
