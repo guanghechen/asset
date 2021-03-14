@@ -1,7 +1,9 @@
-import {
+import type {
   SubSiteConfig,
   SubSiteConfigResolver,
   SubSiteSourceItem,
+} from '@guanghechen/site-api'
+import {
   resolveSubSiteConfig,
   resolveSubSiteSourceItem,
 } from '@guanghechen/site-api'
@@ -31,8 +33,10 @@ export const handbookSourceTypes: HandbookSourceType[] = [
 /**
  * Configuration of the handbook
  */
-export interface HandbookConfig
-  extends SubSiteConfig<HandbookSourceType, HandbookSourceItem> {}
+export type HandbookConfig = SubSiteConfig<
+  HandbookSourceType,
+  HandbookSourceItem
+>
 
 const defaultHandbookConfig: HandbookConfig = {
   routeRoot: '/handbook',

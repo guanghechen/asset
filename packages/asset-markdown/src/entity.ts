@@ -7,5 +7,4 @@ export type MarkdownAssetType = typeof MarkdownAssetType
 /**
  * Markdown data
  */
-export interface MarkdownAssetDataItem
-  extends AssetDataItem<MarkdownAssetType> {}
+export type MarkdownAssetDataItem = AssetDataItem<MarkdownAssetType>

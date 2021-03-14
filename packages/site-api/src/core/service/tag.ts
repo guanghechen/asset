@@ -15,7 +15,7 @@ export interface TagServiceConstructor {
 export class TagService {
   protected readonly dataManager: TagDataManager
 
-  public constructor(dataManager: TagDataManager) {
+  constructor(dataManager: TagDataManager) {
     this.dataManager = dataManager
   }
 

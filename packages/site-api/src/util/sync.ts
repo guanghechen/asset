@@ -9,7 +9,7 @@ export interface AsyncTask<D extends unknown = unknown> {
   /**
    * Execute task
    */
-  execute: () => void | Promise<void>
+  execute(): void | Promise<void>
 }
 
 /**
@@ -19,7 +19,7 @@ export interface SerialExecutor<D extends unknown = unknown> {
   /**
    * Append task to executor
    */
-  addTask: (task: AsyncTask<D>) => void
+  addTask(task: AsyncTask<D>): void
 }
 
 /**
@@ -37,9 +37,9 @@ export function createSerialExecutor<D extends unknown = unknown>(
   onTaskCompleted?: (error?: any) => void | Promise<void>,
 ): SerialExecutor<D> {
   let running = false
-  const tasks: AsyncTask<D>[] = []
+  const tasks: Array<AsyncTask<D>> = []
 
-  const runTask = async () => {
+  const runTask = async (): Promise<void> => {
     // If running or no task remain, no operation will be performed
     if (running || tasks.length <= 0) return
 
@@ -83,7 +83,7 @@ export function createSerialExecutor<D extends unknown = unknown>(
     if (tasks.length > 0) await runTask()
   }
 
-  const addTask = (task: AsyncTask<D>) => {
+  const addTask = (task: AsyncTask<D>): void => {
     tasks.push(task)
     runTask()
   }

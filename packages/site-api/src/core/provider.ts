@@ -1,20 +1,24 @@
-import type { SubSiteConfig } from '../config/sub-site/config'
 import chalk from 'chalk'
-import chokidar from 'chokidar'
+import type chokidar from 'chokidar'
 import fs from 'fs-extra'
+import type { SubSiteConfig } from '../config/sub-site/config'
 import { resolveUniversalPath, resolveUrlPath } from '../util/path'
-import { AssetDataManager, AssetDataManagerConstructor } from './manager/asset'
-import {
-  CategoryDataManager,
-  CategoryDataManagerConstructor,
-} from './manager/category'
-import { EntryDataManager, EntryDataManagerConstructor } from './manager/entry'
-import { TagDataManager, TagDataManagerConstructor } from './manager/tag'
+import type { AssetDataManagerConstructor } from './manager/asset'
+import { AssetDataManager } from './manager/asset'
+import type { CategoryDataManagerConstructor } from './manager/category'
+import { CategoryDataManager } from './manager/category'
+import type { EntryDataManagerConstructor } from './manager/entry'
+import { EntryDataManager } from './manager/entry'
+import type { TagDataManagerConstructor } from './manager/tag'
+import { TagDataManager } from './manager/tag'
 import { AssetParser } from './parser'
-import { AssetProcessor } from './processor'
-import { AssetService, AssetServiceConstructor } from './service/asset'
-import { CategoryService, CategoryServiceConstructor } from './service/category'
-import { TagService, TagServiceConstructor } from './service/tag'
+import type { AssetProcessor } from './processor'
+import type { AssetServiceConstructor } from './service/asset'
+import { AssetService } from './service/asset'
+import type { CategoryServiceConstructor } from './service/category'
+import { CategoryService } from './service/category'
+import type { TagServiceConstructor } from './service/tag'
+import { TagService } from './service/tag'
 
 export interface AssetDataProviderProps<C extends SubSiteConfig> {
   /**
@@ -42,7 +46,7 @@ export class AssetDataProvider<C extends SubSiteConfig> {
   public readonly categoryService: CategoryService
   public readonly tagService: TagService
 
-  public constructor(props: AssetDataProviderProps<C>) {
+  constructor(props: AssetDataProviderProps<C>) {
     const {
       subSiteConfig,
       processors,

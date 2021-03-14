@@ -1,15 +1,15 @@
-import micromatch from 'micromatch'
-import {
+import type {
   AssetProcessor,
   AssetType,
   AssetTypeItem,
   CategoryDataItem,
   RoughAssetDataItem,
   TagDataItem,
-  resolveLocalPath,
-  writeFile,
 } from '@guanghechen/site-api'
-import { FileAssetDataItem, FileAssetType } from './entity'
+import { resolveLocalPath, writeFile } from '@guanghechen/site-api'
+import micromatch from 'micromatch'
+import type { FileAssetDataItem } from './entity'
+import { FileAssetType } from './entity'
 
 /**
  * Props for building AssetFileProcessor
@@ -47,7 +47,7 @@ export class AssetFileProcessor implements AssetProcessor<FileAssetDataItem> {
   protected readonly patterns: string[]
   protected readonly assetType: AssetType
 
-  public constructor(props: AssetFileProcessorProps) {
+  constructor(props: AssetFileProcessorProps) {
     const {
       sourceRoot,
       dataRoot,

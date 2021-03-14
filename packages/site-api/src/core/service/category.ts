@@ -15,7 +15,7 @@ export interface CategoryServiceConstructor {
 export class CategoryService {
   protected readonly dataManager: CategoryDataManager
 
-  public constructor(dataManager: CategoryDataManager) {
+  constructor(dataManager: CategoryDataManager) {
     this.dataManager = dataManager
   }
 

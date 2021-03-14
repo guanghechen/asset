@@ -1,14 +1,12 @@
-import type { AssetUUID, CategoryUUID } from '../entity/_types'
-import type {
-  CategoryDataItem,
-  CategoryDataMap,
-  RawCategoryDataItem,
-} from '../entity/category'
 import fs from 'fs-extra'
 import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
 import { uniqueText } from '../../util/hash'
 import { stringify } from '../../util/string'
+import type { AssetUUID } from '../entity/_types'
+import { CategoryUUID } from '../entity/_types'
+import type { CategoryDataMap, RawCategoryDataItem } from '../entity/category'
+import { CategoryDataItem } from '../entity/category'
 
 /**
  * Only export no side-effect funcs from CategoryDataManager
@@ -33,7 +31,7 @@ export class CategoryDataManager {
   protected readonly uuids: CategoryUUID[]
   protected readonly dataMap: Record<CategoryUUID, CategoryDataItem>
 
-  public constructor(dataMapFilepath: string) {
+  constructor(dataMapFilepath: string) {
     this.dataMapFilepath = dataMapFilepath
     this.uuids = []
     this.dataMap = {}
@@ -114,7 +112,7 @@ export class CategoryDataManager {
    * @param assetUUID   uuid of asset
    */
   public insert(
-    categories: Pick<CategoryDataItem, 'uuid' | 'title'>[],
+    categories: Array<Pick<CategoryDataItem, 'uuid' | 'title'>>,
     assetUUID: AssetUUID,
   ): void {
     let parent: CategoryDataItem | null = null

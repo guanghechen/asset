@@ -1,9 +1,9 @@
-import type { EntryDataMap } from '../entity/entry'
 import fs from 'fs-extra'
 import { writeJSON } from '../../util/fs'
-import { AssetService } from '../service/asset'
-import { CategoryService } from '../service/category'
-import { TagService } from '../service/tag'
+import type { EntryDataMap } from '../entity/entry'
+import type { AssetService } from '../service/asset'
+import type { CategoryService } from '../service/category'
+import type { TagService } from '../service/tag'
 
 /**
  * EntryDataManager constructor
@@ -47,7 +47,7 @@ export class EntryDataManager {
   protected readonly categoryService: CategoryService
   protected readonly tagService: TagService
 
-  public constructor(
+  constructor(
     routeRoot: string,
     urlRoot: string,
     dataMapFilepath: string,

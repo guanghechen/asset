@@ -1,6 +1,8 @@
 import { AssetFileProcessor } from '@guanghechen/asset-file'
-import { AssetDataProvider, AssetProcessor } from '@guanghechen/site-api'
-import { HandbookConfig, HandbookSourceType } from './config/handbook'
+import type { AssetProcessor } from '@guanghechen/site-api'
+import { AssetDataProvider } from '@guanghechen/site-api'
+import type { HandbookConfig } from './config/handbook'
+import { HandbookSourceType } from './config/handbook'
 import { HandbookEntryDataManager } from './core/entry/manager'
 import { PostEntityManager } from './core/post/manager'
 import { PostProcessor } from './core/post/processor'
@@ -19,7 +21,7 @@ export interface HandbookDataProviderProps {
 export class HandbookDataProvider extends AssetDataProvider<HandbookConfig> {
   public readonly postService: PostService
 
-  public constructor(
+  constructor(
     handbookConfig: HandbookConfig,
     props: HandbookDataProviderProps = {},
   ) {

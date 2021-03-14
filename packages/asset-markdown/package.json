@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "description": "markdown asset",
   "homepage": "https://github.com/lemon-clown/static-site-api/tree/master/packages/asset-markdown#readme",
-  "private": true,
   "license": "MIT",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -43,5 +42,8 @@
     "dayjs": "^1.9.1",
     "js-yaml": "^3.14.0",
     "tiny-invariant": "^1.0.2"
+  },
+  "devDependencies": {
+    "fs-extra": "^9.1.0"
   }
 }

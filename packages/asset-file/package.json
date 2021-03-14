@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "description": "file asset",
   "homepage": "https://github.com/lemon-clown/static-site-api/tree/master/packages/asset-file#readme",
-  "private": true,
   "license": "MIT",
   "main": "lib/cjs/index.js",
   "types": "lib/types/index.d.ts",

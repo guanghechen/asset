@@ -1,14 +1,13 @@
 import fs from 'fs-extra'
 import path from 'path'
-import {
+import type {
   AssetDataItem,
-  AssetDataProvider,
   AssetEntity,
-  AssetEntityManager,
   AssetProcessor,
   CategoryDataItem,
   TagDataItem,
-} from '@guanghechen/site-api'
+} from '../src'
+import { AssetDataProvider, AssetEntityManager } from '../src'
 import { cases } from './util/case'
 import { assetDataReplacer, desensitize } from './util/snapshot'
 import { noop } from './util/sys'
@@ -18,10 +17,12 @@ describe('AssetDataProvider', function () {
     .spyOn(global.console, 'info')
     .mockImplementation(function (...args: string[]): any {
       const result = desensitize(args, assetDataReplacer)
+      // eslint-disable-next-line jest/no-standalone-expect
       expect(result).toMatchSnapshot('console.info')
     })
 
   for (const kase of cases) {
+    // eslint-disable-next-line jest/valid-title
     describe(kase.title, function () {
       const { getSiteConfig } = kase
       const siteConfig = getSiteConfig()
@@ -32,6 +33,7 @@ describe('AssetDataProvider', function () {
           data: any,
         ): any {
           const snapshotName = path.relative(siteConfig.workspace, absolutePath)
+          // eslint-disable-next-line jest/no-standalone-expect
           expect(desensitize(data, assetDataReplacer)).toMatchSnapshot(
             desensitize(snapshotName),
           )
@@ -39,6 +41,7 @@ describe('AssetDataProvider', function () {
 
       const subSiteNames = Object.keys(siteConfig.sites)
       for (const subSiteName of subSiteNames) {
+        // eslint-disable-next-line jest/valid-title
         describe(subSiteName, function () {
           const subSiteConfig = siteConfig.sites[subSiteName]
 
@@ -108,7 +111,7 @@ describe('AssetDataProvider', function () {
             return [assets, tags, categories]
           }
 
-          const baseTest = function (provider: AssetDataProvider<any>) {
+          const baseTest = function (provider: AssetDataProvider<any>): void {
             // test tags
             const tags: TagDataItem[] = provider.tagService.fetchTags()
             expect(tags.map(t => provider.tagService.fetchTag(t.uuid))).toEqual(

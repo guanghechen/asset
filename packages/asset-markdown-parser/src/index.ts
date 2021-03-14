@@ -1,8 +1,9 @@
 import type { Node as MdastNode } from 'unist'
-import type { MdastRoot } from './types/mdast'
-import type { MdDocument, MdocNode } from './types/mdoc'
 import { parseToMdast } from './parse'
 import { resolveMdDocument } from './resolve'
+import type { MdastRoot } from './types/mdast'
+import type { MdDocument, MdocNode } from './types/mdoc'
+
 export * from './parse'
 export * from './resolve'
 export * from './types/mdast'

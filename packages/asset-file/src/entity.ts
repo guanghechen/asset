@@ -7,4 +7,4 @@ export type FileAssetType = typeof FileAssetType
 /**
  * File data
  */
-export interface FileAssetDataItem extends AssetDataItem {}
+export type FileAssetDataItem = AssetDataItem

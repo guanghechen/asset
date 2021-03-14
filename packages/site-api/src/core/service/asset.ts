@@ -1,7 +1,7 @@
+import invariant from 'tiny-invariant'
 import type { AssetLocation, AssetType, AssetUUID } from '../entity/_types'
 import type { AssetDataItem, AssetDataMap } from '../entity/asset'
 import type { AssetDataManager } from '../manager/asset'
-import invariant from 'tiny-invariant'
 
 /**
  * AssetService constructor
@@ -16,7 +16,7 @@ export interface AssetServiceConstructor {
 export class AssetService {
   protected readonly dataManager: AssetDataManager
 
-  public constructor(dataManager: AssetDataManager) {
+  constructor(dataManager: AssetDataManager) {
     this.dataManager = dataManager
   }
 

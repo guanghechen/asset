@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "description": "parse markdown to component props ast",
   "homepage": "https://github.com/lemon-clown/static-site-api/tree/master/packages/asset-markdown-parser",
-  "private": true,
   "license": "MIT",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
@@ -40,5 +39,8 @@
   "dependencies": {
     "@types/mdast": "^3.0.3",
     "@yozora/parser-gfm": "^1.0.0-alpha.6"
+  },
+  "devDependencies": {
+    "fs-extra": "^9.1.0"
   }
 }

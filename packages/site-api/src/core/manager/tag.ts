@@ -1,10 +1,12 @@
-import type { AssetUUID, TagUUID } from '../entity/_types'
-import type { RawTagDataItem, TagDataItem, TagDataMap } from '../entity/tag'
 import fs from 'fs-extra'
 import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
 import { uniqueText } from '../../util/hash'
 import { stringify } from '../../util/string'
+import type { AssetUUID } from '../entity/_types'
+import { TagUUID } from '../entity/_types'
+import type { RawTagDataItem, TagDataMap } from '../entity/tag'
+import { TagDataItem } from '../entity/tag'
 
 /**
  * Only export no side-effect funcs from TagDataManager
@@ -26,7 +28,7 @@ export class TagDataManager {
   protected readonly uuids: TagUUID[]
   protected readonly dataMap: Record<TagUUID, TagDataItem>
 
-  public constructor(dataMapFilepath: string) {
+  constructor(dataMapFilepath: string) {
     this.dataMapFilepath = dataMapFilepath
     this.uuids = []
     this.dataMap = {}

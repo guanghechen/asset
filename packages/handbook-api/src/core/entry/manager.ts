@@ -1,16 +1,12 @@
+import type { AssetUUID, EntryDataMap } from '@guanghechen/site-api'
+import { EntryDataManager, resolveUrlPath } from '@guanghechen/site-api'
+import path from 'path'
+import { HandbookSourceType } from '../../config/handbook'
 import type {
   HandbookEntryDataMap,
   HandbookMenuLeafNode,
   HandbookMenuParentNode,
 } from './types'
-import path from 'path'
-import {
-  EntryDataManager,
-  EntryDataMap,
-  resolveUrlPath,
-} from '@guanghechen/site-api'
-import { AssetUUID } from '@guanghechen/site-api'
-import { HandbookSourceType } from '../../config/handbook'
 
 /**
  *
@@ -32,7 +28,7 @@ export class HandbookEntryDataManager extends EntryDataManager {
   protected buildMenu(): HandbookEntryDataMap['menu'] {
     const posts = this.assetService.fetchAssets(HandbookSourceType.POST)
 
-    type LocationItem = {
+    interface LocationItem {
       uuid: AssetUUID
       extname: string
       pieces: string[]
@@ -68,10 +64,9 @@ export class HandbookEntryDataManager extends EntryDataManager {
       }
 
       for (let i = 0, p = ''; i < location.pieces.length; ++i) {
-        const children: (
-          | HandbookMenuParentNode
-          | HandbookMenuLeafNode
-        )[] = (child as HandbookMenuParentNode).children
+        const children: Array<
+          HandbookMenuParentNode | HandbookMenuLeafNode
+        > = (child as HandbookMenuParentNode).children
         child = children[children.length - 1]
 
         if (child == null || child.title !== location.pieces[i]) {

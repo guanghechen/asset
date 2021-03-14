@@ -1,6 +1,8 @@
 import { AssetFileProcessor } from '@guanghechen/asset-file'
-import { AssetDataProvider, AssetProcessor } from '@guanghechen/site-api'
-import { BlogConfig, BlogSourceType } from './config/blog'
+import type { AssetProcessor } from '@guanghechen/site-api'
+import { AssetDataProvider } from '@guanghechen/site-api'
+import type { BlogConfig } from './config/blog'
+import { BlogSourceType } from './config/blog'
 import { PostEntityManager } from './core/post/manager'
 import { PostProcessor } from './core/post/processor'
 import { PostService } from './core/post/service'
@@ -18,10 +20,7 @@ export interface BlogDataProviderProps {
 export class BlogDataProvider extends AssetDataProvider<BlogConfig> {
   public readonly postService: PostService
 
-  public constructor(
-    blogConfig: BlogConfig,
-    props: BlogDataProviderProps = {},
-  ) {
+  constructor(blogConfig: BlogConfig, props: BlogDataProviderProps = {}) {
     const { source } = blogConfig
 
     // Create AssetParser

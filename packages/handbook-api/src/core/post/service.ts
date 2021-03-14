@@ -6,7 +6,7 @@ export class PostService {
   protected readonly postEntityManager: PostEntityManager
   protected readonly assetService: AssetService
 
-  public constructor(
+  constructor(
     postEntityManager: PostEntityManager,
     assetService: AssetService,
   ) {

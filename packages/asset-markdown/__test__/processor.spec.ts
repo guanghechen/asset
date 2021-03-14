@@ -1,12 +1,12 @@
-import fs from 'fs-extra'
-import path from 'path'
+import type { RoughAssetDataItem } from '@guanghechen/site-api'
 import {
   AssetDataManager,
   CategoryDataManager,
-  RoughAssetDataItem,
   TagDataManager,
   sha1,
 } from '@guanghechen/site-api'
+import fs from 'fs-extra'
+import path from 'path'
 import { AssetMarkdownProcessor } from '../src'
 
 const caseRootDir = path.resolve(__dirname, 'cases')
@@ -31,6 +31,7 @@ describe('base', function () {
   })
 
   test('process', function () {
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     function process(filepath: string) {
       const absoluteFilepath = path.resolve(caseRootDir, filepath)
       const rawContent = fs.readFileSync(absoluteFilepath)

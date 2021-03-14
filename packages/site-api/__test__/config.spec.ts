@@ -1,6 +1,6 @@
 import path from 'path'
+import type { SubSiteConfig } from '../src'
 import {
-  SubSiteConfig,
   createDefaultSubSiteConfig,
   resolveSubSiteConfig,
   resolveSubSiteSourceItem,
@@ -62,6 +62,7 @@ describe('resolveSubSiteConfig', function () {
 describe('loadSiteConfig', function () {
   for (const kase of cases) {
     const { title, getSiteConfig } = kase
+    // eslint-disable-next-line jest/valid-title
     test(title, function () {
       const siteConfig = getSiteConfig()
       expect(desensitize(siteConfig)).toMatchSnapshot()

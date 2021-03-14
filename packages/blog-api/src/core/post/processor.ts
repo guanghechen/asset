@@ -1,12 +1,7 @@
-import micromatch from 'micromatch'
-import path from 'path'
-import invariant from 'tiny-invariant'
-import {
-  AssetMarkdownProcessor,
-  MarkdownAssetDataItem,
-} from '@guanghechen/asset-markdown'
+import type { MarkdownAssetDataItem } from '@guanghechen/asset-markdown'
+import { AssetMarkdownProcessor } from '@guanghechen/asset-markdown'
 import parseMd from '@guanghechen/asset-markdown-parser'
-import {
+import type {
   AssetProcessor,
   AssetTypeItem,
   CategoryDataItem,
@@ -15,11 +10,13 @@ import {
   ImmutableTagDataManager,
   RoughAssetDataItem,
   TagDataItem,
-  resolveUrlPath,
-  writeJSON,
 } from '@guanghechen/site-api'
+import { resolveUrlPath, writeJSON } from '@guanghechen/site-api'
+import micromatch from 'micromatch'
+import path from 'path'
+import invariant from 'tiny-invariant'
 import { BlogSourceType } from '../../config/blog'
-import { PostDataItem } from './entity'
+import type { PostDataItem } from './entity'
 
 /**
  * Props for create PostProcessor
@@ -61,7 +58,7 @@ export interface PostProcessorProps {
   /**
    * Extra inner post data processors, such as parsing assets
    */
-  extraProcessors?: AssetProcessor<PostDataItem>[]
+  extraProcessors?: Array<AssetProcessor<PostDataItem>>
 }
 
 /**
@@ -74,9 +71,9 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
   protected readonly dataRoot: string
   protected readonly patterns: string[]
   protected readonly encoding: BufferEncoding
-  protected readonly realProcessors: AssetProcessor<PostDataItem>[]
+  protected readonly realProcessors: Array<AssetProcessor<PostDataItem>>
 
-  public constructor(props: PostProcessorProps) {
+  constructor(props: PostProcessorProps) {
     const {
       routeRoot,
       urlRoot,
@@ -145,7 +142,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
       }),
     } = props
 
-    const realProcessors: AssetProcessor<PostDataItem>[] = [
+    const realProcessors: Array<AssetProcessor<PostDataItem>> = [
       markdownProcessor as AssetProcessor<any>,
       ...extraProcessors,
     ]

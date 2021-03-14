@@ -1,12 +1,3 @@
-import type { AssetLocation, AssetUUID } from './entity/_types'
-import type { AssetDataItem, RoughAssetDataItem } from './entity/asset'
-import type { CategoryDataItem } from './entity/category'
-import type { TagDataItem } from './entity/tag'
-import type { AssetDataManager } from './manager/asset'
-import type { CategoryDataManager } from './manager/category'
-import type { EntryDataManager } from './manager/entry'
-import type { TagDataManager } from './manager/tag'
-import type { AssetProcessor } from './processor'
 import chokidar from 'chokidar'
 import dayjs from 'dayjs'
 import fs from 'fs-extra'
@@ -16,6 +7,15 @@ import invariant from 'tiny-invariant'
 import { calcFingerprint } from '../util/hash'
 import { resolveLocalPath } from '../util/path'
 import { createSerialExecutor } from '../util/sync'
+import type { AssetLocation, AssetUUID } from './entity/_types'
+import type { AssetDataItem, RoughAssetDataItem } from './entity/asset'
+import type { CategoryDataItem } from './entity/category'
+import type { TagDataItem } from './entity/tag'
+import type { AssetDataManager } from './manager/asset'
+import type { CategoryDataManager } from './manager/category'
+import type { EntryDataManager } from './manager/entry'
+import type { TagDataManager } from './manager/tag'
+import type { AssetProcessor } from './processor'
 
 export class AssetParser {
   protected readonly processors: AssetProcessor[]
@@ -25,7 +25,7 @@ export class AssetParser {
   protected readonly tagDataManager: TagDataManager
   protected watcher: chokidar.FSWatcher | null = null
 
-  public constructor(
+  constructor(
     processors: AssetProcessor[],
     entryDataManager: EntryDataManager,
     assetDataManager: AssetDataManager,
@@ -83,7 +83,7 @@ export class AssetParser {
       onlyFiles: true,
     })
 
-    const tasks: (() => Promise<void> | void)[] = []
+    const tasks: Array<() => Promise<void> | void> = []
     for (const filepath of filepaths) {
       const absoluteFilepath = resolveLocalPath(srcRoot, filepath)
       const postProcessTask = this.processFile(absoluteFilepath)
@@ -107,7 +107,10 @@ export class AssetParser {
   ): void {
     if (this.watcher != null) return
 
-    type TaskData = { type: 'touch' | 'remove'; filepath: string }
+    interface TaskData {
+      type: 'touch' | 'remove'
+      filepath: string
+    }
     const squashable = (currentData: TaskData, nextData: TaskData): boolean => {
       if (currentData.filepath !== nextData.filepath) return false
       if (currentData.type === nextData.type) return true

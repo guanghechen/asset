@@ -1,10 +1,11 @@
-import type { AssetLocation, AssetType, AssetUUID } from '../entity/_types'
-import type { AssetDataItem, AssetDataMap } from '../entity/asset'
 import fs from 'fs-extra'
 import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
 import { sha1 } from '../../util/hash'
 import { resolveLocalPath, resolveUniversalPath } from '../../util/path'
+import { AssetLocation, AssetType, AssetUUID } from '../entity/_types'
+import type { AssetDataMap } from '../entity/asset'
+import { AssetDataItem } from '../entity/asset'
 
 /**
  * Only export no side-effect funcs from AssetDataManager
@@ -36,7 +37,7 @@ export class AssetDataManager {
   protected readonly locations: Record<AssetLocation, AssetUUID>
   protected readonly dataMap: Record<AssetUUID, AssetDataItem>
 
-  public constructor(workspace: string, dataMapFilepath: string) {
+  constructor(workspace: string, dataMapFilepath: string) {
     this.workspace = workspace
     this.dataMapFilepath = dataMapFilepath
     this.assetLocationMap = {}

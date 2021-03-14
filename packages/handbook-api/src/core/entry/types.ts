@@ -1,4 +1,4 @@
-import { EntryDataMap } from '@guanghechen/site-api'
+import type { EntryDataMap } from '@guanghechen/site-api'
 
 /**
  * Parent node of HandbookMenu
@@ -11,7 +11,7 @@ export interface HandbookMenuParentNode {
   /**
    * child data
    */
-  children: (HandbookMenuParentNode | HandbookMenuLeafNode)[]
+  children: Array<HandbookMenuParentNode | HandbookMenuLeafNode>
 }
 
 /**
@@ -43,6 +43,6 @@ export interface HandbookEntryDataMap extends EntryDataMap {
     /**
      * Menu items
      */
-    items: (HandbookMenuParentNode | HandbookMenuLeafNode)[]
+    items: Array<HandbookMenuParentNode | HandbookMenuLeafNode>
   }
 }

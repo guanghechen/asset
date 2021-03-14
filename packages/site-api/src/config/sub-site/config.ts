@@ -1,10 +1,10 @@
+import { coverString, isNotEmptyString } from '@barusu/util-option'
+import { resolveLocalPath, resolveUrlPath } from '../../util/path'
 import type { SitePathConfig } from '../site'
 import type {
   SubSiteSourceItem,
   SubSiteSourceItemResolver,
 } from './source-item'
-import { coverString, isNotEmptyString } from '@barusu/util-option'
-import { resolveLocalPath, resolveUrlPath } from '../../util/path'
 
 /**
  * Sub site configuration

@@ -8,6 +8,7 @@ describe('parser', function () {
   for (const kase of cases) {
     const filepath = path.join(caseDir, kase)
 
+    // eslint-disable-next-line jest/valid-title
     test(path.parse(kase).name, async function () {
       const content = await fs.readFile(filepath, 'utf-8')
       const result = parse(content)

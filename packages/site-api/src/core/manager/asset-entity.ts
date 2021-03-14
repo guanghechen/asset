@@ -1,8 +1,8 @@
-import type { AssetUUID } from '../entity/_types'
-import type { AssetEntity } from '../entity/asset'
 import fs from 'fs-extra'
 import { writeJSON } from '../../util/fs'
 import { resolveLocalPath } from '../../util/path'
+import type { AssetUUID } from '../entity/_types'
+import type { AssetEntity } from '../entity/asset'
 
 /**
  * Manage AssetEntities
@@ -10,7 +10,7 @@ import { resolveLocalPath } from '../../util/path'
 export class AssetEntityManager<T extends AssetEntity<any>> {
   protected dataRoot: string
 
-  public constructor(dataRoot: string) {
+  constructor(dataRoot: string) {
     this.dataRoot = dataRoot
   }
 

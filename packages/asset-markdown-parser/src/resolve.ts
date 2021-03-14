@@ -63,7 +63,7 @@ export function resolveMdDocument(
   const meta: MdDocumentMeta = (root as any).meta
   const toc: MdDocumentToc = { anchors: [] }
 
-  type AnchorHolder = {
+  interface AnchorHolder {
     depth: number
     anchor: MdDocumentTocAnchor
     parent: AnchorHolder | null

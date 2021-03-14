@@ -1,14 +1,11 @@
+import { coverString, isNotEmptyString } from '@barusu/util-option'
 import fs from 'fs-extra'
 import yaml from 'js-yaml'
 import path from 'path'
-import { coverString, isNotEmptyString } from '@barusu/util-option'
 import { resolveLocalPath, resolveUrlPath } from '../util/path'
-import {
-  DeployConfig,
-  defaultDeployConfig,
-  resolveDeployConfig,
-} from './deploy'
-import { SubSiteConfig, SubSiteConfigResolver } from './sub-site/config'
+import type { DeployConfig } from './deploy'
+import { defaultDeployConfig, resolveDeployConfig } from './deploy'
+import type { SubSiteConfig, SubSiteConfigResolver } from './sub-site/config'
 
 /**
  * Site path config

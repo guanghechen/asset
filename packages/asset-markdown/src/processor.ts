@@ -12,7 +12,8 @@ import type {
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
 import invariant from 'tiny-invariant'
-import { MarkdownAssetDataItem, MarkdownAssetType } from './entity'
+import type { MarkdownAssetDataItem } from './entity'
+import { MarkdownAssetType } from './entity'
 
 /**
  * Props for building AssetMarkdownProcessor
@@ -33,13 +34,13 @@ export interface AssetMarkdownProcessorProps {
   /**
    * Deeply processing the content
    */
-  resolve?: (
+  resolve?(
     content: string,
     asset: MarkdownAssetDataItem,
     tagDataManager: ImmutableTagDataManager,
     categoryDataManager: ImmutableCategoryDataManager,
     assetDataManager: ImmutableAssetDataManager,
-  ) => Promise<void> | void
+  ): Promise<void> | void
 }
 
 /**
@@ -52,7 +53,7 @@ export class AssetMarkdownProcessor
   protected readonly resolve: AssetMarkdownProcessorProps['resolve']
   protected readonly pattern: RegExp = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
 
-  public constructor(props: AssetMarkdownProcessorProps) {
+  constructor(props: AssetMarkdownProcessorProps) {
     const { encoding, isMetaOptional = true, processable, resolve } = props
     this.encoding = encoding
     this.isMetaOptional = isMetaOptional

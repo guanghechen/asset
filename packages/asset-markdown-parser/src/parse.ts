@@ -1,5 +1,5 @@
-import type { MdastRoot } from './types/mdast'
 import { createExGFMParser } from '@yozora/parser-gfm'
+import type { MdastRoot } from './types/mdast'
 
 const parser = createExGFMParser({ shouldReservePosition: false })
 

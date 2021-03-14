@@ -1,7 +1,9 @@
-import {
+import type {
   SubSiteConfig,
   SubSiteConfigResolver,
   SubSiteSourceItem,
+} from '@guanghechen/site-api'
+import {
   resolveSubSiteConfig,
   resolveSubSiteSourceItem,
 } from '@guanghechen/site-api'
@@ -31,8 +33,7 @@ export const blogSourceTypes: BlogSourceType[] = [
 /**
  * Configuration of the blog
  */
-export interface BlogConfig
-  extends SubSiteConfig<BlogSourceType, BlogSourceItem> {}
+export type BlogConfig = SubSiteConfig<BlogSourceType, BlogSourceItem>
 
 const defaultBlogConfig: BlogConfig = {
   routeRoot: '/blog',
