@@ -2,19 +2,19 @@
   "name": "@guanghechen/static-site-api",
   "version": "0.0.0",
   "description": "api of static site",
-  "homepage": "https://github.com/lemon-clown/static-site-api/#readme",
-  "private": true,
-  "license": "MIT",
   "author": {
     "name": "lemon-clown",
-    "url": "https://github.com/lemon-clown/"
+    "url": "https://github.com/guanghechen/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/lemon-clown/static-site-api.git"
+    "url": "https://github.com/guanghechen/static-site-api.git"
   },
+  "homepage": "https://github.com/guanghechen/static-site-api/#readme",
+  "license": "MIT",
+  "private": true,
   "engines": {
-    "node": ">= 12.16.0"
+    "node": ">= 14.15.0"
   },
   "scripts": {
     ":publish": "yarn format && yarn test && lerna publish",

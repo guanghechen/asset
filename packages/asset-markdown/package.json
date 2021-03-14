@@ -2,12 +2,24 @@
   "name": "@guanghechen/asset-markdown",
   "version": "0.0.0",
   "description": "markdown asset",
-  "homepage": "https://github.com/lemon-clown/static-site-api/tree/master/packages/asset-markdown#readme",
-  "license": "MIT",
+  "author": {
+    "name": "lemon-clown",
+    "url": "https://github.com/guanghechen/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guanghechen/static-site-api.git",
+    "directory": "packages/asset-markdown"
+  },
+  "homepage": "https://github.com/guanghechen/static-site-api/tree/master/packages/asset-markdown#readme",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "types": "lib/types/index.d.ts",
   "source": "src/index.ts",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 14.15.0"
+  },
   "files": [
     "lib/",
     "!lib/**/*.js.map",
@@ -17,17 +29,6 @@
     "LICENSE",
     "README.md"
   ],
-  "author": {
-    "name": "lemon-clown",
-    "url": "https://github.com/lemon-clown/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lemon-clown/static-site-api.git"
-  },
-  "engines": {
-    "node": ">= 12.16.0"
-  },
   "scripts": {
     "start": "cross-env NODE_ENV=development rollup -w -c ../../rollup.config.js",
     "build": "cross-env NODE_ENV=production rollup -c ../../rollup.config.js",
