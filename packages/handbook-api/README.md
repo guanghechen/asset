@@ -1,18 +1,69 @@
-[![npm version](https://img.shields.io/npm/v/@guanghechen/handbook-api.svg)](https://www.npmjs.com/package/@guanghechen/handbook-api)
-[![npm download](https://img.shields.io/npm/dm/@guanghechen/handbook-api.svg)](https://www.npmjs.com/package/@guanghechen/handbook-api)
-[![npm license](https://img.shields.io/npm/l/@guanghechen/handbook-api.svg)](https://www.npmjs.com/package/@guanghechen/handbook-api)
+<header>
+  <h1 align="center">
+    <a href="https://github.com/guanghechen/yozora/tree/master/packages/handbook-api#readme">@guanghechen/handbook-api</a>
+  </h1>
+  <div align="center">
+    <a href="https://www.npmjs.com/package/@guanghechen/handbook-api">
+      <img
+        alt="Npm Version"
+        src="https://img.shields.io/npm/v/@guanghechen/handbook-api.svg"
+      />
+    </a>
+    <a href="https://www.npmjs.com/package/@guanghechen/handbook-api">
+      <img
+        alt="Npm Download"
+        src="https://img.shields.io/npm/dm/@guanghechen/handbook-api.svg"
+      />
+    </a>
+    <a href="https://www.npmjs.com/package/@guanghechen/handbook-api">
+      <img
+        alt="Npm License"
+        src="https://img.shields.io/npm/l/@guanghechen/handbook-api.svg"
+      />
+    </a>
+    <a href="#install">
+      <img
+        alt="Module formats: cjs, esm"
+        src="https://img.shields.io/badge/module_formats-cjs%2C%20esm-green.svg"
+      />
+    </a>
+    <a href="https://github.com/nodejs/node">
+      <img
+        alt="Node.js Version"
+        src="https://img.shields.io/node/v/@guanghechen/handbook-api"
+      />
+    </a>
+    <a href="https://github.com/facebook/jest">
+      <img
+        alt="Tested with Jest"
+        src="https://img.shields.io/badge/tested_with-jest-9c465e.svg"
+      />
+    </a>
+    <a href="https://github.com/prettier/prettier">
+      <img
+        alt="Code Style: prettier"
+        src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"
+      />
+    </a>
+  </div>
+</header>
+<br/>
 
+## Install
 
-Data api for static handbook
+* npm
 
+  ```bash
+  npm install --save @guanghechen/handbook-api
+  ```
 
-# Install
+* yarn
 
-  ```shell
+  ```bash
   yarn add @guanghechen/handbook-api
   ```
 
-# Usage
+## Usage
 
 * Prepare a workspace directory, for example:
 
@@ -88,6 +139,7 @@ Data api for static handbook
         └── tag.map.json
     ```
 
-# Examples
 
-# Options
+### Options
+
+## Examples
