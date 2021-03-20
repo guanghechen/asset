@@ -77,7 +77,15 @@ describe('base', function () {
       return result.next()
     }
 
-    expect(process('a.md')).toMatchSnapshot('a')
-    expect(process('b.md')).toMatchSnapshot('b')
+    const desensitize = (data: any): any => {
+      const json = JSON.stringify(data).replace(
+        /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/g,
+        '<ISO_DATE>',
+      )
+      return JSON.parse(json)
+    }
+
+    expect(desensitize(process('a.md').value)).toMatchSnapshot('a')
+    expect(desensitize(process('b.md').value)).toMatchSnapshot('b')
   })
 })
