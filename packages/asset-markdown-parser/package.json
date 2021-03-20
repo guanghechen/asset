@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-markdown-parser",
-  "version": "0.0.0",
+  "version": "1.0.0-alpha.0",
   "description": "parse markdown to component props ast",
   "author": {
     "name": "lemon-clown",
