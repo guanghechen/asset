@@ -1853,258 +1853,258 @@
   resolved "https://registry.npmjs.org/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
 
-"@yozora/character@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/character/-/character-1.0.0-alpha.8.tgz#5cd6d4a58a53436c0a7b6445ae34f0136553afb9"
-  integrity sha512-bjjwwB/D7ydo+HUXaeuH4pDKJugOFQuYINrYmeCh/Pi8xmpXPsiLabvAZR3Z0pRvKDvhuNwBwGlPvvwdqvyA1g==
+"@yozora/character@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/character/-/character-1.0.0-alpha.11.tgz#d98bf75d8f58204ab93a3441586c38c729b4c75d"
+  integrity sha512-A/0QqYYN/nX50xBRgqmLegrcSDb8Onp6sC+wM2z0dVQTY40zr96MX/LTmFC1NSPZPigtl8REw9FXG2UNPhoK4A==
 
-"@yozora/core-parser@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/core-parser/-/core-parser-1.0.0-alpha.8.tgz#efdd5fcf25b3295dc11480e187b05aab82eb5e73"
-  integrity sha512-F1FSqgP4oQhcYSVAChdKi6KoQks6UIsJ5ZbJM3qk9i/4CjbolsNLoCn3GIgKGJAtyjjXcKLFjKGb9mndQd17Vw==
+"@yozora/core-parser@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/core-parser/-/core-parser-1.0.0-alpha.11.tgz#f58aa0001a1779b26dd666786b3c6b29ffcb8641"
+  integrity sha512-jgTBgmHxFhfndQllCEe532qTvqYi/AWeU1MkQ5h1l6cNOyhhDLF/Y42jWZAePKoZHjuPyygpJ3suJOG4HR/Lwg==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
     tiny-invariant "^1.1.0"
 
-"@yozora/core-tokenizer@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/core-tokenizer/-/core-tokenizer-1.0.0-alpha.8.tgz#2db08bfbc346be4ea36450b653f7e2a5c62bfd48"
-  integrity sha512-xuO/7E2sc9xZ1176iZ4Kf+MQ+aK+YA5JysytBEyl8NrAe/0BMCck0tmb8G26rvybdxIKhylMqCxSrBssXhMwwA==
+"@yozora/core-tokenizer@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/core-tokenizer/-/core-tokenizer-1.0.0-alpha.11.tgz#070450a5378f9bfbfa9979dddf5832929f423ac5"
+  integrity sha512-qbSwQ4OTHxGeQDAb6/1aV+cvm5/248ywEMenIQmWOQUwNySbsz5OIuQR9Vm5bNxIIyr8CE709iX4ICu6Gx1IAg==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
 
-"@yozora/parser-gfm@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/parser-gfm/-/parser-gfm-1.0.0-alpha.8.tgz#cf486e6971efca4d8b61718cc1fb6e22d3010c55"
-  integrity sha512-aEpM7cAje3MoQ7eIkEngFbOv5tQQ+YNqSnUVVJUBOfHe2qVC+6rCKfYf0lWTZmH6HenN2SrWwoyZ+3fV+JvajA==
+"@yozora/parser-gfm@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/parser-gfm/-/parser-gfm-1.0.0-alpha.11.tgz#5ebf0a1efc39a2edc8da510b3cc8f65596716be3"
+  integrity sha512-LTgcK/obB9itN+KbUoTVQu9RH8CnZXlMNKCc52RfIa24fbZzu1F36BNPEtuHUKLpgJYgsljfiDaMEF5sxG6kxA==
   dependencies:
-    "@yozora/core-parser" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-autolink" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-autolink-extension" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-blockquote" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-break" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-definition" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-delete" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-emphasis" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-fenced-code" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-heading" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-html-block" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-html-inline" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-image" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-image-reference" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-indented-code" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-inline-code" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-link" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-link-reference" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-list" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-list-item" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-paragraph" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-setext-heading" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-table" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-text" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-thematic-break" "^1.0.0-alpha.8"
+    "@yozora/core-parser" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-autolink" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-autolink-extension" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-blockquote" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-break" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-definition" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-delete" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-emphasis" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-fenced-code" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-heading" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-html-block" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-html-inline" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-image" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-image-reference" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-indented-code" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-inline-code" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-link" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-link-reference" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-list" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-list-item" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-paragraph" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-setext-heading" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-table" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-text" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-thematic-break" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-autolink-extension@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-autolink-extension/-/tokenizer-autolink-extension-1.0.0-alpha.8.tgz#92c7ddfd30aa3d8c8e91d023953a73050d41f6ab"
-  integrity sha512-XXmUSVWnN0doig/vkO0PUx8kHnG8/oPyo6Hfg1WccBhMv+GN7h/+kyPK2ew4QOzZrDZqQBDgjHyLULC8oXJ7hQ==
+"@yozora/tokenizer-autolink-extension@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-autolink-extension/-/tokenizer-autolink-extension-1.0.0-alpha.11.tgz#0970878df8bccbe8248cd08da97bef8d358fca0e"
+  integrity sha512-I15LXPdoga2ivOpg4tBkO/IO3UBrRt9eJmBgeFioGE7L6k4Z60aTeR+Rp1MAX48OtShpRbzr5Tp3WXLXOruoeg==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-autolink" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-autolink" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-autolink@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-autolink/-/tokenizer-autolink-1.0.0-alpha.8.tgz#2f75597c3c0a8119a5c5d6722d13291042cc5475"
-  integrity sha512-SNlIXCDFlaHGdNB901YOzhkyiTMTZmGMSLRKyHWISmi9mB62IKWRKyaNSw50GPYySQR4B9NsDYI8V5J48YeTVg==
+"@yozora/tokenizer-autolink@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-autolink/-/tokenizer-autolink-1.0.0-alpha.11.tgz#641a6deebe9a7e47a7bafd30074657a4678eb489"
+  integrity sha512-MqWaKuBkE80q9owEqZnMBQY5Iv2X8Prn5MrgRKtpljTmc6/lx8lLY9wOmQ26Uhx36WXdCysoWI/BdcxkCVe2Wg==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-blockquote@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-blockquote/-/tokenizer-blockquote-1.0.0-alpha.8.tgz#1c4b1d65fe5c7aed88c702e8de0dae35f6f0d1a3"
-  integrity sha512-CSR60C0gomsALGQkSHVbHyqLYOque/P9N1cs6c6RIAgOmqIGa9R7lFHqUuK+rBa81wKmYsXcZijcIMwGQGiLTQ==
+"@yozora/tokenizer-blockquote@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-blockquote/-/tokenizer-blockquote-1.0.0-alpha.11.tgz#2b6c5ba61e4bc6017a9cd6c86a2934cd6a1baf6d"
+  integrity sha512-bZwYd6vjh9bVg97MOZbXwS/c4xsv6xwkPRX2mWBg0D73FcvRxQ75WMkSF/gDX5O1v5gnA5Qe8ZkX9lq3I+SKow==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-break@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-break/-/tokenizer-break-1.0.0-alpha.8.tgz#f2312d9e6832f6cf36ee60bb541f21a814f18516"
-  integrity sha512-MJ8ONgr29YXpnF0v4pNL7wVolmdMD7OfGoVuHC3d7wylGSbcUPnnJwn+r+dQAWW232CIl1eWQFgpl71OrpMn1w==
+"@yozora/tokenizer-break@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-break/-/tokenizer-break-1.0.0-alpha.11.tgz#d4e9795c4a9bfdf61d8ebec0197605d79bc9bf39"
+  integrity sha512-SvAlPXFX+tNQNLkjE4hfZAXLyk+qUmmPAqQudrbY+WkviH/fAM1ZxWZqHmRXQBY5YzjD9rN4xIyoOQGzncE2dg==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-definition@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-definition/-/tokenizer-definition-1.0.0-alpha.8.tgz#084c471d14328c6f8b2ac42e92ff4960b073f98e"
-  integrity sha512-4b5fktW/dyjl0b06nuT9RdRv9Ig95Y3tz3+c1F+mAGycvw7isW13yLg7aGHyrav1V2PTWpBVS3e0cvhMqp+hvA==
+"@yozora/tokenizer-definition@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-definition/-/tokenizer-definition-1.0.0-alpha.11.tgz#3c5f843f979ff8f128207d1d446409e6642b3938"
+  integrity sha512-7wusRIOK5sLuuszb7vZLwgqwE4yn4I4vbeo9StrW3zTA7a1p/5GpikYc6iqAa52V+dGmqs1NMDWOWr2y8wbp4Q==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
     fold-case "^1.0.0"
 
-"@yozora/tokenizer-delete@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-delete/-/tokenizer-delete-1.0.0-alpha.8.tgz#9793cce77384cc615899ae8e6db42bd3da92c68d"
-  integrity sha512-4iLxKJmXlsq6yCKiUh2b/t76khQpEPSFusrft3pkjsw6g84kusIw6PeUxkLzPL17Alkql7JroiIo9zQJ2sIuPA==
+"@yozora/tokenizer-delete@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-delete/-/tokenizer-delete-1.0.0-alpha.11.tgz#31f057a37dce275805469c5382bdaba546d4385f"
+  integrity sha512-xWuNvWsRt46c6nZUyZD4gGj7Vudkj8OF+MgcY/35ZHnwMENpB4v11BsmxsAbjHc9kC/5XnQD/IC34RfbdWNHPQ==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-emphasis@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-emphasis/-/tokenizer-emphasis-1.0.0-alpha.8.tgz#b61351b31228fdc482f2421da642f8bdf54d038a"
-  integrity sha512-/b+nOwefoVlfY3FwOvmEak7NbV8plx75DI9WuTXmI5/udPqgouLj9e4eU1T2Vwbs6Jl68xzEHN40CygLxRGi4g==
+"@yozora/tokenizer-emphasis@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-emphasis/-/tokenizer-emphasis-1.0.0-alpha.11.tgz#5fa2459befb87037907a215843a559abdd17182c"
+  integrity sha512-kCt0dL5lGkKWe2mXeNVn2io1jLk9Rgb0PiKvNanrFet292o4VEpF0z7fvkzRWuQN4DLQKxoTEueZYdothQTIog==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-fenced-code@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-fenced-code/-/tokenizer-fenced-code-1.0.0-alpha.8.tgz#136b5722093aaeb88bb53adaae5eded5f1242985"
-  integrity sha512-WpJ3ee6leqsKq5wp0c+ADJp7BnJQD1O1NttCuNlFzExYGsrPV4KEIrxeAq4zEI8wv/vzjOO4N7BayXrE21Wl3A==
+"@yozora/tokenizer-fenced-code@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-fenced-code/-/tokenizer-fenced-code-1.0.0-alpha.11.tgz#5a52e3e57bd71d5efa5c42190e1a42cebdf2aef0"
+  integrity sha512-cc92kbY9IRnOggyDrMgxqif7wPu1NSkvn6K5R2qoEiIHpKabScmM6ge5UDhr/vMiuajZGPYOlkIK1jYKd5yw6A==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-heading@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-heading/-/tokenizer-heading-1.0.0-alpha.8.tgz#cac2325fa7ffce432cc24b69d12337ecd99532c4"
-  integrity sha512-r+gaHSuUPRfuA3VK3ORPbo6V07UUkLXZI6UzVHqPN+CqE8u8/IOi5SWcnd9Zj1en+KoQJQp78NQXMZZt52JKxw==
+"@yozora/tokenizer-heading@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-heading/-/tokenizer-heading-1.0.0-alpha.11.tgz#4a9533ebb1434dacdf8fc016988fa3ad7bb52d19"
+  integrity sha512-ypVrnl3k019CIvn9lxEGYBhLLg4CSxajk149V6v3XjakV9BaLXlPGRrUiav/VyZzvZTKFdDRHkNC18KHcZsKtQ==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-html-block@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-html-block/-/tokenizer-html-block-1.0.0-alpha.8.tgz#7220cce07589af49573f82726430cbcae8d798e3"
-  integrity sha512-g93d6MK40gBmB6tQM8gltWJ8q/Ju1+fE4QuU53ehboZfbokkgF2RXpyxqev5fErLkQP0X4xJQIDYiY/sL/sAWw==
+"@yozora/tokenizer-html-block@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-html-block/-/tokenizer-html-block-1.0.0-alpha.11.tgz#ec6b8ed55bb325d313f7501edcc135b4c4531ce4"
+  integrity sha512-GYnlNEohFY6rpsPFkqSqknPORVIJ54NoJ5EUYRx8wNdVIdNNXrTlKEzRyisUlEaaj3O0XxtIJq7PG5/rOQAnrA==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-html-inline@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-html-inline/-/tokenizer-html-inline-1.0.0-alpha.8.tgz#5dd64a1d5288f7eaa7123e9c623db08bddb9b87c"
-  integrity sha512-8Y0D/n8LwGeUH9G//yPW+C6ZWhde6itWTt6UV5o0wzGrdNnJ/qwTJ1n2LjbXbibLInAqhA916fPS4/DT2O36mw==
+"@yozora/tokenizer-html-inline@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-html-inline/-/tokenizer-html-inline-1.0.0-alpha.11.tgz#5774c0dea299fdf6bff27dfdab38d51ab50767a0"
+  integrity sha512-Lqz7E6tBrmA0+By11BK4XAVRmqWCavxCNflAIrg9TaC6NgEWNTeNMcc//CczySqvxEf5ZnTlR4EdC01pwNzebQ==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-html-block" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-html-block" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-image-reference@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-image-reference/-/tokenizer-image-reference-1.0.0-alpha.8.tgz#4ef928932d4fa0376e43b5f86eb88a4821682fcb"
-  integrity sha512-zexsywwStZoApAP9viLO+uDTAS9qswGJC4VPrzGSC/lq9ppQZbLxW0V4j8oi8HgEJo/g3W8qQpz641pWHKV1Hg==
+"@yozora/tokenizer-image-reference@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-image-reference/-/tokenizer-image-reference-1.0.0-alpha.11.tgz#2dae6d1399bdffd90e2659846c8cd0ec7f2561fc"
+  integrity sha512-cyujps0xdlS0Z/AZlbRclG3HptyA/LIwwTEE5pnB4q5KNdTnOYfMGHGG2wCB1UeppVKSG1zlGMAeDeyEoLAkjw==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-definition" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-image" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-link" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-definition" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-image" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-link" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-image@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-image/-/tokenizer-image-1.0.0-alpha.8.tgz#209e2999b838a04276f007ac646379942024476b"
-  integrity sha512-rQKV4D++dGVaZ9KZhkcNwPsR7Jb5JI7mR45csGuMcNWddQMcwUthtx9CXQ9wMCitMQoHbBPfDSayEaq5IaYU/A==
+"@yozora/tokenizer-image@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-image/-/tokenizer-image-1.0.0-alpha.11.tgz#42bdad0184bc8a27e24c16f3f9058fb5ec5e245d"
+  integrity sha512-xO5gc2DTaWgyxL9CBQgmEgwVrNH3jMOg5NCDJLWOg/z1l2VEs/LaTAGu6ZEbLK20dq1KtZsaMoepl+43OfHQkw==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-link" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-link" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-indented-code@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-indented-code/-/tokenizer-indented-code-1.0.0-alpha.8.tgz#0f2fd821417db4e3bb216469ce11cf52180df1ac"
-  integrity sha512-RwAk7CWLcYdURLWVIQux4ty6PCKCAlgMGTZzTOrTRtYe0r7Nq0RdLfqWyOh1wAua+r/gjlNt32EqTUnWkJ6RVw==
+"@yozora/tokenizer-indented-code@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-indented-code/-/tokenizer-indented-code-1.0.0-alpha.11.tgz#7860a82927e4df517644b2a1343d6e5e6cc11371"
+  integrity sha512-E7QnIZmahJ04g7b45hPZtLN/nkmtqf1GdJNEt5j3KGg0FBsOtrgYXIO5QqP/eMi3ZguMKXorlg3e3ic5s9p/1g==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-inline-code@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-inline-code/-/tokenizer-inline-code-1.0.0-alpha.8.tgz#04f7687fab8b16436b6a19a90bf684df77acc799"
-  integrity sha512-fEuboxTVO5nicisYWqYgjLL2yVQZlas4RL1RHlZbAL0+s69jb6oDfZAun+FbBZ0qnCBlsV3y9lT84xXOkRbyJw==
+"@yozora/tokenizer-inline-code@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-inline-code/-/tokenizer-inline-code-1.0.0-alpha.11.tgz#b7c399f90123c3f00a7d5f0f4608d7bc7c7d882d"
+  integrity sha512-80VS7WfhxGwS7jHC6uFw6nfESejiIz0CVY03jMq4/1SrPSzusa/9umM0DkUOdDypnLRoO68f5Igl3eSLDsULqg==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-link-reference@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-link-reference/-/tokenizer-link-reference-1.0.0-alpha.8.tgz#37e8de2115e38ea681b424748919731a346dd0cf"
-  integrity sha512-5xqRxIn2KscAfm1hPkNActDGLQOK77sL6pFu2awSAWn3e7pjt4rjoMgLnP1YrXSdf37voW11c2dtYHP/i8WOLA==
+"@yozora/tokenizer-link-reference@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-link-reference/-/tokenizer-link-reference-1.0.0-alpha.11.tgz#3dc636bdec8f64a6da297e048fdfd51169f66ed1"
+  integrity sha512-cxcva6SaCAjeZxEV8dwFQOuGP708dkMrQcmnRtfCo62gMubHOUh+Ob7QTge1mqZGa+xMYFY29egT8VQWVZ7QkA==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-definition" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-link" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-definition" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-link" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-link@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-link/-/tokenizer-link-1.0.0-alpha.8.tgz#81c6408bf6f947bbcc0195265a07c0054151039b"
-  integrity sha512-Iuez051X/974jE8a7GC36xlrxb4ksBH3bdVmVl82YG1V6/A6tjbkELzEk6Rk0TAomteV3X6e0uxQKJN+oIMxUw==
+"@yozora/tokenizer-link@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-link/-/tokenizer-link-1.0.0-alpha.11.tgz#9132d99588c3ed77f0e1d3dbc3714d18acd4ec2d"
+  integrity sha512-zG/38HvT7DV/SSVi5U62+psmp8YU+I818aO2oYymcrfYPN9SYdCZMLssLdt7OCf276iOFel0itrbxoC1/g8Oow==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-list-item@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-list-item/-/tokenizer-list-item-1.0.0-alpha.8.tgz#ad1327e22846775bcb4a0d226cbb95d88a873f20"
-  integrity sha512-1tG3E2MqQzb275aLwuToKMKO4aOiFduU96Xrxbu9gKyY5uJ12xIJ7QCoGUgz6n6z73otyRbhcLYz9dQ+mT+ZQA==
+"@yozora/tokenizer-list-item@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-list-item/-/tokenizer-list-item-1.0.0-alpha.11.tgz#4c1f640d12d449d452c50f4506189611524fbe57"
+  integrity sha512-YKbr53Da9QvNRiBoZh8nzutAfWfm+k8+o5zvVmoDoswbvpcQrQJRcXQvpPxBySfiMQiY5LmK1KWMGn8S/JQuSw==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-list@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-list/-/tokenizer-list-1.0.0-alpha.8.tgz#3de7cf0ed4b2359babd34bf0108b7a8f31a55a54"
-  integrity sha512-ZF9+Mj7lGeBcm4l2hdBpCAn7s3ygIoLys/u9pasGnWZhf+TJXzBR4eoipqac2A0kEsx8l5f1OHCCJYSs5Fx5Ug==
+"@yozora/tokenizer-list@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-list/-/tokenizer-list-1.0.0-alpha.11.tgz#1a4d56f3e8e599ed1e28adc013788968b412ec83"
+  integrity sha512-mNMQGG8a+xWRlOi8Vnbs9U6PfDKflp9DF8rhcx4crKLD4o8Vif0m1FAIVcJdgbBWalReuz4elFNtHPmGukjtDQ==
   dependencies:
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
-    "@yozora/tokenizer-list-item" "^1.0.0-alpha.8"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
+    "@yozora/tokenizer-list-item" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-paragraph@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-paragraph/-/tokenizer-paragraph-1.0.0-alpha.8.tgz#6b01684f86f141329d179bfdfad89e781d619391"
-  integrity sha512-hZkJJtCfk3FpBOuq6AWRInOTFh0SCFt4IuX3nwNcjpy/baNv8lS3CS++cHJAnVkCe8snXIKM8aSPTLAzidkdbw==
+"@yozora/tokenizer-paragraph@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-paragraph/-/tokenizer-paragraph-1.0.0-alpha.11.tgz#9936074a1c8ce0e8e50307d43e07d533e7d49810"
+  integrity sha512-4Q8K/7zigYOWLDbtPGaJk0YzOyKGIpzzGIJ1EYl3+SkjMcp3mR66fR7Z5FpivYo+phcjJyx6YzM4v5MGoViNLQ==
   dependencies:
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-setext-heading@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-setext-heading/-/tokenizer-setext-heading-1.0.0-alpha.8.tgz#d38cce7a55e73b0b65391a4f9fb827117871c460"
-  integrity sha512-JzdUO7ey9joGQ8VAtfAmfHUueeZx7IssiuO/l/AuVOY1Uq+z24wgQOVOlApWm3DwVOyPCVfBqoN+fb4zf08RPQ==
+"@yozora/tokenizer-setext-heading@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-setext-heading/-/tokenizer-setext-heading-1.0.0-alpha.11.tgz#f3c50281c60bf4c11ba188e10e2bf3b0de7df8b4"
+  integrity sha512-dx6odiL8Sjpp/HPwIRf+1SoysaBE0MymM/4oHxYvbB5tBleXzonTr1XTBrJ7W6B/QwH3ozz7B6v9FC814Hafmg==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-table@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-table/-/tokenizer-table-1.0.0-alpha.8.tgz#7234334cdfd10b3aeb36054035e90d8891fd921c"
-  integrity sha512-qC5cpXPRg4IV14BkJjjzUWZukzeHrcEvMOO5+7HSCApUCoLiAIfY8nUnu0bizn21pla3nYSb6RAC9abNc08j/Q==
+"@yozora/tokenizer-table@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-table/-/tokenizer-table-1.0.0-alpha.11.tgz#280fefbddc497a8f2b13193c04ed8e55e17bafa8"
+  integrity sha512-Z6Ai9NmMvmbpVlyChqfxu48COx2pweh5YMxK8cuNhWvnO0LLaib+6LbByxf2KjtP5XgU64cSU34G5gFLHqlzWA==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-text@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-text/-/tokenizer-text-1.0.0-alpha.8.tgz#e09b21cf5d22a3c6e17dcbff49839bb049b793f4"
-  integrity sha512-9A8HkVTX00fuHMe0/mVJNUHdoU2bnRZZi11KH3nGfWvqqmwMmcyzWqsNAy9xoND+MhlYiy35k0kDgEVBlXYWCg==
+"@yozora/tokenizer-text@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-text/-/tokenizer-text-1.0.0-alpha.11.tgz#464406fe565bb7a71f5456757387504d16e0dbc6"
+  integrity sha512-TVS16i7oYDuJg7U1lSEm5ZuNXF6SFCQJx9zYCwgxcP/pTmCB/xpT6etnLzGvtcoAOz4thyXDQLlLHnZV14rkhQ==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
-"@yozora/tokenizer-thematic-break@^1.0.0-alpha.8":
-  version "1.0.0-alpha.8"
-  resolved "https://registry.npmjs.org/@yozora/tokenizer-thematic-break/-/tokenizer-thematic-break-1.0.0-alpha.8.tgz#c24e5880874cecff4d9b7fbeea000f702865e536"
-  integrity sha512-rX+GL8iKds2J/MlMTAqTuUG1r7Pm7F5x3kkbmbdfmALY5jRKmH2nYtScZ39lOwm13DDFtCvxoF/jZ/k4PcXWkg==
+"@yozora/tokenizer-thematic-break@^1.0.0-alpha.11":
+  version "1.0.0-alpha.11"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-thematic-break/-/tokenizer-thematic-break-1.0.0-alpha.11.tgz#0a2db7142d26cd46145b8906e1dd690e74771157"
+  integrity sha512-Q2ZBgTAnC8ngdbi1tKtpoQQ39ZCSJM4Y2xxdJt+94vzMBcbuMtCeT2osCSauJb2JLpN+09nX8w44yOU5Y3W8Nw==
   dependencies:
-    "@yozora/character" "^1.0.0-alpha.8"
-    "@yozora/core-tokenizer" "^1.0.0-alpha.8"
+    "@yozora/character" "^1.0.0-alpha.11"
+    "@yozora/core-tokenizer" "^1.0.0-alpha.11"
 
 JSONStream@^1.0.4:
   version "1.3.5"
