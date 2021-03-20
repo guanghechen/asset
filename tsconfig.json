@@ -3,24 +3,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@guanghechen/asset-file": [
-        "packages/asset-file/src"
-      ],
-      "@guanghechen/asset-markdown": [
-        "packages/asset-markdown/src"
-      ],
+      "@guanghechen/asset-file": ["packages/asset-file/src"],
+      "@guanghechen/asset-markdown": ["packages/asset-markdown/src"],
       "@guanghechen/asset-markdown-parser": [
         "packages/asset-markdown-parser/src"
       ],
-      "@guanghechen/blog-api": [
-        "packages/blog-api/src"
-      ],
-      "@guanghechen/handbook-api": [
-        "packages/handbook-api/src"
-      ],
-      "@guanghechen/site-api": [
-        "packages/site-api/src"
-      ]
+      "@guanghechen/blog-api": ["packages/blog-api/src"],
+      "@guanghechen/handbook-api": ["packages/handbook-api/src"],
+      "@guanghechen/site-api": ["packages/site-api/src"]
     }
   }
 }

@@ -1,6 +1,6 @@
 import path from 'path'
+import type { SiteConfig } from '../../src'
 import {
-  SiteConfig,
   createDefaultSubSiteConfig,
   loadSiteConfig,
   resolveSubSiteConfig,
@@ -23,7 +23,7 @@ export interface CaseItem {
   /**
    * Site config provider
    */
-  getSiteConfig: () => SiteConfig
+  getSiteConfig(): SiteConfig
 }
 
 export const cases: CaseItem[] = [
