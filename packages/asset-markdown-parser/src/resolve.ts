@@ -1,18 +1,22 @@
-import type { Node as MdastNode } from 'unist'
 import type {
-  MdastCode,
-  MdastHeading,
-  MdastImage,
-  MdastImageReference,
-  MdastLink,
-  MdastLinkReference,
-  MdastList,
-  MdastListItem,
-  MdastParent,
-  MdastRoot,
-  MdastTable,
-  MdastText,
-} from './types/mdast'
+  YastLiteral,
+  YastNode,
+  YastParent,
+  YastRoot,
+} from '@yozora/core-tokenizer'
+import type {
+  FencedCode,
+  Heading,
+  Image,
+  ImageReference,
+  InlineCode,
+  Link,
+  LinkReference,
+  List,
+  ListItem,
+  Table,
+  Text,
+} from '@yozora/parser-gfm'
 import type {
   MdDocument,
   MdDocumentMeta,
@@ -56,9 +60,9 @@ import { calcIdentifierForHeading } from './util'
  * @param fallbackParser
  */
 export function resolveMdDocument(
-  root: MdastRoot,
+  root: YastRoot,
   resolveUrl: (url: string) => string,
-  fallbackParser?: (o: MdastNode) => MdocNode,
+  fallbackParser?: (o: YastNode) => MdocNode,
 ): MdDocument {
   const meta: MdDocumentMeta = (root as any).meta
   const toc: MdDocumentToc = { anchors: [] }
@@ -70,10 +74,10 @@ export function resolveMdDocument(
   }
   let currentAnchorHolder: AnchorHolder | null = null
 
-  const resolve = (o: MdastNode): MdocNode => {
+  const resolve = (o: YastNode): MdocNode => {
     const resolveChildren = <T extends MdocNode = MdocNode>(): T[] => {
-      if (o.children == null) return []
-      return (o as MdastParent).children.map(resolve) as T[]
+      const { children } = o as YastParent
+      return children == null ? [] : (children.map(resolve) as T[])
     }
 
     switch (o.type) {
@@ -92,7 +96,7 @@ export function resolveMdDocument(
       }
       case 'indentedCode':
       case 'fencedCode': {
-        const u = o as MdastCode
+        const u = o as FencedCode
         let args: Record<string, unknown> = {}
         let type: 'code' | 'codeEmbed' | 'codeLive' = 'code'
 
@@ -159,7 +163,7 @@ export function resolveMdDocument(
         return result
       }
       case 'heading': {
-        const { depth } = o as MdastHeading
+        const { depth } = o as Heading
         const children = resolveChildren<MdocPhrasingContent>()
         const identifier: string = calcIdentifierForHeading(children)
 
@@ -203,7 +207,7 @@ export function resolveMdDocument(
         return heading
       }
       case 'image': {
-        const u = o as MdastImage
+        const u = o as Image
         const result: MdocImage = {
           type: 'image',
           src: resolveUrl(u.url),
@@ -213,7 +217,7 @@ export function resolveMdDocument(
         return result
       }
       case 'imageReference': {
-        const u = o as MdastImageReference
+        const u = o as ImageReference
         const ref = meta.definition[u.identifier]
         const result: MdocImage = {
           type: 'image',
@@ -224,7 +228,7 @@ export function resolveMdDocument(
         return result
       }
       case 'inlineCode': {
-        const u = o as MdastCode
+        const u = o as InlineCode
         const result: MdocInlineCode = {
           type: 'inlineCode',
           value: u.value,
@@ -232,14 +236,15 @@ export function resolveMdDocument(
         return result
       }
       case 'inlineMath': {
+        const u = o as YastLiteral
         const result: MdocInlineMath = {
           type: 'inlineMath',
-          value: o.value as string,
+          value: u.value,
         }
         return result
       }
       case 'link': {
-        const u = o as MdastLink
+        const u = o as Link
         const result: MdocLink = {
           type: 'link',
           url: resolveUrl(u.url),
@@ -249,7 +254,7 @@ export function resolveMdDocument(
         return result
       }
       case 'linkReference': {
-        const u = o as MdastLinkReference
+        const u = o as LinkReference
         const ref = meta.definition[u.identifier]
         const result: MdocLink = {
           type: 'link',
@@ -260,7 +265,7 @@ export function resolveMdDocument(
         return result
       }
       case 'list': {
-        const u = o as MdastList
+        const u = o as List
         const result: MdocList = {
           type: 'list',
           ordered: u.listType === 'ordered',
@@ -271,11 +276,10 @@ export function resolveMdDocument(
         return result
       }
       case 'listItem': {
-        const u = o as MdastListItem
+        const u = o as ListItem
         const result: MdocListItem = {
           type: 'listItem',
-          checked: u.checked,
-          spread: Boolean(u.spread),
+          status: u.status,
           children: resolveChildren(),
         }
         return result
@@ -295,7 +299,7 @@ export function resolveMdDocument(
         return result
       }
       case 'table': {
-        const u = o as MdastTable
+        const u = o as Table
 
         const children = resolveChildren()
         const align = (u as any).columns
@@ -334,7 +338,7 @@ export function resolveMdDocument(
         return result
       }
       case 'text': {
-        const u = o as MdastText
+        const u = o as Text
         const result: MdocText = {
           type: 'text',
           value: u.value,

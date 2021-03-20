@@ -38,7 +38,6 @@
     "update:test": "node -r ts-node/register -r tsconfig-paths/register __test__/answer.ts"
   },
   "dependencies": {
-    "@types/mdast": "^3.0.3",
     "@yozora/parser-gfm": "^1.0.0-alpha.11"
   },
   "devDependencies": {

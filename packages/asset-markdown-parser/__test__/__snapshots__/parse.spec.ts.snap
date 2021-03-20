@@ -170,7 +170,6 @@ console.log('x:', x)
       Object {
         "children": Array [
           Object {
-            "checked": undefined,
             "children": Array [
               Object {
                 "children": Array [
@@ -184,25 +183,23 @@ console.log('x:', x)
               Object {
                 "children": Array [
                   Object {
-                    "checked": undefined,
                     "children": Array [
                       Object {
                         "type": "text",
                         "value": "foo",
                       },
                     ],
-                    "spread": false,
+                    "status": undefined,
                     "type": "listItem",
                   },
                   Object {
-                    "checked": undefined,
                     "children": Array [
                       Object {
                         "type": "text",
                         "value": "bar",
                       },
                     ],
-                    "spread": false,
+                    "status": undefined,
                     "type": "listItem",
                   },
                 ],
@@ -212,11 +209,10 @@ console.log('x:', x)
                 "type": "list",
               },
             ],
-            "spread": false,
+            "status": undefined,
             "type": "listItem",
           },
           Object {
-            "checked": undefined,
             "children": Array [
               Object {
                 "children": Array [
@@ -228,11 +224,10 @@ console.log('x:', x)
                 "type": "paragraph",
               },
             ],
-            "spread": false,
+            "status": undefined,
             "type": "listItem",
           },
           Object {
-            "checked": undefined,
             "children": Array [
               Object {
                 "children": Array [
@@ -246,7 +241,6 @@ console.log('x:', x)
               Object {
                 "children": Array [
                   Object {
-                    "checked": undefined,
                     "children": Array [
                       Object {
                         "children": Array [
@@ -258,11 +252,10 @@ console.log('x:', x)
                         "type": "paragraph",
                       },
                     ],
-                    "spread": false,
+                    "status": undefined,
                     "type": "listItem",
                   },
                   Object {
-                    "checked": undefined,
                     "children": Array [
                       Object {
                         "children": Array [
@@ -274,7 +267,7 @@ console.log('x:', x)
                         "type": "paragraph",
                       },
                     ],
-                    "spread": false,
+                    "status": undefined,
                     "type": "listItem",
                   },
                 ],
@@ -284,7 +277,7 @@ console.log('x:', x)
                 "type": "list",
               },
             ],
-            "spread": false,
+            "status": undefined,
             "type": "listItem",
           },
         ],
@@ -307,36 +300,33 @@ console.log('x:', x)
       Object {
         "children": Array [
           Object {
-            "checked": undefined,
             "children": Array [
               Object {
                 "type": "text",
                 "value": "waw",
               },
             ],
-            "spread": false,
+            "status": undefined,
             "type": "listItem",
           },
           Object {
-            "checked": undefined,
             "children": Array [
               Object {
                 "type": "text",
                 "value": "okay",
               },
             ],
-            "spread": false,
+            "status": undefined,
             "type": "listItem",
           },
           Object {
-            "checked": undefined,
             "children": Array [
               Object {
                 "type": "text",
                 "value": "nothing",
               },
             ],
-            "spread": false,
+            "status": undefined,
             "type": "listItem",
           },
         ],
@@ -387,40 +377,36 @@ console.log('x:', x)
           Object {
             "children": Array [
               Object {
-                "checked": undefined,
                 "children": Array [
                   Object {
                     "type": "text",
                     "value": "waw",
                   },
                 ],
-                "spread": false,
+                "status": undefined,
                 "type": "listItem",
               },
               Object {
-                "checked": undefined,
                 "children": Array [
                   Object {
                     "type": "text",
                     "value": "waw",
                   },
                 ],
-                "spread": false,
+                "status": undefined,
                 "type": "listItem",
               },
               Object {
-                "checked": undefined,
                 "children": Array [
                   Object {
                     "type": "text",
                     "value": "waw",
                   },
                 ],
-                "spread": false,
+                "status": undefined,
                 "type": "listItem",
               },
               Object {
-                "checked": undefined,
                 "children": Array [
                   Object {
                     "type": "text",
@@ -436,7 +422,7 @@ console.log('x:', x)
 ",
                   },
                 ],
-                "spread": false,
+                "status": undefined,
                 "type": "listItem",
               },
             ],
@@ -555,7 +541,7 @@ console.log('x:', x)
             ],
             "title": undefined,
             "type": "link",
-            "url": undefined,
+            "url": "https://github.com",
           },
           Object {
             "type": "text",
@@ -597,7 +583,7 @@ console.log('x:', x)
           },
           Object {
             "alt": "image",
-            "src": undefined,
+            "src": "./fake.png",
             "title": undefined,
             "type": "image",
           },
@@ -624,18 +610,18 @@ console.log('x:', x)
 ",
       },
       Object {
-        "destination": "https://github.com",
         "identifier": "github",
         "label": "github",
         "title": undefined,
         "type": "definition",
+        "url": "https://github.com",
       },
       Object {
-        "destination": "./fake.png",
         "identifier": "fake-image",
         "label": "fake-image",
         "title": undefined,
         "type": "definition",
+        "url": "./fake.png",
       },
     ],
     "type": "root",
@@ -643,16 +629,16 @@ console.log('x:', x)
   "meta": Object {
     "definition": Object {
       "fake-image": Object {
-        "destination": "./fake.png",
         "identifier": "fake-image",
         "label": "fake-image",
         "title": undefined,
+        "url": "./fake.png",
       },
       "github": Object {
-        "destination": "https://github.com",
         "identifier": "github",
         "label": "github",
         "title": undefined,
+        "url": "https://github.com",
       },
     },
   },

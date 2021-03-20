@@ -1,21 +1,19 @@
-import type { Node as MdastNode } from 'unist'
+import type { YastNode, YastRoot } from '@yozora/core-tokenizer'
 import { parseToMdast } from './parse'
 import { resolveMdDocument } from './resolve'
-import type { MdastRoot } from './types/mdast'
 import type { MdDocument, MdocNode } from './types/mdoc'
 
 export * from './parse'
 export * from './resolve'
-export * from './types/mdast'
 export * from './types/mdoc'
 export * from './util'
 
 export function parse(
   content: string,
   resolveUrl: (url: string) => string = url => url,
-  fallbackParser?: (o: MdastNode) => MdocNode,
+  fallbackParser?: (o: YastNode) => MdocNode,
 ): MdDocument {
-  const mdast: MdastRoot = parseToMdast(content)
+  const mdast: YastRoot = parseToMdast(content)
   const result: MdDocument = resolveMdDocument(
     mdast,
     resolveUrl,

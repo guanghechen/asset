@@ -1,4 +1,7 @@
-import type { AlignType, Definition as MdastDefinition } from 'mdast'
+import type {
+  Definition as MdastDefinition,
+  TableAlignType,
+} from '@yozora/parser-gfm'
 
 /**
  * Anchor data of toc (Table of Contents)
@@ -289,8 +292,8 @@ export interface MdocList extends MdocParent {
  */
 export interface MdocListItem extends MdocParent {
   type: 'listItem'
+  status?: 'todo' | 'doing' | 'done'
   checked?: boolean
-  spread: boolean
 }
 
 /**
@@ -323,7 +326,7 @@ export interface MdocTable extends MdocNode {
 export interface MdocTableCell extends MdocParent {
   type: 'tableCell'
   isHeader: boolean
-  align?: AlignType
+  align?: TableAlignType
   children: MdocPhrasingContent[]
 }
 

@@ -1,5 +1,5 @@
+import type { YastRoot } from '@yozora/core-tokenizer'
 import { createExGFMParser } from '@yozora/parser-gfm'
-import type { MdastRoot } from './types/mdast'
 
 const parser = createExGFMParser({ shouldReservePosition: false })
 
@@ -8,8 +8,8 @@ const parser = createExGFMParser({ shouldReservePosition: false })
  *
  * @param content
  */
-export const parseToMdast = (content: string): MdastRoot => {
+export const parseToMdast = (content: string): YastRoot => {
   // resolve content
-  const result: MdastRoot = parser.parse(content) as MdastRoot
+  const result: YastRoot = parser.parse(content) as YastRoot
   return result
 }
