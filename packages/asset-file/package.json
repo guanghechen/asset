@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-file",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.2",
   "description": "file asset",
   "author": {
     "name": "lemon-clown",
@@ -37,7 +37,7 @@
     "test:update": "node -r ts-node/register -r tsconfig-paths/register __test__/answer.ts"
   },
   "dependencies": {
-    "@guanghechen/site-api": "^1.0.0-alpha.0",
+    "@guanghechen/site-api": "^1.0.0-alpha.2",
     "@types/micromatch": "^4.0.1",
     "micromatch": "^4.0.2"
   }

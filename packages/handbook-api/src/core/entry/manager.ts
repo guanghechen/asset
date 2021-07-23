@@ -16,7 +16,7 @@ export class HandbookEntryDataManager extends EntryDataManager {
   /**
    * @override
    */
-  public toDataMap(): HandbookEntryDataMap {
+  public override toDataMap(): HandbookEntryDataMap {
     const data: EntryDataMap = super.toDataMap()
     const menu = this.buildMenu()
     return {
