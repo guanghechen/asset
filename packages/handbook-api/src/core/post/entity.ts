@@ -1,5 +1,5 @@
-import type { MdDocument } from '@guanghechen/asset-markdown-parser'
 import type { AssetDataItem } from '@guanghechen/site-api'
+import type { Root } from '@yozora/ast'
 import type { HandbookSourceType } from '../../config/handbook'
 
 /**
@@ -24,5 +24,5 @@ export interface PostAssetEntity
   /**
    * Markdown content
    */
-  content: MdDocument
+  content: Root
 }

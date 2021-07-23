@@ -44,6 +44,7 @@
     "@guanghechen/site-api": "^1.0.0-alpha.0",
     "@types/fs-extra": "^9.0.8",
     "@types/micromatch": "^4.0.1",
+    "@yozora/ast": "^1.0.0",
     "fs-extra": "^10.0.0",
     "micromatch": "^4.0.2",
     "tiny-invariant": "^1.0.2"

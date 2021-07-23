@@ -1,5 +1,5 @@
-import type { MdDocument } from '@guanghechen/asset-markdown-parser'
 import type { AssetDataItem } from '@guanghechen/site-api'
+import type { Root } from '@yozora/ast'
 import type { BlogSourceType } from '../../config/blog'
 
 /**
@@ -23,5 +23,5 @@ export interface PostAssetEntity extends AssetDataItem<BlogSourceType.POST> {
   /**
    * Markdown content
    */
-  content: MdDocument
+  content: Root
 }
