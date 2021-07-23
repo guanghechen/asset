@@ -107,7 +107,8 @@ export function resolveMdDocument(
           } catch (e) {
             // Try parsing as dom attributes
             args = {}
-            const regex = /\s*\b([a-z]\w*)(?:=([^\s'"`]+|'[^']*'|"[^"]*"|`[^`]`))?/g
+            const regex =
+              /\s*\b([a-z]\w*)(?:=([^\s'"`]+|'[^']*'|"[^"]*"|`[^`]`))?/g
             u.meta.replace(regex, (m, p1, p2): string => {
               const key: string = p1.toLowerCase()
               const val: string | null =

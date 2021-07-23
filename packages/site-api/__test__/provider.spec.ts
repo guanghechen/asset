@@ -66,9 +66,9 @@ describe('AssetDataProvider', function () {
             ) {
               const data = JSON.parse(rawContent.toString('utf-8'))
 
-              const tags: TagDataItem[] = (
-                data.tags || []
-              ).map((rawTag: string) => tagDataManager.normalize(rawTag))
+              const tags: TagDataItem[] = (data.tags || []).map(
+                (rawTag: string) => tagDataManager.normalize(rawTag),
+              )
 
               const categories: CategoryDataItem[][] = (
                 data.categories || []
@@ -90,7 +90,7 @@ describe('AssetDataProvider', function () {
               }
 
               const entityManager = fakeEntityManagerMap[asset.type]
-              entityManager.insert(asset)
+              void entityManager.insert(asset)
               yield [asset, tags, categories]
             },
           }
@@ -120,7 +120,8 @@ describe('AssetDataProvider', function () {
             expect(provider.tagService.fetchTag('non-exist uuid')).toBeNull()
 
             // test categories
-            const categories: CategoryDataItem[] = provider.categoryService.fetchCategories()
+            const categories: CategoryDataItem[] =
+              provider.categoryService.fetchCategories()
             expect(
               categories.map(c =>
                 provider.categoryService.fetchCategory(c.uuid),
@@ -132,9 +133,8 @@ describe('AssetDataProvider', function () {
 
             // test assets
             for (const assetType of Object.keys(subSiteConfig.source)) {
-              const assets: AssetDataItem[] = provider.assetService.fetchAssets(
-                assetType,
-              )
+              const assets: AssetDataItem[] =
+                provider.assetService.fetchAssets(assetType)
               expect(
                 assets.map(a => provider.assetService.fetchAsset(a.uuid)),
               ).toEqual(assets)
@@ -186,16 +186,16 @@ describe('AssetDataProvider', function () {
             expect(desensitize(tags, assetDataReplacer)).toMatchSnapshot('tags')
 
             // test categories
-            const categories: CategoryDataItem[] = provider.categoryService.fetchCategories()
+            const categories: CategoryDataItem[] =
+              provider.categoryService.fetchCategories()
             expect(desensitize(categories, assetDataReplacer)).toMatchSnapshot(
               'categories',
             )
 
             // test assets
             for (const assetType of Object.keys(subSiteConfig.source)) {
-              const assets: AssetDataItem[] = provider.assetService.fetchAssets(
-                assetType,
-              )
+              const assets: AssetDataItem[] =
+                provider.assetService.fetchAssets(assetType)
               expect(desensitize(assets, assetDataReplacer)).toMatchSnapshot(
                 'asset -- ' + assetType,
               )

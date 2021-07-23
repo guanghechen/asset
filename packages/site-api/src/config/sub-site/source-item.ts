@@ -46,43 +46,44 @@ export type SubSiteSourceItemResolver<T extends SubSiteSourceItem> = (
  * @param subSiteDataRoot       dataRoot of sub-site
  * @param defaultSourceItem     default SubSiteSourceItem.source
  */
-export const resolveSubSiteSourceItem: SubSiteSourceItemResolver<SubSiteSourceItem> = (
-  rawSourceItem: Partial<SubSiteSourceItem> = {},
-  subSiteSourceRoot: string,
-  subSiteDataRoot: string,
-  defaultSourceItem: SubSiteSourceItem,
-): SubSiteSourceItem => {
-  // resolve sourceRoot (absolute filepath)
-  const sourceRoot: string = resolveLocalPath(
-    subSiteSourceRoot,
-    coverString(
-      defaultSourceItem.sourceRoot,
-      rawSourceItem.sourceRoot,
-      isNonBlankString,
-    ),
-  )
+export const resolveSubSiteSourceItem: SubSiteSourceItemResolver<SubSiteSourceItem> =
+  (
+    rawSourceItem: Partial<SubSiteSourceItem> = {},
+    subSiteSourceRoot: string,
+    subSiteDataRoot: string,
+    defaultSourceItem: SubSiteSourceItem,
+  ): SubSiteSourceItem => {
+    // resolve sourceRoot (absolute filepath)
+    const sourceRoot: string = resolveLocalPath(
+      subSiteSourceRoot,
+      coverString(
+        defaultSourceItem.sourceRoot,
+        rawSourceItem.sourceRoot,
+        isNonBlankString,
+      ),
+    )
 
-  // resolve dataRoot (absolute filepath)
-  const dataRoot: string = resolveLocalPath(
-    subSiteDataRoot,
-    coverString(
-      defaultSourceItem.dataRoot,
-      rawSourceItem.dataRoot,
-      isNonBlankString,
-    ),
-  )
+    // resolve dataRoot (absolute filepath)
+    const dataRoot: string = resolveLocalPath(
+      subSiteDataRoot,
+      coverString(
+        defaultSourceItem.dataRoot,
+        rawSourceItem.dataRoot,
+        isNonBlankString,
+      ),
+    )
 
-  // resolve pattern
-  const pattern: string[] = cover<string[]>(
-    defaultSourceItem.pattern,
-    rawSourceItem.pattern,
-    isNotEmptyArray,
-  )
+    // resolve pattern
+    const pattern: string[] = cover<string[]>(
+      defaultSourceItem.pattern,
+      rawSourceItem.pattern,
+      isNotEmptyArray,
+    )
 
-  // resolve encoding
-  const encoding: BufferEncoding | undefined = cover<
-    BufferEncoding | undefined
-  >(defaultSourceItem.encoding, rawSourceItem.encoding, isNonBlankString)
+    // resolve encoding
+    const encoding: BufferEncoding | undefined = cover<
+      BufferEncoding | undefined
+    >(defaultSourceItem.encoding, rawSourceItem.encoding, isNonBlankString)
 
-  return { sourceRoot: sourceRoot, dataRoot: dataRoot, pattern, encoding }
-}
+    return { sourceRoot: sourceRoot, dataRoot: dataRoot, pattern, encoding }
+  }

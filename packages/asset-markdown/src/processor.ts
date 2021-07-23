@@ -47,7 +47,8 @@ export interface AssetMarkdownProcessorProps {
  * Processor for handle markdown asset
  */
 export class AssetMarkdownProcessor
-  implements AssetProcessor<MarkdownAssetDataItem> {
+  implements AssetProcessor<MarkdownAssetDataItem>
+{
   protected readonly encoding: BufferEncoding
   protected readonly isMetaOptional: boolean
   protected readonly resolve: AssetMarkdownProcessorProps['resolve']

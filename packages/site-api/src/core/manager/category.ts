@@ -3,10 +3,12 @@ import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
 import { uniqueText } from '../../util/hash'
 import { stringify } from '../../util/string'
-import type { AssetUUID } from '../entity/_types'
-import { CategoryUUID } from '../entity/_types'
-import type { CategoryDataMap, RawCategoryDataItem } from '../entity/category'
-import { CategoryDataItem } from '../entity/category'
+import type { AssetUUID, CategoryUUID } from '../entity/_types'
+import type {
+  CategoryDataItem,
+  CategoryDataMap,
+  RawCategoryDataItem,
+} from '../entity/category'
 
 /**
  * Only export no side-effect funcs from CategoryDataManager

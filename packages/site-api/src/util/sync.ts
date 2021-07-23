@@ -85,7 +85,7 @@ export function createSerialExecutor<D extends unknown = unknown>(
 
   const addTask = (task: AsyncTask<D>): void => {
     tasks.push(task)
-    runTask()
+    void runTask()
   }
 
   return { addTask }

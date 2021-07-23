@@ -64,9 +64,9 @@ export class HandbookEntryDataManager extends EntryDataManager {
       }
 
       for (let i = 0, p = ''; i < location.pieces.length; ++i) {
-        const children: Array<
-          HandbookMenuParentNode | HandbookMenuLeafNode
-        > = (child as HandbookMenuParentNode).children
+        const children: Array<HandbookMenuParentNode | HandbookMenuLeafNode> = (
+          child as HandbookMenuParentNode
+        ).children
         child = children[children.length - 1]
 
         if (child == null || child.title !== location.pieces[i]) {

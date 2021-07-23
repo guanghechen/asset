@@ -1,6 +1,7 @@
 {
   "extends": "./tsconfig.settings",
   "compilerOptions": {
+    "sourceMap": true,
     "baseUrl": ".",
     "paths": {
       "@guanghechen/asset-file": ["packages/asset-file/src"],

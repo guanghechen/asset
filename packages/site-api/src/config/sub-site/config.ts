@@ -11,7 +11,7 @@ import type {
  */
 export interface SubSiteConfig<
   SourceType extends string = string,
-  SourceItem extends SubSiteSourceItem = SubSiteSourceItem
+  SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
 > {
   /**
    * The root route (spa) path of the sub-site
@@ -64,7 +64,7 @@ export type SubSiteConfigResolver<
   T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<
     SourceType,
     SourceItem
-  >
+  >,
 > = (
   rawConfig: Partial<Omit<T, 'source'>> & { source?: Partial<T['source']> },
   sitePathConfig: SitePathConfig,
@@ -106,7 +106,7 @@ export function resolveSubSiteConfig<
   T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<
     SourceType,
     SourceItem
-  >
+  >,
 >(
   rawConfig: Partial<Omit<T, 'source'>> & {
     source?: Partial<T['source']>
@@ -186,8 +186,10 @@ export function resolveSubSiteConfig<
 
   // resolve source
   const source: Record<SourceType, SourceItem> = {} as any
-  const rawSources: Record<SourceType, Partial<SourceItem>> =
-    rawConfig.source || ({} as any)
+  const rawSources: Record<
+    SourceType,
+    Partial<SourceItem>
+  > = rawConfig.source || ({} as any)
   for (const sourceType of sourceItemTypes) {
     source[sourceType] = resolveSourceItem(
       rawSources[sourceType],

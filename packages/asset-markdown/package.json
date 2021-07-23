@@ -32,19 +32,19 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development rollup -w -c ../../rollup.config.js",
     "build": "cross-env NODE_ENV=production rollup -c ../../rollup.config.js",
-    "prebuild": "rimraf lib/",
+    "prebuild": "rimraf lib/ && tsc -p tsconfig.src.json --emitDeclarationOnly",
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build",
     "test": "cross-env TS_NODE_FILES=true jest --config ../../jest.config.js --rootDir .",
-    "update:test": "node -r ts-node/register -r tsconfig-paths/register __test__/answer.ts"
+    "test:update": "node -r ts-node/register -r tsconfig-paths/register __test__/answer.ts"
   },
   "dependencies": {
     "@guanghechen/site-api": "^1.0.0-alpha.0",
-    "@types/js-yaml": "^3.12.5",
-    "dayjs": "^1.9.1",
-    "js-yaml": "^3.14.0",
+    "@types/js-yaml": "^4.0.2",
+    "dayjs": "^1.10.6",
+    "js-yaml": "^4.1.0",
     "tiny-invariant": "^1.0.2"
   },
   "devDependencies": {
-    "fs-extra": "^9.1.0"
+    "fs-extra": "^10.0.0"
   }
 }

@@ -3,10 +3,8 @@ import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
 import { uniqueText } from '../../util/hash'
 import { stringify } from '../../util/string'
-import type { AssetUUID } from '../entity/_types'
-import { TagUUID } from '../entity/_types'
-import type { RawTagDataItem, TagDataMap } from '../entity/tag'
-import { TagDataItem } from '../entity/tag'
+import type { AssetUUID, TagUUID } from '../entity/_types'
+import type { RawTagDataItem, TagDataItem, TagDataMap } from '../entity/tag'
 
 /**
  * Only export no side-effect funcs from TagDataManager
