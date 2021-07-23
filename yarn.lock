@@ -1924,20 +1924,25 @@
   resolved "https://registry.npmjs.org/@yozora/invariant/-/invariant-1.0.0.tgz#517bfe02d3be32cc070283f0e28e20b30d2fbdc0"
   integrity sha512-EetToJk2g44RDrDWv5DeOh+mA6R4AA/YEh41U3V382FugH5AgcPFuBhbXFI/nyPueQP5sJSrQ+gOvKC47hc+Jg==
 
-"@yozora/parser-gfm@^1.0.0":
+"@yozora/parser@^1.0.0":
   version "1.0.0"
-  resolved "https://registry.npmjs.org/@yozora/parser-gfm/-/parser-gfm-1.0.0.tgz#3885846bf919c9c3f13a1fda8056709b6b2d8491"
-  integrity sha512-KbiS7T8pEW0kPrsl9SekNSBn3qQpbCnSSkA4b2bqaU1VQOA+hHDV8lcMXSa4TE1aUXtCVxalscpVdRm+eFVBDA==
+  resolved "https://registry.npmjs.org/@yozora/parser/-/parser-1.0.0.tgz#8a3dfe0b4309e953c5d85ffb754073871e2df537"
+  integrity sha512-bREibD7yYVEDk8ZGWsGleZlnER3walfgkqCUBd8b1q6w2QFM/uRSWSgZOM4IQYwXKoySkopRo/GfgzNc35mkYA==
   dependencies:
     "@yozora/ast" "^1.0.0"
     "@yozora/core-parser" "^1.0.0"
-    "@yozora/core-tokenizer" "^1.0.0"
+    "@yozora/tokenizer-admonition" "^1.0.0"
     "@yozora/tokenizer-autolink" "^1.0.0"
+    "@yozora/tokenizer-autolink-extension" "^1.0.0"
     "@yozora/tokenizer-blockquote" "^1.0.0"
     "@yozora/tokenizer-break" "^1.0.0"
     "@yozora/tokenizer-definition" "^1.0.0"
+    "@yozora/tokenizer-delete" "^1.0.0"
     "@yozora/tokenizer-emphasis" "^1.0.0"
     "@yozora/tokenizer-fenced-code" "^1.0.0"
+    "@yozora/tokenizer-footnote" "^1.0.0"
+    "@yozora/tokenizer-footnote-definition" "^1.0.0"
+    "@yozora/tokenizer-footnote-reference" "^1.0.0"
     "@yozora/tokenizer-heading" "^1.0.0"
     "@yozora/tokenizer-html-block" "^1.0.0"
     "@yozora/tokenizer-html-inline" "^1.0.0"
@@ -1945,14 +1950,37 @@
     "@yozora/tokenizer-image-reference" "^1.0.0"
     "@yozora/tokenizer-indented-code" "^1.0.0"
     "@yozora/tokenizer-inline-code" "^1.0.0"
+    "@yozora/tokenizer-inline-math" "^1.0.0"
     "@yozora/tokenizer-link" "^1.0.0"
     "@yozora/tokenizer-link-reference" "^1.0.0"
     "@yozora/tokenizer-list" "^1.0.0"
     "@yozora/tokenizer-list-item" "^1.0.0"
+    "@yozora/tokenizer-math" "^1.0.0"
     "@yozora/tokenizer-paragraph" "^1.0.0"
     "@yozora/tokenizer-setext-heading" "^1.0.0"
+    "@yozora/tokenizer-table" "^1.0.0"
     "@yozora/tokenizer-text" "^1.0.0"
     "@yozora/tokenizer-thematic-break" "^1.0.0"
+
+"@yozora/tokenizer-admonition@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-admonition/-/tokenizer-admonition-1.0.0.tgz#d313e82912a6e79e2a56ba63f7c8a7f0a82fcefb"
+  integrity sha512-5DIeOG7UlN/QnPGuhp9sKI1u/PnkIjWE9ruS+/owqizY3sxYqrcuvSQpASmFvdsrIowDVyDIEsD4M/GhFURxbA==
+  dependencies:
+    "@yozora/ast" "^1.0.0"
+    "@yozora/character" "^1.0.0"
+    "@yozora/core-tokenizer" "^1.0.0"
+    "@yozora/tokenizer-fenced-block" "^1.0.0"
+
+"@yozora/tokenizer-autolink-extension@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-autolink-extension/-/tokenizer-autolink-extension-1.0.0.tgz#9b5159b195e366e405a4f7dba59cddaeaf4c0380"
+  integrity sha512-Pl2q5YgMrMxRcKQE/JR0+/x4zGhWi0xvNbYZCfws034cqtFdWpjljjCShWPmWeQlNl1TAEgObEXpv2pD7Y/Z1w==
+  dependencies:
+    "@yozora/ast" "^1.0.0"
+    "@yozora/character" "^1.0.0"
+    "@yozora/core-tokenizer" "^1.0.0"
+    "@yozora/tokenizer-autolink" "^1.0.0"
 
 "@yozora/tokenizer-autolink@^1.0.0":
   version "1.0.0"
@@ -1990,6 +2018,15 @@
     "@yozora/character" "^1.0.0"
     "@yozora/core-tokenizer" "^1.0.0"
 
+"@yozora/tokenizer-delete@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-delete/-/tokenizer-delete-1.0.0.tgz#48cdc332bdd833d9ef6aa7fc62a172bf5abcb5e4"
+  integrity sha512-uXYw/pc0Bh/taMZ/I0EIyV/MKYx8f+bgHOE4QtT1LtMt3iqMiC91MjmZkNUqkA559WbBmcid9Ar+hR22GuFZ5g==
+  dependencies:
+    "@yozora/ast" "^1.0.0"
+    "@yozora/character" "^1.0.0"
+    "@yozora/core-tokenizer" "^1.0.0"
+
 "@yozora/tokenizer-emphasis@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@yozora/tokenizer-emphasis/-/tokenizer-emphasis-1.0.0.tgz#e93d1b8b9c50e5f8be7fb7bb351d7e7adaaa8699"
@@ -2017,6 +2054,35 @@
     "@yozora/character" "^1.0.0"
     "@yozora/core-tokenizer" "^1.0.0"
     "@yozora/tokenizer-fenced-block" "^1.0.0"
+
+"@yozora/tokenizer-footnote-definition@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-footnote-definition/-/tokenizer-footnote-definition-1.0.0.tgz#3907be89509700e2bd635bde8e8bb42fdb7a1bf9"
+  integrity sha512-DdC++SjhBYqhqcKpL/gDPDvnshB9IoUPTUmdNlUkFVKQLkopOWp8G0M18/qA2cFmahohR6J2lI60j9lvp5H/eQ==
+  dependencies:
+    "@yozora/ast" "^1.0.0"
+    "@yozora/character" "^1.0.0"
+    "@yozora/core-tokenizer" "^1.0.0"
+
+"@yozora/tokenizer-footnote-reference@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-footnote-reference/-/tokenizer-footnote-reference-1.0.0.tgz#c1b6c3284a633944eb9fdb8c81f16c2bea122d9f"
+  integrity sha512-MHSyEz6NIFOx/YtuptDU2icX7fU5liZMGB8X3LZEDlg7j6CHqZBk93T7lm6akZ6oOtV5J1xsnIL0JtPKL3Hf8w==
+  dependencies:
+    "@yozora/ast" "^1.0.0"
+    "@yozora/character" "^1.0.0"
+    "@yozora/core-tokenizer" "^1.0.0"
+    "@yozora/tokenizer-footnote-definition" "^1.0.0"
+
+"@yozora/tokenizer-footnote@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-footnote/-/tokenizer-footnote-1.0.0.tgz#6b52400ba08e8354cd30aae48963e388fe3c37aa"
+  integrity sha512-1c0U+W2v//YuFNw3ueHwAbHEA8EiAyX0euwXzWMB0o9Sy5mgGeflFGImkOF1tfxIBC2bxmx8owWp3/5niDIrIA==
+  dependencies:
+    "@yozora/ast" "^1.0.0"
+    "@yozora/character" "^1.0.0"
+    "@yozora/core-tokenizer" "^1.0.0"
+    "@yozora/tokenizer-link" "^1.0.0"
 
 "@yozora/tokenizer-heading@^1.0.0":
   version "1.0.0"
@@ -2085,6 +2151,15 @@
     "@yozora/character" "^1.0.0"
     "@yozora/core-tokenizer" "^1.0.0"
 
+"@yozora/tokenizer-inline-math@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-inline-math/-/tokenizer-inline-math-1.0.0.tgz#6ecc5cad853f26d823835e1058d90aeab344965a"
+  integrity sha512-c6t2f3cHgkwkQCfN8IoQF5SJN5UKmwm7hGatIUcAbytafrwvtLdXrp1JafJQYPLdPubn5MCSZNM9UUMACgGdVA==
+  dependencies:
+    "@yozora/ast" "^1.0.0"
+    "@yozora/character" "^1.0.0"
+    "@yozora/core-tokenizer" "^1.0.0"
+
 "@yozora/tokenizer-link-reference@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@yozora/tokenizer-link-reference/-/tokenizer-link-reference-1.0.0.tgz#4cb1de38a488a9f42cf666e017644cc0abdc0f00"
@@ -2122,6 +2197,16 @@
     "@yozora/core-tokenizer" "^1.0.0"
     "@yozora/tokenizer-list-item" "^1.0.0"
 
+"@yozora/tokenizer-math@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-math/-/tokenizer-math-1.0.0.tgz#347bc3e595433a605299b64d39111cd78f0c6219"
+  integrity sha512-jWiZQ6IxzlqqV5Z0Y2XfIjzlgZGh2nrkL6Qcb8RGj0r6uR3IYBgF+v0ZyAoiGwSAGckBZvHwPiiwnHh3a9iauA==
+  dependencies:
+    "@yozora/ast" "^1.0.0"
+    "@yozora/character" "^1.0.0"
+    "@yozora/core-tokenizer" "^1.0.0"
+    "@yozora/tokenizer-fenced-block" "^1.0.0"
+
 "@yozora/tokenizer-paragraph@^1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@yozora/tokenizer-paragraph/-/tokenizer-paragraph-1.0.0.tgz#e2a308b537a1fa7514bab2055061bf9e90c369fb"
@@ -2135,6 +2220,15 @@
   version "1.0.0"
   resolved "https://registry.npmjs.org/@yozora/tokenizer-setext-heading/-/tokenizer-setext-heading-1.0.0.tgz#00aeaa66187b55e9906b6be1d2163df05e3d2cd8"
   integrity sha512-2xbcGCSrbez9AGXe4hwatDt/5BWwi8BDKOrU0niKGmGpC/4vNhn5wrgJ/oKeO8Dkj2uR7oaKtYqIsLgf1jj2tA==
+  dependencies:
+    "@yozora/ast" "^1.0.0"
+    "@yozora/character" "^1.0.0"
+    "@yozora/core-tokenizer" "^1.0.0"
+
+"@yozora/tokenizer-table@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/@yozora/tokenizer-table/-/tokenizer-table-1.0.0.tgz#7b0997e4289aa33aa71c6a537a6c95ef9c60c180"
+  integrity sha512-3v1S0738E6roOyrD0RpqnQZCngu60G9f8MEj9P4FVnbmXQ+1YCS9u0NI4pQbg4ybanjrYdA97A3OeeYWpV71pA==
   dependencies:
     "@yozora/ast" "^1.0.0"
     "@yozora/character" "^1.0.0"
@@ -2318,11 +2412,6 @@ ansi-regex@^5.0.0:
   resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.0.tgz#388539f55179bf39339c81af30a654d69f87cb75"
   integrity sha512-bY6fj56OUQ0hU1KjFNDQuJFezqKdrAyFdIevADiqrWHwSlbmBNMHp5ak2f40Pm8JTFyM2mqxkG6ngkHO11f/lg==
 
-ansi-regex@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-6.0.0.tgz#ecc7f5933cbe5ac7b33e209a5ff409ab1669c6b2"
-  integrity sha512-tAaOSrWCHF+1Ear1Z4wnJCXA9GGox4K6Ic85a5qalES2aeEwQGr7UC93mwef49536PkCYjzkp0zIxfFvexJ6zQ==
-
 ansi-styles@^3.2.1:
   version "3.2.1"
   resolved "https://registry.npmjs.org/ansi-styles/-/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"
@@ -2428,11 +2517,6 @@ array-union@^2.1.0:
   version "2.1.0"
   resolved "https://registry.npmjs.org/array-union/-/array-union-2.1.0.tgz#b798420adbeb1de828d84acd8a2e23d3efe85e8d"
   integrity sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==
-
-array-union@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/array-union/-/array-union-3.0.1.tgz#da52630d327f8b88cfbfb57728e2af5cd9b6b975"
-  integrity sha512-1OvF9IbWwaeiM9VhzYXVQacMibxpXOMYVNIvMtKRyX9SImBXpKcFr8XvFDeEslCyuH/t6KRt7HEO94AlP8Iatw==
 
 array.prototype.flat@^1.2.4:
   version "1.2.4"
@@ -4176,7 +4260,7 @@ fast-diff@^1.1.2:
   resolved "https://registry.npmjs.org/fast-diff/-/fast-diff-1.2.0.tgz#73ee11982d86caaf7959828d519cfe927fac5f03"
   integrity sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==
 
-fast-glob@^3.1.1, fast-glob@^3.2.7:
+fast-glob@^3.1.1:
   version "3.2.7"
   resolved "https://registry.npmjs.org/fast-glob/-/fast-glob-3.2.7.tgz#fd6cb7a2d7e9aa7a7846111e85a196d6b2f766a1"
   integrity sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==
@@ -4658,18 +4742,6 @@ globals@^13.6.0, globals@^13.9.0:
   dependencies:
     type-fest "^0.20.2"
 
-globby@12.0.0:
-  version "12.0.0"
-  resolved "https://registry.npmjs.org/globby/-/globby-12.0.0.tgz#b8bbb8e9d48f8a3c9abf5624030f1f9e1cfbe3ed"
-  integrity sha512-3mOIUduqSMHm6gNjIw9E641TZ93NB8lFVt+6MKIw6vUaIS5aSsw/6cl0gT86z1IoKlaL90BiOQlA593GUMlzEA==
-  dependencies:
-    array-union "^3.0.1"
-    dir-glob "^3.0.1"
-    fast-glob "^3.2.7"
-    ignore "^5.1.8"
-    merge2 "^1.4.1"
-    slash "^4.0.0"
-
 globby@^11.0.2, globby@^11.0.3, globby@^11.0.4:
   version "11.0.4"
   resolved "https://registry.npmjs.org/globby/-/globby-11.0.4.tgz#2cbaff77c2f2a62e71e9b2813a67b97a3a3001a5"
@@ -4903,7 +4975,7 @@ ignore@^4.0.6:
   resolved "https://registry.npmjs.org/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
 
-ignore@^5.1.4, ignore@^5.1.8:
+ignore@^5.1.4:
   version "5.1.8"
   resolved "https://registry.npmjs.org/ignore/-/ignore-5.1.8.tgz#f150a8b50a34289b33e22f5889abd4d8016f0e57"
   integrity sha512-BMpfD7PpiETpBl/A6S498BaIJ6Y/ABT93ETbby2fP00v4EbvPBXWEoaR1UBPKs3iR53pJY7EtZk5KACI57i1Uw==
@@ -6605,7 +6677,7 @@ merge-stream@^2.0.0:
   resolved "https://registry.npmjs.org/merge-stream/-/merge-stream-2.0.0.tgz#52823629a14dd00c9770fb6ad47dc6310f2c1f60"
   integrity sha512-abv/qOcuPfk3URPfDzmZU1LKmuw8kT+0nIHvKrKgFrwifol/doWcdA4ZqsWQ8ENrFKkd67Mfpo/LovbIUsbt3w==
 
-merge2@^1.3.0, merge2@^1.4.1:
+merge2@^1.3.0:
   version "1.4.1"
   resolved "https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz#4368892f885e907455a6fd7dc55c0c9d404990ae"
   integrity sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
@@ -8575,11 +8647,6 @@ slash@^3.0.0:
   resolved "https://registry.npmjs.org/slash/-/slash-3.0.0.tgz#6539be870c165adbd5240220dbe361f1bc4d4634"
   integrity sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==
 
-slash@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.npmjs.org/slash/-/slash-4.0.0.tgz#2422372176c4c6c5addb5e2ada885af984b396a7"
-  integrity sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==
-
 slice-ansi@^3.0.0:
   version "3.0.0"
   resolved "https://registry.npmjs.org/slice-ansi/-/slice-ansi-3.0.0.tgz#31ddc10930a1b7e0b67b08c96c2f49b77a789787"
@@ -8923,13 +8990,6 @@ strip-ansi@^6.0.0:
   integrity sha512-AuvKTrTfQNYNIctbR1K/YGTR1756GycPsg7b9bdV9Duqur4gv6aKqHXah67Z8ImS7WEz5QVcOtlfW2rZEugt6w==
   dependencies:
     ansi-regex "^5.0.0"
-
-strip-ansi@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.npmjs.org/strip-ansi/-/strip-ansi-7.0.0.tgz#1dc49b980c3a4100366617adac59327eefdefcb0"
-  integrity sha512-UhDTSnGF1dc0DRbUqr1aXwNoY3RgVkSWG8BrpnuFIxhP57IqbS7IRta2Gfiavds4yCxc5+fEAVVOgBZWnYkvzg==
-  dependencies:
-    ansi-regex "^6.0.0"
 
 strip-bom@^2.0.0:
   version "2.0.0"

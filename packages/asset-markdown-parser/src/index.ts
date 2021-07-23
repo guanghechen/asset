@@ -1,25 +1,30 @@
-import type { YastNode, YastRoot } from '@yozora/core-tokenizer'
-import { parseToMdast } from './parse'
-import { resolveMdDocument } from './resolve'
-import type { MdDocument, MdocNode } from './types/mdoc'
+import type { Root, YastNode, YastResource } from '@yozora/ast'
+import { DefinitionType, ImageType, LinkType } from '@yozora/ast'
+import { traverseAST } from '@yozora/ast-util'
+import YozoraParser from '@yozora/parser'
 
-export * from './parse'
-export * from './resolve'
-export * from './types/mdoc'
-export * from './util'
+const parser = new YozoraParser({
+  defaultParseOptions: { shouldReservePosition: false },
+})
 
 export function parse(
   content: string,
-  resolveUrl: (url: string) => string = url => url,
-  fallbackParser?: (o: YastNode) => MdocNode,
-): MdDocument {
-  const mdast: YastRoot = parseToMdast(content)
-  const result: MdDocument = resolveMdDocument(
-    mdast,
-    resolveUrl,
-    fallbackParser,
-  )
-  return result
+  resolveUrl?: (url: string) => string,
+): Root {
+  const ast: Root = parser.parse(content)
+
+  // Resolve url
+  if (resolveUrl != null) {
+    traverseAST(ast, [DefinitionType, LinkType, ImageType], node => {
+      const o = node as YastNode & YastResource
+      if (o.url != null) {
+        const url = resolveUrl(o.url)
+        o.url ??= url
+      }
+    })
+  }
+
+  return ast
 }
 
 export default parse

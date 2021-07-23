@@ -97,7 +97,7 @@ export class AssetMarkdownProcessor
       invariant(match != null, `No meta data found in ${filepath}`)
     }
 
-    const meta: Record<string, any> = yaml.safeLoad(match[1]) || ({} as any)
+    const meta: Record<string, any> = yaml.load(match[1]) || ({} as any)
     const uuid: string = meta.uuid || roughAsset.uuid
     const title: string = meta.title || roughAsset.title
     const createAt =

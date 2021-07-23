@@ -2,762 +2,627 @@
 
 exports[`parser basic 1`] = `
 Object {
-  "ast": Object {
-    "children": Array [
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "Paragraph",
-          },
-        ],
-        "identifier": "heading-paragraph",
-        "level": 1,
-        "type": "heading",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "xx
+  "children": Array [
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "Paragraph",
+        },
+      ],
+      "depth": 1,
+      "type": "heading",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "xx
 xxx\\\\
 xxxxx",
-          },
-          Object {
-            "type": "break",
-          },
-          Object {
-            "type": "text",
-            "value": "
-xx $x$",
-          },
-        ],
-        "type": "paragraph",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "Emphasis",
-          },
-        ],
-        "identifier": "heading-emphasis",
-        "level": 2,
-        "type": "heading",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "children": Array [
-              Object {
-                "type": "text",
-                "value": "This is an emphasis (italic) paragraph",
-              },
-            ],
-            "type": "emphasis",
-          },
-        ],
-        "type": "paragraph",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "Strong",
-          },
-        ],
-        "identifier": "heading-strong",
-        "level": 2,
-        "type": "heading",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "children": Array [
-              Object {
-                "type": "text",
-                "value": "This is a strong paragraph",
-              },
-            ],
-            "type": "strong",
-          },
-        ],
-        "type": "paragraph",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "Delete",
-          },
-        ],
-        "identifier": "heading-delete",
-        "level": 2,
-        "type": "heading",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "Well, ",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "type": "text",
-                "value": "this is something going wrong,",
-              },
-            ],
-            "type": "delete",
-          },
-          Object {
-            "type": "text",
-            "value": " fine.",
-          },
-        ],
-        "type": "paragraph",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "Code",
-          },
-        ],
-        "identifier": "heading-code",
-        "level": 2,
-        "type": "heading",
-      },
-      Object {
-        "args": Object {},
-        "lang": "javascript",
-        "meta": "",
-        "type": "code",
-        "value": "let x = 1
+        },
+        Object {
+          "type": "break",
+        },
+        Object {
+          "type": "text",
+          "value": "
+xx ",
+        },
+        Object {
+          "type": "inlineMath",
+          "value": "x",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "Emphasis",
+        },
+      ],
+      "depth": 2,
+      "type": "heading",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "type": "text",
+              "value": "This is an emphasis (italic) paragraph",
+            },
+          ],
+          "type": "emphasis",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "Strong",
+        },
+      ],
+      "depth": 2,
+      "type": "heading",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "type": "text",
+              "value": "This is a strong paragraph",
+            },
+          ],
+          "type": "strong",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "Delete",
+        },
+      ],
+      "depth": 2,
+      "type": "heading",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "Well, ",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "type": "text",
+              "value": "this is something going wrong,",
+            },
+          ],
+          "type": "delete",
+        },
+        Object {
+          "type": "text",
+          "value": " fine.",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "Code",
+        },
+      ],
+      "depth": 2,
+      "type": "heading",
+    },
+    Object {
+      "lang": "javascript",
+      "meta": "",
+      "type": "code",
+      "value": "let x = 1
 console.log('x:', x)
 ",
-      },
-      Object {
-        "args": Object {},
-        "lang": "javascript",
-        "meta": "literal",
-        "type": "code",
-        "value": "let x = 1
+    },
+    Object {
+      "lang": "javascript",
+      "meta": "literal",
+      "type": "code",
+      "value": "let x = 1
 console.log('x:', x)
 ",
-      },
-      Object {
-        "args": Object {},
-        "lang": "jsx",
-        "meta": "live",
-        "type": "codeLive",
-        "value": "render(
+    },
+    Object {
+      "lang": "jsx",
+      "meta": "live",
+      "type": "code",
+      "value": "render(
   <div>Hello, world!</div>
 )
 ",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "List",
-          },
-        ],
-        "identifier": "heading-list",
-        "level": 2,
-        "type": "heading",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "children": Array [
-              Object {
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "waw",
-                  },
-                ],
-                "type": "paragraph",
-              },
-              Object {
-                "children": Array [
-                  Object {
-                    "children": Array [
-                      Object {
-                        "type": "text",
-                        "value": "foo",
-                      },
-                    ],
-                    "status": undefined,
-                    "type": "listItem",
-                  },
-                  Object {
-                    "children": Array [
-                      Object {
-                        "type": "text",
-                        "value": "bar",
-                      },
-                    ],
-                    "status": undefined,
-                    "type": "listItem",
-                  },
-                ],
-                "ordered": false,
-                "spread": false,
-                "start": undefined,
-                "type": "list",
-              },
-            ],
-            "status": undefined,
-            "type": "listItem",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "okay",
-                  },
-                ],
-                "type": "paragraph",
-              },
-            ],
-            "status": undefined,
-            "type": "listItem",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "nothing",
-                  },
-                ],
-                "type": "paragraph",
-              },
-              Object {
-                "children": Array [
-                  Object {
-                    "children": Array [
-                      Object {
-                        "children": Array [
-                          Object {
-                            "type": "text",
-                            "value": "well",
-                          },
-                        ],
-                        "type": "paragraph",
-                      },
-                    ],
-                    "status": undefined,
-                    "type": "listItem",
-                  },
-                  Object {
-                    "children": Array [
-                      Object {
-                        "children": Array [
-                          Object {
-                            "type": "text",
-                            "value": "banana",
-                          },
-                        ],
-                        "type": "paragraph",
-                      },
-                    ],
-                    "status": undefined,
-                    "type": "listItem",
-                  },
-                ],
-                "ordered": false,
-                "spread": true,
-                "start": undefined,
-                "type": "list",
-              },
-            ],
-            "status": undefined,
-            "type": "listItem",
-          },
-        ],
-        "ordered": false,
-        "spread": true,
-        "start": undefined,
-        "type": "list",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "xxx",
-          },
-        ],
-        "identifier": "heading-xxx",
-        "level": 4,
-        "type": "heading",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "children": Array [
-              Object {
-                "type": "text",
-                "value": "waw",
-              },
-            ],
-            "status": undefined,
-            "type": "listItem",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "type": "text",
-                "value": "okay",
-              },
-            ],
-            "status": undefined,
-            "type": "listItem",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "type": "text",
-                "value": "nothing",
-              },
-            ],
-            "status": undefined,
-            "type": "listItem",
-          },
-        ],
-        "ordered": true,
-        "spread": false,
-        "start": 1,
-        "type": "list",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "inlineCode",
-            "value": "complex",
-          },
-          Object {
-            "type": "text",
-            "value": " ",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "type": "text",
-                "value": "header",
-              },
-            ],
-            "type": "strong",
-          },
-          Object {
-            "type": "text",
-            "value": " ~demo~",
-          },
-        ],
-        "identifier": "heading-complex-header-~demo~",
-        "level": 3,
-        "type": "heading",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "children": Array [
-              Object {
-                "type": "text",
-                "value": "Blockquote test",
-              },
-            ],
-            "type": "paragraph",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "waw",
-                  },
-                ],
-                "status": undefined,
-                "type": "listItem",
-              },
-              Object {
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "waw",
-                  },
-                ],
-                "status": undefined,
-                "type": "listItem",
-              },
-              Object {
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "waw",
-                  },
-                ],
-                "status": undefined,
-                "type": "listItem",
-              },
-              Object {
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "waw",
-                  },
-                  Object {
-                    "args": Object {},
-                    "lang": "javascript",
-                    "meta": "",
-                    "type": "code",
-                    "value": "let x = 1
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "List",
+        },
+      ],
+      "depth": 2,
+      "type": "heading",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "waw",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "type": "text",
+                      "value": "foo",
+                    },
+                  ],
+                  "status": undefined,
+                  "type": "listItem",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "type": "text",
+                      "value": "bar",
+                    },
+                  ],
+                  "status": undefined,
+                  "type": "listItem",
+                },
+              ],
+              "marker": 45,
+              "orderType": undefined,
+              "ordered": false,
+              "spread": false,
+              "start": undefined,
+              "type": "list",
+            },
+          ],
+          "status": undefined,
+          "type": "listItem",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "okay",
+                },
+              ],
+              "type": "paragraph",
+            },
+          ],
+          "status": undefined,
+          "type": "listItem",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "nothing",
+                },
+              ],
+              "type": "paragraph",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [
+                        Object {
+                          "type": "text",
+                          "value": "well",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "status": undefined,
+                  "type": "listItem",
+                },
+                Object {
+                  "children": Array [
+                    Object {
+                      "children": Array [
+                        Object {
+                          "type": "text",
+                          "value": "banana",
+                        },
+                      ],
+                      "type": "paragraph",
+                    },
+                  ],
+                  "status": undefined,
+                  "type": "listItem",
+                },
+              ],
+              "marker": 45,
+              "orderType": undefined,
+              "ordered": false,
+              "spread": true,
+              "start": undefined,
+              "type": "list",
+            },
+          ],
+          "status": undefined,
+          "type": "listItem",
+        },
+      ],
+      "marker": 42,
+      "orderType": undefined,
+      "ordered": false,
+      "spread": true,
+      "start": undefined,
+      "type": "list",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "xxx",
+        },
+      ],
+      "depth": 4,
+      "type": "heading",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "type": "text",
+              "value": "waw",
+            },
+          ],
+          "status": undefined,
+          "type": "listItem",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "type": "text",
+              "value": "okay",
+            },
+          ],
+          "status": undefined,
+          "type": "listItem",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "type": "text",
+              "value": "nothing",
+            },
+          ],
+          "status": undefined,
+          "type": "listItem",
+        },
+      ],
+      "marker": 46,
+      "orderType": "1",
+      "ordered": true,
+      "spread": false,
+      "start": 1,
+      "type": "list",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "inlineCode",
+          "value": "complex",
+        },
+        Object {
+          "type": "text",
+          "value": " ",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "type": "text",
+              "value": "header",
+            },
+          ],
+          "type": "strong",
+        },
+        Object {
+          "type": "text",
+          "value": " ~demo~",
+        },
+      ],
+      "depth": 3,
+      "type": "heading",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "type": "text",
+              "value": "Blockquote test",
+            },
+          ],
+          "type": "paragraph",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "waw",
+                },
+              ],
+              "status": undefined,
+              "type": "listItem",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "waw",
+                },
+              ],
+              "status": undefined,
+              "type": "listItem",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "waw",
+                },
+              ],
+              "status": undefined,
+              "type": "listItem",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "waw",
+                },
+                Object {
+                  "lang": "javascript",
+                  "meta": "",
+                  "type": "code",
+                  "value": "let x = 1
 console.log('x:', x)
 ",
-                  },
-                ],
-                "status": undefined,
-                "type": "listItem",
-              },
-            ],
-            "ordered": false,
-            "spread": false,
-            "start": undefined,
-            "type": "list",
-          },
-        ],
-        "type": "blockquote",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "Table",
-          },
-        ],
-        "identifier": "heading-table",
-        "level": 1,
-        "type": "heading",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "children": Array [
-              Object {
-                "align": undefined,
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "x",
-                  },
-                ],
-                "isHeader": undefined,
-                "type": "tableCell",
-              },
-              Object {
-                "align": undefined,
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "y",
-                  },
-                ],
-                "isHeader": undefined,
-                "type": "tableCell",
-              },
-              Object {
-                "align": undefined,
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "z",
-                  },
-                ],
-                "isHeader": undefined,
-                "type": "tableCell",
-              },
-            ],
-            "type": "tableRow",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "align": undefined,
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "1",
-                  },
-                ],
-                "isHeader": undefined,
-                "type": "tableCell",
-              },
-              Object {
-                "align": undefined,
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "2",
-                  },
-                ],
-                "isHeader": undefined,
-                "type": "tableCell",
-              },
-              Object {
-                "align": undefined,
-                "children": Array [
-                  Object {
-                    "type": "text",
-                    "value": "3",
-                  },
-                ],
-                "isHeader": undefined,
-                "type": "tableCell",
-              },
-            ],
-            "type": "tableRow",
-          },
-        ],
-        "type": "table",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "Searching in ",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "type": "text",
-                "value": "github",
-              },
-            ],
-            "title": undefined,
-            "type": "link",
-            "url": "https://github.com",
-          },
-          Object {
-            "type": "text",
-            "value": " or ",
-          },
-          Object {
-            "children": Array [
-              Object {
-                "type": "text",
-                "value": "github",
-              },
-            ],
-            "title": undefined,
-            "type": "link",
-            "url": "https://github.com",
-          },
-          Object {
-            "type": "text",
-            "value": " for details.",
-          },
-        ],
-        "type": "paragraph",
-      },
-      Object {
-        "type": "thematicBreak",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "alt": "image",
-            "src": "./fake.png",
-            "title": undefined,
-            "type": "image",
-          },
-          Object {
-            "type": "text",
-            "value": "
-",
-          },
-          Object {
-            "alt": "image",
-            "src": "./fake.png",
-            "title": undefined,
-            "type": "image",
-          },
-        ],
-        "type": "paragraph",
-      },
-      Object {
-        "children": Array [
-          Object {
-            "type": "text",
-            "value": "Math",
-          },
-        ],
-        "identifier": "heading-math",
-        "level": 2,
-        "type": "heading",
-      },
-      Object {
-        "args": Object {},
-        "lang": "math",
-        "meta": "embed",
-        "type": "codeEmbed",
-        "value": "x^2 + y^2 = z^2
-",
-      },
-      Object {
-        "identifier": "github",
-        "label": "github",
-        "title": undefined,
-        "type": "definition",
-        "url": "https://github.com",
-      },
-      Object {
-        "identifier": "fake-image",
-        "label": "fake-image",
-        "title": undefined,
-        "type": "definition",
-        "url": "./fake.png",
-      },
-    ],
-    "type": "root",
-  },
-  "meta": Object {
-    "definition": Object {
-      "fake-image": Object {
-        "identifier": "fake-image",
-        "label": "fake-image",
-        "title": undefined,
-        "url": "./fake.png",
-      },
-      "github": Object {
-        "identifier": "github",
-        "label": "github",
-        "title": undefined,
-        "url": "https://github.com",
-      },
+                },
+              ],
+              "status": undefined,
+              "type": "listItem",
+            },
+          ],
+          "marker": 45,
+          "orderType": undefined,
+          "ordered": false,
+          "spread": false,
+          "start": undefined,
+          "type": "list",
+        },
+      ],
+      "type": "blockquote",
     },
-  },
-  "toc": Object {
-    "anchors": Array [
-      Object {
-        "children": Array [
-          Object {
-            "id": "heading-emphasis",
-            "title": Array [
-              Object {
-                "type": "text",
-                "value": "Emphasis",
-              },
-            ],
-          },
-          Object {
-            "id": "heading-strong",
-            "title": Array [
-              Object {
-                "type": "text",
-                "value": "Strong",
-              },
-            ],
-          },
-          Object {
-            "id": "heading-delete",
-            "title": Array [
-              Object {
-                "type": "text",
-                "value": "Delete",
-              },
-            ],
-          },
-          Object {
-            "id": "heading-code",
-            "title": Array [
-              Object {
-                "type": "text",
-                "value": "Code",
-              },
-            ],
-          },
-          Object {
-            "children": Array [
-              Object {
-                "id": "heading-xxx",
-                "title": Array [
-                  Object {
-                    "type": "text",
-                    "value": "xxx",
-                  },
-                ],
-              },
-              Object {
-                "id": "heading-complex-header-~demo~",
-                "title": Array [
-                  Object {
-                    "type": "inlineCode",
-                    "value": "complex",
-                  },
-                  Object {
-                    "type": "text",
-                    "value": " ",
-                  },
-                  Object {
-                    "children": Array [
-                      Object {
-                        "type": "text",
-                        "value": "header",
-                      },
-                    ],
-                    "type": "strong",
-                  },
-                  Object {
-                    "type": "text",
-                    "value": " ~demo~",
-                  },
-                ],
-              },
-            ],
-            "id": "heading-list",
-            "title": Array [
-              Object {
-                "type": "text",
-                "value": "List",
-              },
-            ],
-          },
-        ],
-        "id": "heading-paragraph",
-        "title": Array [
-          Object {
-            "type": "text",
-            "value": "Paragraph",
-          },
-        ],
-      },
-      Object {
-        "children": Array [
-          Object {
-            "id": "heading-math",
-            "title": Array [
-              Object {
-                "type": "text",
-                "value": "Math",
-              },
-            ],
-          },
-        ],
-        "id": "heading-table",
-        "title": Array [
-          Object {
-            "type": "text",
-            "value": "Table",
-          },
-        ],
-      },
-    ],
-  },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "Table",
+        },
+      ],
+      "depth": 1,
+      "type": "heading",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "x",
+                },
+              ],
+              "type": "tableCell",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "y",
+                },
+              ],
+              "type": "tableCell",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "z",
+                },
+              ],
+              "type": "tableCell",
+            },
+          ],
+          "type": "tableRow",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "1",
+                },
+              ],
+              "type": "tableCell",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "2",
+                },
+              ],
+              "type": "tableCell",
+            },
+            Object {
+              "children": Array [
+                Object {
+                  "type": "text",
+                  "value": "3",
+                },
+              ],
+              "type": "tableCell",
+            },
+          ],
+          "type": "tableRow",
+        },
+      ],
+      "columns": Array [
+        Object {
+          "align": "center",
+        },
+        Object {
+          "align": "left",
+        },
+        Object {
+          "align": "right",
+        },
+      ],
+      "type": "table",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "Searching in ",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "type": "text",
+              "value": "github",
+            },
+          ],
+          "identifier": "github",
+          "label": "github",
+          "referenceType": "collapsed",
+          "type": "linkReference",
+        },
+        Object {
+          "type": "text",
+          "value": " or ",
+        },
+        Object {
+          "children": Array [
+            Object {
+              "type": "text",
+              "value": "github",
+            },
+          ],
+          "title": undefined,
+          "type": "link",
+          "url": "https://github.com",
+        },
+        Object {
+          "type": "text",
+          "value": " for details.",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "type": "thematicBreak",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "alt": "image",
+          "title": undefined,
+          "type": "image",
+          "url": "./fake.png",
+        },
+        Object {
+          "type": "text",
+          "value": "
+",
+        },
+        Object {
+          "alt": "image",
+          "identifier": "fake-image",
+          "label": "fake-image",
+          "referenceType": "full",
+          "type": "imageReference",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "children": Array [
+        Object {
+          "type": "text",
+          "value": "Math",
+        },
+      ],
+      "depth": 2,
+      "type": "heading",
+    },
+    Object {
+      "lang": "math",
+      "meta": "embed",
+      "type": "code",
+      "value": "x^2 + y^2 = z^2
+",
+    },
+    Object {
+      "identifier": "github",
+      "label": "github",
+      "title": undefined,
+      "type": "definition",
+      "url": "https://github.com",
+    },
+    Object {
+      "identifier": "fake-image",
+      "label": "fake-image",
+      "title": undefined,
+      "type": "definition",
+      "url": "./fake.png",
+    },
+  ],
+  "type": "root",
 }
 `;

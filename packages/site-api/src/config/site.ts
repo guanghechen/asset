@@ -180,7 +180,7 @@ export function loadSiteConfig(
   switch (extname) {
     case '.yml':
     case '.yaml': {
-      const rawConfig: any = yaml.safeLoad(rawContent) || {}
+      const rawConfig: any = yaml.load(rawContent) || {}
       return resolveSiteConfig(rawConfig, cwd, defaultConfig, sitesResolver)
     }
     case '.json': {
