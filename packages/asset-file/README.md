@@ -1,6 +1,6 @@
 <header>
   <h1 align="center">
-    <a href="https://github.com/guanghechen/yozora/tree/master/packages/asset-file#readme">@guanghechen/asset-file</a>
+    <a href="https://github.com/guanghechen/yozora/tree/main/packages/asset-file#readme">@guanghechen/asset-file</a>
   </h1>
   <div align="center">
     <a href="https://www.npmjs.com/package/@guanghechen/asset-file">

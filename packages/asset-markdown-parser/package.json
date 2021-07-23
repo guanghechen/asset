@@ -11,7 +11,7 @@
     "url": "https://github.com/guanghechen/static-site-api.git",
     "directory": "packages/asset-markdown-parser"
   },
-  "homepage": "https://github.com/guanghechen/static-site-api/tree/master/packages/asset-markdown-parser",
+  "homepage": "https://github.com/guanghechen/static-site-api/tree/main/packages/asset-markdown-parser",
   "main": "lib/cjs/index.js",
   "module": "lib/esm/index.js",
   "types": "lib/types/index.d.ts",

@@ -30,7 +30,7 @@
     <a href="https://github.com/guanghechen/static-site-api/actions/workflows/ci.yml">
       <img
         alt="CI Workflow"
-        src="https://github.com/guanghechen/static-site-api/workflows/Build/badge.svg?branch=master"
+        src="https://github.com/guanghechen/static-site-api/workflows/Build/badge.svg?branch=main"
       />
     </a>
     <a href="https://github.com/facebook/jest">
@@ -66,5 +66,5 @@ indexes and automatic updates in development mode.
 
 ## License
 
-  static-site-api is [MIT licensed](https://github.com/guanghechen/static-site-api/blob/master/LICENSE).
+  static-site-api is [MIT licensed](https://github.com/guanghechen/static-site-api/blob/main/LICENSE).
 

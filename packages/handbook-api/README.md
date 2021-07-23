@@ -1,6 +1,6 @@
 <header>
   <h1 align="center">
-    <a href="https://github.com/guanghechen/yozora/tree/master/packages/handbook-api#readme">@guanghechen/handbook-api</a>
+    <a href="https://github.com/guanghechen/yozora/tree/main/packages/handbook-api#readme">@guanghechen/handbook-api</a>
   </h1>
   <div align="center">
     <a href="https://www.npmjs.com/package/@guanghechen/handbook-api">

@@ -11,7 +11,7 @@
     "url": "https://github.com/guanghechen/static-site-api.git",
     "directory": "packages/handbook-api"
   },
-  "homepage": "https://github.com/guanghechen/static-site-api/tree/master/packages/handbook-api#readme",
+  "homepage": "https://github.com/guanghechen/static-site-api/tree/main/packages/handbook-api#readme",
   "main": "lib/cjs/index.js",
   "types": "lib/types/index.d.ts",
   "source": "src/index.ts",
