@@ -62,7 +62,7 @@ export const defaultSiteConfig: SiteConfig = {
   workspace: '.',
   title: 'Demo',
   description: 'demo',
-  author: 'lemon-clown',
+  author: 'guanghechen',
   sites: {},
   deploy: defaultDeployConfig,
 }
