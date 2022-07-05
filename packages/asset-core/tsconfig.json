@@ -1,0 +1,7 @@
+{
+  "extends": "../../tsconfig",
+  "compilerOptions": {
+    "lib": ["esnext"]
+  },
+  "include": ["src", "script", "__test__"]
+}
