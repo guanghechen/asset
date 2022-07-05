@@ -38,11 +38,11 @@
     "test:update": "node -r ts-node/register -r tsconfig-paths/register __test__/answer.ts"
   },
   "dependencies": {
+    "@guanghechen/invariant": "^1.9.5",
     "@guanghechen/site-api": "^1.0.0-alpha.2",
-    "@types/js-yaml": "^4.0.2",
-    "dayjs": "^1.10.6",
-    "js-yaml": "^4.1.0",
-    "tiny-invariant": "^1.0.2"
+    "@types/js-yaml": "^4.0.5",
+    "dayjs": "^1.11.3",
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "fs-extra": "^10.0.0"

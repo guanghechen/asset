@@ -1,10 +1,5 @@
 import type { RoughAssetDataItem } from '@guanghechen/site-api'
-import {
-  AssetDataManager,
-  CategoryDataManager,
-  TagDataManager,
-  sha1,
-} from '@guanghechen/site-api'
+import { AssetDataManager, CategoryDataManager, TagDataManager, sha1 } from '@guanghechen/site-api'
 import fs from 'fs-extra'
 import path from 'path'
 import { AssetMarkdownProcessor } from '../src'
@@ -54,13 +49,8 @@ describe('base', function () {
       }
 
       const tagDataManager = new TagDataManager('./tag.json')
-      const categoryDataManager = new CategoryDataManager(
-        './category.data.json',
-      )
-      const assetDataManager = new AssetDataManager(
-        caseRootDir,
-        './asset.data.json',
-      )
+      const categoryDataManager = new CategoryDataManager('./category.data.json')
+      const assetDataManager = new AssetDataManager(caseRootDir, './asset.data.json')
 
       const processor = new AssetMarkdownProcessor({
         encoding: 'utf-8',

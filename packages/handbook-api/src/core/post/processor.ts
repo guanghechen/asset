@@ -1,6 +1,7 @@
 import type { MarkdownAssetDataItem } from '@guanghechen/asset-markdown'
 import { AssetMarkdownProcessor } from '@guanghechen/asset-markdown'
 import parseMd from '@guanghechen/asset-markdown-parser'
+import invariant from '@guanghechen/invariant'
 import type {
   AssetProcessor,
   AssetTypeItem,
@@ -14,7 +15,6 @@ import type {
 import { resolveUrlPath, writeJSON } from '@guanghechen/site-api'
 import micromatch from 'micromatch'
 import path from 'path'
-import invariant from 'tiny-invariant'
 import { HandbookSourceType } from '../../config/handbook'
 import type { PostDataItem } from './entity'
 
@@ -106,10 +106,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
               const assetFilepath = assetDataManager.resolveFilepath(target)
               if (assetFilepath == null) return url
 
-              const relativeFilepath = path.relative(
-                subSiteDataRoot,
-                assetFilepath,
-              )
+              const relativeFilepath = path.relative(subSiteDataRoot, assetFilepath)
               return resolveUrlPath(urlRoot, relativeFilepath)
             }
 
@@ -200,10 +197,7 @@ export class PostProcessor implements AssetProcessor<PostDataItem> {
       )
 
       const firstResult = process.next()
-      invariant(
-        !firstResult.done,
-        'processor.process() first call should yield a triple',
-      )
+      invariant(!firstResult.done, 'processor.process() first call should yield a triple')
 
       const [PostDataItem, tags, categories] = firstResult.value
       const postItem: PostDataItem = {

@@ -1,12 +1,5 @@
-import type {
-  SubSiteConfig,
-  SubSiteConfigResolver,
-  SubSiteSourceItem,
-} from '@guanghechen/site-api'
-import {
-  resolveSubSiteConfig,
-  resolveSubSiteSourceItem,
-} from '@guanghechen/site-api'
+import type { SubSiteConfig, SubSiteConfigResolver, SubSiteSourceItem } from '@guanghechen/site-api'
+import { resolveSubSiteConfig, resolveSubSiteSourceItem } from '@guanghechen/site-api'
 
 export enum BlogSourceType {
   /**
@@ -33,7 +26,7 @@ export const blogSourceTypes: BlogSourceType[] = [
 /**
  * Configuration of the blog
  */
-export type BlogConfig = SubSiteConfig<BlogSourceType, BlogSourceItem>
+export type BlogConfig = SubSiteConfig<BlogSourceType>
 
 const defaultBlogConfig: BlogConfig = {
   routeRoot: '/blog',
@@ -75,15 +68,8 @@ export const resolveBlogConfig: SubSiteConfigResolver<
   BlogSourceType,
   BlogSourceItem,
   BlogConfig
-> = (
-  rawConfig = {},
-  sitePathConfig,
-  defaultConfig = defaultBlogConfig,
-): BlogConfig => {
-  const subSiteConfig: SubSiteConfig = resolveSubSiteConfig<
-    BlogSourceType,
-    BlogSourceItem
-  >(
+> = (rawConfig = {}, sitePathConfig, defaultConfig = defaultBlogConfig): BlogConfig => {
+  const subSiteConfig: SubSiteConfig = resolveSubSiteConfig<BlogSourceType>(
     rawConfig,
     blogSourceTypes,
     resolveSubSiteSourceItem,

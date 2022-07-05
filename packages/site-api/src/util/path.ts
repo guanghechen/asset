@@ -6,10 +6,7 @@ import path from 'path'
  * @param prefixPath
  * @param p
  */
-export function resolveUrlPath(
-  prefixPath: string,
-  ...pathPieces: string[]
-): string {
+export function resolveUrlPath(prefixPath: string, ...pathPieces: string[]): string {
   const result = path
     .join(prefixPath, ...pathPieces)
     .replace(/[\\/]+/g, '/')
@@ -24,10 +21,7 @@ export function resolveUrlPath(
  * @param basePath
  * @param p
  */
-export function resolveLocalPath(
-  basePath: string,
-  ...pathPieces: string[]
-): string {
+export function resolveLocalPath(basePath: string, ...pathPieces: string[]): string {
   const result = path.resolve(basePath, ...pathPieces)
   return result
 }
@@ -38,10 +32,7 @@ export function resolveLocalPath(
  * @param workspace
  * @param filepath
  */
-export function resolveUniversalPath(
-  workspace: string,
-  filepath: string,
-): string {
+export function resolveUniversalPath(workspace: string, filepath: string): string {
   const result = path
     .normalize(path.relative(workspace, path.resolve(workspace, filepath)))
     .replace(/[\\/]+/g, '/')

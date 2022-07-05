@@ -21,10 +21,7 @@ export interface HandbookDataProviderProps {
 export class HandbookDataProvider extends AssetDataProvider<HandbookConfig> {
   public readonly postService: PostService
 
-  constructor(
-    handbookConfig: HandbookConfig,
-    props: HandbookDataProviderProps = {},
-  ) {
+  constructor(handbookConfig: HandbookConfig, props: HandbookDataProviderProps = {}) {
     const { source } = handbookConfig
 
     // Create AssetParser

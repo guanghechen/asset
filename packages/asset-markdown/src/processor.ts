@@ -1,3 +1,4 @@
+import invariant from '@guanghechen/invariant'
 import type {
   AssetProcessor,
   CategoryDataItem,
@@ -11,7 +12,6 @@ import type {
 } from '@guanghechen/site-api'
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
-import invariant from 'tiny-invariant'
 import type { MarkdownAssetDataItem } from './entity'
 import { MarkdownAssetType } from './entity'
 
@@ -46,9 +46,7 @@ export interface AssetMarkdownProcessorProps {
 /**
  * Processor for handle markdown asset
  */
-export class AssetMarkdownProcessor
-  implements AssetProcessor<MarkdownAssetDataItem>
-{
+export class AssetMarkdownProcessor implements AssetProcessor<MarkdownAssetDataItem> {
   protected readonly encoding: BufferEncoding
   protected readonly isMetaOptional: boolean
   protected readonly resolve: AssetMarkdownProcessorProps['resolve']
@@ -101,19 +99,13 @@ export class AssetMarkdownProcessor
     const uuid: string = meta.uuid || roughAsset.uuid
     const title: string = meta.title || roughAsset.title
     const createAt =
-      meta.createAt != null
-        ? dayjs(meta.createAt).toISOString()
-        : roughAsset.createAt
+      meta.createAt != null ? dayjs(meta.createAt).toISOString() : roughAsset.createAt
     const updateAt =
-      meta.updateAt != null
-        ? dayjs(meta.updateAt).toISOString()
-        : roughAsset.updateAt
+      meta.updateAt != null ? dayjs(meta.updateAt).toISOString() : roughAsset.updateAt
 
     // resolve tags
     const rawTags = (meta.tags || []) as RawTagDataItem[]
-    const tags: TagDataItem[] = rawTags.map(rawTag =>
-      tagDataManager.normalize(rawTag),
-    )
+    const tags: TagDataItem[] = rawTags.map(rawTag => tagDataManager.normalize(rawTag))
 
     // resolve categories
     const rawCategories = (meta.categories || []) as RawCategoryDataItem[][]

@@ -41,20 +41,14 @@ export interface AssetFileProcessorProps {
 /**
  * Processor for handle file asset
  */
-export class AssetFileProcessor implements AssetProcessor<FileAssetDataItem> {
+export class AssetFileProcessor implements AssetProcessor {
   protected readonly sourceRoot: string
   protected readonly dataRoot: string
   protected readonly patterns: string[]
   protected readonly assetType: AssetType
 
   constructor(props: AssetFileProcessorProps) {
-    const {
-      sourceRoot,
-      dataRoot,
-      patterns,
-      assetType = FileAssetType,
-      processable,
-    } = props
+    const { sourceRoot, dataRoot, patterns, assetType = FileAssetType, processable } = props
 
     this.sourceRoot = sourceRoot
     this.dataRoot = dataRoot

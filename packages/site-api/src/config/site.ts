@@ -98,11 +98,7 @@ export function resolveSiteConfig(
   )
 
   // resolve title
-  const title: string = coverString(
-    defaultConfig.title,
-    rawConfig.title,
-    isNonBlankString,
-  )
+  const title: string = coverString(defaultConfig.title, rawConfig.title, isNonBlankString)
 
   // resolve description
   const description: string = coverString(
@@ -112,11 +108,7 @@ export function resolveSiteConfig(
   )
 
   // resolve author
-  const author: string = coverString(
-    defaultConfig.author,
-    rawConfig.author,
-    isNonBlankString,
-  )
+  const author: string = coverString(defaultConfig.author, rawConfig.author, isNonBlankString)
 
   // resolve deploy
   const deploy = resolveDeployConfig(rawConfig.deploy, defaultConfig.deploy)

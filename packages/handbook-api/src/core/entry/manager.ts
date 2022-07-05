@@ -2,11 +2,7 @@ import type { AssetUUID, EntryDataMap } from '@guanghechen/site-api'
 import { EntryDataManager, resolveUrlPath } from '@guanghechen/site-api'
 import path from 'path'
 import { HandbookSourceType } from '../../config/handbook'
-import type {
-  HandbookEntryDataMap,
-  HandbookMenuLeafNode,
-  HandbookMenuParentNode,
-} from './types'
+import type { HandbookEntryDataMap, HandbookMenuLeafNode, HandbookMenuParentNode } from './types'
 
 /**
  *

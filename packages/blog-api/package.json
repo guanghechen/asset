@@ -40,13 +40,13 @@
     "@guanghechen/asset-file": "^1.0.0-alpha.2",
     "@guanghechen/asset-markdown": "^1.0.0-alpha.2",
     "@guanghechen/asset-markdown-parser": "^1.0.0-alpha.2",
-    "@guanghechen/option-helper": "^1.8.0",
+    "@guanghechen/invariant": "^1.9.5",
+    "@guanghechen/option-helper": "^1.9.5",
     "@guanghechen/site-api": "^1.0.0-alpha.2",
-    "@types/fs-extra": "^9.0.12",
+    "@types/fs-extra": "^9.0.13",
     "@types/micromatch": "^4.0.2",
-    "@yozora/ast": "^1.0.0",
-    "fs-extra": "^10.0.0",
-    "micromatch": "^4.0.4",
-    "tiny-invariant": "^1.0.2"
+    "@yozora/ast": "^2.0.2-alpha.0",
+    "fs-extra": "^10.1.0",
+    "micromatch": "^4.0.5"
   }
 }

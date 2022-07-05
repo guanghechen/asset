@@ -79,12 +79,6 @@ Array [
 ]
 `;
 
-exports[`AssetDataProvider full-config barusu build: console.info 1`] = `
-Array [
-  "clearing <PACKAGE_ROOT_DIR>/__test__/cases/full-config/barusu/data",
-]
-`;
-
 exports[`AssetDataProvider full-config barusu build: tags 1`] = `
 Array [
   Object {

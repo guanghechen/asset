@@ -1,10 +1,4 @@
-import type {
-  AssetLocation,
-  AssetType,
-  AssetUUID,
-  CategoryUUID,
-  TagUUID,
-} from './_types'
+import type { AssetLocation, AssetType, AssetUUID, CategoryUUID, TagUUID } from './_types'
 
 /**
  * Asset item

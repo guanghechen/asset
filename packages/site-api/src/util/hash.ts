@@ -24,9 +24,7 @@ export function calcFingerprint(content: Buffer): string {
  *
  * @param text
  */
-export function uniqueText(
-  text: string | null,
-): typeof text extends null ? null : string {
+export function uniqueText(text: string | null): typeof text extends null ? null : string {
   if (text == null) return null as any
   return text
     .toLowerCase()

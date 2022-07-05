@@ -1,7 +1,7 @@
 /**
  * Async task
  */
-export interface AsyncTask<D extends unknown = unknown> {
+export interface AsyncTask<D = unknown> {
   /**
    * Task data
    */
@@ -15,7 +15,7 @@ export interface AsyncTask<D extends unknown = unknown> {
 /**
  * Executor to execute asynchronous tasks serially
  */
-export interface SerialExecutor<D extends unknown = unknown> {
+export interface SerialExecutor<D = unknown> {
   /**
    * Append task to executor
    */
@@ -30,7 +30,7 @@ export interface SerialExecutor<D extends unknown = unknown> {
  * @param onTaskFailure   triggered on each task crashed
  * @param onTaskCompleted triggered on each task terminated (finished / crashed)
  */
-export function createSerialExecutor<D extends unknown = unknown>(
+export function createSerialExecutor<D = unknown>(
   squashable?: (currentData: D, nextData: D) => boolean,
   onTaskSuccess?: () => void | Promise<void>,
   onTaskFailure?: (error: any) => void | Promise<void>,

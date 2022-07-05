@@ -71,19 +71,12 @@ export class AssetDataProvider<C extends SubSiteConfig> {
     } = subSiteConfig
 
     // Create AssetService
-    const assetDataManager = new AssetDataManagerImpl(
-      sourceRoot,
-      assetDataMapFilepath,
-    )
+    const assetDataManager = new AssetDataManagerImpl(sourceRoot, assetDataMapFilepath)
     const assetService: AssetService = new AssetServiceImpl(assetDataManager)
 
     // Create CategoryService
-    const categoryDataManager = new CategoryDataManagerImpl(
-      categoryDataMapFilepath,
-    )
-    const categoryService: CategoryService = new CategoryServiceImpl(
-      categoryDataManager,
-    )
+    const categoryDataManager = new CategoryDataManagerImpl(categoryDataMapFilepath)
+    const categoryService: CategoryService = new CategoryServiceImpl(categoryDataManager)
 
     // Create TagService
     const tagDataManager = new TagDataManagerImpl(tagDataMapFilepath)
@@ -94,18 +87,9 @@ export class AssetDataProvider<C extends SubSiteConfig> {
       routeRoot,
       urlRoot,
       entryDataMapFilepath,
-      resolveUrlPath(
-        routeRoot,
-        resolveUniversalPath(dataRoot, assetDataMapFilepath),
-      ),
-      resolveUrlPath(
-        routeRoot,
-        resolveUniversalPath(dataRoot, categoryDataMapFilepath),
-      ),
-      resolveUrlPath(
-        routeRoot,
-        resolveUniversalPath(dataRoot, tagDataMapFilepath),
-      ),
+      resolveUrlPath(routeRoot, resolveUniversalPath(dataRoot, assetDataMapFilepath)),
+      resolveUrlPath(routeRoot, resolveUniversalPath(dataRoot, categoryDataMapFilepath)),
+      resolveUrlPath(routeRoot, resolveUniversalPath(dataRoot, tagDataMapFilepath)),
       assetService,
       categoryService,
       tagService,
@@ -151,10 +135,7 @@ export class AssetDataProvider<C extends SubSiteConfig> {
    * @param clearStart    should rebuild data dir before watching
    * @param watchOptions  options for chokidar.WatchOptions
    */
-  public async watch(
-    clearStart = true,
-    watchOptions: chokidar.WatchOptions = {},
-  ): Promise<void> {
+  public async watch(clearStart = true, watchOptions: chokidar.WatchOptions = {}): Promise<void> {
     const { assetParser, subSiteConfig } = this
 
     // building data
@@ -169,9 +150,7 @@ export class AssetDataProvider<C extends SubSiteConfig> {
 
     // watching source change
     console.info(chalk.green(`watching ${subSiteConfig.sourceRoot}`))
-    assetParser.watch(subSiteConfig.sourceRoot, watchOptions, () =>
-      assetParser.dump(),
-    )
+    assetParser.watch(subSiteConfig.sourceRoot, watchOptions, () => assetParser.dump())
   }
 
   /**

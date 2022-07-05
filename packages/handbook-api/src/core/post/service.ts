@@ -6,10 +6,7 @@ export class PostService {
   protected readonly postEntityManager: PostEntityManager
   protected readonly assetService: AssetService
 
-  constructor(
-    postEntityManager: PostEntityManager,
-    assetService: AssetService,
-  ) {
+  constructor(postEntityManager: PostEntityManager, assetService: AssetService) {
     this.postEntityManager = postEntityManager
     this.assetService = assetService
   }

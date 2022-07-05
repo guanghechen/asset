@@ -38,9 +38,9 @@
     "test:update": "node -r ts-node/register -r tsconfig-paths/register __test__/answer.ts"
   },
   "dependencies": {
-    "@yozora/ast": "^1.0.0",
-    "@yozora/ast-util": "^1.0.0",
-    "@yozora/parser": "^1.0.0"
+    "@yozora/ast": "^2.0.2-alpha.0",
+    "@yozora/ast-util": "^2.0.2-alpha.0",
+    "@yozora/parser": "^2.0.2-alpha.0"
   },
   "devDependencies": {
     "fs-extra": "^10.0.0"

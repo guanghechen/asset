@@ -15,8 +15,7 @@ export interface PostDataItem extends AssetDataItem<HandbookSourceType.POST> {
 /**
  * Post asset entity
  */
-export interface PostAssetEntity
-  extends AssetDataItem<HandbookSourceType.POST> {
+export interface PostAssetEntity extends AssetDataItem<HandbookSourceType.POST> {
   /**
    * Detailed classification of the post-document
    */

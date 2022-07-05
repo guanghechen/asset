@@ -1,12 +1,5 @@
-import type {
-  SubSiteConfig,
-  SubSiteConfigResolver,
-  SubSiteSourceItem,
-} from '@guanghechen/site-api'
-import {
-  resolveSubSiteConfig,
-  resolveSubSiteSourceItem,
-} from '@guanghechen/site-api'
+import type { SubSiteConfig, SubSiteConfigResolver, SubSiteSourceItem } from '@guanghechen/site-api'
+import { resolveSubSiteConfig, resolveSubSiteSourceItem } from '@guanghechen/site-api'
 
 export enum HandbookSourceType {
   /**
@@ -33,10 +26,7 @@ export const handbookSourceTypes: HandbookSourceType[] = [
 /**
  * Configuration of the handbook
  */
-export type HandbookConfig = SubSiteConfig<
-  HandbookSourceType,
-  HandbookSourceItem
->
+export type HandbookConfig = SubSiteConfig<HandbookSourceType>
 
 const defaultHandbookConfig: HandbookConfig = {
   routeRoot: '/handbook',
@@ -78,15 +68,8 @@ export const resolveHandbookConfig: SubSiteConfigResolver<
   HandbookSourceType,
   HandbookSourceItem,
   HandbookConfig
-> = (
-  rawConfig = {},
-  sitePathConfig,
-  defaultConfig = defaultHandbookConfig,
-): HandbookConfig => {
-  const subSiteConfig: SubSiteConfig = resolveSubSiteConfig<
-    HandbookSourceType,
-    HandbookSourceItem
-  >(
+> = (rawConfig = {}, sitePathConfig, defaultConfig = defaultHandbookConfig): HandbookConfig => {
+  const subSiteConfig: SubSiteConfig = resolveSubSiteConfig<HandbookSourceType>(
     rawConfig,
     handbookSourceTypes,
     resolveSubSiteSourceItem,

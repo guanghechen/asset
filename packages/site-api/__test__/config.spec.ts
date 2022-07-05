@@ -1,10 +1,6 @@
 import path from 'path'
 import type { SubSiteConfig } from '../src'
-import {
-  createDefaultSubSiteConfig,
-  resolveSubSiteConfig,
-  resolveSubSiteSourceItem,
-} from '../src'
+import { createDefaultSubSiteConfig, resolveSubSiteConfig, resolveSubSiteSourceItem } from '../src'
 import { cases } from './util/case'
 import { desensitize } from './util/snapshot'
 
@@ -38,9 +34,7 @@ describe('resolveSubSiteConfig', function () {
   }
 
   test('empty rawConfig', function () {
-    expect(
-      desensitize(resolveConfig(path.resolve(__dirname, 'case'), {})),
-    ).toMatchSnapshot()
+    expect(desensitize(resolveConfig(path.resolve(__dirname, 'case'), {}))).toMatchSnapshot()
   })
 
   test('full rawConfig', function () {

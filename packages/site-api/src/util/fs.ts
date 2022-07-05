@@ -39,10 +39,7 @@ export function writeFileSync(filepath: string, data: Buffer): void {
  * @param filepath
  * @param data
  */
-export async function writeJSON<T extends unknown = unknown>(
-  filepath: string,
-  data: T,
-): Promise<T> {
+export async function writeJSON<T = unknown>(filepath: string, data: T): Promise<T> {
   ensurePathExists(path.dirname(filepath))
   await fs.writeJSON(filepath, data)
   return data
@@ -54,10 +51,7 @@ export async function writeJSON<T extends unknown = unknown>(
  * @param filepath
  * @param data
  */
-export function writeJSONSync<T extends unknown = unknown>(
-  filepath: string,
-  data: T,
-): T {
+export function writeJSONSync<T = unknown>(filepath: string, data: T): T {
   ensurePathExists(path.dirname(filepath))
   fs.writeJSONSync(filepath, data)
   return data

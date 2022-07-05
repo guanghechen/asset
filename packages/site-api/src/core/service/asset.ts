@@ -1,4 +1,4 @@
-import invariant from 'tiny-invariant'
+import invariant from '@guanghechen/invariant'
 import type { AssetLocation, AssetType, AssetUUID } from '../entity/_types'
 import type { AssetDataItem, AssetDataMap } from '../entity/asset'
 import type { AssetDataManager } from '../manager/asset'
@@ -57,9 +57,7 @@ export class AssetService {
     } else if (limit === 0) {
       result = []
     } else {
-      result = uuids
-        .slice(offset, offset + limit)
-        .map(uuid => dataMap.entities[uuid])
+      result = uuids.slice(offset, offset + limit).map(uuid => dataMap.entities[uuid])
     }
 
     return result

@@ -1,9 +1,9 @@
+import invariant from '@guanghechen/invariant'
 import chokidar from 'chokidar'
 import dayjs from 'dayjs'
 import fs from 'fs-extra'
 import globby from 'globby'
 import path from 'path'
-import invariant from 'tiny-invariant'
 import { calcFingerprint } from '../util/hash'
 import { resolveLocalPath } from '../util/path'
 import { createSerialExecutor } from '../util/sync'
@@ -118,10 +118,7 @@ export class AssetParser {
       return false
     }
 
-    const serialExecutor = createSerialExecutor<TaskData>(
-      squashable,
-      afterChanged,
-    )
+    const serialExecutor = createSerialExecutor<TaskData>(squashable, afterChanged)
 
     /**
      * Trigger parsing operation when the file changes
@@ -198,14 +195,10 @@ export class AssetParser {
       }
 
       const createAt =
-        existedAsset != null
-          ? existedAsset.createAt
-          : dayjs(stat.atimeMs).toISOString()
+        existedAsset != null ? existedAsset.createAt : dayjs(stat.atimeMs).toISOString()
 
       const updateAt =
-        existedAsset != null
-          ? existedAsset.updateAt
-          : dayjs(stat.mtimeMs).toISOString()
+        existedAsset != null ? existedAsset.updateAt : dayjs(stat.mtimeMs).toISOString()
 
       const { name: _filename, ext: _extname } = path.parse(filepath)
       const title = existedAsset != null ? existedAsset.title : _filename
@@ -237,10 +230,7 @@ export class AssetParser {
        * First step, generate asset data item (building uuid map)
        */
       const firstResult = process.next()
-      invariant(
-        !firstResult.done,
-        'processor.process() first call should yield a triple',
-      )
+      invariant(!firstResult.done, 'processor.process() first call should yield a triple')
 
       const [asset, tags, categoriesList] = firstResult.value
       if (existedAsset != null) this._remove(existedAsset)

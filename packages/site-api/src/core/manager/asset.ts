@@ -1,5 +1,5 @@
+import invariant from '@guanghechen/invariant'
 import fs from 'fs-extra'
-import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
 import { sha1 } from '../../util/hash'
 import { resolveLocalPath, resolveUniversalPath } from '../../util/path'
@@ -127,9 +127,7 @@ export class AssetDataManager {
    *
    * @param asset
    */
-  public resolveFilepath(
-    asset: Pick<AssetDataItem, 'uuid' | 'type' | 'extname'>,
-  ): string | null {
+  public resolveFilepath(asset: Pick<AssetDataItem, 'uuid' | 'type' | 'extname'>): string | null {
     const item = this.assetLocationMap[asset.type]
     if (item == null) return null
     return resolveLocalPath(item.dataRoot, asset.uuid + asset.extname)
@@ -153,10 +151,7 @@ export class AssetDataManager {
    * @param asset
    */
   public insert(asset: AssetDataItem): void {
-    invariant(
-      this.dataMap[asset.uuid] == null,
-      `Duplicated asset uuid (${asset.uuid})`,
-    )
+    invariant(this.dataMap[asset.uuid] == null, `Duplicated asset uuid (${asset.uuid})`)
 
     const uuids: AssetUUID[] = this.uuids[asset.type]
     invariant(uuids != null, `Unknown assetType (${asset.type})`)

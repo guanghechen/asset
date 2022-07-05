@@ -1,8 +1,4 @@
-import {
-  cover,
-  coverString,
-  isNonBlankString,
-} from '@guanghechen/option-helper'
+import { cover, coverString, isNonBlankString } from '@guanghechen/option-helper'
 
 /**
  * Deploy configuration
@@ -51,35 +47,19 @@ export function resolveDeployConfig(
   defaultConfig: DeployConfig = defaultDeployConfig,
 ): DeployConfig {
   // resolve type
-  const type = cover<'git'>(
-    defaultConfig.type,
-    rawConfig.type,
-    isNonBlankString,
-  )
+  const type = cover<'git'>(defaultConfig.type, rawConfig.type, isNonBlankString)
 
   // resolve branch
-  const branch = coverString(
-    defaultConfig.branch,
-    rawConfig.branch,
-    isNonBlankString,
-  )
+  const branch = coverString(defaultConfig.branch, rawConfig.branch, isNonBlankString)
 
   // resolve repository
-  const repository = coverString(
-    defaultConfig.repository,
-    rawConfig.repository,
-    isNonBlankString,
-  )
+  const repository = coverString(defaultConfig.repository, rawConfig.repository, isNonBlankString)
 
   // resolve name
   const name = coverString(defaultConfig.name, rawConfig.name, isNonBlankString)
 
   // resolve email
-  const email = coverString(
-    defaultConfig.email,
-    rawConfig.name,
-    isNonBlankString,
-  )
+  const email = coverString(defaultConfig.email, rawConfig.name, isNonBlankString)
 
   const result: DeployConfig = {
     type,

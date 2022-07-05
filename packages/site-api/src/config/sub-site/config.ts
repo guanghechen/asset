@@ -1,10 +1,7 @@
 import { coverString, isNonBlankString } from '@guanghechen/option-helper'
 import { resolveLocalPath, resolveUrlPath } from '../../util/path'
 import type { SitePathConfig } from '../site'
-import type {
-  SubSiteSourceItem,
-  SubSiteSourceItemResolver,
-} from './source-item'
+import type { SubSiteSourceItem, SubSiteSourceItemResolver } from './source-item'
 
 /**
  * Sub site configuration
@@ -61,10 +58,7 @@ export interface SubSiteConfig<
 export type SubSiteConfigResolver<
   SourceType extends string = string,
   SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
-  T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<
-    SourceType,
-    SourceItem
-  >,
+  T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<SourceType, SourceItem>,
 > = (
   rawConfig: Partial<Omit<T, 'source'>> & { source?: Partial<T['source']> },
   sitePathConfig: SitePathConfig,
@@ -103,10 +97,7 @@ export function createDefaultSubSiteConfig(name: string): SubSiteConfig {
 export function resolveSubSiteConfig<
   SourceType extends string = string,
   SourceItem extends SubSiteSourceItem = SubSiteSourceItem,
-  T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<
-    SourceType,
-    SourceItem
-  >,
+  T extends SubSiteConfig<SourceType, SourceItem> = SubSiteConfig<SourceType, SourceItem>,
 >(
   rawConfig: Partial<Omit<T, 'source'>> & {
     source?: Partial<T['source']>
@@ -131,11 +122,7 @@ export function resolveSubSiteConfig<
   // resolve sourceRoot (absolute filepath)
   const sourceRoot = resolveLocalPath(
     sitePathConfig.workspace,
-    coverString(
-      defaultConfig.sourceRoot,
-      rawConfig.sourceRoot,
-      isNonBlankString,
-    ),
+    coverString(defaultConfig.sourceRoot, rawConfig.sourceRoot, isNonBlankString),
   )
 
   // resolve dataRoot (absolute filepath)
@@ -177,19 +164,12 @@ export function resolveSubSiteConfig<
   // resolve tagDataMapFilepath (absolute filepath)
   const tagDataMapFilepath = resolveLocalPath(
     dataRoot,
-    coverString(
-      defaultConfig.tagDataMapFilepath,
-      rawConfig.tagDataMapFilepath,
-      isNonBlankString,
-    ),
+    coverString(defaultConfig.tagDataMapFilepath, rawConfig.tagDataMapFilepath, isNonBlankString),
   )
 
   // resolve source
   const source: Record<SourceType, SourceItem> = {} as any
-  const rawSources: Record<
-    SourceType,
-    Partial<SourceItem>
-  > = rawConfig.source || ({} as any)
+  const rawSources: Record<SourceType, Partial<SourceItem>> = rawConfig.source || ({} as any)
   for (const sourceType of sourceItemTypes) {
     source[sourceType] = resolveSourceItem(
       rawSources[sourceType],

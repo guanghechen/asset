@@ -1,5 +1,5 @@
+import invariant from '@guanghechen/invariant'
 import fs from 'fs-extra'
-import invariant from 'tiny-invariant'
 import { writeJSON } from '../../util/fs'
 import { uniqueText } from '../../util/hash'
 import { stringify } from '../../util/string'
@@ -103,10 +103,7 @@ export class TagDataManager {
    * @param tag
    * @param assetUUID   uuid of asset
    */
-  public insert(
-    tag: Pick<TagDataItem, 'uuid' | 'title'>,
-    assetUUID: AssetUUID,
-  ): void {
+  public insert(tag: Pick<TagDataItem, 'uuid' | 'title'>, assetUUID: AssetUUID): void {
     let current: TagDataItem = this.dataMap[tag.uuid]
 
     // Create new tag if it is not exists yet.

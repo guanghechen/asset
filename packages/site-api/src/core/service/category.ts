@@ -33,9 +33,7 @@ export class CategoryService {
    */
   public fetchCategories(): CategoryDataItem[] {
     const dataMap: CategoryDataMap = this.dataManager.toDataMap()
-    const result: CategoryDataItem[] = dataMap.uuids.map(
-      uuid => dataMap.entities[uuid],
-    )
+    const result: CategoryDataItem[] = dataMap.uuids.map(uuid => dataMap.entities[uuid])
     return result
   }
 }

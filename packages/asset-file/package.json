@@ -39,6 +39,6 @@
   "dependencies": {
     "@guanghechen/site-api": "^1.0.0-alpha.2",
     "@types/micromatch": "^4.0.1",
-    "micromatch": "^4.0.2"
+    "micromatch": "^4.0.5"
   }
 }

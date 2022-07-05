@@ -1,8 +1,4 @@
-import type {
-  AssetDataItem,
-  AssetService,
-  AssetUUID,
-} from '@guanghechen/site-api'
+import type { AssetDataItem, AssetService, AssetUUID } from '@guanghechen/site-api'
 import { BlogSourceType } from '../../config/blog'
 import type { PostAssetEntity, PostDataItem } from './entity'
 import type { PostEntityManager } from './manager'
@@ -11,10 +7,7 @@ export class PostService {
   protected readonly postEntityManager: PostEntityManager
   protected readonly assetService: AssetService
 
-  constructor(
-    postEntityManager: PostEntityManager,
-    assetService: AssetService,
-  ) {
+  constructor(postEntityManager: PostEntityManager, assetService: AssetService) {
     this.postEntityManager = postEntityManager
     this.assetService = assetService
   }

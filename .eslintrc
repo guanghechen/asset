@@ -1,6 +1,6 @@
 {
   "root": true,
-  "extends": ["@guanghechen", "@guanghechen/jsx", "prettier"],
+  "extends": ["@guanghechen", "prettier"],
   "env": {
     "browser": true,
     "commonjs": true,
@@ -10,27 +10,27 @@
   },
   "overrides": [
     {
-      "files": ["**/*.ts", "**/*tsx"],
-      "extends": [
-        "@guanghechen",
-        "@guanghechen/jsx",
-        "@guanghechen/ts",
-        "prettier"
-      ]
+      "files": ["**/*.js"],
+      "parser": "@babel/eslint-parser",
+      "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module",
+        "requireConfigFile": false,
+        "allowImportExportEverywhere": true
+      }
     },
     {
-      "files": [
-        "**/__test__/*.spec.ts",
-        "**/__test__/util/*.ts",
-        "jest.setup.ts"
-      ],
-      "extends": [
-        "@guanghechen",
-        "@guanghechen/ts",
-        "plugin:jest/recommended",
-        "prettier"
-      ],
+      "files": ["**/*.ts"],
+      "extends": ["@guanghechen", "@guanghechen/ts", "prettier"],
       "rules": {
+        "import/no-named-as-default": 0
+      }
+    },
+    {
+      "files": ["**/__test__/*.spec.ts", "**/__test__/util/*.ts", "jest.setup.ts"],
+      "extends": ["@guanghechen", "@guanghechen/ts", "plugin:jest/recommended", "prettier"],
+      "rules": {
+        "@typescript-eslint/ban-ts-comment": 0,
         "import/no-extraneous-dependencies": 0,
         "jest/expect-expect": 0
       }

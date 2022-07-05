@@ -54,9 +54,5 @@ export interface AssetProcessor<A extends AssetDataItem = AssetDataItem> {
     tagDataManager: ImmutableTagDataManager,
     categoryDataManager: ImmutableCategoryDataManager,
     assetDataManager: ImmutableAssetDataManager,
-  ): Generator<
-    [A, TagDataItem[], CategoryDataItem[][]],
-    Promise<void> | void,
-    A
-  >
+  ): Generator<[A, TagDataItem[], CategoryDataItem[][]], Promise<void> | void, A>
 }
