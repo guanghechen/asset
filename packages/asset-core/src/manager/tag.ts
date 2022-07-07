@@ -44,14 +44,14 @@ export class AssetTagManager implements IAssetTagManager {
     return guid ? this._guidMap.get(guid) : undefined
   }
 
-  public insert(tagLabel: string, assetId: IAssetId): this {
+  public insert(tagLabel: string, assetId: IAssetId): IAssetTag {
     const identifier = utils.normalizeIdentifier(tagLabel)
     const existedTag = this.findByIdentifier(identifier)
     if (existedTag) {
       if (!existedTag.assets.includes(assetId)) {
         existedTag.assets.push(assetId)
       }
-      return this
+      return existedTag
     }
 
     const newTag: IAssetTag = {
@@ -62,7 +62,7 @@ export class AssetTagManager implements IAssetTagManager {
     }
     this._guidMap.set(newTag.guid, newTag)
     this._idMap.set(identifier, newTag.guid)
-    return this
+    return newTag
   }
 
   public remove(guid: IAssetTagId, assetId: IAssetId): this {

@@ -1,8 +1,5 @@
 {
   "cSpell.words": [
-    "Mdast",
-    "Parens",
-    "Yast",
     "barusu",
     "dirpath",
     "downlevel",
@@ -11,14 +8,18 @@
     "globby",
     "guanghechen",
     "kase",
+    "Mdast",
+    "middlewares",
     "mkdirs",
     "olist",
+    "Parens",
     "pinst",
     "postpublish",
     "prebuild",
     "squashable",
     "ulist",
     "unist",
+    "Yast",
     "yozora"
   ],
   "files.associations": {

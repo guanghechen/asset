@@ -27,6 +27,6 @@ export interface IAssetTagManager {
   dump(): IAssetTagMap
   findByGuid(guid: IAssetTagId): IAssetTag | undefined
   findByIdentifier(identifier: string): IAssetTag | undefined
-  insert(tagLabel: string, assetId: IAssetId): this
-  remove(guid: IAssetTagId, assetId: IAssetId): this
+  insert(tagLabel: string, assetId: IAssetId): IAssetTag
+  remove(guid: IAssetTagId, assetId: IAssetId): void
 }

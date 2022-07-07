@@ -44,7 +44,10 @@ export class AssetCategoryManager implements IAssetCategoryManager {
     return guid ? this._guidMap.get(guid) : undefined
   }
 
-  public insert(categoryPath: ReadonlyArray<string>, assetId: IAssetId): this {
+  public insert(
+    categoryPath: ReadonlyArray<string>,
+    assetId: IAssetId,
+  ): IAssetCategory | undefined {
     let category: IAssetCategory | undefined
     const path: string[] = []
     for (const piece of categoryPath) {
@@ -74,7 +77,7 @@ export class AssetCategoryManager implements IAssetCategoryManager {
     if (category) {
       category.assets.push(assetId)
     }
-    return this
+    return category
   }
 
   public remove(guid: IAssetCategoryId, assetId: IAssetId): this {

@@ -48,6 +48,6 @@ export interface IAssetCategoryManager {
   dump(): IAssetCategoryMap
   findByGuid(guid: IAssetCategoryId): IAssetCategory | undefined
   findByIdentifier(identifier: string): IAssetCategory | undefined
-  insert(categoryPath: ReadonlyArray<string>, assetId: IAssetId): this
+  insert(categoryPath: ReadonlyArray<string>, assetId: IAssetId): IAssetCategory | undefined
   remove(guid: IAssetCategoryId, assetId: IAssetId): this
 }

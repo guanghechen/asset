@@ -1,22 +1,30 @@
 import type { IAssetCategoryId, IAssetId, IAssetTagId } from './_misc'
 
-export interface IAsset {
+export enum AssetType {
+  FILE = 'FILE',
+  MARKDOWN_AST = 'MARKDOWN_AST',
+}
+
+export interface IAssetMeta {
   /**
    * Global unique identifier.
    */
   guid: IAssetId
   /**
-   * Type of asset.
-   */
-  type: string
-  /**
    * The hash value of the contents.
    */
   fingerprint: string
+}
+
+export interface IAssetEntity<D = unknown> {
   /**
-   * Asset data location.
+   * Type of asset.
    */
-  location: string
+  type: AssetType | string
+  /**
+   * Asset file extension.
+   */
+  extname: string
   /**
    * The created date of the asset (ISOString).
    */
@@ -26,10 +34,6 @@ export interface IAsset {
    */
   updatedAt: string
   /**
-   * Title of asset.
-   */
-  title: string
-  /**
    * Unique identifier list of asset categories.
    */
   categories: IAssetCategoryId[]
@@ -37,4 +41,21 @@ export interface IAsset {
    * Unique identifier list of asset tags.
    */
   tags: IAssetTagId[]
+  /**
+   * Title of asset.
+   */
+  title: string
+  /**
+   * Asset data.
+   */
+  data?: D
+}
+
+export interface IAsset {
+  meta: IAssetMeta
+  entity: IAssetEntity
+}
+
+export interface IAssetMap {
+  entities: IAssetMeta[]
 }
