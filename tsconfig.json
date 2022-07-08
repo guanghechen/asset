@@ -7,7 +7,6 @@
       "@guanghechen/asset-core": ["packages/asset-core/src"],
       "@guanghechen/asset-plugin-markdown": ["packages/asset-plugin-markdown/src"],
       "@guanghechen/asset-file": ["packages/asset-file/src"],
-      "@guanghechen/asset-markdown": ["packages/asset-markdown/src"],
       "@guanghechen/blog-api": ["packages/blog-api/src"],
       "@guanghechen/handbook-api": ["packages/handbook-api/src"],
       "@guanghechen/site-api": ["packages/site-api/src"]
