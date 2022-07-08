@@ -47,11 +47,11 @@ export interface IAsset {
   slug?: string
 }
 
-export interface IAssetEntity<D = unknown> {
+export interface IAssetEntity {
   /**
    * Asset data
    */
-  data: D | undefined
+  data: unknown | undefined
 }
 
 export interface IAssetDataMap {

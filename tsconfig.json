@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "@guanghechen/asset-core": ["packages/asset-core/src"],
+      "@guanghechen/asset-plugin-markdown": ["packages/asset-plugin-markdown/src"],
       "@guanghechen/asset-file": ["packages/asset-file/src"],
       "@guanghechen/asset-markdown": ["packages/asset-markdown/src"],
       "@guanghechen/asset-markdown-parser": ["packages/asset-markdown-parser/src"],

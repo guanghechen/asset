@@ -1,14 +1,18 @@
 import type { IAsset, IAssetEntity } from './asset'
 
+export interface IBuffer extends Uint8Array {
+  toString(encoding?: BufferEncoding, start?: number, end?: number): string
+}
+
 export interface IProcessAssetContext {
   asset: IAsset
-  loadContent(): Promise<Uint8Array>
+  loadContent(): Promise<IBuffer>
   resolveSlug(slug: string | undefined): string
 }
 
 export interface IProcessEntityContext {
   asset: Readonly<IAsset>
-  loadContent(): Promise<Buffer>
+  loadContent(): Promise<IBuffer>
   resolveAsset(relativeLocation: string): Readonly<IAsset | undefined>
   resolveUri(asset: Readonly<IAsset>): string
 }
@@ -21,11 +25,11 @@ export interface IProcessEntityNext {
   (ctx: IProcessEntityContext): Promise<IAssetEntity> | IAssetEntity
 }
 
-export interface IAssetMiddleware<D = unknown> {
+export interface IAssetMiddleware {
   processAsset(ctx: IProcessAssetContext, next: IProcessAssetNext): Promise<IAsset> | IAsset
 
   processEntity(
     ctx: IProcessEntityContext,
     next: IProcessEntityNext,
-  ): Promise<IAssetEntity<D>> | IAssetEntity<D>
+  ): Promise<IAssetEntity> | IAssetEntity
 }
