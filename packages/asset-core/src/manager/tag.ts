@@ -1,5 +1,5 @@
 import type { IAssetId, IAssetTagId } from '../types/_misc'
-import type { IAssetTag, IAssetTagManager, IAssetTagMap } from '../types/tag'
+import type { IAssetTag, IAssetTagDataMap, IAssetTagManager } from '../types/tag'
 import { genTagGuid } from '../util/guid'
 import { cloneJson, list2map } from '../util/json'
 
@@ -30,7 +30,7 @@ export class AssetTagManager implements IAssetTagManager {
     )
   }
 
-  public dump(): IAssetTagMap {
+  public dump(): IAssetTagDataMap {
     const entities: IAssetTag[] = Array.from(this._guidMap.values())
     return cloneJson({ entities })
   }

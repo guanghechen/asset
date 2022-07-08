@@ -1,5 +1,9 @@
 import type { IAssetCategoryId, IAssetId } from '../types/_misc'
-import type { IAssetCategory, IAssetCategoryManager, IAssetCategoryMap } from '../types/category'
+import type {
+  IAssetCategory,
+  IAssetCategoryDataMap,
+  IAssetCategoryManager,
+} from '../types/category'
 import { genCategoryGuid } from '../util/guid'
 import { cloneJson, list2map } from '../util/json'
 
@@ -30,7 +34,7 @@ export class AssetCategoryManager implements IAssetCategoryManager {
     for (const category of entities) this._removeEmptyCategory(category)
   }
 
-  public dump(): IAssetCategoryMap {
+  public dump(): IAssetCategoryDataMap {
     const entities: IAssetCategory[] = Array.from(this._guidMap.values())
     return cloneJson({ entities })
   }

@@ -1,17 +1,31 @@
-import type { IAssetEntity, IAssetMeta } from './asset'
+import type { IAsset, IAssetEntity } from './asset'
 
-export interface IAssetMiddlewareContext {
-  assetMeta: Readonly<IAssetMeta>
-  resolveUri(assetMeta: Readonly<IAssetMeta>): string
-  resolveAssetMeta(relativeLocation: string): Promise<Readonly<IAssetMeta>> | Readonly<IAssetMeta>
+export interface IProcessAssetContext {
+  asset: IAsset
+  loadContent(): Promise<Uint8Array>
+  resolveSlug(slug: string | undefined): string
 }
 
-export interface IAssetMiddlewareNext {
-  (entity: IAssetEntity): Promise<IAssetEntity> | IAssetEntity
+export interface IProcessEntityContext {
+  asset: Readonly<IAsset>
+  loadContent(): Promise<Buffer>
+  resolveAsset(relativeLocation: string): Readonly<IAsset | undefined>
+  resolveUri(asset: Readonly<IAsset>): string
+}
+
+export interface IProcessAssetNext {
+  (ctx: IProcessAssetContext): Promise<IAsset> | IAsset
+}
+
+export interface IProcessEntityNext {
+  (ctx: IProcessEntityContext): Promise<IAssetEntity> | IAssetEntity
 }
 
 export interface IAssetMiddleware<D = unknown> {
-  (entity: IAssetEntity, ctx: IAssetMiddlewareContext, next: IAssetMiddlewareNext):
-    | Promise<IAssetEntity<D>>
-    | IAssetEntity
+  processAsset(ctx: IProcessAssetContext, next: IProcessAssetNext): Promise<IAsset> | IAsset
+
+  processEntity(
+    ctx: IProcessEntityContext,
+    next: IProcessEntityNext,
+  ): Promise<IAssetEntity<D>> | IAssetEntity<D>
 }

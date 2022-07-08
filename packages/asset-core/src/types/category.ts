@@ -40,12 +40,12 @@ export interface IAssetCategory {
   children: IAssetCategoryId[]
 }
 
-export interface IAssetCategoryMap {
+export interface IAssetCategoryDataMap {
   entities: IAssetCategory[]
 }
 
 export interface IAssetCategoryManager {
-  dump(): IAssetCategoryMap
+  dump(): IAssetCategoryDataMap
   findByGuid(guid: IAssetCategoryId): IAssetCategory | undefined
   findByIdentifier(identifier: string): IAssetCategory | undefined
   insert(categoryPath: ReadonlyArray<string>, assetId: IAssetId): IAssetCategory | undefined

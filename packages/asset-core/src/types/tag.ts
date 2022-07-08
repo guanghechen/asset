@@ -19,12 +19,12 @@ export interface IAssetTag {
   assets: IAssetId[]
 }
 
-export interface IAssetTagMap {
+export interface IAssetTagDataMap {
   entities: IAssetTag[]
 }
 
 export interface IAssetTagManager {
-  dump(): IAssetTagMap
+  dump(): IAssetTagDataMap
   findByGuid(guid: IAssetTagId): IAssetTag | undefined
   findByIdentifier(identifier: string): IAssetTag | undefined
   insert(tagLabel: string, assetId: IAssetId): IAssetTag
