@@ -9,33 +9,31 @@ export interface IAssetCategory {
    */
   guid: IAssetCategoryId
   /**
-   * Category identifier
+   * Category path fingerprint.
    */
-  identifier: string
+  fingerprint: string
   /**
-   * Display name.
+   * Category path labels, such as ['math', 'number-theory'].
    */
-  label: string
+  path: string[]
   /**
    * Unique identifier list of assets which are classified to this category.
    */
   assets: IAssetId[]
   /**
-   * Parent node uuids, each category may belong to several different parent categories.
-   *
-   * ## Example
-   *
-   *    math --> number-theory --> prime
-   *                 algorithm --> prime
+   * Parent node's guid, each category node must have at most one parent as the category should
+   * consisted as a tree instead of DAG.
    */
-  parents: IAssetCategoryId[]
+  parent: IAssetCategoryId | null
   /**
-   * Child node uuids, each category may have multiple sub-categories.
+   * Child nodes' guid, each category may have multiple sub-categories.
    *
    * ## Example
    *
    *    math --> number-theory
    *    math --> linear-algebra
+   *
+   * Both `number-theory` and `linear-algebra` are `math`'s child in the above case.
    */
   children: IAssetCategoryId[]
 }
@@ -45,9 +43,10 @@ export interface IAssetCategoryDataMap {
 }
 
 export interface IAssetCategoryManager {
-  dump(): IAssetCategoryDataMap
+  fromJSON(json: Readonly<IAssetCategoryDataMap>): void
+  toJSON(): IAssetCategoryDataMap
   findByGuid(guid: IAssetCategoryId): IAssetCategory | undefined
-  findByIdentifier(identifier: string): IAssetCategory | undefined
-  insert(categoryPath: ReadonlyArray<string>, assetId: IAssetId): IAssetCategory | undefined
-  remove(guid: IAssetCategoryId, assetId: IAssetId): this
+  findByFingerprint(fingerprint: string): IAssetCategory | undefined
+  insert(categoryPath: string, assetId: IAssetId): IAssetCategory | undefined
+  remove(guid: IAssetCategoryId, assetId: IAssetId): void
 }

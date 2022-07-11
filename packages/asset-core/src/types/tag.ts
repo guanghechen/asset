@@ -6,9 +6,9 @@ export interface IAssetTag {
    */
   guid: IAssetTagId
   /**
-   * Tag identifier
+   * Tag fingerprint.
    */
-  identifier: string
+  fingerprint: string
   /**
    * Display name.
    */
@@ -24,9 +24,10 @@ export interface IAssetTagDataMap {
 }
 
 export interface IAssetTagManager {
-  dump(): IAssetTagDataMap
+  fromJSON(json: Readonly<IAssetTagDataMap>): void
+  toJSON(): IAssetTagDataMap
   findByGuid(guid: IAssetTagId): IAssetTag | undefined
-  findByIdentifier(identifier: string): IAssetTag | undefined
-  insert(tagLabel: string, assetId: IAssetId): IAssetTag
+  findByFingerprint(fingerprint: string): IAssetTag | undefined
+  insert(tagLabel: string, assetId: IAssetId): IAssetTag | undefined
   remove(guid: IAssetTagId, assetId: IAssetId): void
 }

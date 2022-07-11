@@ -3,80 +3,84 @@ import type { IAssetTag, IAssetTagDataMap, IAssetTagManager } from '../types/tag
 import { genTagGuid } from '../util/guid'
 import { cloneJson, list2map } from '../util/json'
 
-const utils = {
-  normalizeIdentifier: (label: string): string => label.replace(/[\s]+/g, '').toLowerCase(),
-  normalizeLabel: (label: string): string => label.replace(/[\s]+/g, ' '),
-}
-
 export interface IAssetTagManagerProps {
-  entities: ReadonlyArray<IAssetTag>
+  resolveFingerprint?(label: string): string
+  resolveLabel?(label: string): string
 }
 
 export class AssetTagManager implements IAssetTagManager {
-  protected readonly _idMap: Map<string, IAssetTagId>
-  protected readonly _guidMap: Map<IAssetTagId, IAssetTag>
+  protected readonly fingerprintMap: Map<string, IAssetTagId> = new Map()
+  protected readonly guidMap: Map<IAssetTagId, IAssetTag> = new Map()
+  protected readonly resolveFingerprint: (label: string) => string
+  protected readonly resolveLabel: (label: string) => string
 
-  constructor(props: IAssetTagManagerProps) {
-    const entities = props.entities.filter(entity => entity.assets.length > 0)
-    this._idMap = list2map(
-      entities,
-      entity => entity.identifier,
+  constructor(props: IAssetTagManagerProps = {}) {
+    const {
+      resolveFingerprint = label => label.replace(/[\s\\/]+/g, '').toLowerCase(),
+      resolveLabel = label => label.replace(/[\s\\/]+/g, ' '),
+    } = props
+    this.resolveFingerprint = resolveFingerprint
+    this.resolveLabel = resolveLabel
+  }
+
+  public fromJSON(json: Readonly<IAssetTagDataMap>): void {
+    const { fingerprintMap, guidMap } = this
+    fingerprintMap.clear()
+    guidMap.clear()
+
+    list2map(
+      json.entities,
+      entity => entity.fingerprint,
       entity => entity.guid,
+      fingerprintMap,
     )
-    this._guidMap = list2map(
-      entities,
+    list2map(
+      json.entities,
       entity => entity.guid,
       entity => entity,
+      guidMap,
     )
   }
 
-  public dump(): IAssetTagDataMap {
-    const entities: IAssetTag[] = Array.from(this._guidMap.values())
+  public toJSON(): IAssetTagDataMap {
+    const entities: IAssetTag[] = Array.from(this.guidMap.values()).filter(
+      entity => entity.assets.length > 0,
+    )
     return cloneJson({ entities })
   }
 
   public findByGuid(guid: IAssetTagId): IAssetTag | undefined {
-    return this._guidMap.get(guid)
+    return this.guidMap.get(guid)
   }
 
-  public findByIdentifier(identifier: string): IAssetTag | undefined {
-    const guid = this._idMap.get(identifier)
-    return guid ? this._guidMap.get(guid) : undefined
+  public findByFingerprint(fingerprint: string): IAssetTag | undefined {
+    const guid = this.fingerprintMap.get(fingerprint)
+    return guid ? this.guidMap.get(guid) : undefined
   }
 
-  public insert(tagLabel: string, assetId: IAssetId): IAssetTag {
-    const identifier = utils.normalizeIdentifier(tagLabel)
-    const existedTag = this.findByIdentifier(identifier)
+  public insert(tagLabel: string, assetId: IAssetId): IAssetTag | undefined {
+    const fingerprint = this.resolveFingerprint(tagLabel)
+    if (!fingerprint) return undefined
+
+    const existedTag = this.findByFingerprint(fingerprint)
     if (existedTag) {
-      if (!existedTag.assets.includes(assetId)) {
-        existedTag.assets.push(assetId)
-      }
+      if (!existedTag.assets.includes(assetId)) existedTag.assets.push(assetId)
       return existedTag
     }
 
     const newTag: IAssetTag = {
-      guid: genTagGuid(identifier),
-      identifier,
-      label: utils.normalizeLabel(tagLabel),
+      guid: genTagGuid(fingerprint),
+      fingerprint: fingerprint,
+      label: this.resolveLabel(tagLabel),
       assets: [assetId],
     }
-    this._guidMap.set(newTag.guid, newTag)
-    this._idMap.set(identifier, newTag.guid)
+    this.guidMap.set(newTag.guid, newTag)
+    this.fingerprintMap.set(fingerprint, newTag.guid)
     return newTag
   }
 
-  public remove(guid: IAssetTagId, assetId: IAssetId): this {
+  public remove(guid: IAssetTagId, assetId: IAssetId): void {
     const tag = this.findByGuid(guid)
-    if (tag) {
-      tag.assets = tag.assets.filter(id => id !== assetId)
-      this._removeEmptyTag(tag)
-    }
-    return this
-  }
-
-  protected _removeEmptyTag(tag: IAssetTag): void {
-    if (tag.assets.length > 0) return
-    this._idMap.delete(tag.identifier)
-    this._guidMap.delete(tag.guid)
+    if (tag) tag.assets = tag.assets.filter(id => id !== assetId)
   }
 }

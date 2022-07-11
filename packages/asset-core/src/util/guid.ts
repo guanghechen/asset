@@ -14,16 +14,17 @@ export const genAssetGuid = (): string => {
 /**
  * Generate global unique identifier for asset tag.
  *
- * @param identifier Tag identifier
+ * @param fingerprint
  * @returns
  */
-export const genTagGuid = (identifier: string): string => uuid(`#tag-${identifier}`, GUID_NAMESPACE)
+export const genTagGuid = (fingerprint: string): string =>
+  uuid(`#tag-${fingerprint}`, GUID_NAMESPACE)
 
 /**
  * Generate global unique identifier for asset category.
  *
- * @param identifier Category path identifier
+ * @param fingerprint
  * @returns
  */
-export const genCategoryGuid = (identifier: string): string =>
-  uuid(`#category-${identifier}`, GUID_NAMESPACE)
+export const genCategoryGuid = (fingerprint: string): string =>
+  uuid(`#category-${fingerprint}`, GUID_NAMESPACE)

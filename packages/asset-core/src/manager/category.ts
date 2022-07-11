@@ -7,103 +7,145 @@ import type {
 import { genCategoryGuid } from '../util/guid'
 import { cloneJson, list2map } from '../util/json'
 
-const normalizeLabel = (label: string): string => label.replace(/[\s/\\]+/g, ' ')
-const normalizePath = (path: string[]): string => path.map(normalizeLabel).join('/')
-
 export interface ICategoryManagerProps {
-  entities: ReadonlyArray<IAssetCategory>
+  resolveFingerprint?(categoryPath: string): string
+  resolveLabels?(categoryPath: string): string[]
 }
 
 export class AssetCategoryManager implements IAssetCategoryManager {
-  protected readonly _idMap: Map<string, IAssetCategoryId>
-  protected readonly _guidMap: Map<IAssetCategoryId, IAssetCategory>
+  protected readonly fingerprintMap: Map<string, IAssetCategoryId> = new Map()
+  protected readonly guidMap: Map<IAssetCategoryId, IAssetCategory> = new Map()
+  protected readonly resolveFingerprint: (categoryPath: string) => string
+  protected readonly resolveLabels: (categoryPath: string) => string[]
+  protected _isCleaned = false
 
-  constructor(props: ICategoryManagerProps) {
-    const entities = props.entities
-    this._idMap = list2map(
-      entities,
-      entity => entity.identifier,
-      entity => entity.guid,
-    )
-    this._guidMap = list2map(
-      entities,
-      entity => entity.guid,
-      entity => entity,
-    )
-
-    for (const category of entities) this._removeEmptyCategory(category)
+  constructor(props: ICategoryManagerProps = {}) {
+    const {
+      resolveFingerprint = categoryPath =>
+        categoryPath
+          .replace(/[\s]+/g, '')
+          .split(/[/\\]+/g)
+          .filter(x => !!x)
+          .join('/'),
+      resolveLabels = categoryPath =>
+        categoryPath
+          .split(/[/\\]+/g)
+          .map(x => x.trim().replace(/[\s]+/g, ' '))
+          .filter(x => !!x),
+    } = props
+    this.resolveLabels = resolveLabels
+    this.resolveFingerprint = resolveFingerprint
   }
 
-  public dump(): IAssetCategoryDataMap {
-    const entities: IAssetCategory[] = Array.from(this._guidMap.values())
+  public fromJSON(json: Readonly<IAssetCategoryDataMap>): void {
+    const { fingerprintMap, guidMap } = this
+    fingerprintMap.clear()
+    guidMap.clear()
+
+    list2map(
+      json.entities,
+      entity => entity.fingerprint,
+      entity => entity.guid,
+      fingerprintMap,
+    )
+    list2map(
+      json.entities,
+      entity => entity.guid,
+      entity => entity,
+      guidMap,
+    )
+  }
+
+  public toJSON(): IAssetCategoryDataMap {
+    this.cleanup()
+    const entities: IAssetCategory[] = Array.from(this.guidMap.values())
     return cloneJson({ entities })
   }
 
   public findByGuid(guid: IAssetCategoryId): IAssetCategory | undefined {
-    return this._guidMap.get(guid)
+    return this.guidMap.get(guid)
   }
 
-  public findByIdentifier(identifier: string): IAssetCategory | undefined {
-    const guid = this._idMap.get(identifier)
-    return guid ? this._guidMap.get(guid) : undefined
+  public findByFingerprint(identifier: string): IAssetCategory | undefined {
+    const guid = this.fingerprintMap.get(identifier)
+    return guid ? this.guidMap.get(guid) : undefined
   }
 
-  public insert(
-    categoryPath: ReadonlyArray<string>,
-    assetId: IAssetId,
-  ): IAssetCategory | undefined {
-    let category: IAssetCategory | undefined
-    const path: string[] = []
-    for (const piece of categoryPath) {
-      path.push(piece)
-      const identifier = normalizePath(path)
-      let nextCategory: IAssetCategory | undefined = this.findByIdentifier(identifier)
-      if (!nextCategory) {
-        nextCategory = {
-          guid: genCategoryGuid(identifier),
-          identifier,
-          label: normalizeLabel(piece),
-          assets: [],
-          parents: [],
-          children: [],
-        }
-        this._guidMap.set(nextCategory.guid, nextCategory)
-        this._idMap.set(identifier, nextCategory.guid)
+  public insert(categoryPath: string, assetId: IAssetId): IAssetCategory | undefined {
+    const fingerprint = this.resolveFingerprint(categoryPath)
+    if (!fingerprint) return undefined
 
-        if (category) {
-          category.children.push(nextCategory.guid)
-          nextCategory.parents.push(category.guid)
-        }
-      }
-      category = nextCategory
+    const existedCategory = this.findByFingerprint(fingerprint)
+    if (existedCategory) {
+      if (!existedCategory.assets.includes(assetId)) existedCategory.assets.push(assetId)
+      return existedCategory
     }
 
-    if (category) {
-      category.assets.push(assetId)
+    const labels = this.resolveLabels(categoryPath)
+    const category: IAssetCategory = {
+      guid: genCategoryGuid(fingerprint),
+      fingerprint,
+      path: labels.slice(),
+      assets: [assetId],
+      parent: null,
+      children: [],
+    }
+
+    // Add parents.
+    {
+      let child: IAssetCategory = category
+      for (let i = labels.length - 2; i >= 0; --i) {
+        const parentLabels = labels.slice(0, i + 1)
+        const parentFingerprint = this.resolveFingerprint(parentLabels.join('/'))
+        if (!parentFingerprint) break
+
+        const existedParent = this.findByFingerprint(parentFingerprint)
+        if (existedParent) {
+          child.parent = existedParent.guid
+          existedParent.children.push(child.guid)
+          break
+        }
+
+        const parent: IAssetCategory = {
+          guid: genCategoryGuid(parentFingerprint),
+          fingerprint: parentFingerprint,
+          path: parentLabels,
+          assets: [],
+          parent: null,
+          children: [child.guid],
+        }
+        child.parent = parent.guid
+        child = parent
+      }
     }
     return category
   }
 
-  public remove(guid: IAssetCategoryId, assetId: IAssetId): this {
+  public remove(guid: IAssetCategoryId, assetId: IAssetId): void {
     const category = this.findByGuid(guid)
     if (category) {
       category.assets = category.assets.filter(id => id !== assetId)
-      this._removeEmptyCategory(category)
+      if (category.assets.length <= 0) this._isCleaned = false
     }
-    return this
   }
 
-  protected _removeEmptyCategory(category: IAssetCategory): void {
-    if (category.children.length <= 0 || category.assets.length > 0) return
+  protected cleanup(): void {
+    if (this._isCleaned) return
 
-    this._idMap.delete(category.identifier)
-    this._guidMap.delete(category.guid)
-    for (const parentId of category.parents) {
-      const parent = this.findByGuid(parentId)
+    const { fingerprintMap, guidMap } = this
+    const recursiveRemove = (category: IAssetCategory): void => {
+      if (category.children.length > 0 || category.assets.length > 0) return
+      fingerprintMap.delete(category.fingerprint)
+      guidMap.delete(category.guid)
+      const parent = category.parent ? this.findByGuid(category.parent) : undefined
       if (parent) {
-        parent.children = parent.children.filter(id => id !== category.guid)
-        this._removeEmptyCategory(parent)
+        parent.children = parent.children.filter(guid => guid !== category.guid)
+        recursiveRemove(parent)
       }
     }
+
+    const categories: IAssetCategory[] = Array.from(guidMap.values())
+    for (const c of categories) recursiveRemove(c)
+    this._isCleaned = true
   }
 }

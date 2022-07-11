@@ -7,8 +7,9 @@ export const list2map = <T, K extends string, V>(
   entities: ReadonlyArray<T>,
   getKey: (entity: T) => K,
   getValue: (entity: T) => V,
+  mp?: Map<K, V>,
 ): Map<K, V> => {
-  const result: Map<K, V> = new Map()
+  const result: Map<K, V> = mp ?? new Map()
   for (const entity of entities) {
     const key = getKey(entity)
     const value = getValue(entity)
