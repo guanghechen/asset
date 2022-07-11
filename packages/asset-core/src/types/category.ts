@@ -39,7 +39,7 @@ export interface IAssetCategory {
 }
 
 export interface IAssetCategoryDataMap {
-  entities: IAssetCategory[]
+  categories: IAssetCategory[]
 }
 
 export interface IAssetCategoryManager {

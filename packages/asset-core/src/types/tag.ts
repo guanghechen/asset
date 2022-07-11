@@ -20,7 +20,7 @@ export interface IAssetTag {
 }
 
 export interface IAssetTagDataMap {
-  entities: IAssetTag[]
+  tags: IAssetTag[]
 }
 
 export interface IAssetTagManager {

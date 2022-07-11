@@ -17,3 +17,11 @@ export const list2map = <T, K extends string, V>(
   }
   return result
 }
+
+export const uniqueStrings = (texts: Array<string | undefined | null>): string[] => {
+  const result: Set<string> = new Set()
+  for (const text of texts) {
+    if (text != null) result.add(text)
+  }
+  return Array.from(result)
+}

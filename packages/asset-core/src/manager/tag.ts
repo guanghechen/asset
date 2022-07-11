@@ -1,7 +1,7 @@
 import type { IAssetId, IAssetTagId } from '../types/_misc'
 import type { IAssetTag, IAssetTagDataMap, IAssetTagManager } from '../types/tag'
 import { genTagGuid } from '../util/guid'
-import { cloneJson, list2map } from '../util/json'
+import { cloneJson, list2map } from '../util/misc'
 
 export interface IAssetTagManagerProps {
   resolveFingerprint?(label: string): string
@@ -29,13 +29,13 @@ export class AssetTagManager implements IAssetTagManager {
     guidMap.clear()
 
     list2map(
-      json.entities,
+      json.tags,
       entity => entity.fingerprint,
       entity => entity.guid,
       fingerprintMap,
     )
     list2map(
-      json.entities,
+      json.tags,
       entity => entity.guid,
       entity => entity,
       guidMap,
@@ -43,10 +43,10 @@ export class AssetTagManager implements IAssetTagManager {
   }
 
   public toJSON(): IAssetTagDataMap {
-    const entities: IAssetTag[] = Array.from(this.guidMap.values()).filter(
+    const tags: IAssetTag[] = Array.from(this.guidMap.values()).filter(
       entity => entity.assets.length > 0,
     )
-    return cloneJson({ entities })
+    return cloneJson({ tags })
   }
 
   public findByGuid(guid: IAssetTagId): IAssetTag | undefined {

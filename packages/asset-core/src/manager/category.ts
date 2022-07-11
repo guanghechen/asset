@@ -5,7 +5,7 @@ import type {
   IAssetCategoryManager,
 } from '../types/category'
 import { genCategoryGuid } from '../util/guid'
-import { cloneJson, list2map } from '../util/json'
+import { cloneJson, list2map } from '../util/misc'
 
 export interface ICategoryManagerProps {
   resolveFingerprint?(categoryPath: string): string
@@ -43,13 +43,13 @@ export class AssetCategoryManager implements IAssetCategoryManager {
     guidMap.clear()
 
     list2map(
-      json.entities,
+      json.categories,
       entity => entity.fingerprint,
       entity => entity.guid,
       fingerprintMap,
     )
     list2map(
-      json.entities,
+      json.categories,
       entity => entity.guid,
       entity => entity,
       guidMap,
@@ -58,8 +58,8 @@ export class AssetCategoryManager implements IAssetCategoryManager {
 
   public toJSON(): IAssetCategoryDataMap {
     this.cleanup()
-    const entities: IAssetCategory[] = Array.from(this.guidMap.values())
-    return cloneJson({ entities })
+    const categories: IAssetCategory[] = Array.from(this.guidMap.values())
+    return cloneJson({ categories })
   }
 
   public findByGuid(guid: IAssetCategoryId): IAssetCategory | undefined {

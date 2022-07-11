@@ -31,9 +31,11 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup -c ../../rollup.config.js",
     "prebuild": "rimraf lib/ && tsc -p tsconfig.src.json --emitDeclarationOnly",
-    "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
+    "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build",
+    "test": "echo 'no test yet.'"
   },
   "dependencies": {
+    "@guanghechen/invariant": "^1.9.5",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

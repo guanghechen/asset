@@ -1,4 +1,6 @@
 import type { IAssetCategoryId, IAssetId, IAssetTagId } from './_misc'
+import type { IAssetCategory } from './category'
+import type { IAssetTag } from './tag'
 
 export enum AssetType {
   FILE = 'FILE',
@@ -47,13 +49,21 @@ export interface IAsset {
   slug?: string
 }
 
-export interface IAssetEntity {
-  /**
-   * Asset data
-   */
-  data: unknown | undefined
+export interface IAssetDataMap {
+  tags: IAssetTag[]
+  categories: IAssetCategory[]
+  assets: IAsset[]
 }
 
-export interface IAssetDataMap {
-  entities: IAsset[]
+export type IRawAsset = Omit<IAsset, 'categories' | 'tags'> & {
+  categories: string[][]
+  tags: string[]
+}
+
+export interface IAssetManager {
+  fromJSON(json: Readonly<IAssetDataMap>): void
+  toJSON(): IAssetDataMap
+  findByGuid(guid: IAssetId): IAsset | undefined
+  insert(rawAsset: IRawAsset): IAsset | undefined
+  remove(guid: IAssetId): void
 }
