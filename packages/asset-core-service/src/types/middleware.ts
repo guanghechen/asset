@@ -1,11 +1,12 @@
-import type { IAsset, IAssetEntity } from './asset'
+import type { IAsset, IRawAsset } from '@guanghechen/asset-core'
+import type { IAssetEntity } from './asset'
 
 export interface IBuffer extends Uint8Array {
   toString(encoding?: BufferEncoding, start?: number, end?: number): string
 }
 
 export interface IProcessAssetContext {
-  asset: IAsset
+  rawAsset: IRawAsset
   loadContent(): Promise<IBuffer>
   resolveSlug(slug: string | undefined): string
 }
@@ -18,7 +19,7 @@ export interface IProcessEntityContext {
 }
 
 export interface IProcessAssetNext {
-  (ctx: IProcessAssetContext): Promise<IAsset> | IAsset
+  (ctx: IProcessAssetContext): Promise<IRawAsset> | IRawAsset
 }
 
 export interface IProcessEntityNext {
@@ -26,8 +27,7 @@ export interface IProcessEntityNext {
 }
 
 export interface IAssetMiddleware {
-  processAsset(ctx: IProcessAssetContext, next: IProcessAssetNext): Promise<IAsset> | IAsset
-
+  processAsset(ctx: IProcessAssetContext, next: IProcessAssetNext): Promise<IRawAsset> | IRawAsset
   processEntity(
     ctx: IProcessEntityContext,
     next: IProcessEntityNext,

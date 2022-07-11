@@ -1,12 +1,11 @@
-import type { IAssetCategoryManager, IAssetTagManager } from '@guanghechen/asset-core'
-import { AssetCategoryManager, AssetTagManager, cloneJson } from '@guanghechen/asset-core'
+import type { IAsset, IAssetDataMap, IAssetManager, IRawAsset } from '@guanghechen/asset-core'
 import invariant from '@guanghechen/invariant'
-import type { IAsset, IAssetDataMap, IAssetEntity } from '../types/asset'
+import type { IAssetEntity } from '../types/asset'
 import type { IAssetMiddleware, IProcessAssetNext, IProcessEntityNext } from '../types/middleware'
 
 export interface IAssetServiceProps {
   loadContent(location: string): Promise<Buffer>
-  initAsset(location: string): Promise<IAsset>
+  initAsset(location: string): Promise<IRawAsset>
   saveAsset(asset: Readonly<IAsset>, entity: Readonly<IAssetEntity>): Promise<void>
   identifyLocation(location: string): string
   resolveLocation(...locationPieces: string[]): string
@@ -15,12 +14,11 @@ export interface IAssetServiceProps {
 }
 
 export class AssetService {
-  protected readonly location2AssetMap: Map<string, IAsset> = new Map()
+  protected readonly location2AssetMap: Map<string, IAsset | null> = new Map()
+  protected readonly assetManager: IAssetManager = null as any
   protected readonly middlewares: IAssetMiddleware[] = []
-  protected readonly tagManager: IAssetTagManager
-  protected readonly categoryManager: IAssetCategoryManager
   protected readonly loadContent: (location: string) => Promise<Buffer>
-  protected readonly initAsset: (location: string) => Promise<IAsset>
+  protected readonly initAsset: (location: string) => Promise<IRawAsset>
   protected readonly saveAsset: (
     asset: Readonly<IAsset>,
     entity: Readonly<IAssetEntity>,
@@ -41,8 +39,6 @@ export class AssetService {
       resolveUri,
     } = props
 
-    this.tagManager = new AssetTagManager()
-    this.categoryManager = new AssetCategoryManager()
     this.loadContent = loadContent
     this.initAsset = initAsset
     this.saveAsset = saveAsset
@@ -57,8 +53,7 @@ export class AssetService {
   }
 
   public dump(): IAssetDataMap {
-    const entities: IAsset[] = Array.from(this.location2AssetMap.values())
-    return cloneJson({ entities })
+    return this.assetManager.toJSON()
   }
 
   public invalidate(locations: string): void {
@@ -76,18 +71,17 @@ export class AssetService {
 
   protected async processAsset(location: string): Promise<void> {
     const locationId = this.identifyLocation(location)
-    let asset = this.location2AssetMap.get(locationId)
-    if (asset !== undefined) return
+    if (this.location2AssetMap.has(locationId)) return
 
     const { initAsset, loadContent, resolveSlug } = this
     const reducer = this.middlewares.reduceRight<IProcessAssetNext>(
       (next, middleware) => ctx => middleware.processAsset(ctx, next),
-      ctx => ctx.asset,
+      ctx => ctx.rawAsset,
     )
 
     let rawContent: Promise<Buffer> | undefined
-    asset = await reducer({
-      asset: await initAsset(location),
+    const rawAsset = await reducer({
+      rawAsset: await initAsset(location),
       loadContent: () => {
         if (rawContent === undefined) {
           rawContent = loadContent(location)
@@ -96,7 +90,9 @@ export class AssetService {
       },
       resolveSlug,
     })
-    this.location2AssetMap.set(locationId, asset)
+
+    const asset = this.assetManager.insert(rawAsset)
+    this.location2AssetMap.set(locationId, asset ?? null)
   }
 
   protected async processEntity(location: string): Promise<void> {
@@ -110,7 +106,7 @@ export class AssetService {
     } = this
 
     const asset = location2AssetMap.get(identifyLocation(location))
-    invariant(asset !== undefined, `[resolveEntity] Cannot resolve asset by (${location})`)
+    invariant(asset != null, `[resolveEntity] Cannot resolve asset by (${location})`)
 
     const reducer = this.middlewares.reduceRight<IProcessEntityNext>(
       (next, middleware) => ctx => middleware.processEntity(ctx, next),
