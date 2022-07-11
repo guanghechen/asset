@@ -1,13 +1,13 @@
+import type { IRawAsset } from '@guanghechen/asset-core'
+import { AssetType } from '@guanghechen/asset-core'
 import type {
-  IAsset,
   IAssetEntity,
   IAssetMiddleware,
   IProcessAssetContext,
   IProcessAssetNext,
   IProcessEntityContext,
   IProcessEntityNext,
-} from '@guanghechen/asset-core'
-import { AssetType } from '@guanghechen/asset-core'
+} from '@guanghechen/asset-core-service'
 import type { Root } from '@yozora/ast'
 import type { IParser } from '@yozora/core-parser'
 import YozoraParser from '@yozora/parser'
@@ -53,10 +53,13 @@ export class AssetPluginMarkdown implements IAssetMiddleware {
     this.extensions = [...(props.extensions ?? ['.md'])]
   }
 
-  public async processAsset(ctx: IProcessAssetContext, next: IProcessAssetNext): Promise<IAsset> {
-    const { asset } = ctx
+  public async processAsset(
+    ctx: IProcessAssetContext,
+    next: IProcessAssetNext,
+  ): Promise<IRawAsset> {
+    const { rawAsset } = ctx
     const { encoding, extensions } = this
-    if (asset.type !== AssetType.FILE || !extensions.includes(asset.extname)) return next(ctx)
+    if (rawAsset.type !== AssetType.FILE || !extensions.includes(rawAsset.extname)) return next(ctx)
 
     try {
       const rawContent = (await ctx.loadContent()).toString(encoding)
@@ -64,17 +67,17 @@ export class AssetPluginMarkdown implements IAssetMiddleware {
       const meta: Record<string, any> = match[1] ? (yaml.load(match[1]) as Record<string, any>) : {}
 
       const createdAt: string =
-        meta.createdAt != null ? dayjs(meta.createdAt).toISOString() : asset.createdAt
+        meta.createdAt != null ? dayjs(meta.createdAt).toISOString() : rawAsset.createdAt
       const updatedAt: string =
-        meta.updatedAt != null ? dayjs(meta.updatedAt).toISOString() : asset.updatedAt
+        meta.updatedAt != null ? dayjs(meta.updatedAt).toISOString() : rawAsset.updatedAt
 
       return {
-        ...asset,
+        ...rawAsset,
         type: AssetMarkdownType,
         extname: '.json',
         createdAt,
         updatedAt,
-        title: meta.title || asset.title,
+        title: meta.title || rawAsset.title,
         slug: ctx.resolveSlug(meta.slug || undefined),
       }
     } catch (error) {
