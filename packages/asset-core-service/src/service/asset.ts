@@ -1,11 +1,8 @@
+import type { IAssetCategoryManager, IAssetTagManager } from '@guanghechen/asset-core'
+import { AssetCategoryManager, AssetTagManager, cloneJson } from '@guanghechen/asset-core'
 import invariant from '@guanghechen/invariant'
-import { AssetCategoryManager } from '../manager/category'
-import { AssetTagManager } from '../manager/tag'
 import type { IAsset, IAssetDataMap, IAssetEntity } from '../types/asset'
-import type { IAssetCategoryManager } from '../types/category'
 import type { IAssetMiddleware, IProcessAssetNext, IProcessEntityNext } from '../types/middleware'
-import type { IAssetTagManager } from '../types/tag'
-import { cloneJson } from '../util/json'
 
 export interface IAssetServiceProps {
   loadContent(location: string): Promise<Buffer>
@@ -44,8 +41,8 @@ export class AssetService {
       resolveUri,
     } = props
 
-    this.tagManager = new AssetTagManager({ entities: [] })
-    this.categoryManager = new AssetCategoryManager({ entities: [] })
+    this.tagManager = new AssetTagManager()
+    this.categoryManager = new AssetCategoryManager()
     this.loadContent = loadContent
     this.initAsset = initAsset
     this.saveAsset = saveAsset
