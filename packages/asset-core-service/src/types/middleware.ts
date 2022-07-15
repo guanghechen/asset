@@ -1,35 +1,42 @@
-import type { IAsset, IRawAsset } from '@guanghechen/asset-core'
 import type { IAssetEntity } from './asset'
 
 export interface IBuffer extends Uint8Array {
   toString(encoding?: BufferEncoding, start?: number, end?: number): string
 }
 
-export interface IProcessAssetContext {
-  rawAsset: IRawAsset
-  loadContent(): Promise<IBuffer>
-  resolveSlug(slug: string | undefined): string
+export type IMiddlewareProcessEmbryo = Omit<IAssetEntity, 'hash' | 'src' | 'uri'>
+export type IMiddlewarePostProcessEmbryo = Pick<IAssetEntity, 'type' | 'data'>
+
+export interface IMiddlewareProcessContext {
+  embryo: IMiddlewareProcessEmbryo
+  readonly resolveSlug: (slug: string | undefined) => string
 }
 
-export interface IProcessEntityContext {
-  asset: Readonly<IAsset>
-  loadContent(): Promise<IBuffer>
-  resolveAsset(relativeLocation: string): Readonly<IAsset | undefined>
-  resolveUri(asset: Readonly<IAsset>): string
+export interface IMiddlewarePostProcessContext {
+  embryo: IMiddlewarePostProcessEmbryo
+  readonly resolveAsset: (relativeLocation: string) => Readonly<IAssetEntity | null>
 }
 
-export interface IProcessAssetNext {
-  (ctx: IProcessAssetContext): Promise<IRawAsset> | IRawAsset
+export interface IMiddlewareProcessNext {
+  (ctx: IMiddlewareProcessContext): IMiddlewareProcessEmbryo | Promise<IMiddlewareProcessEmbryo>
 }
 
-export interface IProcessEntityNext {
-  (ctx: IProcessEntityContext): Promise<IAssetEntity> | IAssetEntity
+export interface IMiddlewarePostProcessNext {
+  (ctx: IMiddlewarePostProcessContext):
+    | IMiddlewarePostProcessEmbryo
+    | Promise<IMiddlewarePostProcessEmbryo>
 }
 
-export interface IAssetMiddleware {
-  processAsset(ctx: IProcessAssetContext, next: IProcessAssetNext): Promise<IRawAsset> | IRawAsset
-  processEntity(
-    ctx: IProcessEntityContext,
-    next: IProcessEntityNext,
-  ): Promise<IAssetEntity> | IAssetEntity
+export interface IAssetProcessingMiddleware {
+  displayName: string
+
+  process(
+    ctx: IMiddlewareProcessContext,
+    next: IMiddlewareProcessNext,
+  ): IMiddlewareProcessEmbryo | Promise<IMiddlewareProcessEmbryo>
+
+  postProcess(
+    ctx: IMiddlewarePostProcessContext,
+    next: IMiddlewarePostProcessNext,
+  ): IMiddlewarePostProcessEmbryo | Promise<IMiddlewarePostProcessEmbryo>
 }

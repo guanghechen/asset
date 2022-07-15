@@ -2,10 +2,6 @@ import type { IAssetCategoryId, IAssetId, IAssetTagId } from './_misc'
 import type { IAssetCategory } from './category'
 import type { IAssetTag } from './tag'
 
-export enum AssetType {
-  FILE = 'FILE',
-}
-
 export interface IAsset {
   /**
    * Global unique identifier.
@@ -18,11 +14,7 @@ export interface IAsset {
   /**
    * Type of asset.
    */
-  type: AssetType | string
-  /**
-   * Asset file extension.
-   */
-  extname: string
+  type: string
   /**
    * The created date of the asset (ISOString).
    */
@@ -43,16 +35,12 @@ export interface IAsset {
    * Title of asset.
    */
   title: string
-  /**
-   * A stable page uri to reveal this asset.
-   */
-  slug?: string
 }
 
 export interface IAssetDataMap {
-  tags: IAssetTag[]
-  categories: IAssetCategory[]
   assets: IAsset[]
+  categories: IAssetCategory[]
+  tags: IAssetTag[]
 }
 
 export type IRawAsset = Omit<IAsset, 'categories' | 'tags'> & {

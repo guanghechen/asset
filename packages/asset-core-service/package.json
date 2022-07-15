@@ -35,7 +35,11 @@
     "test": "echo 'no test yet.'"
   },
   "dependencies": {
-    "@guanghechen/asset-core": "^1.9.5",
-    "@guanghechen/invariant": "^1.9.5"
+    "@guanghechen/asset-core": "^1.0.0-alpha.2",
+    "@guanghechen/invariant": "^1.9.5",
+    "fs-extra": "^10.1.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13"
   }
 }

@@ -54,7 +54,6 @@ export class AssetManager implements IAssetManager {
       guid: rawAsset.guid,
       fingerprint: rawAsset.fingerprint,
       type: rawAsset.type,
-      extname: rawAsset.extname,
       createdAt: rawAsset.createdAt,
       updatedAt: rawAsset.updatedAt,
       categories: uniqueStrings(
@@ -66,7 +65,6 @@ export class AssetManager implements IAssetManager {
         rawAsset.tags.map(tag => this.tagManager.insert(tag, rawAsset.guid)?.guid),
       ),
       title: rawAsset.title,
-      slug: rawAsset.slug,
     }
     this.guidMap.set(asset.guid, asset)
     return asset

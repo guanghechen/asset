@@ -23,6 +23,7 @@
       "files": ["**/*.ts"],
       "extends": ["@guanghechen", "@guanghechen/ts", "prettier"],
       "rules": {
+        "@typescript-eslint/method-signature-style": 0,
         "import/no-named-as-default": 0
       }
     },
