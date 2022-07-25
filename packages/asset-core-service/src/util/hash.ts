@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import type { IBuffer } from '../types/middleware'
+import type { IBuffer } from '../types/misc'
 
 /**
  * Calc hash value with sha1 algorithm

@@ -1,20 +1,23 @@
 import type {
-  IAssetProcessingMiddleware,
-  IBuffer,
-  IMiddlewarePostProcessContext,
-  IMiddlewarePostProcessEmbryo,
-  IMiddlewarePostProcessNext,
-  IMiddlewareProcessContext,
-  IMiddlewareProcessEmbryo,
-  IMiddlewareProcessNext,
+  IAssetPlugin,
+  IAssetPluginPolishApi,
+  IAssetPluginPolishInput,
+  IAssetPluginPolishNext,
+  IAssetPluginPolishOutput,
+  IAssetPluginResolveApi,
+  IAssetPluginResolveInput,
+  IAssetPluginResolveNext,
+  IAssetPluginResolveOutput,
 } from '@guanghechen/asset-core-service'
-import { AssetType } from '@guanghechen/asset-core-service'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/option-helper'
 import type { Root } from '@yozora/ast'
 import type { IParser } from '@yozora/core-parser'
 import YozoraParser from '@yozora/parser'
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
+import path from 'node:path'
+import { AssetDataType } from 'packages/asset-core-service/src/types/misc'
+import type { IAssetMarkdownData } from './entity'
 import { AssetMarkdownType } from './entity'
 
 /**
@@ -44,7 +47,7 @@ export interface IAssetPluginMarkdownProps {
 /**
  * Processor for handle markdown asset
  */
-export class AssetPluginMarkdown implements IAssetProcessingMiddleware {
+export class AssetPluginMarkdown implements IAssetPlugin {
   public readonly displayName: string
   protected readonly encoding: BufferEncoding
   protected readonly extensions: string[]
@@ -59,13 +62,14 @@ export class AssetPluginMarkdown implements IAssetProcessingMiddleware {
     this.extensions = props.extensions ? props.extensions.slice() : ['.md']
   }
 
-  public async process(
-    ctx: IMiddlewareProcessContext,
-    next: IMiddlewareProcessNext,
-  ): Promise<IMiddlewareProcessEmbryo> {
-    const { embryo, resolveSlug } = ctx
-    if (embryo.type === AssetType.FILE && this.extensions.includes(embryo.extname) && embryo.data) {
-      const rawContent = (embryo.data as IBuffer).toString(this.encoding)
+  public async resolve(
+    embryo: IAssetPluginResolveInput,
+    api: IAssetPluginResolveApi,
+    next: IAssetPluginResolveNext,
+  ): Promise<IAssetPluginResolveOutput | null> {
+    const { name: title, ext: extname } = path.parse(embryo.filename)
+    if (this.extensions.includes(extname) && embryo.content) {
+      const rawContent = embryo.content.toString(this.encoding)
       const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
       const meta: Record<string, any> = match[1] ? (yaml.load(match[1]) as Record<string, any>) : {}
       const createdAt: string =
@@ -73,29 +77,38 @@ export class AssetPluginMarkdown implements IAssetProcessingMiddleware {
       const updatedAt: string =
         meta.updatedAt != null ? dayjs(meta.updatedAt).toISOString() : embryo.updatedAt
       const ast: Root = this.parser.parse(rawContent.slice(match[1].length))
+
       return {
-        ...embryo,
         type: AssetMarkdownType,
+        mimetype: 'application/json',
+        title: meta.title || title,
         extname: '.json',
-        slug: resolveSlug(meta.slug || undefined),
-        title: meta.title || embryo.title,
-        data: ast,
+        slug: api.resolveSlug(meta.slug || undefined),
         createdAt,
         updatedAt,
         categories: isTwoDimensionArrayOfT(meta.categories, isString) ? meta.categories : [],
         tags: isArrayOfT(meta.tags, isString) ? meta.tags : [],
+        data: ast,
       }
     }
-    return await next(ctx)
+    return next(embryo)
   }
 
-  public async postProcess(
-    ctx: IMiddlewarePostProcessContext,
-    next: IMiddlewarePostProcessNext,
-  ): Promise<IMiddlewarePostProcessEmbryo> {
-    const { embryo } = ctx
-    if (embryo.type !== AssetMarkdownType) return next(ctx)
-    // TODO: resolve reference urls.
-    return embryo
+  public async polish(
+    embryo: IAssetPluginPolishInput,
+    api: IAssetPluginPolishApi,
+    next: IAssetPluginPolishNext,
+  ): Promise<IAssetPluginPolishOutput | null> {
+    if (embryo.type === AssetMarkdownType) {
+      const { ast } = embryo.data as IAssetMarkdownData
+
+      // TODO: resolve reference urls.
+      return {
+        dataType: AssetDataType.JSON,
+        data: { ast },
+        encoding: this.encoding,
+      }
+    }
+    return next(embryo)
   }
 }

@@ -1,14 +1,14 @@
 import type { IAssetDataMap } from '@guanghechen/asset-core'
-import type { IAssetProcessingMiddleware } from './middleware'
+import type { IAssetPlugin } from './plugin/plugin'
 
 export interface IAssetService {
   /**
-   * Use a asset middleware.
-   * @param middleware
+   * Use a asset plugin.
+   * @param plugin
    */
-  use(middleware: IAssetProcessingMiddleware): void
+  use(plugin: IAssetPlugin): void
   /**
-   * Export asset data mpa.
+   * Export asset data map.
    */
   dump(): IAssetDataMap
   /**
@@ -20,5 +20,5 @@ export interface IAssetService {
    * Process assets on the given locations.
    * @param locations
    */
-  handle(locations: string[]): Promise<void>
+  process(locations: string[]): Promise<void>
 }

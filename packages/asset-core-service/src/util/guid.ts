@@ -13,8 +13,3 @@ export const genGuid = (): string => {
 
 export const genAssetGuid = (identifier: string): string =>
   uuid(`#asset-${identifier}`, GUID_NAMESPACE)
-
-export const genTagGuid = (identifier: string): string => uuid(`#tag-${identifier}`, GUID_NAMESPACE)
-
-export const genCategoryGuid = (identifier: string): string =>
-  uuid(`#category-${identifier}`, GUID_NAMESPACE)

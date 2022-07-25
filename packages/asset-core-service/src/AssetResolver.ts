@@ -1,15 +1,16 @@
-import { genAssetGuid } from '@guanghechen/asset-core'
 import invariant from '@guanghechen/invariant'
 import fs from 'fs-extra'
 import path from 'node:path'
-import type { IAssetEntity } from './types/asset'
-import { AssetType } from './types/asset'
 import type { IAssetResolver } from './types/asset-resolver'
+import type { IBuffer } from './types/misc'
+import { AssetDataType } from './types/misc'
+import type { IAssetPluginResolveInput } from './types/plugin/resolve'
+import { genAssetGuid } from './util/guid'
 import { calcFingerprint } from './util/hash'
 import { normalizeRelativeUrlPath } from './util/misc'
 
 export interface IAssetUrlPathPrefixMap {
-  [key: AssetType | string]: string
+  [key: string]: string
   _fallback: string
 }
 
@@ -38,43 +39,54 @@ export class AssetResolver implements IAssetResolver {
     this.caseSensitive = props.caseSensitive
   }
 
-  public async initAsset(location: string): Promise<IAssetEntity | null> {
-    invariant(fs.existsSync(location), `Cannot find file. (${location})`)
+  public async initAsset(srcLocation: string): Promise<IAssetPluginResolveInput | null> {
+    this._validateSrcLocation(this.sourceRoot, srcLocation)
+    const stat = fs.statSync(srcLocation)
+    invariant(stat.isFile(), `Not a file. (${srcLocation})`)
 
-    const stat = fs.statSync(location)
-    invariant(stat.isFile(), `Not a file. (${location})`)
-
-    const content = await fs.readFile(location)
-
-    const { ext: extname, name: title } = path.parse(location)
-    const locationId = this.identifyLocation(location)
+    const content = await fs.readFile(srcLocation)
+    const filename = path.basename(srcLocation)
+    const locationId = this.identifyLocation(srcLocation)
     const guid = genAssetGuid(locationId)
     const hash = calcFingerprint(content)
-    const type = AssetType.FILE
-    const src = this._normalizeLocation(location)
-    const uri = this.resolveUri({ guid, type, extname })
+    const src = this._normalizeLocation(srcLocation)
 
     return {
       guid,
       hash,
-      type,
       src,
-      extname,
-      uri,
-      slug: null,
-      title,
-      data: content,
-      tags: [],
-      categories: [],
       createdAt: new Date(stat.ctime).toISOString(),
       updatedAt: new Date(stat.mtime).toISOString(),
+      filename,
+      content,
     }
   }
 
-  public saveAsset(asset: Readonly<IAssetEntity>): Promise<void> {
-    const location = path.join(this.staticRoot, asset.uri)
-    invariant(location.startsWith(this.staticRoot), `[saveAsset] unsafe uri (${asset.uri}).`)
-    throw new Error('Method not implemented.')
+  public async saveAsset(params: {
+    uri: string
+    dataType: AssetDataType
+    data: unknown
+    encoding?: BufferEncoding
+  }): Promise<void> {
+    const { uri, dataType, data, encoding } = params
+    if (data === null) return
+
+    const dstLocation = path.join(this.staticRoot, uri)
+    this._validateSrcLocation(this.staticRoot, dstLocation)
+
+    switch (dataType) {
+      case AssetDataType.BINARY:
+        await fs.writeFile(dstLocation, data, encoding)
+        break
+      case AssetDataType.JSON:
+        await fs.writeJSON(dstLocation, dstLocation, encoding)
+        break
+      case AssetDataType.TEXT:
+        await fs.writeFile(dstLocation, data, encoding)
+        break
+      default:
+        throw new Error(`[AssetResolver.saveAsset] Unexpected dataType: ${dataType}`)
+    }
   }
 
   public identifyLocation(location: string): string {
@@ -82,6 +94,12 @@ export class AssetResolver implements IAssetResolver {
     const text: string = this.caseSensitive ? relativeLocation : relativeLocation.toLowerCase()
     const identifier = genAssetGuid(text)
     return identifier
+  }
+
+  public async loadSrcContent(srcLocation: string): Promise<IBuffer> {
+    this._validateSrcLocation(this.sourceRoot, srcLocation)
+    const content = await fs.readFile(srcLocation)
+    return content
   }
 
   public resolveLocation(...pathPieces: string[]): string {
@@ -92,14 +110,23 @@ export class AssetResolver implements IAssetResolver {
     return slug ?? '/'
   }
 
-  public resolveUri(asset: Pick<IAssetEntity, 'guid' | 'type' | 'extname'>): string {
+  public resolveUri(params: { guid: string; type: string; extname: string }): string {
+    const { guid, type, extname } = params
     const { urlPathPrefixMap } = this
-    const urlPathPrefix = urlPathPrefixMap[asset.type] ?? urlPathPrefixMap._fallback
-    return `/${urlPathPrefix}/${asset.guid}${asset.extname}`
+    const urlPathPrefix = urlPathPrefixMap[type] ?? urlPathPrefixMap._fallback
+    return `/${urlPathPrefix}/${guid}${extname}`
   }
 
   protected _normalizeLocation(location: string): string {
     const relativeLocation = path.relative(this.sourceRoot, path.resolve(this.sourceRoot, location))
     return normalizeRelativeUrlPath(relativeLocation)
+  }
+
+  protected _validateSrcLocation(rootDir: string, location: string): void {
+    invariant(
+      location.startsWith(rootDir),
+      `[AssetResolver] !!!unsafe location. rootDir: ${rootDir}, location: ${location}`,
+    )
+    invariant(fs.existsSync(location), `[AssetResolver] Cannot find file. (${location})`)
   }
 }

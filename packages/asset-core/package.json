@@ -35,10 +35,6 @@
     "test": "echo 'no test yet.'"
   },
   "dependencies": {
-    "@guanghechen/invariant": "^1.9.7",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "@types/uuid": "^8.3.4"
+    "@guanghechen/invariant": "^1.9.7"
   }
 }
