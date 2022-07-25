@@ -9,14 +9,14 @@ import type {
   IAssetPluginResolveNext,
   IAssetPluginResolveOutput,
 } from '@guanghechen/asset-core-service'
+import { AssetDataType } from '@guanghechen/asset-core-service'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/option-helper'
 import type { Root } from '@yozora/ast'
 import type { IParser } from '@yozora/core-parser'
 import YozoraParser from '@yozora/parser'
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
-import path from 'node:path'
-import { AssetDataType } from 'packages/asset-core-service/src/types/misc'
+import path from 'path'
 import type { IAssetMarkdownData } from './entity'
 import { AssetMarkdownType } from './entity'
 

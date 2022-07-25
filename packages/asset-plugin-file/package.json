@@ -1,5 +1,5 @@
 {
-  "name": "@guanghechen/asset-file",
+  "name": "@guanghechen/asset-plugin-file",
   "version": "1.0.0-alpha.2",
   "description": "file asset",
   "author": {
@@ -9,9 +9,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/guanghechen/static-site-api.git",
-    "directory": "packages/asset-file"
+    "directory": "packages/asset-plugin-file"
   },
-  "homepage": "https://github.com/guanghechen/static-site-api/tree/main/packages/asset-file#readme",
+  "homepage": "https://github.com/guanghechen/static-site-api/tree/main/packages/asset-plugin-file#readme",
   "main": "lib/cjs/index.js",
   "types": "lib/types/index.d.ts",
   "source": "src/index.ts",
@@ -37,8 +37,6 @@
     "test:update": "node -r ts-node/register -r tsconfig-paths/register __test__/answer.ts"
   },
   "dependencies": {
-    "@guanghechen/site-api": "^1.0.0-alpha.2",
-    "@types/micromatch": "^4.0.1",
-    "micromatch": "^4.0.5"
+    "@guanghechen/asset-core-service": "^1.0.0-alpha.2"
   }
 }

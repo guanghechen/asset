@@ -1,6 +1,6 @@
 import invariant from '@guanghechen/invariant'
 import fs from 'fs-extra'
-import path from 'node:path'
+import path from 'path'
 import type { IAssetResolver } from './types/asset-resolver'
 import { AssetDataType } from './types/misc'
 import type { IAssetPluginResolveInput } from './types/plugin/resolve'
