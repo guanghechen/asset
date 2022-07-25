@@ -1,6 +1,0 @@
-export * from './config/blog'
-export * from './core/post/entity'
-export * from './core/post/manager'
-export * from './core/post/processor'
-export * from './core/post/service'
-export * from './provider'
