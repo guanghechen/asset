@@ -11,9 +11,7 @@ export interface IAssetPluginPolishApi {
    * Resolve asset by source location.
    * @param relativeLocation
    */
-  resolveAsset(
-    relativeLocation: string,
-  ): Promise<Pick<IAssetEntity, 'uri' | 'slug' | 'title'> | null>
+  resolveAsset(relativeLocation: string): Pick<IAssetEntity, 'uri' | 'slug' | 'title'> | null
 }
 
 export interface IAssetPluginPolishNext {

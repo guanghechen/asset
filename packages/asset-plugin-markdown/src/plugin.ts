@@ -11,7 +11,8 @@ import type {
 } from '@guanghechen/asset-core-service'
 import { AssetDataType } from '@guanghechen/asset-core-service'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/option-helper'
-import type { Root } from '@yozora/ast'
+import type { Resource, Root } from '@yozora/ast'
+import { shallowMutateAstInPreorder } from '@yozora/ast-util'
 import type { IParser } from '@yozora/core-parser'
 import YozoraParser from '@yozora/parser'
 import dayjs from 'dayjs'
@@ -101,11 +102,18 @@ export class AssetPluginMarkdown implements IAssetPlugin {
   ): Promise<IAssetPluginPolishOutput | null> {
     if (embryo.type === AssetMarkdownType) {
       const { ast } = embryo.data as IAssetMarkdownData
+      const resolvedAst = shallowMutateAstInPreorder(ast, null, node => {
+        const n = node as unknown as Resource
+        if (n.url && /^\./.test(n.url)) {
+          const asset = api.resolveAsset(n.url)
+          if (asset) return { ...node, url: asset.slug || asset.uri }
+        }
+        return node
+      })
 
-      // TODO: resolve reference urls.
       return {
         dataType: AssetDataType.JSON,
-        data: { ast },
+        data: { ast: resolvedAst },
         encoding: this.encoding,
       }
     }

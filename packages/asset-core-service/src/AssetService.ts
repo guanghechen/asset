@@ -104,7 +104,7 @@ export class AssetService implements IAssetService {
 
     const api: IAssetPluginPolishApi = {
       loadContent: assetResolver.loadSrcContent.bind(assetResolver),
-      resolveAsset: async relativeLocation => {
+      resolveAsset: relativeLocation => {
         const resolvedLocation = assetResolver.resolveLocation(location, relativeLocation)
         const locationId = assetResolver.identifyLocation(resolvedLocation)
         const asset = locationMap.get(locationId)
