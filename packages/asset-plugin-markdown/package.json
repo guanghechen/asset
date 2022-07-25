@@ -42,7 +42,7 @@
     "@types/js-yaml": "^4.0.5",
     "@yozora/ast": "^2.0.2-alpha.0",
     "@yozora/parser": "^2.0.2-alpha.0",
-    "dayjs": "^1.11.3",
+    "dayjs": "^1.11.4",
     "js-yaml": "^4.1.0"
   }
 }
