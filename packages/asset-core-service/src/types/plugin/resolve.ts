@@ -1,12 +1,11 @@
 import type { IAssetId } from '@guanghechen/asset-core'
-import type { IBuffer } from '../misc'
 
 export interface IAssetPluginResolveApi {
   /**
    * Load source content.
    * @param srcLocation
    */
-  loadContent(srcLocation: string): Promise<IBuffer>
+  loadContent(srcLocation: string): Promise<Buffer>
   /**
    * Resolve asset slug.
    * @param slug
@@ -56,7 +55,7 @@ export interface IAssetPluginResolveInput {
   /**
    * Raw content.
    */
-  content: IBuffer
+  content: Buffer
 }
 
 export interface IAssetPluginResolveOutput {

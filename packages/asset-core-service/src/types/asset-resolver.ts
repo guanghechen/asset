@@ -1,4 +1,4 @@
-import type { AssetDataType, IBuffer } from './misc'
+import type { AssetDataType } from './misc'
 import type { IAssetPluginResolveInput } from './plugin/resolve'
 
 export interface IAssetResolver {
@@ -28,7 +28,7 @@ export interface IAssetResolver {
    * Load content through source location.
    * @param srcLocation
    */
-  loadSrcContent(srcLocation: string): Promise<IBuffer>
+  loadSrcContent(srcLocation: string): Promise<Buffer>
   /**
    * Resolve asset location with the relative path pieces.
    * @param pathPieces

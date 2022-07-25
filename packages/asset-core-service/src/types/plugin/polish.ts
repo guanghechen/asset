@@ -1,12 +1,12 @@
 import type { IAssetEntity } from '../asset'
-import type { AssetDataType, IBuffer } from '../misc'
+import type { AssetDataType } from '../misc'
 
 export interface IAssetPluginPolishApi {
   /**
    * Load source content.
    * @param srcLocation
    */
-  loadContent(srcLocation: string): Promise<IBuffer>
+  loadContent(srcLocation: string): Promise<Buffer>
   /**
    * Resolve asset by source location.
    * @param relativeLocation

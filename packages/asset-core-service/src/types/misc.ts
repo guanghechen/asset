@@ -1,7 +1,3 @@
-export interface IBuffer extends Uint8Array {
-  toString(encoding?: BufferEncoding, start?: number, end?: number): string
-}
-
 export enum AssetDataType {
   /**
    * Binary data.

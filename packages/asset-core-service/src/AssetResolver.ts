@@ -2,7 +2,6 @@ import invariant from '@guanghechen/invariant'
 import fs from 'fs-extra'
 import path from 'node:path'
 import type { IAssetResolver } from './types/asset-resolver'
-import type { IBuffer } from './types/misc'
 import { AssetDataType } from './types/misc'
 import type { IAssetPluginResolveInput } from './types/plugin/resolve'
 import { genAssetGuid } from './util/guid'
@@ -96,7 +95,7 @@ export class AssetResolver implements IAssetResolver {
     return identifier
   }
 
-  public async loadSrcContent(srcLocation: string): Promise<IBuffer> {
+  public async loadSrcContent(srcLocation: string): Promise<Buffer> {
     this._validateSrcLocation(this.sourceRoot, srcLocation)
     const content = await fs.readFile(srcLocation)
     return content
