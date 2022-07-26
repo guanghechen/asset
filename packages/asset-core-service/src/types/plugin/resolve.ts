@@ -64,7 +64,7 @@ export interface IAssetPluginResolveInput {
   content: Buffer
 }
 
-export interface IAssetPluginResolveOutput {
+export interface IAssetPluginResolveOutput<D = unknown> {
   /**
    * Asset content type.
    */
@@ -100,5 +100,5 @@ export interface IAssetPluginResolveOutput {
   /**
    * Asset data
    */
-  data: unknown | null
+  data: D | null
 }

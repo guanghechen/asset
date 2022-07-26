@@ -1,7 +1,12 @@
 import type { IAssetPluginResolveOutput } from '@guanghechen/asset-core-service'
 import { AssetResolver, AssetService, normalizeSlug } from '@guanghechen/asset-core-service'
-import { AssetFileType, AssetPluginFile } from '@guanghechen/asset-plugin-file'
-import { AssetMarkdownType, AssetPluginMarkdown } from '@guanghechen/asset-plugin-markdown'
+import { FileAssetPlugin, FileAssetType } from '@guanghechen/asset-plugin-file'
+import type { IMarkdownResolvedData } from '@guanghechen/asset-plugin-markdown'
+import {
+  MarkdownAssetPlugin,
+  MarkdownAssetType,
+  isMarkdownAsset,
+} from '@guanghechen/asset-plugin-markdown'
 import fs from 'fs-extra'
 import path from 'node:path'
 
@@ -15,8 +20,8 @@ async function build(): Promise<void> {
     sourceRoot: FIXTURE_SOURCE_ROOT,
     staticRoot: FIXTURE_STATIC_ROOT,
     urlPathPrefixMap: {
-      [AssetMarkdownType]: '/api/post/',
-      [AssetFileType]: '/asset/file/',
+      [MarkdownAssetType]: '/api/post/',
+      [FileAssetType]: '/asset/file/',
       _fallback: '/asset/unknown/',
     },
     caseSensitive: true,
@@ -28,14 +33,14 @@ async function build(): Promise<void> {
   const assetService = new AssetService({ assetResolver })
 
   assetService
-    .use(new AssetPluginMarkdown()) // resolve markdown
-    .use(new AssetPluginFile())
+    .use(new MarkdownAssetPlugin()) // resolve markdown
+    .use(new FileAssetPlugin())
     .use({
       displayName: 'customized/markdown-resolve-slug',
       resolve: (input, embryo, api, next) => {
-        if (embryo?.type === AssetMarkdownType) {
+        if (isMarkdownAsset(embryo) && embryo) {
           if (!embryo.slug) {
-            const result: IAssetPluginResolveOutput = {
+            const result: IAssetPluginResolveOutput<IMarkdownResolvedData> = {
               ...embryo,
               slug: normalizeSlug('/page/post/' + input.src.replace(/\.[^.]+$/, '')),
             }
@@ -45,13 +50,6 @@ async function build(): Promise<void> {
         return next(embryo)
       },
     })
-  // .use({
-  //   displayName: 'customized/non-text',
-  //   resolve: (input, embryo) => {
-  //     if (input.src.endsWith('.txt')) return null
-  //     return embryo
-  //   },
-  // })
 
   const locations = fs
     .readdirSync(FIXTURE_SOURCE_ROOT)

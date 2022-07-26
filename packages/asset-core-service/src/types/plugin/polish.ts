@@ -30,7 +30,7 @@ export interface IAssetPluginPolish {
   ): IAssetPluginPolishOutput | null | Promise<IAssetPluginPolishOutput | null>
 }
 
-export interface IAssetPluginPolishInput {
+export interface IAssetPluginPolishInput<D = unknown> {
   /**
    * Asset type.
    */
@@ -42,10 +42,10 @@ export interface IAssetPluginPolishInput {
   /**
    * Asset data.
    */
-  data: unknown | null
+  data: D | null
 }
 
-export interface IAssetPluginPolishOutput {
+export interface IAssetPluginPolishOutput<D = unknown> {
   /**
    * Asset data type.
    */
@@ -53,7 +53,7 @@ export interface IAssetPluginPolishOutput {
   /**
    * Asset data.
    */
-  data: unknown | Promise<unknown>
+  data: D | Promise<D>
   /**
    * Which charset should the output data take.
    */
