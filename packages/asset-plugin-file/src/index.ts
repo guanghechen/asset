@@ -29,11 +29,6 @@ export interface IAssetPluginFileProps {
    */
   displayName?: string
   /**
-   * If true, wait for other plugins to finish processing first.
-   * @default true
-   */
-  useAsFallback?: boolean
-  /**
    * If true (and the .rejected(src) is false), the input file is processable.
    * @default () => true
    */
@@ -50,13 +45,11 @@ export interface IAssetPluginFileProps {
  */
 export class AssetPluginFile implements IAssetPlugin {
   public readonly displayName: string
-  protected readonly useAsFallback: boolean
   protected readonly accepted: (src: string) => boolean
   protected readonly rejected: (src: string) => boolean
 
   constructor(props: IAssetPluginFileProps = {}) {
     this.displayName = props.displayName ?? '@guanghechen/asset-plugin-file'
-    this.useAsFallback = props.useAsFallback ?? true
     this.accepted = normalizePattern(props.accepted) ?? (() => true)
     this.rejected = normalizePattern(props.rejected) ?? (() => false)
   }
@@ -67,35 +60,24 @@ export class AssetPluginFile implements IAssetPlugin {
     api: Readonly<IAssetPluginResolveApi>,
     next: IAssetPluginResolveNext,
   ): Promise<IAssetPluginResolveOutput | null> {
-    const resolve = (): IAssetPluginResolveOutput | null => {
-      if (this.accepted(input.src) && !this.rejected(input.src)) {
-        const { name: title, ext: extname } = path.parse(input.filename)
-        const data: IAssetFileData = { srcLocation: input.src }
+    if (!embryo && this.accepted(input.src) && !this.rejected(input.src)) {
+      const { name: title, ext: extname } = path.parse(input.filename)
+      const data: IAssetFileData = { srcLocation: input.src }
 
-        return {
-          type: AssetFileType,
-          mimetype: 'application/file',
-          title,
-          extname,
-          slug: null,
-          createdAt: input.createdAt,
-          updatedAt: input.updatedAt,
-          categories: [],
-          tags: [],
-          data,
-        }
-      }
-      return null
+      return next({
+        type: AssetFileType,
+        mimetype: 'application/file',
+        title,
+        extname,
+        slug: null,
+        createdAt: input.createdAt,
+        updatedAt: input.updatedAt,
+        categories: [],
+        tags: [],
+        data,
+      })
     }
-
-    if (this.useAsFallback) {
-      const result = (await next(embryo)) ?? embryo
-      if (result !== null) return result
-      return resolve()
-    }
-
-    const embryo2 = embryo ?? resolve()
-    return next(embryo2) ?? embryo2
+    return next(embryo)
   }
 
   public async polish(
@@ -106,9 +88,9 @@ export class AssetPluginFile implements IAssetPlugin {
   ): Promise<IAssetPluginPolishOutput | null> {
     if (input.type === AssetFileType) {
       const { srcLocation } = input.data as IAssetFileData
-      const content = api.loadContent(srcLocation)
+      const content: Buffer = await api.loadContent(srcLocation)
       const result = { dataType: AssetDataType.BINARY, data: content }
-      return next(result) ?? result
+      return next(result)
     }
     return next(embryo)
   }

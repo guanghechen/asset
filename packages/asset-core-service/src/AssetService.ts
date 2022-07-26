@@ -83,7 +83,7 @@ export class AssetService implements IAssetService {
       .filter(plugin => !!plugin.resolve)
       .reduceRight<IAssetPluginResolveNext>(
         (next, middleware) => embryo => middleware.resolve!(input, embryo, api, next),
-        () => null,
+        embryo => embryo,
       )
 
     const { guid, hash, src } = input
@@ -114,7 +114,7 @@ export class AssetService implements IAssetService {
     const { assetResolver, locationMap } = this
     const locationId = assetResolver.identifyLocation(location)
     const asset = locationMap.get(locationId)
-    invariant(asset != null, `Cannot find asset by the given location (${location}).`)
+    if (asset == null) return
 
     const api: IAssetPluginPolishApi = {
       loadContent: relativeLocation => {
@@ -138,7 +138,7 @@ export class AssetService implements IAssetService {
       .filter(plugin => !!plugin.polish)
       .reduceRight<IAssetPluginPolishNext>(
         (next, middleware) => embryo => middleware.polish!(input, embryo, api, next),
-        () => null,
+        embryo => embryo,
       )
     const input: IAssetPluginPolishInput = {
       type: asset.type,

@@ -101,7 +101,7 @@ export class AssetPluginMarkdown implements IAssetPlugin {
         tags: isArrayOfT(meta.tags, isString) ? meta.tags : [],
         data,
       }
-      return next(result) ?? result
+      return next(result)
     }
     return next(embryo)
   }
@@ -128,7 +128,7 @@ export class AssetPluginMarkdown implements IAssetPlugin {
         data: { ast: resolvedAst },
         encoding: this.encoding,
       }
-      return next(result) ?? result
+      return next(result)
     }
     return next(embryo)
   }
