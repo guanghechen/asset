@@ -27,3 +27,9 @@ export const normalizePattern = (
 
   throw new Error(`[normalizePattern] Unexpected pattern.`)
 }
+
+export const normalizeSlug = (slug: string): string =>
+  slug
+    .trim()
+    .replace(/[/\\]+/g, '/')
+    .replace(/([\s\S])\/$/, '$1')

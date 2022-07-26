@@ -82,12 +82,12 @@ export class AssetService implements IAssetService {
     const reducer: IAssetPluginResolveNext = this.plugins
       .filter(plugin => !!plugin.resolve)
       .reduceRight<IAssetPluginResolveNext>(
-        (next, middleware) => embryo => middleware.resolve!(embryo, api, next),
+        (next, middleware) => embryo => middleware.resolve!(input, embryo, api, next),
         () => null,
       )
 
     const { guid, hash, src } = input
-    const result = await reducer(input)
+    const result = await reducer(null)
     if (result) {
       const { type, mimetype, title, extname, slug, createdAt, updatedAt, categories, tags, data } =
         result
@@ -137,7 +137,7 @@ export class AssetService implements IAssetService {
     const reducer: IAssetPluginPolishNext = this.plugins
       .filter(plugin => !!plugin.polish)
       .reduceRight<IAssetPluginPolishNext>(
-        (next, middleware) => embryo => middleware.polish!(embryo, api, next),
+        (next, middleware) => embryo => middleware.polish!(input, embryo, api, next),
         () => null,
       )
     const input: IAssetPluginPolishInput = {
@@ -146,7 +146,7 @@ export class AssetService implements IAssetService {
       data: asset.data,
     }
 
-    const result = await reducer(input)
+    const result = await reducer(null)
     if (result) {
       const { dataType, data, encoding } = result
       await assetResolver.saveAsset({ uri: asset.uri, dataType, data, encoding })

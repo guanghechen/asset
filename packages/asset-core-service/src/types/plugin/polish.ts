@@ -15,17 +15,19 @@ export interface IAssetPluginPolishApi {
 }
 
 export interface IAssetPluginPolishNext {
-  (embryo: IAssetPluginPolishInput):
+  (embryo: Readonly<IAssetPluginPolishOutput> | null):
     | IAssetPluginPolishOutput
     | null
     | Promise<IAssetPluginPolishOutput | null>
 }
 
 export interface IAssetPluginPolish {
-  (embryo: IAssetPluginPolishInput, api: IAssetPluginPolishApi, next: IAssetPluginPolishNext):
-    | IAssetPluginPolishOutput
-    | null
-    | Promise<IAssetPluginPolishOutput | null>
+  (
+    input: Readonly<IAssetPluginPolishInput>,
+    embryo: Readonly<IAssetPluginPolishOutput> | null,
+    api: Readonly<IAssetPluginPolishApi>,
+    next: IAssetPluginPolishNext,
+  ): IAssetPluginPolishOutput | null | Promise<IAssetPluginPolishOutput | null>
 }
 
 export interface IAssetPluginPolishInput {

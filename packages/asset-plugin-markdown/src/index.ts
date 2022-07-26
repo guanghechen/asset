@@ -73,23 +73,23 @@ export class AssetPluginMarkdown implements IAssetPlugin {
   }
 
   public async resolve(
-    embryo: IAssetPluginResolveInput,
-    api: IAssetPluginResolveApi,
+    input: Readonly<IAssetPluginResolveInput>,
+    embryo: Readonly<IAssetPluginResolveOutput> | null,
+    api: Readonly<IAssetPluginResolveApi>,
     next: IAssetPluginResolveNext,
   ): Promise<IAssetPluginResolveOutput | null> {
-    const { name: title, ext: extname } = path.parse(embryo.filename)
-    if (this.extensions.includes(extname) && embryo.content) {
-      const rawContent = embryo.content.toString(this.encoding)
+    const { name: title, ext: extname } = path.parse(input.filename)
+    if (this.extensions.includes(extname) && input.content) {
+      const rawContent = input.content.toString(this.encoding)
       const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
       const meta: Record<string, any> = match[1] ? (yaml.load(match[1]) as Record<string, any>) : {}
       const createdAt: string =
-        meta.createdAt != null ? dayjs(meta.createdAt).toISOString() : embryo.createdAt
+        meta.createdAt != null ? dayjs(meta.createdAt).toISOString() : input.createdAt
       const updatedAt: string =
-        meta.updatedAt != null ? dayjs(meta.updatedAt).toISOString() : embryo.updatedAt
+        meta.updatedAt != null ? dayjs(meta.updatedAt).toISOString() : input.updatedAt
       const ast: Root = this.parser.parse(rawContent.slice(match[0].length))
       const data: IAssetMarkdownData = { ast }
-
-      return {
+      const result: IAssetPluginResolveOutput = {
         type: AssetMarkdownType,
         mimetype: 'application/json',
         title: meta.title || title,
@@ -101,17 +101,19 @@ export class AssetPluginMarkdown implements IAssetPlugin {
         tags: isArrayOfT(meta.tags, isString) ? meta.tags : [],
         data,
       }
+      return next(result) ?? result
     }
     return next(embryo)
   }
 
   public async polish(
-    embryo: IAssetPluginPolishInput,
-    api: IAssetPluginPolishApi,
+    input: Readonly<IAssetPluginPolishInput>,
+    embryo: Readonly<IAssetPluginPolishOutput> | null,
+    api: Readonly<IAssetPluginPolishApi>,
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
-    if (embryo.type === AssetMarkdownType) {
-      const { ast } = embryo.data as IAssetMarkdownData
+    if (input.type === AssetMarkdownType) {
+      const { ast } = input.data as IAssetMarkdownData
       const resolvedAst = shallowMutateAstInPreorder(ast, null, node => {
         const n = node as unknown as Resource
         if (n.url && /^\./.test(n.url)) {
@@ -121,19 +123,12 @@ export class AssetPluginMarkdown implements IAssetPlugin {
         return node
       })
 
-      const nextResult = await next({
-        type: embryo.type,
-        title: embryo.title,
+      const result = {
+        dataType: AssetDataType.JSON,
         data: { ast: resolvedAst },
-      })
-
-      return (
-        nextResult ?? {
-          dataType: AssetDataType.JSON,
-          data: { ast: resolvedAst },
-          encoding: this.encoding,
-        }
-      )
+        encoding: this.encoding,
+      }
+      return next(result) ?? result
     }
     return next(embryo)
   }

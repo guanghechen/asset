@@ -62,45 +62,53 @@ export class AssetPluginFile implements IAssetPlugin {
   }
 
   public async resolve(
-    embryo: IAssetPluginResolveInput,
-    api: IAssetPluginResolveApi,
+    input: Readonly<IAssetPluginResolveInput>,
+    embryo: Readonly<IAssetPluginResolveOutput> | null,
+    api: Readonly<IAssetPluginResolveApi>,
     next: IAssetPluginResolveNext,
   ): Promise<IAssetPluginResolveOutput | null> {
-    if (this.useAsFallback) {
-      const result = await next(embryo)
-      if (result !== null) return result
-    }
+    const resolve = (): IAssetPluginResolveOutput | null => {
+      if (this.accepted(input.src) && !this.rejected(input.src)) {
+        const { name: title, ext: extname } = path.parse(input.filename)
+        const data: IAssetFileData = { srcLocation: input.src }
 
-    if (this.accepted(embryo.src) && !this.rejected(embryo.src)) {
-      const { name: title, ext: extname } = path.parse(embryo.filename)
-      const data: IAssetFileData = { srcLocation: embryo.src }
-
-      return {
-        type: AssetFileType,
-        mimetype: 'application/file',
-        title,
-        extname,
-        slug: null,
-        createdAt: embryo.createdAt,
-        updatedAt: embryo.updatedAt,
-        categories: [],
-        tags: [],
-        data,
+        return {
+          type: AssetFileType,
+          mimetype: 'application/file',
+          title,
+          extname,
+          slug: null,
+          createdAt: input.createdAt,
+          updatedAt: input.updatedAt,
+          categories: [],
+          tags: [],
+          data,
+        }
       }
+      return null
     }
 
-    return this.useAsFallback ? null : next(embryo)
+    if (this.useAsFallback) {
+      const result = (await next(embryo)) ?? embryo
+      if (result !== null) return result
+      return resolve()
+    }
+
+    const embryo2 = embryo ?? resolve()
+    return next(embryo2) ?? embryo2
   }
 
   public async polish(
-    embryo: IAssetPluginPolishInput,
-    api: IAssetPluginPolishApi,
+    input: Readonly<IAssetPluginPolishInput>,
+    embryo: Readonly<IAssetPluginPolishOutput> | null,
+    api: Readonly<IAssetPluginPolishApi>,
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
-    if (embryo.type === AssetFileType) {
-      const { srcLocation } = embryo.data as IAssetFileData
+    if (input.type === AssetFileType) {
+      const { srcLocation } = input.data as IAssetFileData
       const content = api.loadContent(srcLocation)
-      return { dataType: AssetDataType.BINARY, data: content }
+      const result = { dataType: AssetDataType.BINARY, data: content }
+      return next(result) ?? result
     }
     return next(embryo)
   }

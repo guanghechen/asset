@@ -1,4 +1,3 @@
-import invariant from '@guanghechen/invariant'
 import fs from 'fs-extra'
 import path from 'path'
 import type { IAssetResolver } from './types/asset-resolver'
