@@ -3,10 +3,10 @@ import type { IAssetPlugin } from './plugin/plugin'
 
 export interface IAssetService {
   /**
-   * Use a asset plugin.
-   * @param plugin
+   * Use asset plugins.
+   * @param plugins
    */
-  use(plugin: IAssetPlugin): this
+  use(...plugins: Array<IAssetPlugin | IAssetPlugin[]>): this
   /**
    * Export asset data map.
    */

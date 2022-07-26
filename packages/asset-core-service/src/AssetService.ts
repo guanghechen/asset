@@ -32,8 +32,12 @@ export class AssetService implements IAssetService {
     this.assetManager = props.assetManager ?? new AssetManager()
   }
 
-  public use(plugin: IAssetPlugin): this {
-    this.plugins.push(plugin)
+  public use(...plugins: Array<IAssetPlugin | IAssetPlugin[]>): this {
+    for (const plugin of plugins.flat()) {
+      if (plugin?.displayName) {
+        this.plugins.push(plugin)
+      }
+    }
     return this
   }
 
