@@ -1,0 +1,57 @@
+{
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Some thing."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "depth": 2,
+        "children": [
+          {
+            "type": "text",
+            "value": "Related"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "marker": 42,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "children": [
+              {
+                "type": "linkReference",
+                "identifier": "b",
+                "label": "b",
+                "referenceType": "collapsed",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "b"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "definition",
+        "identifier": "b",
+        "label": "b",
+        "url": "/page/post/b"
+      }
+    ]
+  }
+}

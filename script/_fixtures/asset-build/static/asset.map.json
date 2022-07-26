@@ -1,0 +1,63 @@
+{
+  "assets": [
+    {
+      "guid": "7e713034-962e-5f5b-b206-e049b9629e60",
+      "hash": "453f30d3b4b2f6440b75a5257a2d9282cf6b27c9",
+      "type": "markdown",
+      "mimetype": "application/json",
+      "title": "A simple asset resolver script.",
+      "uri": "/api/post/7e713034-962e-5f5b-b206-e049b9629e60.json",
+      "slug": "/home/about/me",
+      "createdAt": "2020-07-26T02:00:57.614Z",
+      "updatedAt": "2020-07-27T09:03:57.614Z",
+      "categories": [
+        [
+          "a",
+          "b",
+          "c"
+        ],
+        [
+          "a",
+          "b",
+          "d"
+        ],
+        [
+          "a",
+          "b",
+          "e"
+        ]
+      ],
+      "tags": [
+        "随笔",
+        "essay",
+        "note"
+      ]
+    },
+    {
+      "guid": "3776eddd-98cb-500c-b951-253441db7835",
+      "hash": "a8db3a9a3512903f110a0c4848d98ecb0f57a5ff",
+      "type": "file",
+      "mimetype": "text/plain",
+      "title": "a",
+      "uri": "/asset/file/3776eddd-98cb-500c-b951-253441db7835.txt",
+      "slug": null,
+      "createdAt": "2022-07-26T03:47:50.184Z",
+      "updatedAt": "2022-07-26T03:47:50.184Z",
+      "categories": [],
+      "tags": []
+    },
+    {
+      "guid": "77f85d92-6838-5d1e-9328-34086150e3e3",
+      "hash": "3599bb76ce6a480f1454c3fd7ab9baf0a1662997",
+      "type": "markdown",
+      "mimetype": "application/json",
+      "title": "b",
+      "uri": "/api/post/77f85d92-6838-5d1e-9328-34086150e3e3.json",
+      "slug": "/page/post/b",
+      "createdAt": "2022-07-26T02:00:57.694Z",
+      "updatedAt": "2022-07-26T01:54:23.424Z",
+      "categories": [],
+      "tags": []
+    }
+  ]
+}

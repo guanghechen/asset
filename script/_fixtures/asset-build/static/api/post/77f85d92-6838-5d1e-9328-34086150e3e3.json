@@ -1,0 +1,48 @@
+{
+  "ast": {
+    "type": "root",
+    "children": [
+      {
+        "type": "heading",
+        "depth": 2,
+        "children": [
+          {
+            "type": "text",
+            "value": "Related"
+          }
+        ]
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "marker": 42,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "children": [
+              {
+                "type": "linkReference",
+                "identifier": "a",
+                "label": "a",
+                "referenceType": "collapsed",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "a"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "definition",
+        "identifier": "a",
+        "label": "a",
+        "url": "/home/about/me"
+      }
+    ]
+  }
+}

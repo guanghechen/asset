@@ -28,6 +28,15 @@
       }
     },
     {
+      "files": ["script/**/*.ts"],
+      "extends": ["@guanghechen", "@guanghechen/ts", "prettier"],
+      "rules": {
+        "@typescript-eslint/method-signature-style": 0,
+        "import/no-extraneous-dependencies": 0,
+        "import/no-named-as-default": 0
+      }
+    },
+    {
       "files": ["**/__test__/*.spec.ts", "**/__test__/util/*.ts", "jest.setup.ts"],
       "extends": ["@guanghechen", "@guanghechen/ts", "plugin:jest/recommended", "prettier"],
       "rules": {
