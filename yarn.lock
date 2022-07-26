@@ -400,6 +400,11 @@
     title-case "^3.0.2"
     upper-case "^2.0.1"
 
+"@guanghechen/parse-lineno@^1.9.7":
+  version "1.9.7"
+  resolved "https://registry.yarnpkg.com/@guanghechen/parse-lineno/-/parse-lineno-1.9.7.tgz#b631671ef54261f811683dde73fb9f6aa8c4956f"
+  integrity sha512-lwwiKmIxyCRJgPf6dch98ZY5C+veeHLqHWFAOUax64it2lwIftXwR6WK2SN+Jbc1HZlbW1J2jIqkKViuclqaww==
+
 "@guanghechen/rollup-config-cli@^1.9.7":
   version "1.9.7"
   resolved "https://registry.npmjs.org/@guanghechen/rollup-config-cli/-/rollup-config-cli-1.9.7.tgz#af74983c3a6f2e851949c378b584c64a65e605e0"

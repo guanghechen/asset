@@ -89,8 +89,7 @@ export class MarkdownAssetPlugin implements IAssetPlugin {
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownAsset(input) && input.data) {
-      const { ast } = input.data
-      const resolvedAst = shallowMutateAstInPreorder(ast, null, node => {
+      const ast = shallowMutateAstInPreorder(input.data.ast, null, node => {
         const n = node as unknown as Resource
         if (n.url && /^\./.test(n.url)) {
           const asset = api.resolveAsset(n.url)
@@ -101,7 +100,7 @@ export class MarkdownAssetPlugin implements IAssetPlugin {
 
       const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
         dataType: AssetDataType.JSON,
-        data: { ast: resolvedAst },
+        data: { ast },
         encoding: 'utf8',
       }
       return next(result)

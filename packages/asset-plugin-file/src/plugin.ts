@@ -74,12 +74,14 @@ export class FileAssetPlugin implements IAssetPlugin {
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isFileAsset(input) && input.data) {
       const { srcLocation } = input.data
-      const content: Buffer = await api.loadContent(srcLocation)
-      const result: IAssetPluginPolishOutput<IFilePolishedData> = {
-        dataType: AssetDataType.BINARY,
-        data: content,
+      const content: Buffer | null = await api.loadContent(srcLocation)
+      if (content !== null) {
+        const result: IAssetPluginPolishOutput<IFilePolishedData> = {
+          dataType: AssetDataType.BINARY,
+          data: content,
+        }
+        return next(result)
       }
-      return next(result)
     }
     return next(embryo)
   }

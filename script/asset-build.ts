@@ -44,7 +44,7 @@ async function build(): Promise<void> {
               ...embryo,
               slug: normalizeSlug('/page/post/' + input.src.replace(/\.[^.]+$/, '')),
             }
-            return next(result) ?? result
+            return next(result)
           }
         }
         return next(embryo)
