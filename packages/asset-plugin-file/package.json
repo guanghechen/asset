@@ -37,6 +37,7 @@
     "test:update": "node -r ts-node/register -r tsconfig-paths/register __test__/answer.ts"
   },
   "dependencies": {
-    "@guanghechen/asset-core-service": "^1.0.0-alpha.2"
+    "@guanghechen/asset-core-service": "^1.0.0-alpha.2",
+    "mime": "^3.0.0"
   }
 }

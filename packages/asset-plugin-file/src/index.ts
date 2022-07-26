@@ -10,7 +10,7 @@ import type {
   IAssetPluginResolveOutput,
 } from '@guanghechen/asset-core-service'
 import { AssetDataType, normalizePattern } from '@guanghechen/asset-core-service'
-import path from 'path'
+import mime from 'mime'
 
 export const AssetFileType = 'file'
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -61,14 +61,13 @@ export class AssetPluginFile implements IAssetPlugin {
     next: IAssetPluginResolveNext,
   ): Promise<IAssetPluginResolveOutput | null> {
     if (!embryo && this.accepted(input.src) && !this.rejected(input.src)) {
-      const { name: title, ext: extname } = path.parse(input.filename)
       const data: IAssetFileData = { srcLocation: input.src }
+      const mimetype = mime.getType(input.filename)
 
       return next({
         type: AssetFileType,
-        mimetype: 'application/file',
-        title,
-        extname,
+        mimetype: mimetype ?? 'unknown',
+        title: input.title,
         slug: null,
         createdAt: input.createdAt,
         updatedAt: input.updatedAt,

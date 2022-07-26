@@ -1,4 +1,6 @@
+import type { IAsset } from '@guanghechen/asset-core'
 import fs from 'fs-extra'
+import mime from 'mime'
 import path from 'path'
 import { v5 as uuid } from 'uuid'
 import type { IAssetResolver } from './types/asset-resolver'
@@ -6,7 +8,7 @@ import { AssetDataType } from './types/misc'
 import type { IAssetPluginResolveInput } from './types/plugin/resolve'
 import { assetExistedFilepath, assetSafeLocation, mkdirsIfNotExists } from './util/asset'
 import { calcFingerprint } from './util/hash'
-import { normalizeRelativeUrlPath } from './util/misc'
+import { normalizeRelativeUrlPath, normalizeSlug } from './util/misc'
 
 export interface IAssetUrlPathPrefixMap {
   [key: string]: string
@@ -69,6 +71,10 @@ export class AssetResolver implements IAssetResolver {
       createdAt: new Date(stat.ctime).toISOString(),
       updatedAt: new Date(stat.mtime).toISOString(),
       filename,
+      title: filename
+        .trim()
+        .replace(/\s+/, ' ')
+        .replace(/\.[^.]+$/, ''),
       content,
     }
   }
@@ -126,11 +132,14 @@ export class AssetResolver implements IAssetResolver {
     return slug ?? null
   }
 
-  public resolveUri(params: { guid: string; type: string; extname: string }): string {
-    const { guid, type, extname } = params
+  public resolveUri(params: Pick<IAsset, 'guid' | 'type' | 'mimetype'>): string {
+    const { guid, type, mimetype } = params
     const { urlPathPrefixMap } = this
     const urlPathPrefix = urlPathPrefixMap[type] ?? urlPathPrefixMap._fallback
-    return `/${urlPathPrefix}/${guid}${extname}`.replace(/[/\\]+/g, '/')
+    const extname: string | null = mime.getExtension(mimetype)
+    let url = `/${urlPathPrefix}/${guid}`
+    if (extname) url += '.' + extname
+    return normalizeSlug(url)
   }
 
   protected _normalizeLocation(rootDir: string, location: string): string {

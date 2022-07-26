@@ -17,7 +17,6 @@ import type { IParser } from '@yozora/core-parser'
 import YozoraParser from '@yozora/parser'
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
-import path from 'path'
 
 export const AssetMarkdownType = 'markdown'
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -44,14 +43,14 @@ export interface IAssetPluginMarkdownProps {
    */
   encoding?: BufferEncoding
   /**
-   * File extensions to recognized as Markdown type file.
-   * @default ['.md']
-   */
-  extensions?: string[]
-  /**
    * Markdown parser.
    */
   parser?: IParser
+  /**
+   * Check if the given file is in markdown format.
+   * @default filename => /\.md$/.test(filename)
+   */
+  resolvable?: (filename: string) => boolean
 }
 
 /**
@@ -60,16 +59,16 @@ export interface IAssetPluginMarkdownProps {
 export class AssetPluginMarkdown implements IAssetPlugin {
   public readonly displayName: string
   protected readonly encoding: BufferEncoding
-  protected readonly extensions: string[]
   protected readonly parser: IParser
   protected readonly frontmatterRegex: RegExp = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
+  protected readonly resolvable: (filename: string) => boolean
 
   constructor(props: IAssetPluginMarkdownProps = {}) {
     this.displayName = props.displayName ?? '@guanghechen/asset-plugin-markdown'
     this.parser =
       props.parser ?? new YozoraParser({ defaultParseOptions: { shouldReservePosition: false } })
     this.encoding = props.encoding ?? 'utf8'
-    this.extensions = props.extensions ? props.extensions.slice() : ['.md']
+    this.resolvable = props.resolvable ?? (filename => /\.md$/.test(filename))
   }
 
   public async resolve(
@@ -78,8 +77,7 @@ export class AssetPluginMarkdown implements IAssetPlugin {
     api: Readonly<IAssetPluginResolveApi>,
     next: IAssetPluginResolveNext,
   ): Promise<IAssetPluginResolveOutput | null> {
-    const { name: title, ext: extname } = path.parse(input.filename)
-    if (this.extensions.includes(extname) && input.content) {
+    if (this.resolvable(input.filename) && input.content) {
       const rawContent = input.content.toString(this.encoding)
       const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
       const meta: Record<string, any> = match[1] ? (yaml.load(match[1]) as Record<string, any>) : {}
@@ -92,8 +90,7 @@ export class AssetPluginMarkdown implements IAssetPlugin {
       const result: IAssetPluginResolveOutput = {
         type: AssetMarkdownType,
         mimetype: 'application/json',
-        title: meta.title || title,
-        extname: '.json',
+        title: meta.title || input.title,
         slug: api.resolveSlug(meta.slug || undefined),
         createdAt,
         updatedAt,

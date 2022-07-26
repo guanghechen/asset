@@ -55,6 +55,10 @@ export interface IAssetPluginResolveInput {
    */
   filename: string
   /**
+   * Asset title.
+   */
+  title: string
+  /**
    * Raw content.
    */
   content: Buffer
@@ -73,10 +77,6 @@ export interface IAssetPluginResolveOutput {
    * Title of asset.
    */
   title: string
-  /**
-   * Resolved asset extname. ( uri = xxx + guid + extname )
-   */
-  extname: string
   /**
    * A stable page url to reveal this asset.
    */

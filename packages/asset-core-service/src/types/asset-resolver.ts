@@ -1,3 +1,4 @@
+import type { IAsset } from '@guanghechen/asset-core'
 import type { AssetDataType } from './misc'
 import type { IAssetPluginResolveInput } from './plugin/resolve'
 
@@ -43,5 +44,5 @@ export interface IAssetResolver {
    * Resolve asset uri.
    * @param params
    */
-  resolveUri(params: { guid: string; type: string; extname: string }): string
+  resolveUri(params: Pick<IAsset, 'guid' | 'type' | 'mimetype'>): string
 }

@@ -1,6 +1,5 @@
 import type { IAsset, IAssetDataMap, IAssetManager } from '@guanghechen/asset-core'
 import { AssetManager } from '@guanghechen/asset-core'
-import invariant from '@guanghechen/invariant'
 import path from 'path'
 import type { IAssetEntity } from './types/asset'
 import type { IAssetResolver } from './types/asset-resolver'
@@ -89,15 +88,14 @@ export class AssetService implements IAssetService {
     const { guid, hash, src } = input
     const result = await reducer(null)
     if (result) {
-      const { type, mimetype, title, extname, slug, createdAt, updatedAt, categories, tags, data } =
-        result
+      const { type, mimetype, title, slug, createdAt, updatedAt, categories, tags, data } = result
       const asset: IAsset = {
         guid,
         hash,
         type,
         mimetype,
         title,
-        uri: assetResolver.resolveUri({ guid, type, extname }),
+        uri: assetResolver.resolveUri({ guid, type, mimetype }),
         slug,
         createdAt,
         updatedAt,
