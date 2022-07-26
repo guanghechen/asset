@@ -1,10 +1,10 @@
 import fs from 'fs-extra'
 import path from 'path'
+import { v5 as uuid } from 'uuid'
 import type { IAssetResolver } from './types/asset-resolver'
 import { AssetDataType } from './types/misc'
 import type { IAssetPluginResolveInput } from './types/plugin/resolve'
 import { assetExistedFilepath, assetSafeLocation, mkdirsIfNotExists } from './util/asset'
-import { genAssetGuid } from './util/guid'
 import { calcFingerprint } from './util/hash'
 import { normalizeRelativeUrlPath } from './util/misc'
 
@@ -23,9 +23,11 @@ export interface IAssetResolverProps {
   urlPathPrefixMap: IAssetUrlPathPrefixMap
   caseSensitive: boolean
   saveOptions?: Partial<ISaveOptions>
+  GUID_NAMESPACE?: string // uuid
 }
 
 export class AssetResolver implements IAssetResolver {
+  protected readonly GUID_NAMESPACE: string
   protected readonly sourceRoot: string
   protected readonly staticRoot: string
   protected readonly urlPathPrefixMap: IAssetUrlPathPrefixMap
@@ -38,6 +40,7 @@ export class AssetResolver implements IAssetResolver {
       urlPathPrefixMap[key] = normalizeRelativeUrlPath(value)
     }
 
+    this.GUID_NAMESPACE = props.GUID_NAMESPACE ?? '188b0b6f-fc7e-4100-8b52-7615fd945c28'
     this.sourceRoot = props.sourceRoot
     this.staticRoot = props.staticRoot
     this.urlPathPrefixMap = urlPathPrefixMap
@@ -53,10 +56,10 @@ export class AssetResolver implements IAssetResolver {
 
     const stat = fs.statSync(srcLocation)
     const content = await fs.readFile(srcLocation)
+    const hash = calcFingerprint(content)
     const filename = path.basename(srcLocation)
     const locationId = this.identifyLocation(srcLocation)
-    const guid = genAssetGuid(locationId)
-    const hash = calcFingerprint(content)
+    const guid = this._genAssetGuid(locationId)
     const src = this._normalizeLocation(this.sourceRoot, srcLocation)
 
     return {
@@ -104,7 +107,7 @@ export class AssetResolver implements IAssetResolver {
   public identifyLocation(location: string): string {
     const relativeLocation: string = this._normalizeLocation(this.sourceRoot, location)
     const text: string = this.caseSensitive ? relativeLocation : relativeLocation.toLowerCase()
-    const identifier = genAssetGuid(text)
+    const identifier = this._genLocationGuid(text)
     return identifier
   }
 
@@ -133,5 +136,13 @@ export class AssetResolver implements IAssetResolver {
   protected _normalizeLocation(rootDir: string, location: string): string {
     const relativeLocation = path.relative(rootDir, path.resolve(rootDir, location))
     return normalizeRelativeUrlPath(relativeLocation)
+  }
+
+  protected _genAssetGuid(identifier: string): string {
+    return uuid(`#asset-${identifier}`, this.GUID_NAMESPACE)
+  }
+
+  protected _genLocationGuid(identifier: string): string {
+    return uuid(`#locate-${identifier}`, this.GUID_NAMESPACE)
   }
 }
