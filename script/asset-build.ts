@@ -6,7 +6,7 @@ import fs from 'fs-extra'
 import path from 'node:path'
 
 async function build(): Promise<void> {
-  const FIXTURE_ROOT = path.join(__dirname, '_fixtures/asset-build')
+  const FIXTURE_ROOT = path.join(__dirname, 'fixtures/asset-build')
   const FIXTURE_SOURCE_ROOT = path.join(FIXTURE_ROOT, 'src')
   const FIXTURE_STATIC_ROOT = path.join(FIXTURE_ROOT, 'static')
   const FIXTURE_ASSET_DATA_MAP = path.join(FIXTURE_STATIC_ROOT, 'asset.map.json')

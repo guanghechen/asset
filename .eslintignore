@@ -11,6 +11,7 @@
 **/__tmp__/
 **/__test__/cases/
 **/__test__/fixtures/
+**/script/fixtures/
 **/coverage/
 **/demo/
 **/dist/
