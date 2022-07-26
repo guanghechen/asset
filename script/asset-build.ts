@@ -1,13 +1,11 @@
-import type { IAssetPluginResolveOutput } from '@guanghechen/asset-core-service'
-import { AssetResolver, AssetService, normalizeSlug } from '@guanghechen/asset-core-service'
+import { AssetResolver, AssetService } from '@guanghechen/asset-core-service'
 import { FileAssetPlugin, FileAssetType } from '@guanghechen/asset-plugin-file'
-import type { IMarkdownResolvedData } from '@guanghechen/asset-plugin-markdown'
 import {
   MarkdownAssetPlugin,
   MarkdownAssetPluginCode,
   MarkdownAssetPluginFootnote,
+  MarkdownAssetPluginSlug,
   MarkdownAssetType,
-  isMarkdownAsset,
 } from '@guanghechen/asset-plugin-markdown'
 import fs from 'fs-extra'
 import path from 'node:path'
@@ -39,6 +37,7 @@ async function build(): Promise<void> {
       new MarkdownAssetPlugin(),
       new MarkdownAssetPluginCode(),
       new MarkdownAssetPluginFootnote(),
+      new MarkdownAssetPluginSlug(),
     )
     .use(
       new FileAssetPlugin({
@@ -49,21 +48,6 @@ async function build(): Promise<void> {
         },
       }),
     )
-    .use({
-      displayName: 'customized/markdown-resolve-slug',
-      resolve: (input, embryo, api, next) => {
-        if (isMarkdownAsset(embryo) && embryo) {
-          if (!embryo.slug) {
-            const result: IAssetPluginResolveOutput<IMarkdownResolvedData> = {
-              ...embryo,
-              slug: normalizeSlug('/page/post/' + input.src.replace(/\.[^.]+$/, '')),
-            }
-            return next(result)
-          }
-        }
-        return next(embryo)
-      },
-    })
 
   const locations = fs
     .readdirSync(FIXTURE_SOURCE_ROOT)
