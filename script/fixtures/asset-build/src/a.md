@@ -13,8 +13,18 @@ categories:
   - [a, b, e]
 ---
 
+^[This is a footnote.]
 
 Some thing.
+
+```cpp sourcefile="d.cpp"
+```
+
+```cpp 3-6 sourcefile="d.cpp"
+```
+
+```cpp sourcefile="d.cpp" sourceLine="3-6"
+```
 
 ## Related
 

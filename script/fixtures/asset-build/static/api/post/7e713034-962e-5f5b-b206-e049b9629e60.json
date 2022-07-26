@@ -6,10 +6,38 @@
         "type": "paragraph",
         "children": [
           {
+            "type": "footnoteReference",
+            "label": "1",
+            "identifier": "footnote-1"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
             "type": "text",
             "value": "Some thing."
           }
         ]
+      },
+      {
+        "type": "code",
+        "lang": "cpp",
+        "meta": "sourcefile=\"d.cpp\"",
+        "value": "#include <cstdio>\n\nint main() {\n  printf(\"Hello, world!\");\n  return 0;\n}\n"
+      },
+      {
+        "type": "code",
+        "lang": "cpp",
+        "meta": "3-6 sourcefile=\"d.cpp\"",
+        "value": "#include <cstdio>\n\nint main() {\n  printf(\"Hello, world!\");\n  return 0;\n}\n"
+      },
+      {
+        "type": "code",
+        "lang": "cpp",
+        "meta": "sourcefile=\"d.cpp\" sourceLine=\"3-6\"",
+        "value": "int main() {\n  printf(\"Hello, world!\");\n  return 0;\n}"
       },
       {
         "type": "heading",
@@ -51,6 +79,22 @@
         "identifier": "b",
         "label": "b",
         "url": "/page/post/b"
+      },
+      {
+        "type": "footnoteDefinition",
+        "identifier": "footnote-1",
+        "label": "1",
+        "children": [
+          {
+            "type": "paragraph",
+            "children": [
+              {
+                "type": "text",
+                "value": "This is a footnote."
+              }
+            ]
+          }
+        ]
       }
     ]
   }

@@ -4,6 +4,8 @@ import { FileAssetPlugin, FileAssetType } from '@guanghechen/asset-plugin-file'
 import type { IMarkdownResolvedData } from '@guanghechen/asset-plugin-markdown'
 import {
   MarkdownAssetPlugin,
+  MarkdownAssetPluginCode,
+  MarkdownAssetPluginFootnote,
   MarkdownAssetType,
   isMarkdownAsset,
 } from '@guanghechen/asset-plugin-markdown'
@@ -33,8 +35,20 @@ async function build(): Promise<void> {
   const assetService = new AssetService({ assetResolver })
 
   assetService
-    .use(new MarkdownAssetPlugin()) // resolve markdown
-    .use(new FileAssetPlugin())
+    .use(
+      new MarkdownAssetPlugin(),
+      new MarkdownAssetPluginCode(),
+      new MarkdownAssetPluginFootnote(),
+    )
+    .use(
+      new FileAssetPlugin({
+        accepted: filepath => {
+          const { ext } = path.parse(filepath)
+          if (['.txt', '.jpg', '.png'].includes(ext)) return true
+          return false
+        },
+      }),
+    )
     .use({
       displayName: 'customized/markdown-resolve-slug',
       resolve: (input, embryo, api, next) => {
