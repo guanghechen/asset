@@ -1,5 +1,7 @@
 import type { IAsset, IAssetDataMap, IAssetManager } from '@guanghechen/asset-core'
+import { AssetManager } from '@guanghechen/asset-core'
 import invariant from '@guanghechen/invariant'
+import path from 'path'
 import type { IAssetEntity } from './types/asset'
 import type { IAssetResolver } from './types/asset-resolver'
 import type { IAssetService } from './types/asset-service'
@@ -17,38 +19,44 @@ import type {
 
 export interface IAssetServiceProps {
   assetResolver: IAssetResolver
+  assetManager?: IAssetManager
 }
 
 export class AssetService implements IAssetService {
-  protected readonly assetManager: IAssetManager = null as any
+  protected readonly assetManager: IAssetManager
   protected readonly assetResolver: IAssetResolver
   protected readonly locationMap: Map<string, IAssetEntity | null> = new Map()
   protected readonly plugins: IAssetPlugin[] = []
 
   constructor(props: IAssetServiceProps) {
-    const { assetResolver } = props
-    this.assetResolver = assetResolver
+    this.assetResolver = props.assetResolver
+    this.assetManager = props.assetManager ?? new AssetManager()
   }
 
-  public use(plugin: IAssetPlugin): void {
+  public use(plugin: IAssetPlugin): this {
     this.plugins.push(plugin)
+    return this
   }
 
   public dump(): IAssetDataMap {
     return this.assetManager.dump()
   }
 
-  public invalidate(locations: string): void {
-    const { assetResolver, locationMap } = this
-    for (const location of locations) {
-      const key = assetResolver.identifyLocation(location)
-      locationMap.delete(key)
-    }
-  }
-
-  public async process(locations: string[]): Promise<void> {
+  public async create(locations: string[]): Promise<void> {
     for (const location of locations) await this._assetResolve(location)
     for (const location of locations) await this._assetPolish(location)
+  }
+
+  public remove(locations: string[]): void {
+    const { assetResolver, assetManager, locationMap } = this
+    for (const location of locations) {
+      const locationId = assetResolver.identifyLocation(location)
+      const asset = locationMap.get(locationId)
+      if (asset) {
+        assetManager.remove(asset.guid)
+        locationMap.delete(locationId)
+      }
+    }
   }
 
   protected async _assetResolve(location: string): Promise<void> {
@@ -62,7 +70,13 @@ export class AssetService implements IAssetService {
     if (input == null) return
 
     const api: IAssetPluginResolveApi = {
-      loadContent: assetResolver.loadSrcContent.bind(assetResolver),
+      loadContent: relativeLocation => {
+        const resolvedLocation = assetResolver.resolveLocation(
+          path.dirname(location),
+          relativeLocation,
+        )
+        return assetResolver.loadSrcContent(resolvedLocation)
+      },
       resolveSlug: assetResolver.resolveSlug.bind(assetResolver),
     }
     const reducer: IAssetPluginResolveNext = this.plugins
@@ -103,9 +117,18 @@ export class AssetService implements IAssetService {
     invariant(asset != null, `Cannot find asset by the given location (${location}).`)
 
     const api: IAssetPluginPolishApi = {
-      loadContent: assetResolver.loadSrcContent.bind(assetResolver),
+      loadContent: relativeLocation => {
+        const resolvedLocation = assetResolver.resolveLocation(
+          path.dirname(location),
+          relativeLocation,
+        )
+        return assetResolver.loadSrcContent(resolvedLocation)
+      },
       resolveAsset: relativeLocation => {
-        const resolvedLocation = assetResolver.resolveLocation(location, relativeLocation)
+        const resolvedLocation = assetResolver.resolveLocation(
+          path.dirname(location),
+          relativeLocation,
+        )
         const locationId = assetResolver.identifyLocation(resolvedLocation)
         const asset = locationMap.get(locationId)
         return asset ? { uri: asset.uri, slug: asset.slug, title: asset.title } : null

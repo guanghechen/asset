@@ -6,19 +6,19 @@ export interface IAssetService {
    * Use a asset plugin.
    * @param plugin
    */
-  use(plugin: IAssetPlugin): void
+  use(plugin: IAssetPlugin): this
   /**
    * Export asset data map.
    */
   dump(): IAssetDataMap
   /**
-   * Mark the assets on the locations invalid.
+   * Create assets on the given locations.
    * @param locations
    */
-  invalidate(locations: string): void
+  create(locations: string[]): Promise<void>
   /**
-   * Process assets on the given locations.
+   * Mark the assets on the locations invalid and remove them from assetManager.
    * @param locations
    */
-  process(locations: string[]): Promise<void>
+  remove(locations: string[]): void
 }

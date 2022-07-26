@@ -64,8 +64,8 @@ export class AssetPluginMarkdown implements IAssetPlugin {
   protected readonly parser: IParser
   protected readonly frontmatterRegex: RegExp = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
 
-  constructor(props: IAssetPluginMarkdownProps) {
-    this.displayName = props.displayName ?? 'AssetPluginMarkdown'
+  constructor(props: IAssetPluginMarkdownProps = {}) {
+    this.displayName = props.displayName ?? '@guanghechen/asset-plugin-markdown'
     this.parser =
       props.parser ?? new YozoraParser({ defaultParseOptions: { shouldReservePosition: false } })
     this.encoding = props.encoding ?? 'utf8'
@@ -86,7 +86,8 @@ export class AssetPluginMarkdown implements IAssetPlugin {
         meta.createdAt != null ? dayjs(meta.createdAt).toISOString() : embryo.createdAt
       const updatedAt: string =
         meta.updatedAt != null ? dayjs(meta.updatedAt).toISOString() : embryo.updatedAt
-      const ast: Root = this.parser.parse(rawContent.slice(match[1].length))
+      const ast: Root = this.parser.parse(rawContent.slice(match[0].length))
+      const data: IAssetMarkdownData = { ast }
 
       return {
         type: AssetMarkdownType,
@@ -98,7 +99,7 @@ export class AssetPluginMarkdown implements IAssetPlugin {
         updatedAt,
         categories: isTwoDimensionArrayOfT(meta.categories, isString) ? meta.categories : [],
         tags: isArrayOfT(meta.tags, isString) ? meta.tags : [],
-        data: ast,
+        data,
       }
     }
     return next(embryo)

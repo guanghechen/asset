@@ -10,7 +10,7 @@ export interface IAssetPluginResolveApi {
    * Resolve asset slug.
    * @param slug
    */
-  resolveSlug(slug: string | undefined): string
+  resolveSlug(slug: string | null | undefined): string | null
 }
 
 export interface IAssetPluginResolveNext {

@@ -38,7 +38,7 @@ export interface IAssetResolver {
    * Resolve page slug.
    * @param slug
    */
-  resolveSlug(slug: string | undefined): string
+  resolveSlug(slug: string | null | undefined): string | null
   /**
    * Resolve asset uri.
    * @param params

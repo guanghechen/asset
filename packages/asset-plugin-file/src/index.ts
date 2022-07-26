@@ -54,8 +54,8 @@ export class AssetPluginFile implements IAssetPlugin {
   protected readonly accepted: (src: string) => boolean
   protected readonly rejected: (src: string) => boolean
 
-  constructor(props: IAssetPluginFileProps) {
-    this.displayName = props.displayName ?? 'AssetPluginFile'
+  constructor(props: IAssetPluginFileProps = {}) {
+    this.displayName = props.displayName ?? '@guanghechen/asset-plugin-file'
     this.useAsFallback = props.useAsFallback ?? true
     this.accepted = normalizePattern(props.accepted) ?? (() => true)
     this.rejected = normalizePattern(props.rejected) ?? (() => false)
@@ -73,6 +73,8 @@ export class AssetPluginFile implements IAssetPlugin {
 
     if (this.accepted(embryo.src) && !this.rejected(embryo.src)) {
       const { name: title, ext: extname } = path.parse(embryo.filename)
+      const data: IAssetFileData = { srcLocation: embryo.src }
+
       return {
         type: AssetFileType,
         mimetype: 'application/file',
@@ -83,9 +85,7 @@ export class AssetPluginFile implements IAssetPlugin {
         updatedAt: embryo.updatedAt,
         categories: [],
         tags: [],
-        data: {
-          srcLocation: embryo.src,
-        },
+        data,
       }
     }
 
