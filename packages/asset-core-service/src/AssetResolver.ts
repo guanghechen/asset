@@ -124,6 +124,13 @@ export class AssetResolver implements IAssetResolver {
     return content
   }
 
+  public loadSrcContentSync(srcLocation: string): Buffer | null {
+    assetSafeLocation(this.sourceRoot, srcLocation)
+    assetExistedFilepath(srcLocation)
+    const content = fs.readFileSync(srcLocation)
+    return content
+  }
+
   public resolveLocation(...pathPieces: string[]): string {
     return path.resolve(this.sourceRoot, ...pathPieces)
   }

@@ -69,12 +69,19 @@ export class AssetService implements IAssetService {
     if (input == null) return
 
     const api: IAssetPluginResolveApi = {
-      loadContent: relativeLocation => {
+      loadContent: relativeSrcLocation => {
         const resolvedLocation = assetResolver.resolveLocation(
           path.dirname(location),
-          relativeLocation,
+          relativeSrcLocation,
         )
         return assetResolver.loadSrcContent(resolvedLocation)
+      },
+      loadContentSync(relativeSrcLocation) {
+        const resolvedLocation = assetResolver.resolveLocation(
+          path.dirname(location),
+          relativeSrcLocation,
+        )
+        return assetResolver.loadSrcContentSync(resolvedLocation)
       },
       resolveSlug: assetResolver.resolveSlug.bind(assetResolver),
     }
@@ -115,12 +122,19 @@ export class AssetService implements IAssetService {
     if (asset == null) return
 
     const api: IAssetPluginPolishApi = {
-      loadContent: relativeLocation => {
+      loadContent: relativeSrcLocation => {
         const resolvedLocation = assetResolver.resolveLocation(
           path.dirname(location),
-          relativeLocation,
+          relativeSrcLocation,
         )
         return assetResolver.loadSrcContent(resolvedLocation)
+      },
+      loadContentSync(relativeSrcLocation) {
+        const resolvedLocation = assetResolver.resolveLocation(
+          path.dirname(location),
+          relativeSrcLocation,
+        )
+        return assetResolver.loadSrcContentSync(resolvedLocation)
       },
       resolveAsset: relativeLocation => {
         const resolvedLocation = assetResolver.resolveLocation(

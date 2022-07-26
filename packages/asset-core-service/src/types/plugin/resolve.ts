@@ -3,9 +3,14 @@ import type { IAssetId } from '@guanghechen/asset-core'
 export interface IAssetPluginResolveApi {
   /**
    * Load source content.
-   * @param srcLocation
+   * @param relativeSrcLocation
    */
-  loadContent(srcLocation: string): Promise<Buffer>
+  loadContent(relativeSrcLocation: string): Promise<Buffer | null>
+  /**
+   * Load source content (synchronously).
+   * @param relativeSrcLocation
+   */
+  loadContentSync(relativeSrcLocation: string): Buffer | null
   /**
    * Resolve asset slug.
    * @param slug

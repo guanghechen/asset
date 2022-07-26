@@ -29,7 +29,12 @@ export interface IAssetResolver {
    * Load content through source location.
    * @param srcLocation
    */
-  loadSrcContent(srcLocation: string): Promise<Buffer>
+  loadSrcContent(srcLocation: string): Promise<Buffer | null>
+  /**
+   * Load content through source location (synchronously).
+   * @param srcLocation
+   */
+  loadSrcContentSync(srcLocation: string): Buffer | null
   /**
    * Resolve asset location with the relative path pieces.
    * @param pathPieces
