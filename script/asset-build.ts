@@ -16,22 +16,7 @@ async function build(): Promise<void> {
   const FIXTURE_STATIC_ROOT = path.join(FIXTURE_ROOT, 'static')
   const FIXTURE_ASSET_DATA_MAP = path.join(FIXTURE_STATIC_ROOT, 'asset.map.json')
 
-  const assetResolver = new AssetResolver({
-    sourceRoot: FIXTURE_SOURCE_ROOT,
-    staticRoot: FIXTURE_STATIC_ROOT,
-    urlPathPrefixMap: {
-      [MarkdownAssetType]: '/api/post/',
-      [FileAssetType]: '/asset/file/',
-      _fallback: '/asset/unknown/',
-    },
-    caseSensitive: true,
-    saveOptions: {
-      prettier: true,
-    },
-  })
-
-  const assetService = new AssetService({ assetResolver })
-
+  const assetService = new AssetService()
   assetService
     .use(
       new MarkdownAssetPlugin(),
@@ -49,11 +34,24 @@ async function build(): Promise<void> {
       }),
     )
 
+  const assetResolver = new AssetResolver({
+    sourceRoot: FIXTURE_SOURCE_ROOT,
+    staticRoot: FIXTURE_STATIC_ROOT,
+    urlPathPrefixMap: {
+      [MarkdownAssetType]: '/api/post/',
+      [FileAssetType]: '/asset/file/',
+      _fallback: '/asset/unknown/',
+    },
+    caseSensitive: true,
+    saveOptions: {
+      prettier: true,
+    },
+  })
   const locations = fs
     .readdirSync(FIXTURE_SOURCE_ROOT)
     .map(filename => path.resolve(FIXTURE_SOURCE_ROOT, filename))
+  await assetService.create(assetResolver, locations)
 
-  await assetService.create(locations)
   const assets = assetService.dump()
   await fs.writeJSON(FIXTURE_ASSET_DATA_MAP, assets, { encoding: 'UTF-8', spaces: 2 })
 }

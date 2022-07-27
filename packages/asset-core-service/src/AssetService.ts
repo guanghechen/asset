@@ -17,18 +17,15 @@ import type {
 } from './types/plugin/resolve'
 
 export interface IAssetServiceProps {
-  assetResolver: IAssetResolver
   assetManager?: IAssetManager
 }
 
 export class AssetService implements IAssetService {
   protected readonly assetManager: IAssetManager
-  protected readonly assetResolver: IAssetResolver
   protected readonly locationMap: Map<string, IAssetEntity | null> = new Map()
   protected readonly plugins: IAssetPlugin[] = []
 
-  constructor(props: IAssetServiceProps) {
-    this.assetResolver = props.assetResolver
+  constructor(props: IAssetServiceProps = {}) {
     this.assetManager = props.assetManager ?? new AssetManager()
   }
 
@@ -45,13 +42,13 @@ export class AssetService implements IAssetService {
     return this.assetManager.dump()
   }
 
-  public async create(locations: string[]): Promise<void> {
-    for (const location of locations) await this._assetResolve(location)
-    for (const location of locations) await this._assetPolish(location)
+  public async create(assetResolver: IAssetResolver, locations: string[]): Promise<void> {
+    for (const location of locations) await this._assetResolve(assetResolver, location)
+    for (const location of locations) await this._assetPolish(assetResolver, location)
   }
 
-  public remove(locations: string[]): void {
-    const { assetResolver, assetManager, locationMap } = this
+  public remove(assetResolver: IAssetResolver, locations: string[]): void {
+    const { assetManager, locationMap } = this
     for (const location of locations) {
       const locationId = assetResolver.identifyLocation(location)
       const asset = locationMap.get(locationId)
@@ -62,8 +59,8 @@ export class AssetService implements IAssetService {
     }
   }
 
-  protected async _assetResolve(location: string): Promise<void> {
-    const { assetResolver, locationMap } = this
+  protected async _assetResolve(assetResolver: IAssetResolver, location: string): Promise<void> {
+    const { locationMap } = this
     const locationId = assetResolver.identifyLocation(location)
 
     if (locationMap.has(locationId)) return
@@ -119,8 +116,8 @@ export class AssetService implements IAssetService {
     }
   }
 
-  protected async _assetPolish(location: string): Promise<void> {
-    const { assetResolver, locationMap } = this
+  protected async _assetPolish(assetResolver: IAssetResolver, location: string): Promise<void> {
+    const { locationMap } = this
     const locationId = assetResolver.identifyLocation(location)
     const asset = locationMap.get(locationId)
     if (asset == null) return

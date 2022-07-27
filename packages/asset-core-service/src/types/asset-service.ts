@@ -1,4 +1,5 @@
 import type { IAssetDataMap } from '@guanghechen/asset-core'
+import type { IAssetResolver } from './asset-resolver'
 import type { IAssetPlugin } from './plugin/plugin'
 
 export interface IAssetService {
@@ -15,10 +16,10 @@ export interface IAssetService {
    * Create assets on the given locations.
    * @param locations
    */
-  create(locations: string[]): Promise<void>
+  create(assetResolver: IAssetResolver, locations: string[]): Promise<void>
   /**
    * Mark the assets on the locations invalid and remove them from assetManager.
    * @param locations
    */
-  remove(locations: string[]): void
+  remove(assetResolver: IAssetResolver, locations: string[]): void
 }
