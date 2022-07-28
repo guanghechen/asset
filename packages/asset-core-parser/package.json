@@ -1,7 +1,7 @@
 {
-  "name": "@guanghechen/asset-plugin-markdown",
+  "name": "@guanghechen/asset-core-parser",
   "version": "1.0.0-alpha.2",
-  "description": "markdown asset",
+  "description": "Asset parser core.",
   "author": {
     "name": "guanghechen",
     "url": "https://github.com/guanghechen/"
@@ -9,9 +9,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/guanghechen/static-site-api.git",
-    "directory": "packages/asset-plugin-markdown"
+    "directory": "packages/asset-core-parser"
   },
-  "homepage": "https://github.com/guanghechen/static-site-api/tree/main/packages/asset-plugin-markdown#readme",
+  "homepage": "https://github.com/guanghechen/static-site-api/tree/main/packages/asset-core-parser#readme",
   "main": "lib/cjs/index.js",
   "types": "lib/types/index.d.ts",
   "source": "src/index.ts",
@@ -29,21 +29,20 @@
     "README.md"
   ],
   "scripts": {
-    "start": "cross-env NODE_ENV=development rollup -w -c ../../rollup.config.js",
     "build": "cross-env NODE_ENV=production rollup -c ../../rollup.config.js",
     "prebuild": "rimraf lib/ && tsc -p tsconfig.src.json --emitDeclarationOnly",
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build",
     "test": "echo 'no test yet.'"
   },
   "dependencies": {
-    "@guanghechen/asset-core-parser": "^1.0.0-alpha.2",
-    "@guanghechen/option-helper": "^1.9.7",
-    "@guanghechen/parse-lineno": "^1.9.7",
-    "@types/js-yaml": "^4.0.5",
-    "@yozora/ast": "^2.0.2-alpha.0",
-    "@yozora/ast-util": "^2.0.2-alpha.0",
-    "@yozora/parser": "^2.0.2-alpha.0",
-    "dayjs": "^1.11.4",
-    "js-yaml": "^4.1.0"
+    "@guanghechen/asset-core": "^1.0.0-alpha.2",
+    "@guanghechen/invariant": "^1.9.7",
+    "fs-extra": "^10.1.0",
+    "mime": "^3.0.0",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/uuid": "^8.3.4"
   }
 }

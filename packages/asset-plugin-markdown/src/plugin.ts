@@ -1,15 +1,15 @@
 import type {
-  IAssetPlugin,
-  IAssetPluginPolishApi,
-  IAssetPluginPolishInput,
-  IAssetPluginPolishNext,
-  IAssetPluginPolishOutput,
-  IAssetPluginResolveApi,
-  IAssetPluginResolveInput,
-  IAssetPluginResolveNext,
-  IAssetPluginResolveOutput,
-} from '@guanghechen/asset-core-service'
-import { AssetDataType } from '@guanghechen/asset-core-service'
+  IAssetParserPlugin,
+  IAssetParserPluginParseApi,
+  IAssetParserPluginParseInput,
+  IAssetParserPluginParseNext,
+  IAssetParserPluginParseOutput,
+  IAssetParserPluginPolishApi,
+  IAssetParserPluginPolishInput,
+  IAssetParserPluginPolishNext,
+  IAssetParserPluginPolishOutput,
+} from '@guanghechen/asset-core-parser'
+import { AssetDataType } from '@guanghechen/asset-core-parser'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/option-helper'
 import type { Resource, Root } from '@yozora/ast'
 import { shallowMutateAstInPreorder } from '@yozora/ast-util'
@@ -37,7 +37,7 @@ export interface IMarkdownAssetPluginProps {
   resolvable?: (filename: string) => boolean
 }
 
-export class MarkdownAssetPlugin implements IAssetPlugin {
+export class MarkdownAssetPlugin implements IAssetParserPlugin {
   public readonly displayName: string = '@guanghechen/asset-plugin-markdown'
   protected readonly encoding: BufferEncoding
   protected readonly parser: IParser
@@ -51,12 +51,12 @@ export class MarkdownAssetPlugin implements IAssetPlugin {
     this.resolvable = props.resolvable ?? (filename => /\.md$/.test(filename))
   }
 
-  public async resolve(
-    input: Readonly<IAssetPluginResolveInput>,
-    embryo: Readonly<IAssetPluginResolveOutput> | null,
-    api: Readonly<IAssetPluginResolveApi>,
-    next: IAssetPluginResolveNext,
-  ): Promise<IAssetPluginResolveOutput | null> {
+  public async parse(
+    input: Readonly<IAssetParserPluginParseInput>,
+    embryo: Readonly<IAssetParserPluginParseOutput> | null,
+    api: Readonly<IAssetParserPluginParseApi>,
+    next: IAssetParserPluginParseNext,
+  ): Promise<IAssetParserPluginParseOutput | null> {
     if (this.resolvable(input.filename) && input.content) {
       const rawContent = input.content.toString(this.encoding)
       const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
@@ -66,7 +66,7 @@ export class MarkdownAssetPlugin implements IAssetPlugin {
       const updatedAt: string =
         meta.updatedAt != null ? dayjs(meta.updatedAt).toISOString() : input.updatedAt
       const ast: Root = this.parser.parse(rawContent.slice(match[0].length))
-      const result: IAssetPluginResolveOutput<IMarkdownResolvedData> = {
+      const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
         type: MarkdownAssetType,
         mimetype: 'application/json',
         title: meta.title || input.title,
@@ -83,11 +83,11 @@ export class MarkdownAssetPlugin implements IAssetPlugin {
   }
 
   public async polish(
-    input: Readonly<IAssetPluginPolishInput>,
-    embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api: Readonly<IAssetPluginPolishApi>,
-    next: IAssetPluginPolishNext,
-  ): Promise<IAssetPluginPolishOutput | null> {
+    input: Readonly<IAssetParserPluginPolishInput>,
+    embryo: Readonly<IAssetParserPluginPolishOutput> | null,
+    api: Readonly<IAssetParserPluginPolishApi>,
+    next: IAssetParserPluginPolishNext,
+  ): Promise<IAssetParserPluginPolishOutput | null> {
     if (isMarkdownAsset(input) && input.data) {
       const ast = shallowMutateAstInPreorder(input.data.ast, null, node => {
         const n = node as unknown as Resource
@@ -98,7 +98,7 @@ export class MarkdownAssetPlugin implements IAssetPlugin {
         return node
       })
 
-      const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
+      const result: IAssetParserPluginPolishOutput<IMarkdownPolishedData> = {
         dataType: AssetDataType.JSON,
         data: { ast },
         encoding: 'utf8',

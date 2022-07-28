@@ -2,34 +2,34 @@ import type { IAsset, IAssetDataMap, IAssetManager } from '@guanghechen/asset-co
 import { AssetManager } from '@guanghechen/asset-core'
 import path from 'path'
 import type { IAssetEntity } from './types/asset'
-import type { IAssetResolver } from './types/asset-resolver'
-import type { IAssetService } from './types/asset-service'
-import type { IAssetPlugin } from './types/plugin/plugin'
+import type { IAssetParser } from './types/parser'
 import type {
-  IAssetPluginPolishApi,
-  IAssetPluginPolishInput,
-  IAssetPluginPolishNext,
+  IAssetParserPluginParseApi,
+  IAssetParserPluginParseInput,
+  IAssetParserPluginParseNext,
+} from './types/plugin/parse'
+import type { IAssetParserPlugin } from './types/plugin/plugin'
+import type {
+  IAssetParserPluginPolishApi,
+  IAssetParserPluginPolishInput,
+  IAssetParserPluginPolishNext,
 } from './types/plugin/polish'
-import type {
-  IAssetPluginResolveApi,
-  IAssetPluginResolveInput,
-  IAssetPluginResolveNext,
-} from './types/plugin/resolve'
+import type { IAssetResolver } from './types/resolver'
 
-export interface IAssetServiceProps {
+export interface IAssetParserProps {
   assetManager?: IAssetManager
 }
 
-export class AssetService implements IAssetService {
+export class AssetParser implements IAssetParser {
   protected readonly assetManager: IAssetManager
   protected readonly locationMap: Map<string, IAssetEntity | null> = new Map()
-  protected readonly plugins: IAssetPlugin[] = []
+  protected readonly plugins: IAssetParserPlugin[] = []
 
-  constructor(props: IAssetServiceProps = {}) {
+  constructor(props: IAssetParserProps = {}) {
     this.assetManager = props.assetManager ?? new AssetManager()
   }
 
-  public use(...plugins: Array<IAssetPlugin | IAssetPlugin[]>): this {
+  public use(...plugins: Array<IAssetParserPlugin | IAssetParserPlugin[]>): this {
     for (const plugin of plugins.flat()) {
       if (plugin?.displayName) {
         this.plugins.push(plugin)
@@ -66,10 +66,10 @@ export class AssetService implements IAssetService {
     if (locationMap.has(locationId)) return
     locationMap.set(locationId, null)
 
-    const input: IAssetPluginResolveInput | null = await assetResolver.initAsset(location)
+    const input: IAssetParserPluginParseInput | null = await assetResolver.initAsset(location)
     if (input == null) return
 
-    const api: IAssetPluginResolveApi = {
+    const api: IAssetParserPluginParseApi = {
       loadContent: relativeSrcLocation => {
         const resolvedLocation = assetResolver.resolveLocation(
           path.dirname(location),
@@ -86,10 +86,10 @@ export class AssetService implements IAssetService {
       },
       resolveSlug: assetResolver.resolveSlug.bind(assetResolver),
     }
-    const reducer: IAssetPluginResolveNext = this.plugins
-      .filter(plugin => !!plugin.resolve)
-      .reduceRight<IAssetPluginResolveNext>(
-        (next, middleware) => embryo => middleware.resolve!(input, embryo, api, next),
+    const reducer: IAssetParserPluginParseNext = this.plugins
+      .filter(plugin => !!plugin.parse)
+      .reduceRight<IAssetParserPluginParseNext>(
+        (next, middleware) => embryo => middleware.parse!(input, embryo, api, next),
         embryo => embryo,
       )
 
@@ -122,7 +122,7 @@ export class AssetService implements IAssetService {
     const asset = locationMap.get(locationId)
     if (asset == null) return
 
-    const api: IAssetPluginPolishApi = {
+    const api: IAssetParserPluginPolishApi = {
       loadContent: relativeSrcLocation => {
         const resolvedLocation = assetResolver.resolveLocation(
           path.dirname(location),
@@ -147,13 +147,13 @@ export class AssetService implements IAssetService {
         return asset ? { uri: asset.uri, slug: asset.slug, title: asset.title } : null
       },
     }
-    const reducer: IAssetPluginPolishNext = this.plugins
+    const reducer: IAssetParserPluginPolishNext = this.plugins
       .filter(plugin => !!plugin.polish)
-      .reduceRight<IAssetPluginPolishNext>(
+      .reduceRight<IAssetParserPluginPolishNext>(
         (next, middleware) => embryo => middleware.polish!(input, embryo, api, next),
         embryo => embryo,
       )
-    const input: IAssetPluginPolishInput = {
+    const input: IAssetParserPluginPolishInput = {
       type: asset.type,
       title: asset.title,
       data: asset.data,

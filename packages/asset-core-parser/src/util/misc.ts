@@ -1,20 +1,10 @@
 import invariant from '@guanghechen/invariant'
 
-export const normalizeRelativeUrlPath = (relativeUrlPath: string): string => {
-  return relativeUrlPath
-    .split(/[/\\]/g)
-    .map(x => x.trim())
-    .filter(x => !!x)
-    .join('/')
-}
-
 export const normalizePattern = (
   pattern: RegExp | RegExp[] | ((input: string) => boolean) | null | undefined,
 ): ((input: string) => boolean) | null | never => {
   if (pattern == null) return null
-
   if (pattern instanceof RegExp) return text => pattern.test(text)
-
   if (pattern instanceof Function) return pattern
 
   if (Array.isArray(pattern)) {
@@ -31,8 +21,8 @@ export const normalizePattern = (
 export const normalizeUrlPath = (urlPath: string): string => {
   const isAbsolute = urlPath.startsWith('/')
   const pieces = urlPath
-    .trim()
     .split(/[/\\]+/g)
+    .map(x => x.trim())
     .filter(piece => !!piece)
   const pieceStack: string[] = []
   for (const piece of pieces) {

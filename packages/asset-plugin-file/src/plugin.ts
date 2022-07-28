@@ -1,15 +1,15 @@
 import type {
-  IAssetPlugin,
-  IAssetPluginPolishApi,
-  IAssetPluginPolishInput,
-  IAssetPluginPolishNext,
-  IAssetPluginPolishOutput,
-  IAssetPluginResolveApi,
-  IAssetPluginResolveInput,
-  IAssetPluginResolveNext,
-  IAssetPluginResolveOutput,
-} from '@guanghechen/asset-core-service'
-import { AssetDataType, normalizePattern } from '@guanghechen/asset-core-service'
+  IAssetParserPlugin,
+  IAssetParserPluginParseApi,
+  IAssetParserPluginParseInput,
+  IAssetParserPluginParseNext,
+  IAssetParserPluginParseOutput,
+  IAssetParserPluginPolishApi,
+  IAssetParserPluginPolishInput,
+  IAssetParserPluginPolishNext,
+  IAssetParserPluginPolishOutput,
+} from '@guanghechen/asset-core-parser'
+import { AssetDataType, normalizePattern } from '@guanghechen/asset-core-parser'
 import mime from 'mime'
 import type { IFilePolishedData, IFileResolvedData } from './types'
 import { FileAssetType, isFileAsset } from './types'
@@ -31,7 +31,7 @@ export interface IFileAssetPluginProps {
   rejected?: RegExp[] | RegExp | ((src: string) => boolean)
 }
 
-export class FileAssetPlugin implements IAssetPlugin {
+export class FileAssetPlugin implements IAssetParserPlugin {
   public readonly displayName: string
   protected readonly accepted: (src: string) => boolean
   protected readonly rejected: (src: string) => boolean
@@ -42,15 +42,15 @@ export class FileAssetPlugin implements IAssetPlugin {
     this.rejected = normalizePattern(props.rejected) ?? (() => false)
   }
 
-  public async resolve(
-    input: Readonly<IAssetPluginResolveInput>,
-    embryo: Readonly<IAssetPluginResolveOutput> | null,
-    api: Readonly<IAssetPluginResolveApi>,
-    next: IAssetPluginResolveNext,
-  ): Promise<IAssetPluginResolveOutput | null> {
+  public async parse(
+    input: Readonly<IAssetParserPluginParseInput>,
+    embryo: Readonly<IAssetParserPluginParseOutput> | null,
+    api: Readonly<IAssetParserPluginParseApi>,
+    next: IAssetParserPluginParseNext,
+  ): Promise<IAssetParserPluginParseOutput | null> {
     if (!embryo && this.accepted(input.src) && !this.rejected(input.src)) {
       const mimetype = mime.getType(input.filename)
-      const result: IAssetPluginResolveOutput<IFileResolvedData> = {
+      const result: IAssetParserPluginParseOutput<IFileResolvedData> = {
         type: FileAssetType,
         mimetype: mimetype ?? 'unknown',
         title: input.title,
@@ -67,16 +67,16 @@ export class FileAssetPlugin implements IAssetPlugin {
   }
 
   public async polish(
-    input: Readonly<IAssetPluginPolishInput>,
-    embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api: Readonly<IAssetPluginPolishApi>,
-    next: IAssetPluginPolishNext,
-  ): Promise<IAssetPluginPolishOutput | null> {
+    input: Readonly<IAssetParserPluginPolishInput>,
+    embryo: Readonly<IAssetParserPluginPolishOutput> | null,
+    api: Readonly<IAssetParserPluginPolishApi>,
+    next: IAssetParserPluginPolishNext,
+  ): Promise<IAssetParserPluginPolishOutput | null> {
     if (isFileAsset(input) && input.data) {
       const { srcLocation } = input.data
       const content: Buffer | null = await api.loadContent(srcLocation)
       if (content !== null) {
-        const result: IAssetPluginPolishOutput<IFilePolishedData> = {
+        const result: IAssetParserPluginPolishOutput<IFilePolishedData> = {
           dataType: AssetDataType.BINARY,
           data: content,
         }

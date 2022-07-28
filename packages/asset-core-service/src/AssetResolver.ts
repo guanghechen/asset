@@ -1,14 +1,12 @@
 import type { IAsset } from '@guanghechen/asset-core'
+import type { IAssetParserPluginParseInput, IAssetResolver } from '@guanghechen/asset-core-parser'
+import { AssetDataType, normalizeUrlPath } from '@guanghechen/asset-core-parser'
 import fs from 'fs-extra'
 import mime from 'mime'
 import path from 'path'
 import { v5 as uuid } from 'uuid'
-import type { IAssetResolver } from './types/asset-resolver'
-import { AssetDataType } from './types/misc'
-import type { IAssetPluginResolveInput } from './types/plugin/resolve'
 import { assetExistedFilepath, assetSafeLocation, mkdirsIfNotExists } from './util/asset'
 import { calcFingerprint } from './util/hash'
-import { normalizeRelativeUrlPath, normalizeUrlPath } from './util/misc'
 
 export interface IAssetUrlPathPrefixMap {
   [key: string]: string
@@ -39,7 +37,7 @@ export class AssetResolver implements IAssetResolver {
   constructor(props: IAssetResolverProps) {
     const urlPathPrefixMap: IAssetUrlPathPrefixMap = { _fallback: 'asset' }
     for (const [key, value] of Object.entries(props.urlPathPrefixMap)) {
-      urlPathPrefixMap[key] = normalizeRelativeUrlPath(value)
+      urlPathPrefixMap[key] = normalizeUrlPath(value)
     }
 
     this.GUID_NAMESPACE = props.GUID_NAMESPACE ?? '188b0b6f-fc7e-4100-8b52-7615fd945c28'
@@ -52,7 +50,7 @@ export class AssetResolver implements IAssetResolver {
     this.saveOptions = { prettier }
   }
 
-  public async initAsset(srcLocation: string): Promise<IAssetPluginResolveInput | null> {
+  public async initAsset(srcLocation: string): Promise<IAssetParserPluginParseInput | null> {
     assetSafeLocation(this.sourceRoot, srcLocation)
     assetExistedFilepath(srcLocation)
 
@@ -151,7 +149,7 @@ export class AssetResolver implements IAssetResolver {
 
   protected _normalizeLocation(rootDir: string, location: string): string {
     const relativeLocation = path.relative(rootDir, path.resolve(rootDir, location))
-    return normalizeRelativeUrlPath(relativeLocation)
+    return normalizeUrlPath(relativeLocation)
   }
 
   protected _genAssetGuid(identifier: string): string {

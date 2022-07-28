@@ -1,10 +1,10 @@
 import type {
-  IAssetPlugin,
-  IAssetPluginResolveApi,
-  IAssetPluginResolveInput,
-  IAssetPluginResolveNext,
-  IAssetPluginResolveOutput,
-} from '@guanghechen/asset-core-service'
+  IAssetParserPlugin,
+  IAssetParserPluginParseApi,
+  IAssetParserPluginParseInput,
+  IAssetParserPluginParseNext,
+  IAssetParserPluginParseOutput,
+} from '@guanghechen/asset-core-parser'
 import { collectIntervals } from '@guanghechen/parse-lineno'
 import type { Code } from '@yozora/ast'
 import { CodeType } from '@yozora/ast'
@@ -29,7 +29,7 @@ export interface IMarkdownAssetPluginCodeProps {
   sourceLineToken?: string
 }
 
-export class MarkdownAssetPluginCode implements IAssetPlugin {
+export class MarkdownAssetPluginCode implements IAssetParserPlugin {
   public readonly displayName: string = '@guanghechen/asset-plugin-markdown/code'
   protected readonly srcEncoding: BufferEncoding
   protected readonly srcFileRegex: RegExp
@@ -49,12 +49,12 @@ export class MarkdownAssetPluginCode implements IAssetPlugin {
     )
   }
 
-  public async resolve(
-    input: Readonly<IAssetPluginResolveInput>,
-    embryo: Readonly<IAssetPluginResolveOutput> | null,
-    api: Readonly<IAssetPluginResolveApi>,
-    next: IAssetPluginResolveNext,
-  ): Promise<IAssetPluginResolveOutput | null> {
+  public async parse(
+    input: Readonly<IAssetParserPluginParseInput>,
+    embryo: Readonly<IAssetParserPluginParseOutput> | null,
+    api: Readonly<IAssetParserPluginParseApi>,
+    next: IAssetParserPluginParseNext,
+  ): Promise<IAssetParserPluginParseOutput | null> {
     if (isMarkdownAsset(embryo) && embryo.data) {
       const { srcEncoding, srcFileRegex, srcLineRegex, indentRegex, lineRegex } = this
       const ast = shallowMutateAstInPreorder(embryo.data.ast, [CodeType], o => {
@@ -105,7 +105,7 @@ export class MarkdownAssetPluginCode implements IAssetPlugin {
         return { ...o, value }
       })
 
-      const result: IAssetPluginResolveOutput<IMarkdownResolvedData> = {
+      const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
         ...embryo,
         data: { ast },
       }

@@ -1,4 +1,5 @@
-import { AssetResolver, AssetService } from '@guanghechen/asset-core-service'
+import { AssetParser } from '@guanghechen/asset-core-parser'
+import { AssetResolver } from '@guanghechen/asset-core-service'
 import { FileAssetPlugin, FileAssetType } from '@guanghechen/asset-plugin-file'
 import {
   MarkdownAssetPlugin,
@@ -11,13 +12,8 @@ import fs from 'fs-extra'
 import path from 'node:path'
 
 async function build(): Promise<void> {
-  const FIXTURE_ROOT = path.join(__dirname, 'fixtures/asset-build')
-  const FIXTURE_SOURCE_ROOT = path.join(FIXTURE_ROOT, 'src')
-  const FIXTURE_STATIC_ROOT = path.join(FIXTURE_ROOT, 'static')
-  const FIXTURE_ASSET_DATA_MAP = path.join(FIXTURE_STATIC_ROOT, 'asset.map.json')
-
-  const assetService = new AssetService()
-  assetService
+  const assetParser = new AssetParser()
+  assetParser
     .use(
       new MarkdownAssetPlugin(),
       new MarkdownAssetPluginCode(),
@@ -34,6 +30,10 @@ async function build(): Promise<void> {
       }),
     )
 
+  const FIXTURE_ROOT = path.join(__dirname, 'fixtures/asset-build')
+  const FIXTURE_SOURCE_ROOT = path.join(FIXTURE_ROOT, 'src')
+  const FIXTURE_STATIC_ROOT = path.join(FIXTURE_ROOT, 'static')
+  const FIXTURE_ASSET_DATA_MAP = path.join(FIXTURE_STATIC_ROOT, 'asset.map.json')
   const assetResolver = new AssetResolver({
     sourceRoot: FIXTURE_SOURCE_ROOT,
     staticRoot: FIXTURE_STATIC_ROOT,
@@ -50,9 +50,9 @@ async function build(): Promise<void> {
   const locations = fs
     .readdirSync(FIXTURE_SOURCE_ROOT)
     .map(filename => path.resolve(FIXTURE_SOURCE_ROOT, filename))
-  await assetService.create(assetResolver, locations)
+  await assetParser.create(assetResolver, locations)
 
-  const assets = assetService.dump()
+  const assets = assetParser.dump()
   await fs.writeJSON(FIXTURE_ASSET_DATA_MAP, assets, { encoding: 'UTF-8', spaces: 2 })
 }
 

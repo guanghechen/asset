@@ -1,6 +1,6 @@
 import type { IAsset } from '@guanghechen/asset-core'
-import type { AssetDataType } from './misc'
-import type { IAssetPluginResolveInput } from './plugin/resolve'
+import type { AssetDataType } from './asset'
+import type { IAssetParserPluginParseInput } from './plugin/parse'
 
 export interface IAssetResolver {
   /**
@@ -9,7 +9,7 @@ export interface IAssetResolver {
    */
   initAsset(
     srcLocation: string,
-  ): IAssetPluginResolveInput | null | Promise<IAssetPluginResolveInput | null>
+  ): IAssetParserPluginParseInput | null | Promise<IAssetParserPluginParseInput | null>
   /**
    * Save the resolved asset.
    * @param params

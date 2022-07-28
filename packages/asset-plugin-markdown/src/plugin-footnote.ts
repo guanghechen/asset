@@ -1,10 +1,10 @@
 import type {
-  IAssetPlugin,
-  IAssetPluginResolveApi,
-  IAssetPluginResolveInput,
-  IAssetPluginResolveNext,
-  IAssetPluginResolveOutput,
-} from '@guanghechen/asset-core-service'
+  IAssetParserPlugin,
+  IAssetParserPluginParseApi,
+  IAssetParserPluginParseInput,
+  IAssetParserPluginParseNext,
+  IAssetParserPluginParseOutput,
+} from '@guanghechen/asset-core-parser'
 import type { Association, FootnoteDefinition } from '@yozora/ast'
 import { FootnoteDefinitionType, FootnoteReferenceType } from '@yozora/ast'
 import { calcFootnoteDefinitionMap, shallowMutateAstInPreorder } from '@yozora/ast-util'
@@ -28,7 +28,7 @@ export interface IMarkdownAssetPluginFootnoteProps {
   presetFootnoteDefinitions?: ReadonlyArray<FootnoteDefinition>
 }
 
-export class MarkdownAssetPluginFootnote implements IAssetPlugin {
+export class MarkdownAssetPluginFootnote implements IAssetParserPlugin {
   public readonly displayName: string = '@guanghechen/asset-plugin-markdown/footnote'
   protected readonly identifierPrefix: string
   protected readonly preferReference: boolean
@@ -40,12 +40,12 @@ export class MarkdownAssetPluginFootnote implements IAssetPlugin {
     this.presetFootnoteDefinitions = props.presetFootnoteDefinitions ?? []
   }
 
-  public async resolve(
-    input: Readonly<IAssetPluginResolveInput>,
-    embryo: Readonly<IAssetPluginResolveOutput> | null,
-    api: Readonly<IAssetPluginResolveApi>,
-    next: IAssetPluginResolveNext,
-  ): Promise<IAssetPluginResolveOutput | null> {
+  public async parse(
+    input: Readonly<IAssetParserPluginParseInput>,
+    embryo: Readonly<IAssetParserPluginParseOutput> | null,
+    api: Readonly<IAssetParserPluginParseApi>,
+    next: IAssetParserPluginParseNext,
+  ): Promise<IAssetParserPluginParseOutput | null> {
     if (isMarkdownAsset(embryo) && embryo.data) {
       let ast = shallowMutateAstInPreorder(
         embryo.data.ast,
@@ -68,7 +68,7 @@ export class MarkdownAssetPluginFootnote implements IAssetPlugin {
         ).root
       }
 
-      const result: IAssetPluginResolveOutput<IMarkdownResolvedData> = {
+      const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
         ...embryo,
         data: { ast },
       }

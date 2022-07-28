@@ -1,11 +1,11 @@
 import type {
-  IAssetPlugin,
-  IAssetPluginResolveApi,
-  IAssetPluginResolveInput,
-  IAssetPluginResolveNext,
-  IAssetPluginResolveOutput,
-} from '@guanghechen/asset-core-service'
-import { normalizeUrlPath } from '@guanghechen/asset-core-service'
+  IAssetParserPlugin,
+  IAssetParserPluginParseApi,
+  IAssetParserPluginParseInput,
+  IAssetParserPluginParseNext,
+  IAssetParserPluginParseOutput,
+} from '@guanghechen/asset-core-parser'
+import { normalizeUrlPath } from '@guanghechen/asset-core-parser'
 import type { IMarkdownResolvedData } from './types'
 import { isMarkdownAsset } from './types'
 
@@ -21,7 +21,7 @@ export interface IMarkdownAssetPluginSlugProps {
   resolveSlug?: (slug: string | null, src: string) => string | null
 }
 
-export class MarkdownAssetPluginSlug implements IAssetPlugin {
+export class MarkdownAssetPluginSlug implements IAssetParserPlugin {
   public readonly displayName: string = '@guanghechen/asset-plugin-markdown/slug'
   public readonly resolveSlug: (slug: string | null, src: string) => string | null
 
@@ -32,17 +32,17 @@ export class MarkdownAssetPluginSlug implements IAssetPlugin {
       ((slug, src): string | null => slug || slugPrefix + src.replace(/\.[^.]+$/, ''))
   }
 
-  public async resolve(
-    input: Readonly<IAssetPluginResolveInput>,
-    embryo: Readonly<IAssetPluginResolveOutput> | null,
-    api: Readonly<IAssetPluginResolveApi>,
-    next: IAssetPluginResolveNext,
-  ): Promise<IAssetPluginResolveOutput | null> {
+  public async parse(
+    input: Readonly<IAssetParserPluginParseInput>,
+    embryo: Readonly<IAssetParserPluginParseOutput> | null,
+    api: Readonly<IAssetParserPluginParseApi>,
+    next: IAssetParserPluginParseNext,
+  ): Promise<IAssetParserPluginParseOutput | null> {
     if (isMarkdownAsset(embryo) && embryo.data) {
       let slug = this.resolveSlug(embryo.slug, input.src)
       if (slug) slug = normalizeUrlPath(slug)
       if (slug !== embryo.slug) {
-        const result: IAssetPluginResolveOutput<IMarkdownResolvedData> = {
+        const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
           ...embryo,
           slug,
         }

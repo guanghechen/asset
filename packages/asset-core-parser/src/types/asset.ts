@@ -1,5 +1,20 @@
 import type { IAsset } from '@guanghechen/asset-core'
 
+export enum AssetDataType {
+  /**
+   * Binary data.
+   */
+  BINARY = 'binary',
+  /**
+   * JSON Object.
+   */
+  JSON = 'json',
+  /**
+   * LITERAL text.
+   */
+  TEXT = 'string',
+}
+
 export interface IAssetEntity extends IAsset {
   /**
    * Source virtual filepath (*nix style).
