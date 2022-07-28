@@ -5,7 +5,7 @@ import type {
   IAssetPluginResolveNext,
   IAssetPluginResolveOutput,
 } from '@guanghechen/asset-core-service'
-import { normalizeSlug } from '@guanghechen/asset-core-service'
+import { normalizeUrlPath } from '@guanghechen/asset-core-service'
 import type { IMarkdownResolvedData } from './types'
 import { isMarkdownAsset } from './types'
 
@@ -40,7 +40,7 @@ export class MarkdownAssetPluginSlug implements IAssetPlugin {
   ): Promise<IAssetPluginResolveOutput | null> {
     if (isMarkdownAsset(embryo) && embryo.data) {
       let slug = this.resolveSlug(embryo.slug, input.src)
-      if (slug) slug = normalizeSlug(slug)
+      if (slug) slug = normalizeUrlPath(slug)
       if (slug !== embryo.slug) {
         const result: IAssetPluginResolveOutput<IMarkdownResolvedData> = {
           ...embryo,

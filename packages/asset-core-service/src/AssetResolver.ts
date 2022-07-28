@@ -8,7 +8,7 @@ import { AssetDataType } from './types/misc'
 import type { IAssetPluginResolveInput } from './types/plugin/resolve'
 import { assetExistedFilepath, assetSafeLocation, mkdirsIfNotExists } from './util/asset'
 import { calcFingerprint } from './util/hash'
-import { normalizeRelativeUrlPath, normalizeSlug } from './util/misc'
+import { normalizeRelativeUrlPath, normalizeUrlPath } from './util/misc'
 
 export interface IAssetUrlPathPrefixMap {
   [key: string]: string
@@ -146,7 +146,7 @@ export class AssetResolver implements IAssetResolver {
     const extname: string | null = mime.getExtension(mimetype)
     let url = `/${urlPathPrefix}/${guid}`
     if (extname) url += '.' + extname
-    return normalizeSlug(url)
+    return normalizeUrlPath(url)
   }
 
   protected _normalizeLocation(rootDir: string, location: string): string {

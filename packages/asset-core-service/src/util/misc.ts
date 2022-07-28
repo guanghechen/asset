@@ -28,8 +28,26 @@ export const normalizePattern = (
   throw new Error(`[normalizePattern] Unexpected pattern.`)
 }
 
-export const normalizeSlug = (slug: string): string =>
-  slug
+export const normalizeUrlPath = (urlPath: string): string => {
+  const isAbsolute = urlPath.startsWith('/')
+  const pieces = urlPath
     .trim()
-    .replace(/[/\\]+/g, '/')
-    .replace(/([\s\S])\/$/, '$1')
+    .split(/[/\\]+/g)
+    .filter(piece => !!piece)
+  const pieceStack: string[] = []
+  for (const piece of pieces) {
+    if (/^\./.test(piece)) {
+      if (piece === '.') {
+        if (pieceStack.length > 0) continue
+      } else if (piece === '..') {
+        if (pieceStack.length > 0) {
+          pieceStack.pop()
+          continue
+        }
+      }
+    }
+    pieceStack.push(piece)
+  }
+  const p = pieceStack.join('/')
+  return isAbsolute ? '/' + p : p
+}
