@@ -13,6 +13,7 @@
   },
   "homepage": "https://github.com/guanghechen/static-site-api/tree/main/packages/asset-parser-markdown#readme",
   "main": "lib/cjs/index.js",
+  "module": "lib/esm/index.js",
   "types": "lib/types/index.d.ts",
   "source": "src/index.ts",
   "license": "MIT",
