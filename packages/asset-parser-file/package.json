@@ -1,5 +1,5 @@
 {
-  "name": "@guanghechen/asset-plugin-file",
+  "name": "@guanghechen/asset-parser-file",
   "version": "1.0.0-alpha.2",
   "description": "file asset",
   "author": {
@@ -9,9 +9,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/guanghechen/static-site-api.git",
-    "directory": "packages/asset-plugin-file"
+    "directory": "packages/asset-parser-file"
   },
-  "homepage": "https://github.com/guanghechen/static-site-api/tree/main/packages/asset-plugin-file#readme",
+  "homepage": "https://github.com/guanghechen/static-site-api/tree/main/packages/asset-parser-file#readme",
   "main": "lib/cjs/index.js",
   "types": "lib/types/index.d.ts",
   "source": "src/index.ts",

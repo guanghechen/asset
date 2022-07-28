@@ -11,7 +11,7 @@ import { calcFootnoteDefinitionMap, shallowMutateAstInPreorder } from '@yozora/a
 import type { IMarkdownResolvedData } from './types'
 import { isMarkdownAsset } from './types'
 
-export interface IMarkdownAssetPluginFootnoteProps {
+export interface IMarkdownAssetParserFootnoteProps {
   /**
    * Footnote identifier prefix.
    * @default 'footnote-'
@@ -28,13 +28,13 @@ export interface IMarkdownAssetPluginFootnoteProps {
   presetFootnoteDefinitions?: ReadonlyArray<FootnoteDefinition>
 }
 
-export class MarkdownAssetPluginFootnote implements IAssetParserPlugin {
-  public readonly displayName: string = '@guanghechen/asset-plugin-markdown/footnote'
+export class MarkdownAssetParserFootnote implements IAssetParserPlugin {
+  public readonly displayName: string = '@guanghechen/asset-parser-markdown/footnote'
   protected readonly identifierPrefix: string
   protected readonly preferReference: boolean
   protected readonly presetFootnoteDefinitions: ReadonlyArray<FootnoteDefinition>
 
-  constructor(props: IMarkdownAssetPluginFootnoteProps = {}) {
+  constructor(props: IMarkdownAssetParserFootnoteProps = {}) {
     this.identifierPrefix = props.identifierPrefix ?? 'footnote-'
     this.preferReference = props.preferReferences ?? true
     this.presetFootnoteDefinitions = props.presetFootnoteDefinitions ?? []

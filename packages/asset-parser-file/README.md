@@ -1,24 +1,24 @@
 <header>
   <h1 align="center">
-    <a href="https://github.com/guanghechen/yozora/tree/main/packages/asset-plugin-markdown#readme">@guanghechen/asset-plugin-markdown</a>
+    <a href="https://github.com/guanghechen/yozora/tree/main/packages/asset-parser-file#readme">@guanghechen/asset-parser-file</a>
   </h1>
   <div align="center">
-    <a href="https://www.npmjs.com/package/@guanghechen/asset-plugin-markdown">
+    <a href="https://www.npmjs.com/package/@guanghechen/asset-parser-file">
       <img
         alt="Npm Version"
-        src="https://img.shields.io/npm/v/@guanghechen/asset-plugin-markdown.svg"
+        src="https://img.shields.io/npm/v/@guanghechen/asset-parser-file.svg"
       />
     </a>
-    <a href="https://www.npmjs.com/package/@guanghechen/asset-plugin-markdown">
+    <a href="https://www.npmjs.com/package/@guanghechen/asset-parser-file">
       <img
         alt="Npm Download"
-        src="https://img.shields.io/npm/dm/@guanghechen/asset-plugin-markdown.svg"
+        src="https://img.shields.io/npm/dm/@guanghechen/asset-parser-file.svg"
       />
     </a>
-    <a href="https://www.npmjs.com/package/@guanghechen/asset-plugin-markdown">
+    <a href="https://www.npmjs.com/package/@guanghechen/asset-parser-file">
       <img
         alt="Npm License"
-        src="https://img.shields.io/npm/l/@guanghechen/asset-plugin-markdown.svg"
+        src="https://img.shields.io/npm/l/@guanghechen/asset-parser-file.svg"
       />
     </a>
     <a href="#install">
@@ -30,7 +30,7 @@
     <a href="https://github.com/nodejs/node">
       <img
         alt="Node.js Version"
-        src="https://img.shields.io/node/v/@guanghechen/asset-plugin-markdown"
+        src="https://img.shields.io/node/v/@guanghechen/asset-parser-file"
       />
     </a>
     <a href="https://github.com/facebook/jest">
@@ -54,13 +54,13 @@
 * npm
 
   ```bash
-  npm install --save @guanghechen/asset-plugin-markdown
+  npm install --save @guanghechen/asset-parser-file
   ```
 
 * yarn
 
   ```bash
-  yarn add @guanghechen/asset-plugin-markdown
+  yarn add @guanghechen/asset-parser-file
   ```
 
 ## Usage

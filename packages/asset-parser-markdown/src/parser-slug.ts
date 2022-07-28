@@ -9,7 +9,7 @@ import { normalizeUrlPath } from '@guanghechen/asset-core-parser'
 import type { IMarkdownResolvedData } from './types'
 import { isMarkdownAsset } from './types'
 
-export interface IMarkdownAssetPluginSlugProps {
+export interface IMarkdownAssetParserSlugProps {
   /**
    * Not worked if the `resolveSlug` specified.
    * @default '/page/post'
@@ -21,11 +21,11 @@ export interface IMarkdownAssetPluginSlugProps {
   resolveSlug?: (slug: string | null, src: string) => string | null
 }
 
-export class MarkdownAssetPluginSlug implements IAssetParserPlugin {
-  public readonly displayName: string = '@guanghechen/asset-plugin-markdown/slug'
+export class MarkdownAssetParserSlug implements IAssetParserPlugin {
+  public readonly displayName: string = '@guanghechen/asset-parser-markdown/slug'
   public readonly resolveSlug: (slug: string | null, src: string) => string | null
 
-  constructor(props: IMarkdownAssetPluginSlugProps = {}) {
+  constructor(props: IMarkdownAssetParserSlugProps = {}) {
     const slugPrefix = props.slugPrefix ?? '/page/post/'
     this.resolveSlug =
       props.resolveSlug ??

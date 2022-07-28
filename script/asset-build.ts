@@ -1,13 +1,13 @@
 import { AssetParser } from '@guanghechen/asset-core-parser'
 import { AssetResolver } from '@guanghechen/asset-core-service'
-import { FileAssetPlugin, FileAssetType } from '@guanghechen/asset-plugin-file'
+import { FileAssetParser, FileAssetType } from '@guanghechen/asset-parser-file'
 import {
-  MarkdownAssetPlugin,
-  MarkdownAssetPluginCode,
-  MarkdownAssetPluginFootnote,
-  MarkdownAssetPluginSlug,
+  MarkdownAssetParser,
+  MarkdownAssetParserCode,
+  MarkdownAssetParserFootnote,
+  MarkdownAssetParserSlug,
   MarkdownAssetType,
-} from '@guanghechen/asset-plugin-markdown'
+} from '@guanghechen/asset-parser-markdown'
 import fs from 'fs-extra'
 import path from 'node:path'
 
@@ -15,13 +15,13 @@ async function build(): Promise<void> {
   const assetParser = new AssetParser()
   assetParser
     .use(
-      new MarkdownAssetPlugin(),
-      new MarkdownAssetPluginCode(),
-      new MarkdownAssetPluginFootnote(),
-      new MarkdownAssetPluginSlug(),
+      new MarkdownAssetParser(),
+      new MarkdownAssetParserCode(),
+      new MarkdownAssetParserFootnote(),
+      new MarkdownAssetParserSlug(),
     )
     .use(
-      new FileAssetPlugin({
+      new FileAssetParser({
         accepted: filepath => {
           const { ext } = path.parse(filepath)
           if (['.txt', '.jpg', '.png'].includes(ext)) return true

@@ -14,7 +14,7 @@ import mime from 'mime'
 import type { IFilePolishedData, IFileResolvedData } from './types'
 import { FileAssetType, isFileAsset } from './types'
 
-export interface IFileAssetPluginProps {
+export interface IFileAssetParserProps {
   /**
    * Display name.
    */
@@ -31,13 +31,13 @@ export interface IFileAssetPluginProps {
   rejected?: RegExp[] | RegExp | ((src: string) => boolean)
 }
 
-export class FileAssetPlugin implements IAssetParserPlugin {
+export class FileAssetParser implements IAssetParserPlugin {
   public readonly displayName: string
   protected readonly accepted: (src: string) => boolean
   protected readonly rejected: (src: string) => boolean
 
-  constructor(props: IFileAssetPluginProps = {}) {
-    this.displayName = props.displayName ?? '@guanghechen/asset-plugin-file'
+  constructor(props: IFileAssetParserProps = {}) {
+    this.displayName = props.displayName ?? '@guanghechen/asset-parser-file'
     this.accepted = normalizePattern(props.accepted) ?? (() => true)
     this.rejected = normalizePattern(props.rejected) ?? (() => false)
   }

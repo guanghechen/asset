@@ -12,7 +12,7 @@ import { shallowMutateAstInPreorder } from '@yozora/ast-util'
 import type { IMarkdownResolvedData } from './types'
 import { isMarkdownAsset } from './types'
 
-export interface IMarkdownAssetPluginCodeProps {
+export interface IMarkdownAssetParserCodeProps {
   /**
    * Encoding of the source file.
    * @default 'utf8'
@@ -29,15 +29,15 @@ export interface IMarkdownAssetPluginCodeProps {
   sourceLineToken?: string
 }
 
-export class MarkdownAssetPluginCode implements IAssetParserPlugin {
-  public readonly displayName: string = '@guanghechen/asset-plugin-markdown/code'
+export class MarkdownAssetParserCode implements IAssetParserPlugin {
+  public readonly displayName: string = '@guanghechen/asset-parser-markdown/code'
   protected readonly srcEncoding: BufferEncoding
   protected readonly srcFileRegex: RegExp
   protected readonly srcLineRegex: RegExp
   protected readonly indentRegex: RegExp = /^\s*/
   protected readonly lineRegex: RegExp = /\r|\n|\n\r/g
 
-  constructor(props: IMarkdownAssetPluginCodeProps = {}) {
+  constructor(props: IMarkdownAssetParserCodeProps = {}) {
     this.srcEncoding = props.sourceEncoding ?? 'utf8'
     this.srcFileRegex = new RegExp(
       `(?:^|\\b)${props.sourceFileToken ?? 'sourcefile'}="([^"]+)"`,

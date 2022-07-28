@@ -20,7 +20,7 @@ import yaml from 'js-yaml'
 import type { IMarkdownPolishedData, IMarkdownResolvedData } from './types'
 import { MarkdownAssetType, isMarkdownAsset } from './types'
 
-export interface IMarkdownAssetPluginProps {
+export interface IMarkdownAssetParserProps {
   /**
    * Encoding of markdown files.
    * @default 'utf8'
@@ -37,14 +37,14 @@ export interface IMarkdownAssetPluginProps {
   resolvable?: (filename: string) => boolean
 }
 
-export class MarkdownAssetPlugin implements IAssetParserPlugin {
-  public readonly displayName: string = '@guanghechen/asset-plugin-markdown'
+export class MarkdownAssetParser implements IAssetParserPlugin {
+  public readonly displayName: string = '@guanghechen/asset-parser-markdown'
   protected readonly encoding: BufferEncoding
   protected readonly parser: IParser
   protected readonly frontmatterRegex: RegExp = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
   protected readonly resolvable: (filename: string) => boolean
 
-  constructor(props: IMarkdownAssetPluginProps = {}) {
+  constructor(props: IMarkdownAssetParserProps = {}) {
     this.parser =
       props.parser ?? new YozoraParser({ defaultParseOptions: { shouldReservePosition: false } })
     this.encoding = props.encoding ?? 'utf8'
