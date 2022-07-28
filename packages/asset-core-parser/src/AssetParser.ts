@@ -1,6 +1,5 @@
 import type { IAsset, IAssetDataMap, IAssetManager } from '@guanghechen/asset-core'
 import { AssetManager } from '@guanghechen/asset-core'
-import path from 'path'
 import type { IAssetEntity } from './types/asset'
 import type { IAssetParser } from './types/parser'
 import type {
@@ -71,17 +70,11 @@ export class AssetParser implements IAssetParser {
 
     const api: IAssetParserPluginParseApi = {
       loadContent: relativeSrcLocation => {
-        const resolvedLocation = assetResolver.resolveLocation(
-          path.dirname(location),
-          relativeSrcLocation,
-        )
+        const resolvedLocation = assetResolver.resolveLocation(location, '..', relativeSrcLocation)
         return assetResolver.loadSrcContent(resolvedLocation)
       },
       loadContentSync(relativeSrcLocation) {
-        const resolvedLocation = assetResolver.resolveLocation(
-          path.dirname(location),
-          relativeSrcLocation,
-        )
+        const resolvedLocation = assetResolver.resolveLocation(location, '..', relativeSrcLocation)
         return assetResolver.loadSrcContentSync(resolvedLocation)
       },
       resolveSlug: assetResolver.resolveSlug.bind(assetResolver),
@@ -124,24 +117,15 @@ export class AssetParser implements IAssetParser {
 
     const api: IAssetParserPluginPolishApi = {
       loadContent: relativeSrcLocation => {
-        const resolvedLocation = assetResolver.resolveLocation(
-          path.dirname(location),
-          relativeSrcLocation,
-        )
+        const resolvedLocation = assetResolver.resolveLocation(location, '..', relativeSrcLocation)
         return assetResolver.loadSrcContent(resolvedLocation)
       },
       loadContentSync(relativeSrcLocation) {
-        const resolvedLocation = assetResolver.resolveLocation(
-          path.dirname(location),
-          relativeSrcLocation,
-        )
+        const resolvedLocation = assetResolver.resolveLocation(location, '..', relativeSrcLocation)
         return assetResolver.loadSrcContentSync(resolvedLocation)
       },
       resolveAsset: relativeLocation => {
-        const resolvedLocation = assetResolver.resolveLocation(
-          path.dirname(location),
-          relativeLocation,
-        )
+        const resolvedLocation = assetResolver.resolveLocation(location, '..', relativeLocation)
         const locationId = assetResolver.identifyLocation(resolvedLocation)
         const asset = locationMap.get(locationId)
         return asset ? { uri: asset.uri, slug: asset.slug, title: asset.title } : null

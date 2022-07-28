@@ -18,12 +18,12 @@ export interface ISaveOptions {
 }
 
 export interface IAssetResolverProps {
+  GUID_NAMESPACE: string // uuid
   sourceRoot: string
   staticRoot: string
   urlPathPrefixMap: IAssetUrlPathPrefixMap
   caseSensitive: boolean
   saveOptions?: Partial<ISaveOptions>
-  GUID_NAMESPACE?: string // uuid
 }
 
 export class AssetResolver implements IAssetResolver {
@@ -40,7 +40,7 @@ export class AssetResolver implements IAssetResolver {
       urlPathPrefixMap[key] = normalizeUrlPath(value)
     }
 
-    this.GUID_NAMESPACE = props.GUID_NAMESPACE ?? '188b0b6f-fc7e-4100-8b52-7615fd945c28'
+    this.GUID_NAMESPACE = props.GUID_NAMESPACE
     this.sourceRoot = props.sourceRoot
     this.staticRoot = props.staticRoot
     this.urlPathPrefixMap = urlPathPrefixMap

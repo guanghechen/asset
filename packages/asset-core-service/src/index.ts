@@ -1,5 +1,7 @@
 export * from './AssetResolver'
+export * from './AssetService'
 export * from './types/misc'
 export * from './util/asset'
 export * from './util/hash'
+export * from './util/location'
 export * from './util/TaskPipeline'
