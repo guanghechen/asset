@@ -36,13 +36,6 @@
   },
   "dependencies": {
     "@guanghechen/asset-core": "^1.0.0-alpha.2",
-    "@guanghechen/invariant": "^1.9.7",
-    "fs-extra": "^10.1.0",
-    "mime": "^3.0.0",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^9.0.13",
-    "@types/uuid": "^8.3.4"
+    "@guanghechen/invariant": "^1.9.7"
   }
 }
