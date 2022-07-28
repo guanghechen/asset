@@ -59,7 +59,7 @@ export class FileAssetParser implements IAssetParserPlugin {
         updatedAt: input.updatedAt,
         categories: [],
         tags: [],
-        data: { srcLocation: input.src },
+        data: { filename: input.filename },
       }
       return next(result)
     }
@@ -73,8 +73,8 @@ export class FileAssetParser implements IAssetParserPlugin {
     next: IAssetParserPluginPolishNext,
   ): Promise<IAssetParserPluginPolishOutput | null> {
     if (isFileAsset(input) && input.data) {
-      const { srcLocation } = input.data
-      const content: Buffer | null = await api.loadContent(srcLocation)
+      const { filename } = input.data
+      const content: Buffer | null = await api.loadContent(filename)
       if (content !== null) {
         const result: IAssetParserPluginPolishOutput<IFilePolishedData> = {
           dataType: AssetDataType.BINARY,

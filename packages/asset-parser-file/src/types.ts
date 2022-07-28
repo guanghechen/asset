@@ -10,7 +10,7 @@ export const isFileAsset = (
   input?.type === FileAssetType
 
 export interface IFileResolvedData {
-  srcLocation: string
+  filename: string
 }
 
 export type IFilePolishedData = Buffer
