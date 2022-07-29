@@ -8,7 +8,7 @@ import { AssetResolver } from './AssetResolver'
 import type { IAssetChangeTask } from './types/misc'
 import { AssetChangeEvent } from './types/misc'
 import { collectAssetLocations } from './util/location'
-import { isSameSet } from './util/misc'
+import { delay, isSameSet } from './util/misc'
 import { TaskPipeline } from './util/TaskPipeline'
 
 export interface IAssetResolverConfig {
@@ -29,6 +29,10 @@ export interface IAssetResolverItem {
 export interface IAssetServiceProps {
   parser: IAssetParser
   staticRoot: string
+  /**
+   * Wait a few million seconds after file content changed.
+   */
+  delayAfterContentChanged?: number
   assetDataMapFilepath?: string
   acceptedPattern?: string[]
   caseSensitive?: boolean
@@ -44,6 +48,7 @@ export class AssetService {
   protected readonly saveOptions: Partial<ISaveOptions>
   protected readonly defaultAcceptedPattern: string[]
   protected readonly defaultCaseSensitive: boolean
+  protected readonly delayAfterContentChanged: number
   protected readonly resolveUrlPathPrefix: IAssetUrlPrefixResolver
   protected runningTick: number
   protected watching: boolean
@@ -59,6 +64,7 @@ export class AssetService {
     this.saveOptions = { ...props.saveOptions }
     this.defaultAcceptedPattern = props.acceptedPattern?.slice() ?? ['**/*']
     this.defaultCaseSensitive = props.caseSensitive ?? true
+    this.delayAfterContentChanged = props.delayAfterContentChanged ?? 200
     this.resolveUrlPathPrefix = props.resolveUrlPathPrefix
     this.runningTick = 0
     this.watching = false
@@ -104,6 +110,7 @@ export class AssetService {
             case AssetChangeEvent.MODIFIED:
               await parser.remove(resolver, task.payload.locations)
               await parser.create(resolver, task.payload.locations)
+              await delay(this.delayAfterContentChanged)
               break
             default: {
               const details = task == null ? task : JSON.stringify(task)
@@ -186,7 +193,7 @@ export class AssetService {
         )
     }
 
-    await new Promise<void>(resolve => setTimeout(resolve, 500))
+    await delay(500)
     await Promise.allSettled(resolvers.map(resolver => resolver.pipeline.run()))
   }
 

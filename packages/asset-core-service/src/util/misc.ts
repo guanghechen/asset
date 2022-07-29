@@ -15,3 +15,6 @@ export const isSameSet = <T>(a: T[], b: T[]): boolean => {
   const set: Set<T> = new Set(a)
   return b.every(x => set.has(x))
 }
+
+export const delay = (duration: number): Promise<void> =>
+  new Promise<void>(resolve => setTimeout(resolve, duration))
