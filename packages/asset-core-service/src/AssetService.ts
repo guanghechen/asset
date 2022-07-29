@@ -2,14 +2,13 @@ import type { IAssetParser, IAssetResolver } from '@guanghechen/asset-core-parse
 import invariant from '@guanghechen/invariant'
 import fs from 'fs-extra'
 import path from 'path'
-import type { IAssetUrlPathPrefixMap, ISaveOptions } from './AssetResolver'
+import type { IAssetUrlPrefixResolver, ISaveOptions } from './AssetResolver'
 import { AssetResolver } from './AssetResolver'
 import { collectAssetLocations } from './util/location'
 
 export interface IAssetResolverConfig {
   GUID_NAMESPACE: string
   sourceRoot: string
-  urlPathPrefixMap?: IAssetUrlPathPrefixMap
   acceptedPattern?: string[]
   caseSensitive?: boolean
 }
@@ -26,9 +25,9 @@ export interface IAssetServiceProps {
   staticRoot: string
   assetDataMapFilepath?: string
   acceptedPattern?: string[]
-  urlPathPrefixMap?: IAssetUrlPathPrefixMap
   caseSensitive?: boolean
   saveOptions?: Partial<ISaveOptions>
+  resolveUrlPathPrefix: IAssetUrlPrefixResolver
 }
 
 export class AssetService {
@@ -37,9 +36,9 @@ export class AssetService {
   protected readonly staticRoot: string
   protected readonly assetDataMapFilepath: string
   protected readonly saveOptions: Partial<ISaveOptions>
-  protected readonly defaultUrlPathPrefixMap: IAssetUrlPathPrefixMap
   protected readonly defaultAcceptedPattern: string[]
   protected readonly defaultCaseSensitive: boolean
+  protected readonly resolveUrlPathPrefix: IAssetUrlPrefixResolver
   protected runningTick: number
   protected watching: boolean
 
@@ -52,12 +51,9 @@ export class AssetService {
       props.assetDataMapFilepath ?? 'asset.map.json',
     )
     this.saveOptions = { ...props.saveOptions }
-    this.defaultUrlPathPrefixMap = {
-      _fallback: '/asset/unknown',
-      ...props.urlPathPrefixMap,
-    }
     this.defaultAcceptedPattern = props.acceptedPattern?.slice() ?? ['**/*']
     this.defaultCaseSensitive = props.caseSensitive ?? true
+    this.resolveUrlPathPrefix = props.resolveUrlPathPrefix
     this.runningTick = 0
     this.watching = false
   }
@@ -71,7 +67,6 @@ export class AssetService {
     const {
       GUID_NAMESPACE,
       sourceRoot,
-      urlPathPrefixMap = this.defaultUrlPathPrefixMap,
       acceptedPattern = this.defaultAcceptedPattern.slice(),
       caseSensitive = this.defaultCaseSensitive,
     } = config
@@ -79,7 +74,7 @@ export class AssetService {
       GUID_NAMESPACE,
       sourceRoot,
       staticRoot: this.staticRoot,
-      urlPathPrefixMap: { ...urlPathPrefixMap },
+      resolveUrlPathPrefix: this.resolveUrlPathPrefix,
       caseSensitive,
       saveOptions: { ...this.saveOptions },
     })

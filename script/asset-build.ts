@@ -29,16 +29,30 @@ async function build(): Promise<void> {
           if (['.txt', '.jpg', '.png'].includes(ext)) return true
           return false
         },
+        rejected: filepath => {
+          const pieces = filepath.toLowerCase().split(/[\s\d-_./\\]+/g)
+          return pieces.some(piece => piece.trim() === 'password')
+        },
       }),
     )
   const service = new AssetService({
     parser,
     staticRoot: FIXTURE_STATIC_ROOT,
     acceptedPattern: ['!**/*.cpp'],
-    urlPathPrefixMap: {
-      [MarkdownAssetType]: '/api/post/',
-      [FileAssetType]: '/asset/file/',
-      _fallback: '/asset/unknown/',
+    resolveUrlPathPrefix: ({ assetType, mimetype }) => {
+      switch (assetType) {
+        case MarkdownAssetType:
+          return '/api/post/'
+        case FileAssetType: {
+          if (mimetype.startsWith('image/')) return '/asset/image'
+          switch (mimetype) {
+            default:
+              return '/asset/file/'
+          }
+        }
+        default:
+          return '/asset/unknown/'
+      }
     },
     caseSensitive: true,
     saveOptions: { prettier: true },

@@ -8,10 +8,7 @@ import { v5 as uuid } from 'uuid'
 import { assetExistedFilepath, assetSafeLocation, mkdirsIfNotExists } from './util/asset'
 import { calcFingerprint } from './util/hash'
 
-export interface IAssetUrlPathPrefixMap {
-  [key: string]: string
-  _fallback: string
-}
+export type IAssetUrlPrefixResolver = (params: { assetType: string; mimetype: string }) => string
 
 export interface ISaveOptions {
   prettier: boolean
@@ -21,30 +18,25 @@ export interface IAssetResolverProps {
   GUID_NAMESPACE: string // uuid
   sourceRoot: string
   staticRoot: string
-  urlPathPrefixMap: IAssetUrlPathPrefixMap
   caseSensitive: boolean
   saveOptions?: Partial<ISaveOptions>
+  resolveUrlPathPrefix: IAssetUrlPrefixResolver
 }
 
 export class AssetResolver implements IAssetResolver {
   protected readonly GUID_NAMESPACE: string
   protected readonly sourceRoot: string
   protected readonly staticRoot: string
-  protected readonly urlPathPrefixMap: IAssetUrlPathPrefixMap
   protected readonly caseSensitive: boolean
   protected readonly saveOptions: Readonly<ISaveOptions>
+  protected readonly resolveUrlPathPrefix: IAssetUrlPrefixResolver
 
   constructor(props: IAssetResolverProps) {
-    const urlPathPrefixMap: IAssetUrlPathPrefixMap = { _fallback: 'asset' }
-    for (const [key, value] of Object.entries(props.urlPathPrefixMap)) {
-      urlPathPrefixMap[key] = normalizeUrlPath(value)
-    }
-
     this.GUID_NAMESPACE = props.GUID_NAMESPACE
     this.sourceRoot = props.sourceRoot
     this.staticRoot = props.staticRoot
-    this.urlPathPrefixMap = urlPathPrefixMap
     this.caseSensitive = props.caseSensitive
+    this.resolveUrlPathPrefix = props.resolveUrlPathPrefix
 
     const { prettier = false } = props.saveOptions ?? {}
     this.saveOptions = { prettier }
@@ -139,8 +131,7 @@ export class AssetResolver implements IAssetResolver {
 
   public resolveUri(params: Pick<IAsset, 'guid' | 'type' | 'mimetype'>): string {
     const { guid, type, mimetype } = params
-    const { urlPathPrefixMap } = this
-    const urlPathPrefix = urlPathPrefixMap[type] ?? urlPathPrefixMap._fallback
+    const urlPathPrefix = this.resolveUrlPathPrefix({ assetType: type, mimetype })
     const extname: string | null = mime.getExtension(mimetype)
     let url = `/${urlPathPrefix}/${guid}`
     if (extname) url += '.' + extname
