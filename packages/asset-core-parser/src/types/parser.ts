@@ -21,5 +21,5 @@ export interface IAssetParser {
    * Mark the assets on the locations invalid and remove them from assetManager.
    * @param locations
    */
-  remove(assetResolver: IAssetResolver, locations: string[]): void
+  remove(assetResolver: IAssetResolver, locations: string[]): Promise<void>
 }

@@ -1,6 +1,12 @@
 export enum AssetChangeEvent {
   CREATED = 'created',
+  MODIFIED = 'modified',
   REMOVED = 'removed',
-  RENAMED = 'renamed',
-  UPDATED = 'updated',
+}
+
+export interface IAssetChangeTask {
+  type: AssetChangeEvent
+  payload: {
+    locations: string[]
+  }
 }

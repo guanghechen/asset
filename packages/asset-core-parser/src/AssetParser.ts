@@ -46,7 +46,7 @@ export class AssetParser implements IAssetParser {
     for (const location of locations) await this._assetPolish(assetResolver, location)
   }
 
-  public remove(assetResolver: IAssetResolver, locations: string[]): void {
+  public async remove(assetResolver: IAssetResolver, locations: string[]): Promise<void> {
     const { assetManager, locationMap } = this
     for (const location of locations) {
       const locationId = assetResolver.identifyLocation(location)

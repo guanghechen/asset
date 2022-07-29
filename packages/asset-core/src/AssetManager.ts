@@ -43,7 +43,9 @@ export class AssetManager implements IAssetManager {
   }
 
   public dump(): IAssetDataMap {
-    const assets: IAsset[] = Array.from(this.assetMap.values())
+    const assets: IAsset[] = Array.from(this.assetMap.values()).sort((x, y) =>
+      x.uri.localeCompare(y.uri),
+    )
     return { assets }
   }
 

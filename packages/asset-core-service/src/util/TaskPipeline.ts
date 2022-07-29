@@ -39,11 +39,11 @@ export interface ITaskPipelineProps<A extends ITask> {
    */
   handleTask(task: Readonly<A>): void | Promise<void>
   /**
-   * Check if the current task could be skipped.
+   * Squash adjacent two tasks. `false` represent there cannot be squashed.
    * @param task
    * @param nextTask
    */
-  isSquashable?(task: Readonly<A>, nextTask: Readonly<A>): boolean
+  squash(task: Readonly<A>, nextTask: Readonly<A>): A | false
   /**
    * Callback once a task finished successfully.
    * @param task
@@ -66,7 +66,7 @@ export interface ITaskPipelineProps<A extends ITask> {
 export class TaskPipeline<A extends ITask> {
   protected readonly tasks: A[] = []
   protected readonly handleTask: (task: Readonly<A>) => void | Promise<void>
-  protected readonly isSquashable: (task: Readonly<A>, nextTask: Readonly<A>) => boolean
+  protected readonly squash: (task: Readonly<A>, nextTask: Readonly<A>) => A | false
   protected readonly onTaskSucceed: (task: Readonly<A>) => void | Promise<void>
   protected readonly onTaskFailure: (task: Readonly<A>, error: unknown) => void | Promise<void>
   protected readonly onTaskFinished: (task: Readonly<A>, error?: unknown) => void | Promise<void>
@@ -79,7 +79,7 @@ export class TaskPipeline<A extends ITask> {
 
   constructor(props: ITaskPipelineProps<A>) {
     this.handleTask = props.handleTask
-    this.isSquashable = props.isSquashable ?? (() => false)
+    this.squash = props.squash ?? (() => false)
     this.onTaskSucceed = props.onTaskSucceed ?? (() => {})
     this.onTaskFailure =
       props.onTaskFailure ??
@@ -146,7 +146,10 @@ export class TaskPipeline<A extends ITask> {
     // Optimization: check if the current task could be skipped.
     if (this.tasks.length > 0) {
       const nextTask = this.tasks[0]
-      if (this.isSquashable(task, nextTask)) {
+      const squashedTask = this.squash(task, nextTask)
+      if (squashedTask !== false) {
+        this.tasks.shift()
+        this.tasks.unshift(squashedTask)
         await this.automaticRunTask()
         return
       }
