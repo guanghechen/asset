@@ -1,6 +1,19 @@
 {
   "assets": [
     {
+      "guid": "77f85d92-6838-5d1e-9328-34086150e3e3",
+      "hash": "3599bb76ce6a480f1454c3fd7ab9baf0a1662997",
+      "type": "markdown",
+      "mimetype": "application/json",
+      "title": "b",
+      "uri": "/api/post/77f85d92-6838-5d1e-9328-34086150e3e3.json",
+      "slug": "/page/post/b",
+      "createdAt": "2022-07-26T02:00:57.694Z",
+      "updatedAt": "2022-07-26T01:54:23.424Z",
+      "categories": [],
+      "tags": []
+    },
+    {
       "guid": "7e713034-962e-5f5b-b206-e049b9629e60",
       "hash": "90aeff69cdd7eb7429c111cae4dd98c8e423f702",
       "type": "markdown",
@@ -43,19 +56,6 @@
       "slug": null,
       "createdAt": "2022-07-26T03:47:50.184Z",
       "updatedAt": "2022-07-26T03:47:50.184Z",
-      "categories": [],
-      "tags": []
-    },
-    {
-      "guid": "77f85d92-6838-5d1e-9328-34086150e3e3",
-      "hash": "3599bb76ce6a480f1454c3fd7ab9baf0a1662997",
-      "type": "markdown",
-      "mimetype": "application/json",
-      "title": "b",
-      "uri": "/api/post/77f85d92-6838-5d1e-9328-34086150e3e3.json",
-      "slug": "/page/post/b",
-      "createdAt": "2022-07-26T02:00:57.694Z",
-      "updatedAt": "2022-07-26T01:54:23.424Z",
       "categories": [],
       "tags": []
     }

@@ -61,7 +61,11 @@ async function build(): Promise<void> {
     GUID_NAMESPACE: '188b0b6f-fc7e-4100-8b52-7615fd945c28',
   })
 
-  await service.build()
+  // console.log('building...')
+  // await service.build()
+
+  console.log('watching...')
+  await service.watch()
 }
 
 void build()
