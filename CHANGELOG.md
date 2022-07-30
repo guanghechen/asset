@@ -1,5 +1,99 @@
 # Changelog
 
+<a name="1.0.0-alpha.3"></a>
+## 1.0.0-alpha.3 (2022-07-30)
+
+### Added
+
+- ✨ feat: support watch mode [[610f82c](https://github.com/guanghechen/asset/commit/610f82cccfcdbf787b52ee32b98138df25e21267)]
+- ✨ feat: implement AssetManager [[14dd9c5](https://github.com/guanghechen/asset/commit/14dd9c51d209cf48fe67af7f563efb747ee267af)]
+- ✨ feat: add @guanghechen/asset-core-service [[635af0e](https://github.com/guanghechen/asset/commit/635af0e65d8ef10e890f0ea1c184dea725767417)]
+- ✨ feat: add asset-plugin-markdown [[2fc1136](https://github.com/guanghechen/asset/commit/2fc1136ff352cf3194fd075dd55f3377ed3ab60f)]
+- ✨ feat(asset-core): add AssetService [[286caa9](https://github.com/guanghechen/asset/commit/286caa9a8f65eb6a7769882bd1b5524f6e8de988)]
+- ✨ feat: new sub-package @guanghechen/asset-core [[9a64623](https://github.com/guanghechen/asset/commit/9a646238153842b027eb14e8e70f13d1b4a18718)]
+
+### Changed
+
+- ⬆️ chore: upgrade dependencies [[0a567cb](https://github.com/guanghechen/asset/commit/0a567cbf0e7016d89861b854062a87f56f7380cb)]
+- 🍱 asset: update demo [[05c1008](https://github.com/guanghechen/asset/commit/05c10086cc353679f17d5362865dd60c08e7ae3b)]
+- 🎨 improve: Wait a few million seconds after file content changed [[e3c2771](https://github.com/guanghechen/asset/commit/e3c27715fc763255386d8e4e555e7bb97bf39c29)]
+- 🎨 improve: use resolveUrlPathPrefix to generate url prefix for different type assets [[9861264](https://github.com/guanghechen/asset/commit/9861264d7be6995378ccf15bda947dd72b147f11)]
+- 🎨 improve: add AssetService [[3bdab1b](https://github.com/guanghechen/asset/commit/3bdab1bcbb4afcf6077106e1d67d54a550fa4976)]
+- 🔧 chore: update bundle configs [[7858989](https://github.com/guanghechen/asset/commit/7858989e2894abdec29da0daa2e2a97f1a80893c)]
+- 🔧 chore: remove unnecessary dependencies [[e15edd6](https://github.com/guanghechen/asset/commit/e15edd6fc2476a4946706347b306683fbd9f0507)]
+- 🎨 refactor: rename asset plugins [[a2b2c61](https://github.com/guanghechen/asset/commit/a2b2c612f2c23ce3f273a67d890eee33cb1aa962)]
+- 🎨 refactor: abstract asset-parser logic into @guanghechen/asset-core-parser [[7941651](https://github.com/guanghechen/asset/commit/79416516305b0ba415ee06642790295aba78b1ae)]
+- 🎨 refactor: refactor resolveSlug &amp; rename it to resolveUrlPath [[12f62b3](https://github.com/guanghechen/asset/commit/12f62b34cd132913955fabee3b86fdc3684bcf1e)]
+- 🎨 refactor: refactor AssetService interfaces [[2b01bf0](https://github.com/guanghechen/asset/commit/2b01bf077b8859aef782c0dfe341c240c79b331d)]
+- 🎨 feat: add MarkdownAssetPluginSlug [[8bc51d2](https://github.com/guanghechen/asset/commit/8bc51d2458afb7cf92e03037a8f8de2babcd458a)]
+- 🍱 asset: update demo [[1348efe](https://github.com/guanghechen/asset/commit/1348efedab557d23dee4b29bfa7f612a341c12a5)]
+- 🎨 improve: support to use multiple plugins [[3212ef1](https://github.com/guanghechen/asset/commit/3212ef167b0e37f024d8bca3cc4978192e67b572)]
+- 🎨 improve(markdown): add new plugins to handle code and footnote [[dd91873](https://github.com/guanghechen/asset/commit/dd91873cb217eef650f6bdcab9837fd7f7908807)]
+- 🎨 improve: support loadContent synchronously [[538bd42](https://github.com/guanghechen/asset/commit/538bd42ca504f098ab7945505bece65f5db05cc3)]
+- 🎨 improve: rename variables [[7f944de](https://github.com/guanghechen/asset/commit/7f944de16e8b248020203056a42d1bb0d9407db7)]
+- 🍱 asset: move script/_fixtures to script/fixtures [[bfae046](https://github.com/guanghechen/asset/commit/bfae0464588ed70cc85f2bd0a195896fa6fdeb41)]
+- 🔧 chore: update bundle configs [[56d9f74](https://github.com/guanghechen/asset/commit/56d9f74bb4af7a086effcbf506155f5bbe51ff47)]
+- 🍱 asset: add asset-build demo [[5e02bd5](https://github.com/guanghechen/asset/commit/5e02bd5cc6b042ef9fdc89a7c90ce5edbcf0fe00)]
+- 🎨 improve: use third-party lib &#x27;mime&#x27; to simplify codes [[52c4627](https://github.com/guanghechen/asset/commit/52c46279c19b08df70cfa47facff5691056c8e39)]
+- 🎨 improve: keep middlewares simple [[c304f05](https://github.com/guanghechen/asset/commit/c304f05b4279cb544d08f5b32678eb5f0f4e0b1d)]
+- 🎨 improve: support to customize guid namespace [[6f2d56b](https://github.com/guanghechen/asset/commit/6f2d56bbe478b1d9862cf23216c7c69843cd795c)]
+- 🎨 refactor: support more liberal middleware style [[2969816](https://github.com/guanghechen/asset/commit/296981683688c5835ae03dbe12d216987738d652)]
+- 🎨 improve: tweak interface &amp; fix known issues [[9c5cf3e](https://github.com/guanghechen/asset/commit/9c5cf3e1de5cf6b1e3d416b99938c08d650fc0df)]
+- 🎨 refactor(asset-plugin-file): prefer single file [[c619b08](https://github.com/guanghechen/asset/commit/c619b080268ed3854edcd12e2f3b857946e6c30c)]
+- 🎨 improve(asset-plugin-markdown): try next middleware even the current plugin resolved [[f0a1922](https://github.com/guanghechen/asset/commit/f0a192235ae71b63988281980ff707d4152c7454)]
+- 🚨 style: fix lint warnings [[beb065e](https://github.com/guanghechen/asset/commit/beb065e9f19f318c35d5396870088324c3b684a8)]
+- 🎨 improve: resolve relative reference urls [[9052115](https://github.com/guanghechen/asset/commit/9052115ac7ec2197fb71135be39e8057a3448eab)]
+- ⬆️ chore: upgrade dependencies [[b3989bf](https://github.com/guanghechen/asset/commit/b3989bf25d65dda1e3973731033008329a4ef2ab)]
+- 🔧 chore: update yarn.lock [[9422d49](https://github.com/guanghechen/asset/commit/9422d49709b0abde9901f9a4a6cd154a9abead82)]
+- 🎨 refactor: move asset-file to asset-plugin-file &amp; rewrite it [[03e5589](https://github.com/guanghechen/asset/commit/03e55899061e13233728f50eeea47655b6b179fc)]
+- 🎨 improve: prefer &#x27;Buffer&#x27; instead of custom type &#x27;IBuffer&#x27; [[9e9abe1](https://github.com/guanghechen/asset/commit/9e9abe10494a5159e75d7cd2e6332256dd574eeb)]
+- 🎨 refactor: rewrite AssetService and AssetManager [[7defa71](https://github.com/guanghechen/asset/commit/7defa710c03127cb69b5d67a734b48b48219f9f1)]
+- 🎨 improve: make code clean [[a15fcfc](https://github.com/guanghechen/asset/commit/a15fcfc8dfbe13806113583a649bfc3958137a3a)]
+- ⬆️ chore: upgrade dependencies [[589476c](https://github.com/guanghechen/asset/commit/589476cb2d8d330c4acf736e3ffc1554ebec47c7)]
+- 🎨 refactor: rewrite AssetService [[f286ef9](https://github.com/guanghechen/asset/commit/f286ef923962fa983d1cde5e66fcbe9202445966)]
+- 🎨 feat: add TaskPipeline [[416a595](https://github.com/guanghechen/asset/commit/416a5956783ff8959eb0b02cf316c58b950a94d0)]
+- 🎨 mod(asset-plugin-markdown): update with @guanghechen/asset-core-service [[f583165](https://github.com/guanghechen/asset/commit/f5831655fbe736671db3e1d4cf8fc12a2e483945)]
+- 🎨 mod: update AssetService with AssetManager [[45acd33](https://github.com/guanghechen/asset/commit/45acd3302c5625809b58a8fd376598ee3dc0f956)]
+- 🎨 refactor: rewrite TagManager and CategoryManager [[95bf4db](https://github.com/guanghechen/asset/commit/95bf4dbf8b3bf6c9237519cbfc1e1cd6c9500652)]
+- 🎨 refactor: rewrite asset-core [[c02462c](https://github.com/guanghechen/asset/commit/c02462c4f0e047bb682fef56400d6f1bd9ffd933)]
+- ⬆️ chore: upgrade dependencies &amp; fix lint errors [[87da004](https://github.com/guanghechen/asset/commit/87da004497394d21b6f3fcf12b08873d5b77608c)]
+
+### Removed
+
+- 🔥 remove: remove package &#x27;@guanghechen/site-api&#x27; [[1a09e6e](https://github.com/guanghechen/asset/commit/1a09e6eb673bca1ae21c5e9929130080ada868fa)]
+- 🔥 remove asset-markdown [[ab2d96d](https://github.com/guanghechen/asset/commit/ab2d96d0710de0f11ea445b43701ff5220538030)]
+- 🔥 remove asset-markdown-parser [[376a89b](https://github.com/guanghechen/asset/commit/376a89b453b6e244247cc682279a426b323a504f)]
+
+### Fixed
+
+- 🐛 fix: fix incorrect path in FileAssetParser.polish [[08bedeb](https://github.com/guanghechen/asset/commit/08bedeb3ff515e163fcc0f4bfc2e3a0b3ef4d612)]
+
+### Miscellaneous
+
+-  Rename repository to asset [[4a77a20](https://github.com/guanghechen/asset/commit/4a77a20cb72c53a56a8e22bce7325818f77eac7f)]
+- ⚰️ improve: remove dead packages [[f98a32e](https://github.com/guanghechen/asset/commit/f98a32e230a77fe3d1a76ae22457f953e1e402fa)]
+- 📝 docs: rename author [[e4fe5ef](https://github.com/guanghechen/asset/commit/e4fe5effbc62b33578b02ed93073c51b356c8972)]
+
+
+<a name="1.0.0-alpha.2"></a>
+## 1.0.0-alpha.2 (2021-07-23)
+
+### Changed
+
+- 🔧 chore: rename default branch from master to main [[4b67b56](https://github.com/guanghechen/asset/commit/4b67b5698c44971903a0da45ca93407819b32aef)]
+- 👽 improve: update due to the previous upgrades [[b1e42b8](https://github.com/guanghechen/asset/commit/b1e42b8cc2068aadba7ecc5f031dd795cd8b36aa)]
+- ⬆️ chore: upgrade dependencies &amp; fix lint errors [[0afca09](https://github.com/guanghechen/asset/commit/0afca09fba381d0eb493c4a3cbce9a6db736bf30)]
+
+### Fixed
+
+- 🐛 improve: fix type errors [[6cf899a](https://github.com/guanghechen/asset/commit/6cf899a05048abfc2ec7342da189e04472fd8426)]
+
+### Miscellaneous
+
+-  :white_check_test:  test: remove volatile datetime in snapshots [[2ce9320](https://github.com/guanghechen/asset/commit/2ce93204289b0f2502d68ff2551f3a22c46d5296)]
+- 📝 docs: add CHANGELOG [[96328e3](https://github.com/guanghechen/asset/commit/96328e328f072407389b8a1c3a4519774c1dfc40)]
+
+
 <a name="1.0.0-alpha.0"></a>
 ## 1.0.0-alpha.0 (2021-03-20)
 
