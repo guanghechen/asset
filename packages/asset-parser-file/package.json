@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-parser-file",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0-alpha.3",
   "description": "file asset",
   "author": {
     "name": "guanghechen",
@@ -38,7 +38,7 @@
     "test:update": "node -r ts-node/register -r tsconfig-paths/register __test__/answer.ts"
   },
   "dependencies": {
-    "@guanghechen/asset-core-parser": "^1.0.0-alpha.2",
+    "@guanghechen/asset-core-parser": "^1.0.0-alpha.3",
     "mime": "^3.0.0"
   }
 }
