@@ -38,8 +38,8 @@
   },
   "dependencies": {
     "@guanghechen/asset-core-parser": "^1.0.0-alpha.2",
-    "@guanghechen/option-helper": "^1.9.7",
-    "@guanghechen/parse-lineno": "^1.9.7",
+    "@guanghechen/option-helper": "^1.9.8",
+    "@guanghechen/parse-lineno": "^1.9.8",
     "@types/js-yaml": "^4.0.5",
     "@yozora/ast": "^2.0.2-alpha.0",
     "@yozora/ast-util": "^2.0.2-alpha.0",
