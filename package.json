@@ -1,5 +1,5 @@
 {
-  "name": "@guanghechen/static-site-api",
+  "name": "@guanghechen/asset",
   "version": "0.0.0",
   "description": "api of static site",
   "author": {
@@ -8,9 +8,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guanghechen/static-site-api.git"
+    "url": "https://github.com/guanghechen/asset.git"
   },
-  "homepage": "https://github.com/guanghechen/static-site-api/#readme",
+  "homepage": "https://github.com/guanghechen/asset/#readme",
   "license": "MIT",
   "private": true,
   "engines": {

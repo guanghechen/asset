@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guanghechen/static-site-api.git",
+    "url": "https://github.com/guanghechen/asset.git",
     "directory": "packages/asset-core-service"
   },
-  "homepage": "https://github.com/guanghechen/static-site-api/tree/main/packages/asset-core-service#readme",
+  "homepage": "https://github.com/guanghechen/asset/tree/main/packages/asset-core-service#readme",
   "main": "lib/cjs/index.js",
   "types": "lib/types/index.d.ts",
   "source": "src/index.ts",
