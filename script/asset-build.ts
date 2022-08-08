@@ -10,7 +10,7 @@ import {
 } from '@guanghechen/asset-parser-markdown'
 import path from 'node:path'
 
-async function build(): Promise<void> {
+async function build(build: boolean, watch: boolean): Promise<void> {
   const FIXTURE_ROOT = path.join(__dirname, 'fixtures/asset-build')
   const FIXTURE_SOURCE_ROOT = path.join(FIXTURE_ROOT, 'src')
   const FIXTURE_STATIC_ROOT = path.join(FIXTURE_ROOT, 'static')
@@ -61,11 +61,18 @@ async function build(): Promise<void> {
     GUID_NAMESPACE: '188b0b6f-fc7e-4100-8b52-7615fd945c28',
   })
 
-  // console.log('building...')
-  // await service.build()
+  if (build || !watch) {
+    console.log('building...')
+    await service.build()
+  }
 
-  console.log('watching...')
-  await service.watch()
+  if (watch) {
+    console.log('watching...')
+    await service.watch()
+  }
 }
 
-void build()
+void build(
+  process.argv.some(arg => /--build/.test(arg)),
+  process.argv.some(arg => /--watch/.test(arg)),
+)
