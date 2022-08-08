@@ -10,7 +10,7 @@ import type {
   IAssetParserPluginPolishOutput,
 } from '@guanghechen/asset-core-parser'
 import { AssetDataType } from '@guanghechen/asset-core-parser'
-import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/option-helper'
+import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
 import type { Resource, Root } from '@yozora/ast'
 import { shallowMutateAstInPreorder } from '@yozora/ast-util'
 import type { IParser } from '@yozora/core-parser'
