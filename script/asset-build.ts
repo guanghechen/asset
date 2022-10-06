@@ -10,11 +10,15 @@ import {
 } from '@guanghechen/asset-parser-markdown'
 import path from 'node:path'
 
-async function build(build: boolean, watch: boolean): Promise<void> {
-  const FIXTURE_ROOT = path.join(__dirname, 'fixtures/asset-build')
-  const FIXTURE_SOURCE_ROOT = path.join(FIXTURE_ROOT, 'src')
-  const FIXTURE_STATIC_ROOT = path.join(FIXTURE_ROOT, 'static')
+interface IBuildOptions {
+  sourceRoot: string
+  targetRoot: string
+  shouldBuild: boolean
+  shouldWatch: boolean
+}
 
+async function build(options: IBuildOptions): Promise<void> {
+  const { sourceRoot, targetRoot, shouldBuild, shouldWatch } = options
   const parser = new AssetParser()
     .use(
       new MarkdownAssetParser(),
@@ -37,7 +41,7 @@ async function build(build: boolean, watch: boolean): Promise<void> {
     )
   const service = new AssetService({
     parser,
-    staticRoot: FIXTURE_STATIC_ROOT,
+    staticRoot: targetRoot,
     acceptedPattern: ['!**/*.cpp'],
     resolveUrlPathPrefix: ({ assetType, mimetype }) => {
       switch (assetType) {
@@ -57,22 +61,28 @@ async function build(build: boolean, watch: boolean): Promise<void> {
     caseSensitive: true,
     saveOptions: { prettier: true },
   }).useResolver({
-    sourceRoot: FIXTURE_SOURCE_ROOT,
+    sourceRoot: sourceRoot,
     GUID_NAMESPACE: '188b0b6f-fc7e-4100-8b52-7615fd945c28',
   })
 
-  if (build || !watch) {
+  if (shouldBuild || !shouldWatch) {
     console.log('building...')
     await service.build()
   }
 
-  if (watch) {
+  if (shouldWatch) {
     console.log('watching...')
     await service.watch()
   }
 }
 
-void build(
-  process.argv.some(arg => /--build/.test(arg)),
-  process.argv.some(arg => /--watch/.test(arg)),
-)
+const FIXTURE_ROOT = path.join(__dirname, 'fixtures/asset-build')
+const FIXTURE_SOURCE_ROOT = path.join(FIXTURE_ROOT, 'src')
+const FIXTURE_TARGET_ROOT = path.join(FIXTURE_ROOT, 'static')
+
+void build({
+  shouldBuild: process.argv.some(arg => /--build/.test(arg)),
+  shouldWatch: process.argv.some(arg => /--watch/.test(arg)),
+  sourceRoot: FIXTURE_SOURCE_ROOT,
+  targetRoot: FIXTURE_TARGET_ROOT,
+})
