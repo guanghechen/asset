@@ -24,7 +24,9 @@ async function build(options: IBuildOptions): Promise<void> {
       new MarkdownAssetParser(),
       new MarkdownAssetParserCode(),
       new MarkdownAssetParserFootnote(),
-      new MarkdownAssetParserSlug(),
+      new MarkdownAssetParserSlug({
+        slugPrefix: '/post/',
+      }),
     )
     .use(
       new FileAssetParser({
@@ -43,6 +45,7 @@ async function build(options: IBuildOptions): Promise<void> {
     parser,
     staticRoot: targetRoot,
     acceptedPattern: ['!**/*.cpp'],
+    assetDataMapFilepath: 'api/asset.map.json',
     resolveUrlPathPrefix: ({ assetType, mimetype }) => {
       switch (assetType) {
         case MarkdownAssetType:

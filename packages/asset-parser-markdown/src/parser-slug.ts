@@ -12,7 +12,7 @@ import { isMarkdownAsset } from './types'
 export interface IMarkdownAssetParserSlugProps {
   /**
    * Not worked if the `resolveSlug` specified.
-   * @default '/page/post'
+   * @default '/page/post/'
    */
   slugPrefix?: string
   /**
