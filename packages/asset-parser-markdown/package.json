@@ -38,13 +38,13 @@
   },
   "dependencies": {
     "@guanghechen/asset-core-parser": "^1.0.0-alpha.3",
-    "@guanghechen/helper-is": "^2.0.0-alpha.0",
-    "@guanghechen/parse-lineno": "^2.0.0-alpha.0",
+    "@guanghechen/helper-is": "^2.1.0",
+    "@guanghechen/parse-lineno": "^2.1.0",
     "@types/js-yaml": "^4.0.5",
-    "@yozora/ast": "^2.0.2-alpha.0",
-    "@yozora/ast-util": "^2.0.2-alpha.0",
-    "@yozora/parser": "^2.0.2-alpha.0",
-    "dayjs": "^1.11.4",
+    "@yozora/ast": "^2.0.2",
+    "@yozora/ast-util": "^2.0.2",
+    "@yozora/parser": "^2.0.2",
+    "dayjs": "^1.11.5",
     "js-yaml": "^4.1.0"
   }
 }
