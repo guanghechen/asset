@@ -1,5 +1,6 @@
 import type { IAssetParserPluginPolishInput } from '@guanghechen/asset-core-parser'
 import type { Root } from '@yozora/ast'
+import type { IHeadingToc } from '@yozora/ast-util'
 
 export const MarkdownAssetType = 'markdown'
 // eslint-disable-next-line @typescript-eslint/no-redeclare
@@ -15,6 +16,22 @@ export interface IMarkdownResolvedData {
    * Markdown ast.
    */
   ast: Root
+  /**
+   * Markdown frontmatter.
+   */
+  frontmatter: IMarkdownFrontmatter
+  /**
+   * Markdown post excerpt ast.
+   */
+  excerpt?: Root
+  /**
+   * Time to read the post. (s)
+   */
+  timeToRead?: number
+  /**
+   * Title of contents.
+   */
+  toc?: IHeadingToc
 }
 
 export interface IMarkdownPolishedData {
@@ -22,4 +39,35 @@ export interface IMarkdownPolishedData {
    * Markdown ast.
    */
   ast: Root
+  /**
+   * Markdown frontmatter.
+   */
+  frontmatter: IMarkdownFrontmatter
+  /**
+   * Markdown post excerpt ast.
+   */
+  excerpt?: Root
+  /**
+   * Time to read the post. (ms)
+   */
+  timeToRead?: number
+  /**
+   * Title of contents.
+   */
+  toc?: IHeadingToc
+}
+
+export interface IMarkdownFrontmatter {
+  /**
+   *
+   */
+  excerpt?: string
+  /**
+   *
+   */
+  timeToRead?: number
+  /**
+   *
+   */
+  [key: string]: unknown
 }

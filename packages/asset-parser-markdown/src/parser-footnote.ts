@@ -70,7 +70,10 @@ export class MarkdownAssetParserFootnote implements IAssetParserPlugin {
 
       const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
         ...embryo,
-        data: { ast },
+        data: {
+          ...embryo.data,
+          ast,
+        },
       }
       return next(result)
     }

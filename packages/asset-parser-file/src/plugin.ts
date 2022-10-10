@@ -54,6 +54,7 @@ export class FileAssetParser implements IAssetParserPlugin {
         type: FileAssetType,
         mimetype: mimetype ?? 'unknown',
         title: input.title,
+        description: null,
         slug: null,
         createdAt: input.createdAt,
         updatedAt: input.updatedAt,

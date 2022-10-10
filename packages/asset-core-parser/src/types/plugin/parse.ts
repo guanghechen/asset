@@ -83,6 +83,10 @@ export interface IAssetParserPluginParseOutput<D = unknown> {
    */
   title: string
   /**
+   * Description of the content.
+   */
+  description: string | null
+  /**
    * A stable page url to reveal this asset.
    */
   slug: string | null

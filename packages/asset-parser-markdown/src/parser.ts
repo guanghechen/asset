@@ -14,7 +14,7 @@ import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helpe
 import type { Resource, Root } from '@yozora/ast'
 import { shallowMutateAstInPreorder } from '@yozora/ast-util'
 import type { IParser } from '@yozora/core-parser'
-import YozoraParser from '@yozora/parser'
+import { YozoraParser } from '@yozora/parser'
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
 import type { IMarkdownPolishedData, IMarkdownResolvedData } from './types'
@@ -30,6 +30,12 @@ export interface IMarkdownAssetParserProps {
    * Markdown parser.
    */
   parser?: IParser
+  readOptions?: {
+    /**
+     * the number of words read per minute
+     */
+    wordsPerMinute?: number
+  }
   /**
    * Check if the given file is in markdown format.
    * @default filename => /\.md$/.test(filename)
@@ -60,22 +66,32 @@ export class MarkdownAssetParser implements IAssetParserPlugin {
     if (this.resolvable(input.filename) && input.content) {
       const rawContent = input.content.toString(this.encoding)
       const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
-      const meta: Record<string, any> = match[1] ? (yaml.load(match[1]) as Record<string, any>) : {}
+      const frontmatter: Record<string, any> = match[1]
+        ? (yaml.load(match[1]) as Record<string, any>)
+        : {}
       const createdAt: string =
-        meta.createdAt != null ? dayjs(meta.createdAt).toISOString() : input.createdAt
+        frontmatter.createdAt != null ? dayjs(frontmatter.createdAt).toISOString() : input.createdAt
       const updatedAt: string =
-        meta.updatedAt != null ? dayjs(meta.updatedAt).toISOString() : input.updatedAt
+        frontmatter.updatedAt != null ? dayjs(frontmatter.updatedAt).toISOString() : input.updatedAt
       const ast: Root = this.parser.parse(rawContent.slice(match[0].length))
+
+      const title: string = frontmatter.title || input.title
       const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
         type: MarkdownAssetType,
         mimetype: 'application/json',
-        title: meta.title || input.title,
-        slug: api.resolveSlug(meta.slug || undefined),
+        title,
+        description: frontmatter.description || title,
+        slug: api.resolveSlug(frontmatter.slug || undefined),
         createdAt,
         updatedAt,
-        categories: isTwoDimensionArrayOfT(meta.categories, isString) ? meta.categories : [],
-        tags: isArrayOfT(meta.tags, isString) ? meta.tags : [],
-        data: { ast },
+        categories: isTwoDimensionArrayOfT(frontmatter.categories, isString)
+          ? frontmatter.categories
+          : [],
+        tags: isArrayOfT(frontmatter.tags, isString) ? frontmatter.tags : [],
+        data: {
+          ast,
+          frontmatter,
+        },
       }
       return next(result)
     }
@@ -98,9 +114,19 @@ export class MarkdownAssetParser implements IAssetParserPlugin {
         return node
       })
 
+      const { frontmatter, excerpt, toc, timeToRead } = {
+        ...input.data,
+        ...(embryo?.data as IMarkdownPolishedData),
+      }
       const result: IAssetParserPluginPolishOutput<IMarkdownPolishedData> = {
         dataType: AssetDataType.JSON,
-        data: { ast },
+        data: {
+          ast,
+          frontmatter,
+          excerpt,
+          toc,
+          timeToRead,
+        },
         encoding: 'utf8',
       }
       return next(result)
