@@ -10,7 +10,8 @@
             "type": "text",
             "value": "Related"
           }
-        ]
+        ],
+        "identifier": "heading-related"
       },
       {
         "type": "list",
@@ -45,5 +46,68 @@
       }
     ]
   },
-  "frontmatter": {}
+  "frontmatter": {},
+  "excerpt": {
+    "type": "root",
+    "children": [
+      {
+        "type": "heading",
+        "depth": 2,
+        "children": [
+          {
+            "type": "text",
+            "value": "Related"
+          }
+        ],
+        "identifier": "heading-related"
+      },
+      {
+        "type": "list",
+        "ordered": false,
+        "marker": 42,
+        "spread": false,
+        "children": [
+          {
+            "type": "listItem",
+            "children": [
+              {
+                "type": "linkReference",
+                "identifier": "a",
+                "label": "a",
+                "referenceType": "collapsed",
+                "children": [
+                  {
+                    "type": "text",
+                    "value": "a"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "definition",
+        "identifier": "a",
+        "label": "a",
+        "url": "./a.md"
+      }
+    ]
+  },
+  "toc": {
+    "children": [
+      {
+        "depth": 2,
+        "identifier": "heading-related",
+        "contents": [
+          {
+            "type": "text",
+            "value": "Related"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  "timeToRead": 2
 }

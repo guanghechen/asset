@@ -47,7 +47,8 @@
             "type": "text",
             "value": "Related"
           }
-        ]
+        ],
+        "identifier": "heading-related"
       },
       {
         "type": "list",
@@ -125,5 +126,57 @@
         "e"
       ]
     ]
-  }
+  },
+  "excerpt": {
+    "type": "root",
+    "children": [
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "footnoteReference",
+            "label": "1",
+            "identifier": "footnote-1"
+          }
+        ]
+      },
+      {
+        "type": "paragraph",
+        "children": [
+          {
+            "type": "text",
+            "value": "Some thing."
+          }
+        ]
+      },
+      {
+        "type": "code",
+        "lang": "cpp",
+        "meta": "sourcefile=\"d.cpp\"",
+        "value": "#include <cstdio>\n\nint main() {\n  printf(\"Hello, world!\");\n  return 0;\n}\n"
+      },
+      {
+        "type": "code",
+        "lang": "cpp",
+        "meta": "3-6 sourcefile=\"d.cpp\"",
+        "value": "#include <cstdio>\n\nint main() {\n  printf(\"Hello, world!\");\n  return 0;\n}\n"
+      }
+    ]
+  },
+  "toc": {
+    "children": [
+      {
+        "depth": 2,
+        "identifier": "heading-related",
+        "contents": [
+          {
+            "type": "text",
+            "value": "Related"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  "timeToRead": 38
 }
