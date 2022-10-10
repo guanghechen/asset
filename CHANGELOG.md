@@ -1,5 +1,27 @@
 # Changelog
 
+<a name="1.0.0-alpha.4"></a>
+## 1.0.0-alpha.4 (2022-10-10)
+
+### Added
+
+- ✨ feat: support excerpt, toc and timeToRead for Markdown asset data [[d2ee634](https://github.com/guanghechen/asset/commit/d2ee6343a71f5877a1e9a46d995bbdd520ee80c9)]
+
+### Changed
+
+- 🔧 chore: tweak &#x27;asset-build&#x27; script [[ddba2e4](https://github.com/guanghechen/asset/commit/ddba2e47b5e5126be4a9b18b999f8a6137a24bfd)]
+- 🔧 chore: update scripts [[334d9b4](https://github.com/guanghechen/asset/commit/334d9b43784da5108de50e20c3115be3f265afe6)]
+- ⬆️ chore: upgrade dependencies [[7decae2](https://github.com/guanghechen/asset/commit/7decae21b8cda7a6d6a14fd96d08553b74ec14f3)]
+- 🔧 chore: update scripts [[753897a](https://github.com/guanghechen/asset/commit/753897adec00d835450b63379f51b78776a30dd6)]
+- ⬆️ chore: upgrade dependencies [[fe38fa4](https://github.com/guanghechen/asset/commit/fe38fa4bbaf223c1b09d96f8cebae19bafb07bae)]
+- 🔧 chore: set npm registry [[583463a](https://github.com/guanghechen/asset/commit/583463ac8d9d921a19099cc6cf34fdcd811a8bbb)]
+- 🎨 improve: update asset-build script [[c7a5f55](https://github.com/guanghechen/asset/commit/c7a5f555947c4bdb51315ea36329c75028f03df5)]
+
+### Miscellaneous
+
+- 📄 doc: update LICENSE [[3596861](https://github.com/guanghechen/asset/commit/3596861246c2b713ae6e044d70d3c24eb01a76a3)]
+
+
 <a name="1.0.0-alpha.3"></a>
 ## 1.0.0-alpha.3 (2022-07-30)
 
