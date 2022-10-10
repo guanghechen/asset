@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-core-parser",
-  "version": "1.0.0-alpha.3",
+  "version": "1.0.0-alpha.4",
   "description": "Asset parser core.",
   "author": {
     "name": "guanghechen",
@@ -36,7 +36,7 @@
     "test": "echo 'no test yet.'"
   },
   "dependencies": {
-    "@guanghechen/asset-core": "^1.0.0-alpha.3",
+    "@guanghechen/asset-core": "^1.0.0-alpha.4",
     "@guanghechen/invariant": "^2.0.0-alpha.0"
   }
 }
