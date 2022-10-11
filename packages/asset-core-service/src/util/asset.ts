@@ -2,21 +2,21 @@ import invariant from '@guanghechen/invariant'
 import fs from 'fs-extra'
 import path from 'path'
 
-export function assetSafeLocation(rootDir: string, location: string): void | never {
+export function assertSafeLocation(rootDir: string, location: string): void | never {
   invariant(
     location.startsWith(rootDir.replace(/\/?$/, '/')),
-    `[assetSafeLocation] !!!unsafe location. rootDir: ${rootDir}, location: ${location}`,
+    `[assertSafeLocation] !!!unsafe location. rootDir: ${rootDir}, location: ${location}`,
   )
 }
 
-export function assetExistedLocation(location: string): void | never {
-  invariant(fs.existsSync(location), `[assetExistedLocation] Cannot find file. (${location})`)
+export function assertExistedLocation(location: string): void | never {
+  invariant(fs.existsSync(location), `[assertExistedLocation] Cannot find file. (${location})`)
 }
 
-export function assetExistedFilepath(filepath: string): void | never {
-  assetExistedLocation(filepath)
+export function assertExistedFilepath(filepath: string): void | never {
+  assertExistedLocation(filepath)
   const stat = fs.statSync(filepath)
-  invariant(stat.isFile(), `[assetExistedFilepath] Not a file'. (${filepath})`)
+  invariant(stat.isFile(), `[assertExistedFilepath] Not a file'. (${filepath})`)
 }
 
 export function mkdirsIfNotExists(filepath: string, isDir: boolean): void {

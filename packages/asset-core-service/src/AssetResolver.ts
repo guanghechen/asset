@@ -5,7 +5,7 @@ import fs from 'fs-extra'
 import mime from 'mime'
 import path from 'path'
 import { v5 as uuid } from 'uuid'
-import { assetExistedFilepath, assetSafeLocation, mkdirsIfNotExists } from './util/asset'
+import { assertExistedFilepath, assertSafeLocation, mkdirsIfNotExists } from './util/asset'
 import { calcFingerprint } from './util/hash'
 
 export type IAssetUrlPrefixResolver = (params: { assetType: string; mimetype: string }) => string
@@ -43,8 +43,8 @@ export class AssetResolver implements IAssetResolver {
   }
 
   public async initAsset(srcLocation: string): Promise<IAssetPluginParseInput | null> {
-    assetSafeLocation(this.sourceRoot, srcLocation)
-    assetExistedFilepath(srcLocation)
+    assertSafeLocation(this.sourceRoot, srcLocation)
+    assertExistedFilepath(srcLocation)
 
     const stat = fs.statSync(srcLocation)
     const content = await fs.readFile(srcLocation)
@@ -79,7 +79,7 @@ export class AssetResolver implements IAssetResolver {
     if (data === null) return
 
     const dstLocation = path.join(this.staticRoot, uri)
-    assetSafeLocation(this.staticRoot, dstLocation)
+    assertSafeLocation(this.staticRoot, dstLocation)
     mkdirsIfNotExists(dstLocation, false)
 
     switch (dataType) {
@@ -108,15 +108,15 @@ export class AssetResolver implements IAssetResolver {
   }
 
   public async loadSrcContent(srcLocation: string): Promise<Buffer> {
-    assetSafeLocation(this.sourceRoot, srcLocation)
-    assetExistedFilepath(srcLocation)
+    assertSafeLocation(this.sourceRoot, srcLocation)
+    assertExistedFilepath(srcLocation)
     const content = await fs.readFile(srcLocation)
     return content
   }
 
   public loadSrcContentSync(srcLocation: string): Buffer | null {
-    assetSafeLocation(this.sourceRoot, srcLocation)
-    assetExistedFilepath(srcLocation)
+    assertSafeLocation(this.sourceRoot, srcLocation)
+    assertExistedFilepath(srcLocation)
     const content = fs.readFileSync(srcLocation)
     return content
   }
