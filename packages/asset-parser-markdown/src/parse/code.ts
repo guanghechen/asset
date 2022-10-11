@@ -1,18 +1,18 @@
 import type {
-  IAssetPlugin,
+  IAssetParsePlugin,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
   IAssetPluginParseOutput,
-} from '@guanghechen/asset-core-parser'
+} from '@guanghechen/asset-core-plugin'
 import { collectIntervals } from '@guanghechen/parse-lineno'
 import type { Code } from '@yozora/ast'
 import { CodeType } from '@yozora/ast'
 import { shallowMutateAstInPreorder } from '@yozora/ast-util'
-import type { IMarkdownResolvedData } from './types'
-import { isMarkdownAsset } from './types'
+import type { IMarkdownResolvedData } from '../types'
+import { isMarkdownAsset } from '../types'
 
-export interface IMarkdownAssetParserCodeProps {
+export interface IMarkdownParsePluginCodeProps {
   /**
    * Encoding of the source file.
    * @default 'utf8'
@@ -29,7 +29,7 @@ export interface IMarkdownAssetParserCodeProps {
   sourceLineToken?: string
 }
 
-export class MarkdownAssetParserCode implements IAssetPlugin {
+export class MarkdownParsePluginCode implements IAssetParsePlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/code'
   protected readonly srcEncoding: BufferEncoding
   protected readonly srcFileRegex: RegExp
@@ -37,7 +37,7 @@ export class MarkdownAssetParserCode implements IAssetPlugin {
   protected readonly indentRegex: RegExp = /^\s*/
   protected readonly lineRegex: RegExp = /\r|\n|\n\r/g
 
-  constructor(props: IMarkdownAssetParserCodeProps = {}) {
+  constructor(props: IMarkdownParsePluginCodeProps = {}) {
     this.srcEncoding = props.sourceEncoding ?? 'utf8'
     this.srcFileRegex = new RegExp(
       `(?:^|\\b)${props.sourceFileToken ?? 'sourcefile'}="([^"]+)"`,

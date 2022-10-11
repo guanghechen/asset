@@ -1,18 +1,18 @@
 import type {
-  IAssetPlugin,
+  IAssetParsePlugin,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
   IAssetPluginParseOutput,
-} from '@guanghechen/asset-core-parser'
+} from '@guanghechen/asset-core-plugin'
 import type { Root } from '@yozora/ast'
 import type { IParser } from '@yozora/core-parser'
 import YozoraParser from '@yozora/parser'
-import type { IMarkdownResolvedData } from './types'
-import { isMarkdownAsset } from './types'
-import { getExcerptAst } from './util/excerpt'
+import type { IMarkdownResolvedData } from '../types'
+import { isMarkdownAsset } from '../types'
+import { getExcerptAst } from '../util/excerpt'
 
-export interface IMarkdownAssetParserExcerptProps {
+export interface IMarkdownParsePluginExcerptProps {
   /**
    * Markdown parser.
    */
@@ -28,13 +28,13 @@ export interface IMarkdownAssetParserExcerptProps {
   endingSeparator?: string
 }
 
-export class MarkdownAssetParserExcerpt implements IAssetPlugin {
+export class MarkdownParsePluginExcerpt implements IAssetParsePlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/excerpt'
   protected readonly parser: IParser
   protected readonly pruneLength: number
   public readonly endingSeparator: string
 
-  constructor(props: IMarkdownAssetParserExcerptProps = {}) {
+  constructor(props: IMarkdownParsePluginExcerptProps = {}) {
     this.parser =
       props.parser ?? new YozoraParser({ defaultParseOptions: { shouldReservePosition: false } })
     this.pruneLength = props.pruneLength ?? 140

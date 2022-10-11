@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@guanghechen/asset-core": "^1.0.0-alpha.4",
-    "@guanghechen/asset-core-parser": "^1.0.0-alpha.4",
+    "@guanghechen/asset-core-plugin": "^1.0.0-alpha.4",
     "mime": "^3.0.0"
   }
 }

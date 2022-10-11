@@ -16,5 +16,3 @@ export interface IAssetPolishPlugin {
   readonly displayName: string
   polish?: IAssetPluginPolish
 }
-
-export type IAssetPlugin = IAssetParsePlugin & IAssetPolishPlugin

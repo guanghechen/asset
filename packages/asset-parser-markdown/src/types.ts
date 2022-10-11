@@ -1,4 +1,4 @@
-import type { IAssetPluginPolishInput } from '@guanghechen/asset-core-parser'
+import type { IAssetPluginPolishInput } from '@guanghechen/asset-core-plugin'
 import type { Root } from '@yozora/ast'
 import type { IHeadingToc } from '@yozora/ast-util'
 

@@ -1,24 +1,24 @@
 <header>
   <h1 align="center">
-    <a href="https://github.com/guanghechen/yozora/tree/main/packages/asset-core-parser#readme">@guanghechen/asset-core-parser</a>
+    <a href="https://github.com/guanghechen/yozora/tree/main/packages/asset-core-plugin#readme">@guanghechen/asset-core-plugin</a>
   </h1>
   <div align="center">
-    <a href="https://www.npmjs.com/package/@guanghechen/asset-core-parser">
+    <a href="https://www.npmjs.com/package/@guanghechen/asset-core-plugin">
       <img
         alt="Npm Version"
-        src="https://img.shields.io/npm/v/@guanghechen/asset-core-parser.svg"
+        src="https://img.shields.io/npm/v/@guanghechen/asset-core-plugin.svg"
       />
     </a>
-    <a href="https://www.npmjs.com/package/@guanghechen/asset-core-parser">
+    <a href="https://www.npmjs.com/package/@guanghechen/asset-core-plugin">
       <img
         alt="Npm Download"
-        src="https://img.shields.io/npm/dm/@guanghechen/asset-core-parser.svg"
+        src="https://img.shields.io/npm/dm/@guanghechen/asset-core-plugin.svg"
       />
     </a>
-    <a href="https://www.npmjs.com/package/@guanghechen/asset-core-parser">
+    <a href="https://www.npmjs.com/package/@guanghechen/asset-core-plugin">
       <img
         alt="Npm License"
-        src="https://img.shields.io/npm/l/@guanghechen/asset-core-parser.svg"
+        src="https://img.shields.io/npm/l/@guanghechen/asset-core-plugin.svg"
       />
     </a>
     <a href="#install">
@@ -30,7 +30,7 @@
     <a href="https://github.com/nodejs/node">
       <img
         alt="Node.js Version"
-        src="https://img.shields.io/node/v/@guanghechen/asset-core-parser"
+        src="https://img.shields.io/node/v/@guanghechen/asset-core-plugin"
       />
     </a>
     <a href="https://github.com/facebook/jest">
@@ -54,13 +54,13 @@
 * npm
 
   ```bash
-  npm install --save @guanghechen/asset-core-parser
+  npm install --save @guanghechen/asset-core-plugin
   ```
 
 * yarn
 
   ```bash
-  yarn add @guanghechen/asset-core-parser
+  yarn add @guanghechen/asset-core-plugin
   ```
 
 ## Usage

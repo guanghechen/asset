@@ -1,15 +1,15 @@
-import { AssetParser } from '@guanghechen/asset-core-parser'
+import { AssetParser } from '@guanghechen/asset-core-plugin'
 import { AssetService } from '@guanghechen/asset-core-service'
-import { FileAssetParser, FileAssetType } from '@guanghechen/asset-parser-file'
+import { FileAssetType, FileParserPlugin } from '@guanghechen/asset-parser-file'
 import {
-  MarkdownAssetParser,
-  MarkdownAssetParserCode,
-  MarkdownAssetParserExcerpt,
-  MarkdownAssetParserFootnote,
-  MarkdownAssetParserSlug,
-  MarkdownAssetParserTimeToRead,
-  MarkdownAssetParserToc,
   MarkdownAssetType,
+  MarkdownParsePluginCode,
+  MarkdownParsePluginExcerpt,
+  MarkdownParsePluginFootnote,
+  MarkdownParsePluginSlug,
+  MarkdownParsePluginTimeToRead,
+  MarkdownParsePluginToc,
+  MarkdownParserPlugin,
 } from '@guanghechen/asset-parser-markdown'
 import { YozoraParser } from '@yozora/parser'
 import path from 'node:path'
@@ -26,16 +26,16 @@ async function build(options: IBuildOptions): Promise<void> {
   const markdownParser = new YozoraParser({ defaultParseOptions: { shouldReservePosition: false } })
   const parser = new AssetParser()
     .use(
-      new MarkdownAssetParser({ parser: markdownParser }),
-      new MarkdownAssetParserCode(),
-      new MarkdownAssetParserFootnote(),
-      new MarkdownAssetParserSlug({ slugPrefix: '/post/' }),
-      new MarkdownAssetParserTimeToRead({ wordsPerMinute: 60 }),
-      new MarkdownAssetParserToc(),
-      new MarkdownAssetParserExcerpt({ parser: markdownParser, pruneLength: 140 }),
+      new MarkdownParserPlugin({ parser: markdownParser }),
+      new MarkdownParsePluginCode(),
+      new MarkdownParsePluginFootnote(),
+      new MarkdownParsePluginSlug({ slugPrefix: '/post/' }),
+      new MarkdownParsePluginTimeToRead({ wordsPerMinute: 60 }),
+      new MarkdownParsePluginToc(),
+      new MarkdownParsePluginExcerpt({ parser: markdownParser, pruneLength: 140 }),
     )
     .use(
-      new FileAssetParser({
+      new FileParserPlugin({
         accepted: filepath => {
           const { ext } = path.parse(filepath)
           if (['.txt', '.jpg', '.png'].includes(ext)) return true

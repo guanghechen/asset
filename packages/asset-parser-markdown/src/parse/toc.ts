@@ -1,26 +1,26 @@
 import type {
-  IAssetPlugin,
+  IAssetParsePlugin,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
   IAssetPluginParseOutput,
-} from '@guanghechen/asset-core-parser'
+} from '@guanghechen/asset-core-plugin'
 import { calcHeadingToc } from '@yozora/ast-util'
-import type { IMarkdownResolvedData } from './types'
-import { isMarkdownAsset } from './types'
+import type { IMarkdownResolvedData } from '../types'
+import { isMarkdownAsset } from '../types'
 
-export interface IMarkdownAssetParserTocProps {
+export interface IMarkdownParsePluginTocProps {
   /**
    * Specify a prefix of heading identifier.
    */
   identifierPrefix?: string
 }
 
-export class MarkdownAssetParserToc implements IAssetPlugin {
+export class MarkdownParsePluginToc implements IAssetParsePlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/toc'
   public readonly identifierPrefix: string | undefined
 
-  constructor(props: IMarkdownAssetParserTocProps = {}) {
+  constructor(props: IMarkdownParsePluginTocProps = {}) {
     this.identifierPrefix = props.identifierPrefix
   }
 

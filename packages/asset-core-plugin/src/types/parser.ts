@@ -1,13 +1,15 @@
 import type { IAssetDataMap } from '@guanghechen/asset-core'
-import type { IAssetPlugin } from './plugin/plugin'
+import type { IAssetParsePlugin, IAssetPolishPlugin } from './plugin/plugin'
 import type { IAssetResolver } from './resolver'
+
+export type IAssetParserPlugin = IAssetParsePlugin & IAssetPolishPlugin
 
 export interface IAssetParser {
   /**
    * Use asset plugins.
    * @param plugins
    */
-  use(...plugins: Array<IAssetPlugin | IAssetPlugin[]>): this
+  use(...plugins: Array<IAssetParserPlugin | IAssetParserPlugin[]>): this
   /**
    * Export asset data map.
    */

@@ -1,4 +1,4 @@
-import type { IAssetParser, IAssetResolver } from '@guanghechen/asset-core-parser'
+import type { IAssetParser, IAssetResolver } from '@guanghechen/asset-core-plugin'
 import invariant from '@guanghechen/invariant'
 import chokidar from 'chokidar'
 import fs from 'fs-extra'

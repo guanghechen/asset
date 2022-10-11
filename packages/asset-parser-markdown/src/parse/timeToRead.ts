@@ -1,26 +1,26 @@
 import type {
-  IAssetPlugin,
+  IAssetParsePlugin,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
   IAssetPluginParseOutput,
-} from '@guanghechen/asset-core-parser'
-import type { IMarkdownResolvedData } from './types'
-import { isMarkdownAsset } from './types'
-import { getTimeToRead } from './util/timeToRead'
+} from '@guanghechen/asset-core-plugin'
+import type { IMarkdownResolvedData } from '../types'
+import { isMarkdownAsset } from '../types'
+import { getTimeToRead } from '../util/timeToRead'
 
-export interface IMarkdownAssetParserTimeToReadProps {
+export interface IMarkdownParsePluginTimeToReadProps {
   /**
    * the number of words read per minute
    */
   wordsPerMinute?: number
 }
 
-export class MarkdownAssetParserTimeToRead implements IAssetPlugin {
+export class MarkdownParsePluginTimeToRead implements IAssetParsePlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/timeToRead'
   protected readonly wordsPerMinute: number | undefined
 
-  constructor(props: IMarkdownAssetParserTimeToReadProps = {}) {
+  constructor(props: IMarkdownParsePluginTimeToReadProps = {}) {
     this.wordsPerMinute = props.wordsPerMinute ?? undefined
   }
 

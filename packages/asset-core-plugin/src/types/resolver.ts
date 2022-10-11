@@ -1,5 +1,4 @@
-import type { IAsset } from '@guanghechen/asset-core'
-import type { AssetDataType } from './asset'
+import type { AssetDataType, IAsset } from '@guanghechen/asset-core'
 import type { IAssetPluginParseInput } from './plugin/parse'
 
 export interface IAssetResolver {

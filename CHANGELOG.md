@@ -44,7 +44,7 @@
 - 🔧 chore: update bundle configs [[7858989](https://github.com/guanghechen/asset/commit/7858989e2894abdec29da0daa2e2a97f1a80893c)]
 - 🔧 chore: remove unnecessary dependencies [[e15edd6](https://github.com/guanghechen/asset/commit/e15edd6fc2476a4946706347b306683fbd9f0507)]
 - 🎨 refactor: rename asset plugins [[a2b2c61](https://github.com/guanghechen/asset/commit/a2b2c612f2c23ce3f273a67d890eee33cb1aa962)]
-- 🎨 refactor: abstract asset-parser logic into @guanghechen/asset-core-parser [[7941651](https://github.com/guanghechen/asset/commit/79416516305b0ba415ee06642790295aba78b1ae)]
+- 🎨 refactor: abstract asset-parser logic into @guanghechen/asset-core-plugin [[7941651](https://github.com/guanghechen/asset/commit/79416516305b0ba415ee06642790295aba78b1ae)]
 - 🎨 refactor: refactor resolveSlug &amp; rename it to resolveUrlPath [[12f62b3](https://github.com/guanghechen/asset/commit/12f62b34cd132913955fabee3b86fdc3684bcf1e)]
 - 🎨 refactor: refactor AssetService interfaces [[2b01bf0](https://github.com/guanghechen/asset/commit/2b01bf077b8859aef782c0dfe341c240c79b331d)]
 - 🎨 feat: add MarkdownAssetPluginSlug [[8bc51d2](https://github.com/guanghechen/asset/commit/8bc51d2458afb7cf92e03037a8f8de2babcd458a)]

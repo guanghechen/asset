@@ -1,6 +1,6 @@
 import { AssetDataType } from '@guanghechen/asset-core'
 import type {
-  IAssetPlugin,
+  IAssetParserPlugin,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
@@ -9,7 +9,7 @@ import type {
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
-} from '@guanghechen/asset-core-parser'
+} from '@guanghechen/asset-core-plugin'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
 import type { Resource, Root } from '@yozora/ast'
 import { shallowMutateAstInPreorder } from '@yozora/ast-util'
@@ -20,7 +20,7 @@ import yaml from 'js-yaml'
 import type { IMarkdownPolishedData, IMarkdownResolvedData } from './types'
 import { MarkdownAssetType, isMarkdownAsset } from './types'
 
-export interface IMarkdownAssetParserProps {
+export interface IMarkdownParserPluginProps {
   /**
    * Encoding of markdown files.
    * @default 'utf8'
@@ -30,12 +30,6 @@ export interface IMarkdownAssetParserProps {
    * Markdown parser.
    */
   parser?: IParser
-  readOptions?: {
-    /**
-     * the number of words read per minute
-     */
-    wordsPerMinute?: number
-  }
   /**
    * Check if the given file is in markdown format.
    * @default filename => /\.md$/.test(filename)
@@ -43,14 +37,14 @@ export interface IMarkdownAssetParserProps {
   resolvable?: (filename: string) => boolean
 }
 
-export class MarkdownAssetParser implements IAssetPlugin {
+export class MarkdownParserPlugin implements IAssetParserPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown'
   protected readonly encoding: BufferEncoding
   protected readonly parser: IParser
   protected readonly frontmatterRegex: RegExp = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
   protected readonly resolvable: (filename: string) => boolean
 
-  constructor(props: IMarkdownAssetParserProps = {}) {
+  constructor(props: IMarkdownParserPluginProps = {}) {
     this.parser =
       props.parser ?? new YozoraParser({ defaultParseOptions: { shouldReservePosition: false } })
     this.encoding = props.encoding ?? 'utf8'

@@ -1,12 +1,11 @@
 import { AssetManager } from '@guanghechen/asset-core'
 import type { IAsset, IAssetDataMap, IAssetEntity, IAssetManager } from '@guanghechen/asset-core'
-import type { IAssetParser } from './types/parser'
+import type { IAssetParser, IAssetParserPlugin } from './types/parser'
 import type {
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
 } from './types/plugin/parse'
-import type { IAssetPlugin } from './types/plugin/plugin'
 import type {
   IAssetPluginPolishApi,
   IAssetPluginPolishInput,
@@ -21,13 +20,13 @@ export interface IAssetParserProps {
 export class AssetParser implements IAssetParser {
   protected readonly assetManager: IAssetManager
   protected readonly locationMap: Map<string, IAssetEntity | null> = new Map()
-  protected readonly plugins: IAssetPlugin[] = []
+  protected readonly plugins: IAssetParserPlugin[] = []
 
   constructor(props: IAssetParserProps = {}) {
     this.assetManager = props.assetManager ?? new AssetManager()
   }
 
-  public use(...plugins: Array<IAssetPlugin | IAssetPlugin[]>): this {
+  public use(...plugins: Array<IAssetParserPlugin | IAssetParserPlugin[]>): this {
     for (const plugin of plugins.flat()) {
       if (plugin?.displayName) {
         this.plugins.push(plugin)

@@ -1,17 +1,17 @@
 import type {
-  IAssetPlugin,
+  IAssetParsePlugin,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
   IAssetPluginParseOutput,
-} from '@guanghechen/asset-core-parser'
+} from '@guanghechen/asset-core-plugin'
 import type { Association, FootnoteDefinition } from '@yozora/ast'
 import { FootnoteDefinitionType, FootnoteReferenceType } from '@yozora/ast'
 import { calcFootnoteDefinitionMap, shallowMutateAstInPreorder } from '@yozora/ast-util'
-import type { IMarkdownResolvedData } from './types'
-import { isMarkdownAsset } from './types'
+import type { IMarkdownResolvedData } from '../types'
+import { isMarkdownAsset } from '../types'
 
-export interface IMarkdownAssetParserFootnoteProps {
+export interface IMarkdownParsePluginFootnoteProps {
   /**
    * Footnote identifier prefix.
    * @default 'footnote-'
@@ -28,13 +28,13 @@ export interface IMarkdownAssetParserFootnoteProps {
   presetFootnoteDefinitions?: ReadonlyArray<FootnoteDefinition>
 }
 
-export class MarkdownAssetParserFootnote implements IAssetPlugin {
+export class MarkdownParsePluginFootnote implements IAssetParsePlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/footnote'
   protected readonly identifierPrefix: string
   protected readonly preferReference: boolean
   protected readonly presetFootnoteDefinitions: ReadonlyArray<FootnoteDefinition>
 
-  constructor(props: IMarkdownAssetParserFootnoteProps = {}) {
+  constructor(props: IMarkdownParsePluginFootnoteProps = {}) {
     this.identifierPrefix = props.identifierPrefix ?? 'footnote-'
     this.preferReference = props.preferReferences ?? true
     this.presetFootnoteDefinitions = props.presetFootnoteDefinitions ?? []

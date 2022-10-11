@@ -1,6 +1,6 @@
 import { AssetDataType } from '@guanghechen/asset-core'
 import type {
-  IAssetPlugin,
+  IAssetParserPlugin,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
@@ -9,13 +9,13 @@ import type {
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
-} from '@guanghechen/asset-core-parser'
-import { normalizePattern } from '@guanghechen/asset-core-parser'
+} from '@guanghechen/asset-core-plugin'
+import { normalizePattern } from '@guanghechen/asset-core-plugin'
 import mime from 'mime'
 import type { IFilePolishedData, IFileResolvedData } from './types'
 import { FileAssetType, isFileAsset } from './types'
 
-export interface IFileAssetParserProps {
+export interface IFileParserPluginProps {
   /**
    * Display name.
    */
@@ -32,12 +32,12 @@ export interface IFileAssetParserProps {
   rejected?: RegExp[] | RegExp | ((src: string) => boolean)
 }
 
-export class FileAssetParser implements IAssetPlugin {
+export class FileParserPlugin implements IAssetParserPlugin {
   public readonly displayName: string
   protected readonly accepted: (src: string) => boolean
   protected readonly rejected: (src: string) => boolean
 
-  constructor(props: IFileAssetParserProps = {}) {
+  constructor(props: IFileParserPluginProps = {}) {
     this.displayName = props.displayName ?? '@guanghechen/asset-parser-file'
     this.accepted = normalizePattern(props.accepted) ?? (() => true)
     this.rejected = normalizePattern(props.rejected) ?? (() => false)

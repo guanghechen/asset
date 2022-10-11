@@ -1,4 +1,4 @@
-import type { IAssetPluginPolishInput } from '@guanghechen/asset-core-parser'
+import type { IAssetPluginPolishInput } from '@guanghechen/asset-core-plugin'
 
 export const FileAssetType = 'file'
 // eslint-disable-next-line @typescript-eslint/no-redeclare
