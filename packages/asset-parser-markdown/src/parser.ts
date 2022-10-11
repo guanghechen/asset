@@ -1,13 +1,13 @@
 import type {
-  IAssetParserPlugin,
-  IAssetParserPluginParseApi,
-  IAssetParserPluginParseInput,
-  IAssetParserPluginParseNext,
-  IAssetParserPluginParseOutput,
-  IAssetParserPluginPolishApi,
-  IAssetParserPluginPolishInput,
-  IAssetParserPluginPolishNext,
-  IAssetParserPluginPolishOutput,
+  IAssetPlugin,
+  IAssetPluginParseApi,
+  IAssetPluginParseInput,
+  IAssetPluginParseNext,
+  IAssetPluginParseOutput,
+  IAssetPluginPolishApi,
+  IAssetPluginPolishInput,
+  IAssetPluginPolishNext,
+  IAssetPluginPolishOutput,
 } from '@guanghechen/asset-core-parser'
 import { AssetDataType } from '@guanghechen/asset-core-parser'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
@@ -43,7 +43,7 @@ export interface IMarkdownAssetParserProps {
   resolvable?: (filename: string) => boolean
 }
 
-export class MarkdownAssetParser implements IAssetParserPlugin {
+export class MarkdownAssetParser implements IAssetPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown'
   protected readonly encoding: BufferEncoding
   protected readonly parser: IParser
@@ -58,11 +58,11 @@ export class MarkdownAssetParser implements IAssetParserPlugin {
   }
 
   public async parse(
-    input: Readonly<IAssetParserPluginParseInput>,
-    embryo: Readonly<IAssetParserPluginParseOutput> | null,
-    api: Readonly<IAssetParserPluginParseApi>,
-    next: IAssetParserPluginParseNext,
-  ): Promise<IAssetParserPluginParseOutput | null> {
+    input: Readonly<IAssetPluginParseInput>,
+    embryo: Readonly<IAssetPluginParseOutput> | null,
+    api: Readonly<IAssetPluginParseApi>,
+    next: IAssetPluginParseNext,
+  ): Promise<IAssetPluginParseOutput | null> {
     if (this.resolvable(input.filename) && input.content) {
       const rawContent = input.content.toString(this.encoding)
       const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
@@ -76,7 +76,7 @@ export class MarkdownAssetParser implements IAssetParserPlugin {
       const ast: Root = this.parser.parse(rawContent.slice(match[0].length))
 
       const title: string = frontmatter.title || input.title
-      const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
+      const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
         type: MarkdownAssetType,
         mimetype: 'application/json',
         title,
@@ -99,11 +99,11 @@ export class MarkdownAssetParser implements IAssetParserPlugin {
   }
 
   public async polish(
-    input: Readonly<IAssetParserPluginPolishInput>,
-    embryo: Readonly<IAssetParserPluginPolishOutput> | null,
-    api: Readonly<IAssetParserPluginPolishApi>,
-    next: IAssetParserPluginPolishNext,
-  ): Promise<IAssetParserPluginPolishOutput | null> {
+    input: Readonly<IAssetPluginPolishInput>,
+    embryo: Readonly<IAssetPluginPolishOutput> | null,
+    api: Readonly<IAssetPluginPolishApi>,
+    next: IAssetPluginPolishNext,
+  ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownAsset(input) && input.data) {
       const ast = shallowMutateAstInPreorder(input.data.ast, null, node => {
         const n = node as unknown as Resource
@@ -118,7 +118,7 @@ export class MarkdownAssetParser implements IAssetParserPlugin {
         ...input.data,
         ...(embryo?.data as IMarkdownPolishedData),
       }
-      const result: IAssetParserPluginPolishOutput<IMarkdownPolishedData> = {
+      const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
         dataType: AssetDataType.JSON,
         data: {
           ast,

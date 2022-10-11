@@ -3,15 +3,15 @@ import { AssetManager } from '@guanghechen/asset-core'
 import type { IAssetEntity } from './types/asset'
 import type { IAssetParser } from './types/parser'
 import type {
-  IAssetParserPluginParseApi,
-  IAssetParserPluginParseInput,
-  IAssetParserPluginParseNext,
+  IAssetPluginParseApi,
+  IAssetPluginParseInput,
+  IAssetPluginParseNext,
 } from './types/plugin/parse'
-import type { IAssetParserPlugin } from './types/plugin/plugin'
+import type { IAssetPlugin } from './types/plugin/plugin'
 import type {
-  IAssetParserPluginPolishApi,
-  IAssetParserPluginPolishInput,
-  IAssetParserPluginPolishNext,
+  IAssetPluginPolishApi,
+  IAssetPluginPolishInput,
+  IAssetPluginPolishNext,
 } from './types/plugin/polish'
 import type { IAssetResolver } from './types/resolver'
 
@@ -22,13 +22,13 @@ export interface IAssetParserProps {
 export class AssetParser implements IAssetParser {
   protected readonly assetManager: IAssetManager
   protected readonly locationMap: Map<string, IAssetEntity | null> = new Map()
-  protected readonly plugins: IAssetParserPlugin[] = []
+  protected readonly plugins: IAssetPlugin[] = []
 
   constructor(props: IAssetParserProps = {}) {
     this.assetManager = props.assetManager ?? new AssetManager()
   }
 
-  public use(...plugins: Array<IAssetParserPlugin | IAssetParserPlugin[]>): this {
+  public use(...plugins: Array<IAssetPlugin | IAssetPlugin[]>): this {
     for (const plugin of plugins.flat()) {
       if (plugin?.displayName) {
         this.plugins.push(plugin)
@@ -65,10 +65,10 @@ export class AssetParser implements IAssetParser {
     if (locationMap.has(locationId)) return
     locationMap.set(locationId, null)
 
-    const input: IAssetParserPluginParseInput | null = await assetResolver.initAsset(location)
+    const input: IAssetPluginParseInput | null = await assetResolver.initAsset(location)
     if (input == null) return
 
-    const api: IAssetParserPluginParseApi = {
+    const api: IAssetPluginParseApi = {
       loadContent: relativeSrcLocation => {
         const resolvedLocation = assetResolver.resolveLocation(location, '..', relativeSrcLocation)
         return assetResolver.loadSrcContent(resolvedLocation)
@@ -79,9 +79,9 @@ export class AssetParser implements IAssetParser {
       },
       resolveSlug: assetResolver.resolveSlug.bind(assetResolver),
     }
-    const reducer: IAssetParserPluginParseNext = this.plugins
+    const reducer: IAssetPluginParseNext = this.plugins
       .filter(plugin => !!plugin.parse)
-      .reduceRight<IAssetParserPluginParseNext>(
+      .reduceRight<IAssetPluginParseNext>(
         (next, middleware) => embryo => middleware.parse!(input, embryo, api, next),
         embryo => embryo,
       )
@@ -115,7 +115,7 @@ export class AssetParser implements IAssetParser {
     const asset = locationMap.get(locationId)
     if (asset == null) return
 
-    const api: IAssetParserPluginPolishApi = {
+    const api: IAssetPluginPolishApi = {
       loadContent: relativeSrcLocation => {
         const resolvedLocation = assetResolver.resolveLocation(location, '..', relativeSrcLocation)
         return assetResolver.loadSrcContent(resolvedLocation)
@@ -131,13 +131,13 @@ export class AssetParser implements IAssetParser {
         return asset ? { uri: asset.uri, slug: asset.slug, title: asset.title } : null
       },
     }
-    const reducer: IAssetParserPluginPolishNext = this.plugins
+    const reducer: IAssetPluginPolishNext = this.plugins
       .filter(plugin => !!plugin.polish)
-      .reduceRight<IAssetParserPluginPolishNext>(
+      .reduceRight<IAssetPluginPolishNext>(
         (next, middleware) => embryo => middleware.polish!(input, embryo, api, next),
         embryo => embryo,
       )
-    const input: IAssetParserPluginPolishInput = {
+    const input: IAssetPluginPolishInput = {
       type: asset.type,
       title: asset.title,
       data: asset.data,

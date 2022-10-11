@@ -1,5 +1,5 @@
 import type { IAsset } from '@guanghechen/asset-core'
-import type { IAssetParserPluginParseInput, IAssetResolver } from '@guanghechen/asset-core-parser'
+import type { IAssetPluginParseInput, IAssetResolver } from '@guanghechen/asset-core-parser'
 import { AssetDataType, normalizeUrlPath } from '@guanghechen/asset-core-parser'
 import fs from 'fs-extra'
 import mime from 'mime'
@@ -42,7 +42,7 @@ export class AssetResolver implements IAssetResolver {
     this.saveOptions = { prettier }
   }
 
-  public async initAsset(srcLocation: string): Promise<IAssetParserPluginParseInput | null> {
+  public async initAsset(srcLocation: string): Promise<IAssetPluginParseInput | null> {
     assetSafeLocation(this.sourceRoot, srcLocation)
     assetExistedFilepath(srcLocation)
 

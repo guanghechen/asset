@@ -1,9 +1,9 @@
 import type {
-  IAssetParserPlugin,
-  IAssetParserPluginParseApi,
-  IAssetParserPluginParseInput,
-  IAssetParserPluginParseNext,
-  IAssetParserPluginParseOutput,
+  IAssetPlugin,
+  IAssetPluginParseApi,
+  IAssetPluginParseInput,
+  IAssetPluginParseNext,
+  IAssetPluginParseOutput,
 } from '@guanghechen/asset-core-parser'
 import { collectIntervals } from '@guanghechen/parse-lineno'
 import type { Code } from '@yozora/ast'
@@ -29,7 +29,7 @@ export interface IMarkdownAssetParserCodeProps {
   sourceLineToken?: string
 }
 
-export class MarkdownAssetParserCode implements IAssetParserPlugin {
+export class MarkdownAssetParserCode implements IAssetPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/code'
   protected readonly srcEncoding: BufferEncoding
   protected readonly srcFileRegex: RegExp
@@ -50,11 +50,11 @@ export class MarkdownAssetParserCode implements IAssetParserPlugin {
   }
 
   public async parse(
-    input: Readonly<IAssetParserPluginParseInput>,
-    embryo: Readonly<IAssetParserPluginParseOutput> | null,
-    api: Readonly<IAssetParserPluginParseApi>,
-    next: IAssetParserPluginParseNext,
-  ): Promise<IAssetParserPluginParseOutput | null> {
+    input: Readonly<IAssetPluginParseInput>,
+    embryo: Readonly<IAssetPluginParseOutput> | null,
+    api: Readonly<IAssetPluginParseApi>,
+    next: IAssetPluginParseNext,
+  ): Promise<IAssetPluginParseOutput | null> {
     if (isMarkdownAsset(embryo) && embryo.data) {
       const { srcEncoding, srcFileRegex, srcLineRegex, indentRegex, lineRegex } = this
       const ast = shallowMutateAstInPreorder(embryo.data.ast, [CodeType], o => {
@@ -105,7 +105,7 @@ export class MarkdownAssetParserCode implements IAssetParserPlugin {
         return { ...o, value }
       })
 
-      const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
+      const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
         ...embryo,
         data: {
           ...embryo.data,

@@ -1,9 +1,9 @@
 import type {
-  IAssetParserPlugin,
-  IAssetParserPluginParseApi,
-  IAssetParserPluginParseInput,
-  IAssetParserPluginParseNext,
-  IAssetParserPluginParseOutput,
+  IAssetPlugin,
+  IAssetPluginParseApi,
+  IAssetPluginParseInput,
+  IAssetPluginParseNext,
+  IAssetPluginParseOutput,
 } from '@guanghechen/asset-core-parser'
 import { normalizeUrlPath } from '@guanghechen/asset-core-parser'
 import type { IMarkdownResolvedData } from './types'
@@ -21,7 +21,7 @@ export interface IMarkdownAssetParserSlugProps {
   resolveSlug?: (slug: string | null, src: string) => string | null
 }
 
-export class MarkdownAssetParserSlug implements IAssetParserPlugin {
+export class MarkdownAssetParserSlug implements IAssetPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/slug'
   public readonly resolveSlug: (slug: string | null, src: string) => string | null
 
@@ -33,16 +33,16 @@ export class MarkdownAssetParserSlug implements IAssetParserPlugin {
   }
 
   public async parse(
-    input: Readonly<IAssetParserPluginParseInput>,
-    embryo: Readonly<IAssetParserPluginParseOutput> | null,
-    api: Readonly<IAssetParserPluginParseApi>,
-    next: IAssetParserPluginParseNext,
-  ): Promise<IAssetParserPluginParseOutput | null> {
+    input: Readonly<IAssetPluginParseInput>,
+    embryo: Readonly<IAssetPluginParseOutput> | null,
+    api: Readonly<IAssetPluginParseApi>,
+    next: IAssetPluginParseNext,
+  ): Promise<IAssetPluginParseOutput | null> {
     if (isMarkdownAsset(embryo) && embryo.data) {
       let slug = this.resolveSlug(embryo.slug, input.src)
       if (slug) slug = normalizeUrlPath(slug)
       if (slug !== embryo.slug) {
-        const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
+        const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
           ...embryo,
           slug,
         }

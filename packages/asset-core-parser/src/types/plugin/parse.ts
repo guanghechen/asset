@@ -1,6 +1,6 @@
 import type { IAssetId } from '@guanghechen/asset-core'
 
-export interface IAssetParserPluginParseApi {
+export interface IAssetPluginParseApi {
   /**
    * Load source content.
    * @param relativeSrcLocation
@@ -18,23 +18,23 @@ export interface IAssetParserPluginParseApi {
   resolveSlug(slug: string | null | undefined): string | null
 }
 
-export interface IAssetParserPluginParseNext {
-  (embryo: Readonly<IAssetParserPluginParseOutput> | null):
-    | IAssetParserPluginParseOutput
+export interface IAssetPluginParseNext {
+  (embryo: Readonly<IAssetPluginParseOutput> | null):
+    | IAssetPluginParseOutput
     | null
-    | Promise<IAssetParserPluginParseOutput | null>
+    | Promise<IAssetPluginParseOutput | null>
 }
 
-export interface IAssetParserPluginParse {
+export interface IAssetPluginParse {
   (
-    input: Readonly<IAssetParserPluginParseInput>,
-    embryo: Readonly<IAssetParserPluginParseOutput> | null,
-    api: Readonly<IAssetParserPluginParseApi>,
-    next: IAssetParserPluginParseNext,
-  ): IAssetParserPluginParseOutput | null | Promise<IAssetParserPluginParseOutput | null>
+    input: Readonly<IAssetPluginParseInput>,
+    embryo: Readonly<IAssetPluginParseOutput> | null,
+    api: Readonly<IAssetPluginParseApi>,
+    next: IAssetPluginParseNext,
+  ): IAssetPluginParseOutput | null | Promise<IAssetPluginParseOutput | null>
 }
 
-export interface IAssetParserPluginParseInput {
+export interface IAssetPluginParseInput {
   /**
    * Asset global unique identifier.
    */
@@ -69,7 +69,7 @@ export interface IAssetParserPluginParseInput {
   content: Buffer
 }
 
-export interface IAssetParserPluginParseOutput<D = unknown> {
+export interface IAssetPluginParseOutput<D = unknown> {
   /**
    * Asset content type.
    */

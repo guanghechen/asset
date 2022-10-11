@@ -1,9 +1,9 @@
 import type {
-  IAssetParserPlugin,
-  IAssetParserPluginParseApi,
-  IAssetParserPluginParseInput,
-  IAssetParserPluginParseNext,
-  IAssetParserPluginParseOutput,
+  IAssetPlugin,
+  IAssetPluginParseApi,
+  IAssetPluginParseInput,
+  IAssetPluginParseNext,
+  IAssetPluginParseOutput,
 } from '@guanghechen/asset-core-parser'
 import type { Root } from '@yozora/ast'
 import type { IParser } from '@yozora/core-parser'
@@ -28,7 +28,7 @@ export interface IMarkdownAssetParserExcerptProps {
   endingSeparator?: string
 }
 
-export class MarkdownAssetParserExcerpt implements IAssetParserPlugin {
+export class MarkdownAssetParserExcerpt implements IAssetPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/excerpt'
   protected readonly parser: IParser
   protected readonly pruneLength: number
@@ -42,17 +42,17 @@ export class MarkdownAssetParserExcerpt implements IAssetParserPlugin {
   }
 
   public async parse(
-    input: Readonly<IAssetParserPluginParseInput>,
-    embryo: Readonly<IAssetParserPluginParseOutput> | null,
-    api: Readonly<IAssetParserPluginParseApi>,
-    next: IAssetParserPluginParseNext,
-  ): Promise<IAssetParserPluginParseOutput | null> {
+    input: Readonly<IAssetPluginParseInput>,
+    embryo: Readonly<IAssetPluginParseOutput> | null,
+    api: Readonly<IAssetPluginParseApi>,
+    next: IAssetPluginParseNext,
+  ): Promise<IAssetPluginParseOutput | null> {
     if (isMarkdownAsset(embryo) && embryo.data) {
       const { ast, frontmatter } = embryo.data
       const excerpt: Root = frontmatter.excerpt
         ? this.parser.parse(frontmatter.excerpt)
         : getExcerptAst(ast, this.pruneLength, this.endingSeparator)
-      const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
+      const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
         ...embryo,
         data: {
           ...embryo.data,

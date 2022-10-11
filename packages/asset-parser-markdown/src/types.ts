@@ -1,4 +1,4 @@
-import type { IAssetParserPluginPolishInput } from '@guanghechen/asset-core-parser'
+import type { IAssetPluginPolishInput } from '@guanghechen/asset-core-parser'
 import type { Root } from '@yozora/ast'
 import type { IHeadingToc } from '@yozora/ast-util'
 
@@ -7,8 +7,8 @@ export const MarkdownAssetType = 'markdown'
 export type MarkdownAssetType = typeof MarkdownAssetType
 
 export const isMarkdownAsset = (
-  input: Readonly<IAssetParserPluginPolishInput> | null,
-): input is Readonly<IAssetParserPluginPolishInput<IMarkdownResolvedData>> =>
+  input: Readonly<IAssetPluginPolishInput> | null,
+): input is Readonly<IAssetPluginPolishInput<IMarkdownResolvedData>> =>
   input?.type === MarkdownAssetType
 
 export interface IMarkdownResolvedData {

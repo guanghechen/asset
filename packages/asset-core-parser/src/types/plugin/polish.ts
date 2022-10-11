@@ -1,6 +1,6 @@
 import type { AssetDataType, IAssetEntity } from '../asset'
 
-export interface IAssetParserPluginPolishApi {
+export interface IAssetPluginPolishApi {
   /**
    * Load source content.
    * @param relativeSrcLocation
@@ -18,23 +18,23 @@ export interface IAssetParserPluginPolishApi {
   resolveAsset(relativeLocation: string): Pick<IAssetEntity, 'uri' | 'slug' | 'title'> | null
 }
 
-export interface IAssetParserPluginPolishNext {
-  (embryo: Readonly<IAssetParserPluginPolishOutput> | null):
-    | IAssetParserPluginPolishOutput
+export interface IAssetPluginPolishNext {
+  (embryo: Readonly<IAssetPluginPolishOutput> | null):
+    | IAssetPluginPolishOutput
     | null
-    | Promise<IAssetParserPluginPolishOutput | null>
+    | Promise<IAssetPluginPolishOutput | null>
 }
 
-export interface IAssetParserPluginPolish {
+export interface IAssetPluginPolish {
   (
-    input: Readonly<IAssetParserPluginPolishInput>,
-    embryo: Readonly<IAssetParserPluginPolishOutput> | null,
-    api: Readonly<IAssetParserPluginPolishApi>,
-    next: IAssetParserPluginPolishNext,
-  ): IAssetParserPluginPolishOutput | null | Promise<IAssetParserPluginPolishOutput | null>
+    input: Readonly<IAssetPluginPolishInput>,
+    embryo: Readonly<IAssetPluginPolishOutput> | null,
+    api: Readonly<IAssetPluginPolishApi>,
+    next: IAssetPluginPolishNext,
+  ): IAssetPluginPolishOutput | null | Promise<IAssetPluginPolishOutput | null>
 }
 
-export interface IAssetParserPluginPolishInput<D = unknown> {
+export interface IAssetPluginPolishInput<D = unknown> {
   /**
    * Asset type.
    */
@@ -49,7 +49,7 @@ export interface IAssetParserPluginPolishInput<D = unknown> {
   data: D | null
 }
 
-export interface IAssetParserPluginPolishOutput<D = unknown> {
+export interface IAssetPluginPolishOutput<D = unknown> {
   /**
    * Asset data type.
    */

@@ -1,9 +1,9 @@
 import type {
-  IAssetParserPlugin,
-  IAssetParserPluginParseApi,
-  IAssetParserPluginParseInput,
-  IAssetParserPluginParseNext,
-  IAssetParserPluginParseOutput,
+  IAssetPlugin,
+  IAssetPluginParseApi,
+  IAssetPluginParseInput,
+  IAssetPluginParseNext,
+  IAssetPluginParseOutput,
 } from '@guanghechen/asset-core-parser'
 import { calcHeadingToc } from '@yozora/ast-util'
 import type { IMarkdownResolvedData } from './types'
@@ -16,7 +16,7 @@ export interface IMarkdownAssetParserTocProps {
   identifierPrefix?: string
 }
 
-export class MarkdownAssetParserToc implements IAssetParserPlugin {
+export class MarkdownAssetParserToc implements IAssetPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/toc'
   public readonly identifierPrefix: string | undefined
 
@@ -25,14 +25,14 @@ export class MarkdownAssetParserToc implements IAssetParserPlugin {
   }
 
   public async parse(
-    input: Readonly<IAssetParserPluginParseInput>,
-    embryo: Readonly<IAssetParserPluginParseOutput> | null,
-    api: Readonly<IAssetParserPluginParseApi>,
-    next: IAssetParserPluginParseNext,
-  ): Promise<IAssetParserPluginParseOutput | null> {
+    input: Readonly<IAssetPluginParseInput>,
+    embryo: Readonly<IAssetPluginParseOutput> | null,
+    api: Readonly<IAssetPluginParseApi>,
+    next: IAssetPluginParseNext,
+  ): Promise<IAssetPluginParseOutput | null> {
     if (isMarkdownAsset(embryo) && embryo.data) {
       const toc = calcHeadingToc(embryo.data.ast, this.identifierPrefix)
-      const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
+      const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
         ...embryo,
         data: {
           ...embryo.data,

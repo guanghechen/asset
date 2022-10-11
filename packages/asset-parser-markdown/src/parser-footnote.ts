@@ -1,9 +1,9 @@
 import type {
-  IAssetParserPlugin,
-  IAssetParserPluginParseApi,
-  IAssetParserPluginParseInput,
-  IAssetParserPluginParseNext,
-  IAssetParserPluginParseOutput,
+  IAssetPlugin,
+  IAssetPluginParseApi,
+  IAssetPluginParseInput,
+  IAssetPluginParseNext,
+  IAssetPluginParseOutput,
 } from '@guanghechen/asset-core-parser'
 import type { Association, FootnoteDefinition } from '@yozora/ast'
 import { FootnoteDefinitionType, FootnoteReferenceType } from '@yozora/ast'
@@ -28,7 +28,7 @@ export interface IMarkdownAssetParserFootnoteProps {
   presetFootnoteDefinitions?: ReadonlyArray<FootnoteDefinition>
 }
 
-export class MarkdownAssetParserFootnote implements IAssetParserPlugin {
+export class MarkdownAssetParserFootnote implements IAssetPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/footnote'
   protected readonly identifierPrefix: string
   protected readonly preferReference: boolean
@@ -41,11 +41,11 @@ export class MarkdownAssetParserFootnote implements IAssetParserPlugin {
   }
 
   public async parse(
-    input: Readonly<IAssetParserPluginParseInput>,
-    embryo: Readonly<IAssetParserPluginParseOutput> | null,
-    api: Readonly<IAssetParserPluginParseApi>,
-    next: IAssetParserPluginParseNext,
-  ): Promise<IAssetParserPluginParseOutput | null> {
+    input: Readonly<IAssetPluginParseInput>,
+    embryo: Readonly<IAssetPluginParseOutput> | null,
+    api: Readonly<IAssetPluginParseApi>,
+    next: IAssetPluginParseNext,
+  ): Promise<IAssetPluginParseOutput | null> {
     if (isMarkdownAsset(embryo) && embryo.data) {
       let ast = shallowMutateAstInPreorder(
         embryo.data.ast,
@@ -68,7 +68,7 @@ export class MarkdownAssetParserFootnote implements IAssetParserPlugin {
         ).root
       }
 
-      const result: IAssetParserPluginParseOutput<IMarkdownResolvedData> = {
+      const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
         ...embryo,
         data: {
           ...embryo.data,

@@ -1,13 +1,13 @@
 import type {
-  IAssetParserPlugin,
-  IAssetParserPluginParseApi,
-  IAssetParserPluginParseInput,
-  IAssetParserPluginParseNext,
-  IAssetParserPluginParseOutput,
-  IAssetParserPluginPolishApi,
-  IAssetParserPluginPolishInput,
-  IAssetParserPluginPolishNext,
-  IAssetParserPluginPolishOutput,
+  IAssetPlugin,
+  IAssetPluginParseApi,
+  IAssetPluginParseInput,
+  IAssetPluginParseNext,
+  IAssetPluginParseOutput,
+  IAssetPluginPolishApi,
+  IAssetPluginPolishInput,
+  IAssetPluginPolishNext,
+  IAssetPluginPolishOutput,
 } from '@guanghechen/asset-core-parser'
 import { AssetDataType, normalizePattern } from '@guanghechen/asset-core-parser'
 import mime from 'mime'
@@ -31,7 +31,7 @@ export interface IFileAssetParserProps {
   rejected?: RegExp[] | RegExp | ((src: string) => boolean)
 }
 
-export class FileAssetParser implements IAssetParserPlugin {
+export class FileAssetParser implements IAssetPlugin {
   public readonly displayName: string
   protected readonly accepted: (src: string) => boolean
   protected readonly rejected: (src: string) => boolean
@@ -43,14 +43,14 @@ export class FileAssetParser implements IAssetParserPlugin {
   }
 
   public async parse(
-    input: Readonly<IAssetParserPluginParseInput>,
-    embryo: Readonly<IAssetParserPluginParseOutput> | null,
-    api: Readonly<IAssetParserPluginParseApi>,
-    next: IAssetParserPluginParseNext,
-  ): Promise<IAssetParserPluginParseOutput | null> {
+    input: Readonly<IAssetPluginParseInput>,
+    embryo: Readonly<IAssetPluginParseOutput> | null,
+    api: Readonly<IAssetPluginParseApi>,
+    next: IAssetPluginParseNext,
+  ): Promise<IAssetPluginParseOutput | null> {
     if (!embryo && this.accepted(input.src) && !this.rejected(input.src)) {
       const mimetype = mime.getType(input.filename)
-      const result: IAssetParserPluginParseOutput<IFileResolvedData> = {
+      const result: IAssetPluginParseOutput<IFileResolvedData> = {
         type: FileAssetType,
         mimetype: mimetype ?? 'unknown',
         title: input.title,
@@ -68,16 +68,16 @@ export class FileAssetParser implements IAssetParserPlugin {
   }
 
   public async polish(
-    input: Readonly<IAssetParserPluginPolishInput>,
-    embryo: Readonly<IAssetParserPluginPolishOutput> | null,
-    api: Readonly<IAssetParserPluginPolishApi>,
-    next: IAssetParserPluginPolishNext,
-  ): Promise<IAssetParserPluginPolishOutput | null> {
+    input: Readonly<IAssetPluginPolishInput>,
+    embryo: Readonly<IAssetPluginPolishOutput> | null,
+    api: Readonly<IAssetPluginPolishApi>,
+    next: IAssetPluginPolishNext,
+  ): Promise<IAssetPluginPolishOutput | null> {
     if (isFileAsset(input) && input.data) {
       const { filename } = input.data
       const content: Buffer | null = await api.loadContent(filename)
       if (content !== null) {
-        const result: IAssetParserPluginPolishOutput<IFilePolishedData> = {
+        const result: IAssetPluginPolishOutput<IFilePolishedData> = {
           dataType: AssetDataType.BINARY,
           data: content,
         }
