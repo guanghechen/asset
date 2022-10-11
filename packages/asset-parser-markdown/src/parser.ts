@@ -1,3 +1,4 @@
+import { AssetDataType } from '@guanghechen/asset-core'
 import type {
   IAssetPlugin,
   IAssetPluginParseApi,
@@ -9,7 +10,6 @@ import type {
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
 } from '@guanghechen/asset-core-parser'
-import { AssetDataType } from '@guanghechen/asset-core-parser'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
 import type { Resource, Root } from '@yozora/ast'
 import { shallowMutateAstInPreorder } from '@yozora/ast-util'

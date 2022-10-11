@@ -1,3 +1,4 @@
+import { AssetDataType } from '@guanghechen/asset-core'
 import type {
   IAssetPlugin,
   IAssetPluginParseApi,
@@ -9,7 +10,7 @@ import type {
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
 } from '@guanghechen/asset-core-parser'
-import { AssetDataType, normalizePattern } from '@guanghechen/asset-core-parser'
+import { normalizePattern } from '@guanghechen/asset-core-parser'
 import mime from 'mime'
 import type { IFilePolishedData, IFileResolvedData } from './types'
 import { FileAssetType, isFileAsset } from './types'

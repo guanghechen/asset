@@ -1,4 +1,4 @@
-import type { AssetDataType, IAssetEntity } from '../asset'
+import type { AssetDataType, IAssetEntity } from '@guanghechen/asset-core'
 
 export interface IAssetPluginPolishApi {
   /**

@@ -1,6 +1,5 @@
-import type { IAsset, IAssetDataMap, IAssetManager } from '@guanghechen/asset-core'
 import { AssetManager } from '@guanghechen/asset-core'
-import type { IAssetEntity } from './types/asset'
+import type { IAsset, IAssetDataMap, IAssetEntity, IAssetManager } from '@guanghechen/asset-core'
 import type { IAssetParser } from './types/parser'
 import type {
   IAssetPluginParseApi,

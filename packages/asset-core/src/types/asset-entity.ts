@@ -1,4 +1,4 @@
-import type { IAsset } from '@guanghechen/asset-core'
+import type { IAsset } from './asset'
 
 export enum AssetDataType {
   /**

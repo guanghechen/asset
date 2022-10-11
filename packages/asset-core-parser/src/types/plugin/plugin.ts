@@ -2,22 +2,19 @@ import type { IAssetPluginParse } from './parse'
 import type { IAssetPluginPolish } from './polish'
 
 /**
- * Asset plugin lifecycle
- *
- *    - Parse
- *    - Polish
+ * A hook for parsing asset to specific data.
  */
-export interface IAssetPlugin {
-  /**
-   * Plugin display name.
-   */
+export interface IAssetParsePlugin {
   readonly displayName: string
-  /**
-   * A hook for parsing asset to specific data.
-   */
   parse?: IAssetPluginParse
-  /**
-   * A hook for normalizing parsed data.
-   */
+}
+
+/**
+ * A hook for post-handling parsed data.
+ */
+export interface IAssetPolishPlugin {
+  readonly displayName: string
   polish?: IAssetPluginPolish
 }
+
+export type IAssetPlugin = IAssetParsePlugin & IAssetPolishPlugin
