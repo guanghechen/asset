@@ -87,13 +87,25 @@ export class AssetParser implements IAssetParser {
     const { guid, hash, src } = input
     const result = await reducer(null)
     if (result) {
-      const { type, mimetype, title, slug, createdAt, updatedAt, categories, tags, data } = result
+      const {
+        type,
+        mimetype,
+        title,
+        description,
+        slug,
+        createdAt,
+        updatedAt,
+        categories,
+        tags,
+        data,
+      } = result
       const asset: IAsset = {
         guid,
         hash,
         type,
         mimetype,
         title,
+        description,
         uri: assetResolver.resolveUri({ guid, type, mimetype }),
         slug,
         createdAt,

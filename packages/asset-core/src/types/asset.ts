@@ -22,6 +22,10 @@ export interface IAsset {
    */
   title: string
   /**
+   * Description of the content.
+   */
+  description: string | null
+  /**
    * Asset url path.
    */
   uri: string

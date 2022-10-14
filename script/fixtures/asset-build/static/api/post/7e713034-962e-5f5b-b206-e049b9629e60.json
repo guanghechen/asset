@@ -101,7 +101,8 @@
   },
   "frontmatter": {
     "slug": "/home/about/me",
-    "title": "A simple asset resolver script.",
+    "title": "Simple asset resolver",
+    "description": "A simple asset resolve script for collecting and parsing asset files to structured data.",
     "createdAt": "2020-07-26T02:00:57.614Z",
     "updatedAt": "2020-07-27T09:03:57.614Z",
     "tags": [
