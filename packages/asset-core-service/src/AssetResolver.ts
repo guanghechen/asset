@@ -59,7 +59,7 @@ export class AssetResolver implements IAssetResolver {
       guid,
       hash,
       src,
-      createdAt: new Date(stat.ctime).toISOString(),
+      createdAt: new Date(stat.birthtime).toISOString(),
       updatedAt: new Date(stat.mtime).toISOString(),
       filename,
       title: filename
