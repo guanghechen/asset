@@ -24,6 +24,8 @@
       "extends": ["@guanghechen", "@guanghechen/ts", "prettier"],
       "rules": {
         "@typescript-eslint/method-signature-style": 0,
+        "@typescript-eslint/no-empty-interface": 0,
+        "@typescript-eslint/no-useless-constructor": 0,
         "import/no-named-as-default": 0
       }
     },
@@ -32,6 +34,8 @@
       "extends": ["@guanghechen", "@guanghechen/ts", "prettier"],
       "rules": {
         "@typescript-eslint/method-signature-style": 0,
+        "@typescript-eslint/no-empty-interface": 0,
+        "@typescript-eslint/no-useless-constructor": 0,
         "import/no-extraneous-dependencies": 0,
         "import/no-named-as-default": 0
       }
@@ -41,6 +45,8 @@
       "extends": ["@guanghechen", "@guanghechen/ts", "plugin:jest/recommended", "prettier"],
       "rules": {
         "@typescript-eslint/ban-ts-comment": 0,
+        "@typescript-eslint/no-empty-interface": 0,
+        "@typescript-eslint/no-useless-constructor": 0,
         "import/no-extraneous-dependencies": 0,
         "jest/expect-expect": 0
       }

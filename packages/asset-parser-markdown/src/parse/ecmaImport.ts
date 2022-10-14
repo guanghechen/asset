@@ -11,7 +11,6 @@ import { collectNodes } from '@yozora/ast-util'
 import type { IMarkdownPolishedData } from '../types'
 import { isMarkdownPolishedData } from '../util/misc'
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface IMarkdownParsePluginEcmaImportProps {}
 
 export class MarkdownParsePluginEcmaImport implements IAssetPolishPlugin {
