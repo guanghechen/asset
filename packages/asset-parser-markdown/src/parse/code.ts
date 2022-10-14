@@ -10,7 +10,7 @@ import type { Code } from '@yozora/ast'
 import { CodeType } from '@yozora/ast'
 import { shallowMutateAstInPreorder } from '@yozora/ast-util'
 import type { IMarkdownResolvedData } from '../types'
-import { isMarkdownAsset } from '../types'
+import { isMarkdownAsset } from '../util/misc'
 
 export interface IMarkdownParsePluginCodeProps {
   /**

@@ -1,12 +1,12 @@
 import type {
-  IAssetParsePlugin,
-  IAssetPluginParseApi,
-  IAssetPluginParseInput,
-  IAssetPluginParseNext,
-  IAssetPluginParseOutput,
+  IAssetPluginPolishApi,
+  IAssetPluginPolishInput,
+  IAssetPluginPolishNext,
+  IAssetPluginPolishOutput,
+  IAssetPolishPlugin,
 } from '@guanghechen/asset-core-plugin'
-import type { IMarkdownResolvedData } from '../types'
-import { isMarkdownAsset } from '../types'
+import type { IMarkdownPolishedData } from '../types'
+import { isMarkdownPolishedData } from '../util/misc'
 import { getTimeToRead } from '../util/timeToRead'
 
 export interface IMarkdownParsePluginTimeToReadProps {
@@ -16,7 +16,7 @@ export interface IMarkdownParsePluginTimeToReadProps {
   wordsPerMinute?: number
 }
 
-export class MarkdownParsePluginTimeToRead implements IAssetParsePlugin {
+export class MarkdownParsePluginTimeToRead implements IAssetPolishPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/timeToRead'
   protected readonly wordsPerMinute: number | undefined
 
@@ -24,22 +24,23 @@ export class MarkdownParsePluginTimeToRead implements IAssetParsePlugin {
     this.wordsPerMinute = props.wordsPerMinute ?? undefined
   }
 
-  public async parse(
-    input: Readonly<IAssetPluginParseInput>,
-    embryo: Readonly<IAssetPluginParseOutput> | null,
-    api: Readonly<IAssetPluginParseApi>,
-    next: IAssetPluginParseNext,
-  ): Promise<IAssetPluginParseOutput | null> {
-    if (isMarkdownAsset(embryo) && embryo.data) {
-      const { ast, frontmatter } = embryo.data
+  public async polish(
+    input: Readonly<IAssetPluginPolishInput>,
+    embryo: Readonly<IAssetPluginPolishOutput> | null,
+    api: Readonly<IAssetPluginPolishApi>,
+    next: IAssetPluginPolishNext,
+  ): Promise<IAssetPluginPolishOutput | null> {
+    if (isMarkdownPolishedData(input, embryo)) {
+      const data = await embryo.data
       const timeToRead: number =
-        frontmatter.timeToRead && Number.isInteger(frontmatter.timeToRead)
-          ? frontmatter.timeToRead
-          : getTimeToRead(ast, this.wordsPerMinute)
-      const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
+        data.frontmatter.timeToRead && Number.isInteger(data.frontmatter.timeToRead)
+          ? data.frontmatter.timeToRead
+          : getTimeToRead(data.ast, this.wordsPerMinute)
+
+      const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
         ...embryo,
         data: {
-          ...embryo.data,
+          ...data,
           timeToRead,
         },
       }

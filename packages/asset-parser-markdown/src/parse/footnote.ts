@@ -1,15 +1,14 @@
 import type {
-  IAssetParsePlugin,
-  IAssetPluginParseApi,
-  IAssetPluginParseInput,
-  IAssetPluginParseNext,
-  IAssetPluginParseOutput,
+  IAssetPluginPolishApi,
+  IAssetPluginPolishInput,
+  IAssetPluginPolishNext,
+  IAssetPluginPolishOutput,
+  IAssetPolishPlugin,
 } from '@guanghechen/asset-core-plugin'
-import type { Association, FootnoteDefinition } from '@yozora/ast'
-import { FootnoteDefinitionType, FootnoteReferenceType } from '@yozora/ast'
-import { calcFootnoteDefinitionMap, shallowMutateAstInPreorder } from '@yozora/ast-util'
-import type { IMarkdownResolvedData } from '../types'
-import { isMarkdownAsset } from '../types'
+import type { FootnoteDefinition } from '@yozora/ast'
+import { calcFootnoteDefinitionMap } from '@yozora/ast-util'
+import type { IMarkdownPolishedData } from '../types'
+import { isMarkdownPolishedData } from '../util/misc'
 
 export interface IMarkdownParsePluginFootnoteProps {
   /**
@@ -28,7 +27,7 @@ export interface IMarkdownParsePluginFootnoteProps {
   presetFootnoteDefinitions?: ReadonlyArray<FootnoteDefinition>
 }
 
-export class MarkdownParsePluginFootnote implements IAssetParsePlugin {
+export class MarkdownParsePluginFootnote implements IAssetPolishPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/footnote'
   protected readonly identifierPrefix: string
   protected readonly preferReference: boolean
@@ -40,39 +39,28 @@ export class MarkdownParsePluginFootnote implements IAssetParsePlugin {
     this.presetFootnoteDefinitions = props.presetFootnoteDefinitions ?? []
   }
 
-  public async parse(
-    input: Readonly<IAssetPluginParseInput>,
-    embryo: Readonly<IAssetPluginParseOutput> | null,
-    api: Readonly<IAssetPluginParseApi>,
-    next: IAssetPluginParseNext,
-  ): Promise<IAssetPluginParseOutput | null> {
-    if (isMarkdownAsset(embryo) && embryo.data) {
-      let ast = shallowMutateAstInPreorder(
-        embryo.data.ast,
-        [FootnoteReferenceType, FootnoteDefinitionType],
-        node => {
-          const o = node as unknown as Association
-          return /^\d+$/.test(o.identifier)
-            ? { ...node, identifier: this.identifierPrefix + o.identifier }
-            : node
-        },
+  public async polish(
+    input: Readonly<IAssetPluginPolishInput>,
+    embryo: Readonly<IAssetPluginPolishOutput> | null,
+    api: Readonly<IAssetPluginPolishApi>,
+    next: IAssetPluginPolishNext,
+  ): Promise<IAssetPluginPolishOutput | null> {
+    if (isMarkdownPolishedData(input, embryo)) {
+      const data = await embryo.data
+      const { root, footnoteDefinitionMap } = calcFootnoteDefinitionMap(
+        data.ast,
+        undefined,
+        this.presetFootnoteDefinitions,
+        this.preferReference,
+        this.identifierPrefix,
       )
 
-      if (this.preferReference) {
-        ast = calcFootnoteDefinitionMap(
-          ast,
-          undefined,
-          this.presetFootnoteDefinitions,
-          true,
-          this.identifierPrefix,
-        ).root
-      }
-
-      const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
+      const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
         ...embryo,
         data: {
-          ...embryo.data,
-          ast,
+          ...data,
+          ast: root,
+          footnoteDefinitionMap,
         },
       }
       return next(result)

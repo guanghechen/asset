@@ -47,6 +47,32 @@
     ]
   },
   "frontmatter": {},
+  "definitionMap": {
+    "a": {
+      "type": "definition",
+      "identifier": "a",
+      "label": "a",
+      "url": "/home/about/me"
+    }
+  },
+  "footnoteDefinitionMap": {},
+  "ecmaImports": [],
+  "toc": {
+    "children": [
+      {
+        "depth": 2,
+        "identifier": "heading-related",
+        "contents": [
+          {
+            "type": "text",
+            "value": "Related"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  "timeToRead": 2,
   "excerpt": {
     "type": "root",
     "children": [
@@ -90,24 +116,8 @@
         "type": "definition",
         "identifier": "a",
         "label": "a",
-        "url": "./a.md"
+        "url": "/home/about/me"
       }
     ]
-  },
-  "toc": {
-    "children": [
-      {
-        "depth": 2,
-        "identifier": "heading-related",
-        "contents": [
-          {
-            "type": "text",
-            "value": "Related"
-          }
-        ],
-        "children": []
-      }
-    ]
-  },
-  "timeToRead": 2
+  }
 }

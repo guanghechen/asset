@@ -7,7 +7,7 @@ import type {
 } from '@guanghechen/asset-core-plugin'
 import { normalizeUrlPath } from '@guanghechen/asset-core-plugin'
 import type { IMarkdownResolvedData } from '../types'
-import { isMarkdownAsset } from '../types'
+import { isMarkdownAsset } from '../util/misc'
 
 export interface IMarkdownParsePluginSlugProps {
   /**

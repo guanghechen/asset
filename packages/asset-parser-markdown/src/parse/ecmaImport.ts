@@ -5,24 +5,19 @@ import type {
   IAssetPluginPolishOutput,
   IAssetPolishPlugin,
 } from '@guanghechen/asset-core-plugin'
-import { calcHeadingToc } from '@yozora/ast-util'
+import type { EcmaImport } from '@yozora/ast'
+import { EcmaImportType } from '@yozora/ast'
+import { collectNodes } from '@yozora/ast-util'
 import type { IMarkdownPolishedData } from '../types'
 import { isMarkdownPolishedData } from '../util/misc'
 
-export interface IMarkdownParsePluginTocProps {
-  /**
-   * Specify a prefix of heading identifier.
-   */
-  identifierPrefix?: string
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface IMarkdownParsePluginEcmaImportProps {}
 
-export class MarkdownParsePluginToc implements IAssetPolishPlugin {
-  public readonly displayName: string = '@guanghechen/asset-parser-markdown/toc'
-  public readonly identifierPrefix: string | undefined
+export class MarkdownParsePluginEcmaImport implements IAssetPolishPlugin {
+  public readonly displayName: string = '@guanghechen/asset-parser-markdown/ecma-import'
 
-  constructor(props: IMarkdownParsePluginTocProps = {}) {
-    this.identifierPrefix = props.identifierPrefix
-  }
+  constructor(props: IMarkdownParsePluginEcmaImportProps = {}) {}
 
   public async polish(
     input: Readonly<IAssetPluginPolishInput>,
@@ -32,12 +27,12 @@ export class MarkdownParsePluginToc implements IAssetPolishPlugin {
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownPolishedData(input, embryo)) {
       const data = await embryo.data
-      const toc = calcHeadingToc(data.ast, this.identifierPrefix)
+      const ecmaImports = collectNodes(data.ast, [EcmaImportType]) as EcmaImport[]
       const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
         ...embryo,
         data: {
           ...data,
-          toc,
+          ecmaImports,
         },
       }
       return next(result)

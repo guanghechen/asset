@@ -5,23 +5,24 @@ import type {
   IAssetPluginPolishOutput,
   IAssetPolishPlugin,
 } from '@guanghechen/asset-core-plugin'
-import { calcHeadingToc } from '@yozora/ast-util'
+import type { Definition } from '@yozora/ast'
+import { calcDefinitionMap } from '@yozora/ast-util'
 import type { IMarkdownPolishedData } from '../types'
 import { isMarkdownPolishedData } from '../util/misc'
 
-export interface IMarkdownParsePluginTocProps {
+export interface IMarkdownParsePluginDefinitionProps {
   /**
-   * Specify a prefix of heading identifier.
+   * Preset definition definitions.
    */
-  identifierPrefix?: string
+  presetDefinitions?: ReadonlyArray<Definition>
 }
 
-export class MarkdownParsePluginToc implements IAssetPolishPlugin {
-  public readonly displayName: string = '@guanghechen/asset-parser-markdown/toc'
-  public readonly identifierPrefix: string | undefined
+export class MarkdownParsePluginDefinition implements IAssetPolishPlugin {
+  public readonly displayName: string = '@guanghechen/asset-parser-markdown/definition'
+  protected readonly presetDefinitions: ReadonlyArray<Definition>
 
-  constructor(props: IMarkdownParsePluginTocProps = {}) {
-    this.identifierPrefix = props.identifierPrefix
+  constructor(props: IMarkdownParsePluginDefinitionProps = {}) {
+    this.presetDefinitions = props.presetDefinitions ?? []
   }
 
   public async polish(
@@ -32,12 +33,14 @@ export class MarkdownParsePluginToc implements IAssetPolishPlugin {
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownPolishedData(input, embryo)) {
       const data = await embryo.data
-      const toc = calcHeadingToc(data.ast, this.identifierPrefix)
+      const { root, definitionMap } = calcDefinitionMap(data.ast, undefined, this.presetDefinitions)
+
       const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
         ...embryo,
         data: {
           ...data,
-          toc,
+          ast: root,
+          definitionMap,
         },
       }
       return next(result)

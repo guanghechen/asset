@@ -4,6 +4,8 @@ import { FileAssetType, FileParserPlugin } from '@guanghechen/asset-parser-file'
 import {
   MarkdownAssetType,
   MarkdownParsePluginCode,
+  MarkdownParsePluginDefinition,
+  MarkdownParsePluginEcmaImport,
   MarkdownParsePluginExcerpt,
   MarkdownParsePluginFootnote,
   MarkdownParsePluginSlug,
@@ -27,11 +29,13 @@ async function build(options: IBuildOptions): Promise<void> {
   const parser = new AssetParser()
     .use(
       new MarkdownParserPlugin({ parser: markdownParser }),
-      new MarkdownParsePluginCode(),
-      new MarkdownParsePluginFootnote(),
       new MarkdownParsePluginSlug({ slugPrefix: '/post/' }),
-      new MarkdownParsePluginTimeToRead({ wordsPerMinute: 60 }),
+      new MarkdownParsePluginCode(),
+      new MarkdownParsePluginDefinition(),
+      new MarkdownParsePluginFootnote(),
+      new MarkdownParsePluginEcmaImport(),
       new MarkdownParsePluginToc(),
+      new MarkdownParsePluginTimeToRead({ wordsPerMinute: 60 }),
       new MarkdownParsePluginExcerpt({ parser: markdownParser, pruneLength: 140 }),
     )
     .use(

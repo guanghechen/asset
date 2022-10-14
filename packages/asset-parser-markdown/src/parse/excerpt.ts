@@ -1,16 +1,16 @@
 import type {
-  IAssetParsePlugin,
-  IAssetPluginParseApi,
-  IAssetPluginParseInput,
-  IAssetPluginParseNext,
-  IAssetPluginParseOutput,
+  IAssetPluginPolishApi,
+  IAssetPluginPolishInput,
+  IAssetPluginPolishNext,
+  IAssetPluginPolishOutput,
+  IAssetPolishPlugin,
 } from '@guanghechen/asset-core-plugin'
 import type { Root } from '@yozora/ast'
 import type { IParser } from '@yozora/core-parser'
 import YozoraParser from '@yozora/parser'
-import type { IMarkdownResolvedData } from '../types'
-import { isMarkdownAsset } from '../types'
+import type { IMarkdownPolishedData } from '../types'
 import { getExcerptAst } from '../util/excerpt'
+import { isMarkdownPolishedData } from '../util/misc'
 
 export interface IMarkdownParsePluginExcerptProps {
   /**
@@ -28,7 +28,7 @@ export interface IMarkdownParsePluginExcerptProps {
   endingSeparator?: string
 }
 
-export class MarkdownParsePluginExcerpt implements IAssetParsePlugin {
+export class MarkdownParsePluginExcerpt implements IAssetPolishPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/excerpt'
   protected readonly parser: IParser
   protected readonly pruneLength: number
@@ -41,21 +41,22 @@ export class MarkdownParsePluginExcerpt implements IAssetParsePlugin {
     this.endingSeparator = props.endingSeparator ?? '<!-- more -->'
   }
 
-  public async parse(
-    input: Readonly<IAssetPluginParseInput>,
-    embryo: Readonly<IAssetPluginParseOutput> | null,
-    api: Readonly<IAssetPluginParseApi>,
-    next: IAssetPluginParseNext,
-  ): Promise<IAssetPluginParseOutput | null> {
-    if (isMarkdownAsset(embryo) && embryo.data) {
-      const { ast, frontmatter } = embryo.data
-      const excerpt: Root = frontmatter.excerpt
-        ? this.parser.parse(frontmatter.excerpt)
-        : getExcerptAst(ast, this.pruneLength, this.endingSeparator)
-      const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
+  public async polish(
+    input: Readonly<IAssetPluginPolishInput>,
+    embryo: Readonly<IAssetPluginPolishOutput> | null,
+    api: Readonly<IAssetPluginPolishApi>,
+    next: IAssetPluginPolishNext,
+  ): Promise<IAssetPluginPolishOutput | null> {
+    if (isMarkdownPolishedData(input, embryo)) {
+      const data = await embryo.data
+      const excerpt: Root = data.frontmatter.excerpt
+        ? this.parser.parse(data.frontmatter.excerpt)
+        : getExcerptAst(data.ast, this.pruneLength, this.endingSeparator)
+
+      const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
         ...embryo,
         data: {
-          ...embryo.data,
+          ...data,
           excerpt,
         },
       }

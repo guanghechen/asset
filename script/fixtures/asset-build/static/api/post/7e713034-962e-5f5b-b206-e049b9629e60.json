@@ -128,6 +128,49 @@
       ]
     ]
   },
+  "definitionMap": {
+    "b": {
+      "type": "definition",
+      "identifier": "b",
+      "label": "b",
+      "url": "/post/b"
+    }
+  },
+  "footnoteDefinitionMap": {
+    "footnote-1": {
+      "type": "footnoteDefinition",
+      "identifier": "footnote-1",
+      "label": "1",
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "This is a footnote."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "ecmaImports": [],
+  "toc": {
+    "children": [
+      {
+        "depth": 2,
+        "identifier": "heading-related",
+        "contents": [
+          {
+            "type": "text",
+            "value": "Related"
+          }
+        ],
+        "children": []
+      }
+    ]
+  },
+  "timeToRead": 38,
   "excerpt": {
     "type": "root",
     "children": [
@@ -163,21 +206,5 @@
         "value": "#include <cstdio>\n\nint main() {\n  printf(\"Hello, world!\");\n  return 0;\n}\n"
       }
     ]
-  },
-  "toc": {
-    "children": [
-      {
-        "depth": 2,
-        "identifier": "heading-related",
-        "contents": [
-          {
-            "type": "text",
-            "value": "Related"
-          }
-        ],
-        "children": []
-      }
-    ]
-  },
-  "timeToRead": 38
+  }
 }

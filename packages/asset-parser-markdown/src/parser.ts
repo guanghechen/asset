@@ -18,7 +18,8 @@ import { YozoraParser } from '@yozora/parser'
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
 import type { IMarkdownPolishedData, IMarkdownResolvedData } from './types'
-import { MarkdownAssetType, isMarkdownAsset } from './types'
+import { MarkdownAssetType } from './types'
+import { isMarkdownAsset } from './util/misc'
 
 export interface IMarkdownParserPluginProps {
   /**
@@ -108,18 +109,12 @@ export class MarkdownParserPlugin implements IAssetParserPlugin {
         return node
       })
 
-      const { frontmatter, excerpt, toc, timeToRead } = {
-        ...input.data,
-        ...(embryo?.data as IMarkdownPolishedData),
-      }
+      const { frontmatter } = input.data
       const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
         dataType: AssetDataType.JSON,
         data: {
           ast,
           frontmatter,
-          excerpt,
-          toc,
-          timeToRead,
         },
         encoding: 'utf8',
       }
