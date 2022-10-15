@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-parser-markdown",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-alpha.5",
   "description": "markdown asset",
   "author": {
     "name": "guanghechen",
@@ -37,8 +37,8 @@
     "test": "echo 'no test yet.'"
   },
   "dependencies": {
-    "@guanghechen/asset-core": "^1.0.0-alpha.4",
-    "@guanghechen/asset-core-plugin": "^1.0.0-alpha.4",
+    "@guanghechen/asset-core": "^1.0.0-alpha.5",
+    "@guanghechen/asset-core-plugin": "^1.0.0-alpha.5",
     "@guanghechen/helper-is": "^2.1.0",
     "@guanghechen/parse-lineno": "^2.1.0",
     "@types/js-yaml": "^4.0.5",
