@@ -1,5 +1,34 @@
 # Changelog
 
+<a name="1.0.0-alpha.5"></a>
+## 1.0.0-alpha.5 (2022-10-14)
+
+### Added
+
+- ✨ feat: support definitionMap and footnoteDefinitionMap [[15be0bf](https://github.com/guanghechen/asset/commit/15be0bfae129a0e6228ec6f43795347813eda47d)]
+
+### Changed
+
+- 🎨 improve: move some types from &#x27;asset-core-parser&#x27; to &#x27;asset-core&#x27; [[14110c2](https://github.com/guanghechen/asset/commit/14110c23665f3e5d6d00911108bf7f93a3555735)]
+- ⬆️ chore: upgrade dependencies [[dfaa097](https://github.com/guanghechen/asset/commit/dfaa097a51e103dcd1982f03dfd61ef03f803f49)]
+- 🔧 chore: update build scripts [[20ad4cd](https://github.com/guanghechen/asset/commit/20ad4cd1847361177774a28520533b6953d3c22e)]
+- 🎨 improve: rename IAssetParserPlugin to IAssetPlugin [[8428b0d](https://github.com/guanghechen/asset/commit/8428b0da73da318480bc014e17c1def69e690c28)]
+
+### Breaking changes
+
+- 💥 rename asset-core-parser to asset-core-plugin &amp; rename classes [[8d2402c](https://github.com/guanghechen/asset/commit/8d2402cfb22c156072966320002754474f75cc1b)]
+
+### Fixed
+
+- 🐛 fix: use stat.birthtime instead of stat.ctime to represent the asset createAt [[4f4ca49](https://github.com/guanghechen/asset/commit/4f4ca49587cd68a2c76a5c52a6b2844f9b5e4432)]
+- ✏️ improve: fix typos [[0368ba3](https://github.com/guanghechen/asset/commit/0368ba3010663dfce8adf97f0a1c9f0de452a0b3)]
+
+### Miscellaneous
+
+-  improve: fix types [[1064365](https://github.com/guanghechen/asset/commit/10643653f0efec14984412c5730706173b07d9bd)]
+-  feat: add &#x27;description&#x27; to AssetMap [[15c6b78](https://github.com/guanghechen/asset/commit/15c6b785dccd6c12432b2ad00636bf153c225b3a)]
+
+
 <a name="1.0.0-alpha.4"></a>
 ## 1.0.0-alpha.4 (2022-10-10)
 
@@ -113,7 +142,6 @@
 ### Miscellaneous
 
 -  :white_check_test:  test: remove volatile datetime in snapshots [[2ce9320](https://github.com/guanghechen/asset/commit/2ce93204289b0f2502d68ff2551f3a22c46d5296)]
-- 📝 docs: add CHANGELOG [[96328e3](https://github.com/guanghechen/asset/commit/96328e328f072407389b8a1c3a4519774c1dfc40)]
 
 
 <a name="1.0.0-alpha.0"></a>
