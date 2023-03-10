@@ -35,7 +35,7 @@ export interface IMarkdownParserPluginProps {
    * Check if the given file is in markdown format.
    * @default filename => /\.md$/.test(filename)
    */
-  resolvable?: (filename: string) => boolean
+  resolvable?(filename: string): boolean
 }
 
 export class MarkdownParserPlugin implements IAssetParserPlugin {

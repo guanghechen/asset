@@ -18,7 +18,7 @@ export interface IMarkdownParsePluginSlugProps {
   /**
    * Customized slug resolver.
    */
-  resolveSlug?: (slug: string | null, src: string) => string | null
+  resolveSlug?(slug: string | null, src: string): string | null
 }
 
 export class MarkdownParsePluginSlug implements IAssetParsePlugin {

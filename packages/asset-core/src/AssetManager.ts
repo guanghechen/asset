@@ -3,8 +3,8 @@ import type { IAsset, IAssetId } from './types/asset'
 import type { IAssetDataMap, IAssetManager } from './types/asset-manager'
 
 export interface IAssetManagerProps {
-  readonly identifierTag?: (tag: string) => string
-  readonly identifierCategory?: (categoryPath: string[]) => string
+  identifierTag?(tag: string): string
+  identifierCategory?(categoryPath: string[]): string
 }
 
 const defaultAssetManagerProps: Required<IAssetManagerProps> = {

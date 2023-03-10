@@ -39,13 +39,13 @@
   "dependencies": {
     "@guanghechen/asset-core": "^1.0.0-alpha.5",
     "@guanghechen/asset-core-plugin": "^1.0.0-alpha.5",
-    "@guanghechen/helper-is": "^2.1.0",
-    "@guanghechen/parse-lineno": "^2.1.0",
+    "@guanghechen/helper-is": "^4.6.2",
+    "@guanghechen/parse-lineno": "^2.2.4",
     "@types/js-yaml": "^4.0.5",
-    "@yozora/ast": "^2.0.2",
-    "@yozora/ast-util": "^2.0.2",
-    "@yozora/parser": "^2.0.2",
-    "dayjs": "^1.11.5",
+    "@yozora/ast": "^2.0.6",
+    "@yozora/ast-util": "^2.0.6",
+    "@yozora/parser": "^2.0.6",
+    "dayjs": "^1.11.7",
     "js-yaml": "^4.1.0"
   }
 }

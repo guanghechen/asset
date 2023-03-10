@@ -1,6 +1,6 @@
 import invariant from '@guanghechen/invariant'
-import fs from 'fs-extra'
-import path from 'path'
+import { existsSync, mkdirSync, statSync } from 'node:fs'
+import path from 'node:path'
 
 export function assertSafeLocation(rootDir: string, location: string): void | never {
   invariant(
@@ -10,17 +10,17 @@ export function assertSafeLocation(rootDir: string, location: string): void | ne
 }
 
 export function assertExistedLocation(location: string): void | never {
-  invariant(fs.existsSync(location), `[assertExistedLocation] Cannot find file. (${location})`)
+  invariant(existsSync(location), `[assertExistedLocation] Cannot find file. (${location})`)
 }
 
 export function assertExistedFilepath(filepath: string): void | never {
   assertExistedLocation(filepath)
-  const stat = fs.statSync(filepath)
+  const stat = statSync(filepath)
   invariant(stat.isFile(), `[assertExistedFilepath] Not a file'. (${filepath})`)
 }
 
 export function mkdirsIfNotExists(filepath: string, isDir: boolean): void {
   const dirPath = isDir ? filepath : path.dirname(filepath)
-  if (fs.existsSync(dirPath)) return
-  fs.mkdirsSync(dirPath)
+  if (existsSync(dirPath)) return
+  mkdirSync(dirPath, { recursive: true })
 }

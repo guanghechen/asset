@@ -11,12 +11,8 @@ import { collectNodes } from '@yozora/ast-util'
 import type { IMarkdownPolishedData } from '../types'
 import { isMarkdownPolishedData } from '../util/misc'
 
-export interface IMarkdownParsePluginEcmaImportProps {}
-
 export class MarkdownParsePluginEcmaImport implements IAssetPolishPlugin {
   public readonly displayName: string = '@guanghechen/asset-parser-markdown/ecma-import'
-
-  constructor(props: IMarkdownParsePluginEcmaImportProps = {}) {}
 
   public async polish(
     input: Readonly<IAssetPluginPolishInput>,

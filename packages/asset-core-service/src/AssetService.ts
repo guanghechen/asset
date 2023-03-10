@@ -1,8 +1,8 @@
 import type { IAssetParser, IAssetResolver } from '@guanghechen/asset-core-plugin'
 import invariant from '@guanghechen/invariant'
 import chokidar from 'chokidar'
-import fs from 'fs-extra'
-import path from 'path'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import type { IAssetUrlPrefixResolver, ISaveOptions } from './AssetResolver'
 import { AssetResolver } from './AssetResolver'
 import type { IAssetChangeTask } from './types/misc'
@@ -207,10 +207,7 @@ export class AssetService {
   protected async dumpAssetDataMap(): Promise<void> {
     const { parser, assetDataMapFilepath, saveOptions } = this
     const assetDataMap = parser.dump()
-    await fs.writeJSON(
-      assetDataMapFilepath,
-      assetDataMap,
-      saveOptions.prettier ? { spaces: 2 } : { spaces: 0 },
-    )
+    const data = JSON.stringify(assetDataMap, null, saveOptions.prettier ? 2 : 0)
+    await fs.writeFile(assetDataMapFilepath, data, 'utf8')
   }
 }

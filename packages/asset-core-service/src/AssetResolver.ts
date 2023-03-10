@@ -2,9 +2,11 @@ import { AssetDataType } from '@guanghechen/asset-core'
 import type { IAsset } from '@guanghechen/asset-core'
 import type { IAssetPluginParseInput, IAssetResolver } from '@guanghechen/asset-core-plugin'
 import { normalizeUrlPath } from '@guanghechen/asset-core-plugin'
-import fs from 'fs-extra'
 import mime from 'mime'
-import path from 'path'
+import type { BinaryLike } from 'node:crypto'
+import { readFileSync } from 'node:fs'
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import { v5 as uuid } from 'uuid'
 import { assertExistedFilepath, assertSafeLocation, mkdirsIfNotExists } from './util/asset'
 import { calcFingerprint } from './util/hash'
@@ -47,7 +49,7 @@ export class AssetResolver implements IAssetResolver {
     assertSafeLocation(this.sourceRoot, srcLocation)
     assertExistedFilepath(srcLocation)
 
-    const stat = fs.statSync(srcLocation)
+    const stat = await fs.stat(srcLocation)
     const content = await fs.readFile(srcLocation)
     const hash = calcFingerprint(content)
     const filename = path.basename(srcLocation)
@@ -85,16 +87,15 @@ export class AssetResolver implements IAssetResolver {
 
     switch (dataType) {
       case AssetDataType.BINARY:
-        await fs.writeFile(dstLocation, data, encoding)
+        await fs.writeFile(dstLocation, data as BinaryLike, encoding)
         break
-      case AssetDataType.JSON:
-        await fs.writeJSON(dstLocation, data, {
-          encoding,
-          spaces: this.saveOptions.prettier ? '  ' : '',
-        })
+      case AssetDataType.JSON: {
+        const content = JSON.stringify(data, null, this.saveOptions.prettier ? 2 : 0)
+        await fs.writeFile(dstLocation, content, 'utf8')
         break
+      }
       case AssetDataType.TEXT:
-        await fs.writeFile(dstLocation, data, encoding)
+        await fs.writeFile(dstLocation, data as string, encoding)
         break
       default:
         throw new Error(`[AssetResolver.saveAsset] Unexpected dataType: ${dataType}`)
@@ -118,7 +119,7 @@ export class AssetResolver implements IAssetResolver {
   public loadSrcContentSync(srcLocation: string): Buffer | null {
     assertSafeLocation(this.sourceRoot, srcLocation)
     assertExistedFilepath(srcLocation)
-    const content = fs.readFileSync(srcLocation)
+    const content = readFileSync(srcLocation)
     return content
   }
 
