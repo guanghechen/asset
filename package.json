@@ -18,7 +18,7 @@
   },
   "scripts": {
     ":publish": "yarn test && lerna publish",
-    ":upgrade": "yarn upgrade-interactive --latest && run-s clean format build test",
+    ":upgrade": "yarn upgrade-interactive && run-s clean format build test",
     "build": "lerna run build --concurrency 1",
     "clean": "lerna clean --yes && yarn install",
     "format": "run-s format:lintfix format:prettier",
@@ -29,7 +29,7 @@
     "postinstall:dev": "is-ci || husky install",
     "postpublish": "pinst --enable",
     "rebuild": "run-s clean build",
-    "run:ts": "node -r ts-node/register -r tsconfig-paths/register",
+    "run:ts": "cross-env NODE_ENV=production TS_NODE_PROJECT='tsconfig.cli.json' node --experimental-specifier-resolution=node --loader ./loader.js",
     "test": "lerna run test --concurrency 1",
     "test:coverage": "lerna run --concurrency 1 test -- --coverage",
     "test:update": "lerna run --concurrency 1 test -- -u",
