@@ -9,7 +9,8 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
-    "lib": ["esnext"],
+    "lib": ["esnext", "dom", "dom.iterable"],
+    "module": "esnext",
     "moduleResolution": "node",
     "newLine": "LF",
     "noEmit": false,
@@ -30,6 +31,6 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es2015"
+    "target": "esnext"
   }
 }

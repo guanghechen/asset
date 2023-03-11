@@ -15,6 +15,7 @@ import {
 } from '@guanghechen/asset-parser-markdown'
 import { YozoraParser } from '@yozora/parser'
 import path from 'node:path'
+import url from 'node:url'
 
 interface IBuildOptions {
   sourceRoot: string
@@ -89,6 +90,7 @@ async function build(options: IBuildOptions): Promise<void> {
   }
 }
 
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
 const FIXTURE_ROOT = path.join(__dirname, 'fixtures/asset-build')
 const FIXTURE_SOURCE_ROOT = path.join(FIXTURE_ROOT, 'src')
 const FIXTURE_TARGET_ROOT = path.join(FIXTURE_ROOT, 'static')

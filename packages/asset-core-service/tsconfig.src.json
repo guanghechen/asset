@@ -1,8 +1,6 @@
 {
   "extends": "../../tsconfig.settings",
   "compilerOptions": {
-    "lib": ["esnext"],
-    "declarationDir": "lib/types",
     "rootDir": "src"
   },
   "include": ["src"]
