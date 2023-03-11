@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-core-service",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "description": "Asset service core.",
   "author": {
     "name": "guanghechen",
@@ -40,8 +40,8 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-core": "^1.0.0-alpha.5",
-    "@guanghechen/asset-core-plugin": "^1.0.0-alpha.5",
+    "@guanghechen/asset-core": "^1.0.0-alpha.6",
+    "@guanghechen/asset-core-plugin": "^1.0.0-alpha.6",
     "@guanghechen/invariant": "^4.6.2",
     "chokidar": "3.5.3",
     "fast-glob": "^3.2.12",

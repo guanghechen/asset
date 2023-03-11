@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-parser-file",
-  "version": "1.0.0-alpha.5",
+  "version": "1.0.0-alpha.6",
   "description": "file asset",
   "author": {
     "name": "guanghechen",
@@ -41,8 +41,8 @@
     "test": "cross-env TS_NODE_FILES=true jest --config ../../jest.config.mjs --rootDir ."
   },
   "dependencies": {
-    "@guanghechen/asset-core": "^1.0.0-alpha.5",
-    "@guanghechen/asset-core-plugin": "^1.0.0-alpha.5",
+    "@guanghechen/asset-core": "^1.0.0-alpha.6",
+    "@guanghechen/asset-core-plugin": "^1.0.0-alpha.6",
     "mime": "^3.0.0"
   }
 }
