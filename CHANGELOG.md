@@ -1,5 +1,20 @@
 # Changelog
 
+<a name="1.0.0-alpha.6"></a>
+## 1.0.0-alpha.6 (2023-03-11)
+
+### Changed
+
+- 🔧 chore: fix lint [[d779e47](https://github.com/guanghechen/asset/commit/d779e473bea4d511a0813b370bb12053ee545fa1)]
+- 🔧 chore: support ESM [[b82cd18](https://github.com/guanghechen/asset/commit/b82cd1840f27dfcd0a4dd44d3371fdd60da643d8)]
+- ⬆️ chore: upgrade dependencies [[54369ae](https://github.com/guanghechen/asset/commit/54369ae56dc4e07ee52553f5bdfc69f0fcfb6df2)]
+- 🔧 chore: fix npm script [[12bc24a](https://github.com/guanghechen/asset/commit/12bc24a61a86317eb07894892f0ee752029f6ca9)]
+- 🔧 chore: fix test configs [[1358b71](https://github.com/guanghechen/asset/commit/1358b71cc7d5d0ff322a7130ce3d2a8b9868f7a0)]
+- 🔧 chore: fix build errors [[13c064e](https://github.com/guanghechen/asset/commit/13c064efebac4097881bac8e3d4ffbd1aeb1b0ef)]
+- 🔧 chore: use yarn@3 [[06e17b3](https://github.com/guanghechen/asset/commit/06e17b3a610691b6aaf96b3bccf92ce7ee334025)]
+- ⬆️ chore: upgrade dependencies [[a1f7e71](https://github.com/guanghechen/asset/commit/a1f7e71c98f986b4fec22947333a4e47add03286)]
+
+
 <a name="1.0.0-alpha.5"></a>
 ## 1.0.0-alpha.5 (2022-10-14)
 
