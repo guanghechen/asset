@@ -3,7 +3,7 @@ import { resolve } from 'import-meta-resolve'
 import path from 'node:path'
 import url from 'node:url'
 
-export default async function() {
+export default async function () {
   const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
   const chalkLocation = url.fileURLToPath(await resolve('chalk', import.meta.url))
   const baseConfig = await tsMonorepoConfig(__dirname, { useESM: true })
