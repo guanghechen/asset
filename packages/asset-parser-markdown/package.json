@@ -38,11 +38,13 @@
     "@guanghechen/asset-core-plugin": "^1.0.0-alpha.5",
     "@guanghechen/helper-is": "^4.6.2",
     "@guanghechen/parse-lineno": "^2.2.4",
-    "@types/js-yaml": "^4.0.5",
-    "@yozora/ast": "^2.0.6",
-    "@yozora/ast-util": "^2.0.6",
-    "@yozora/parser": "^2.0.6",
+    "@yozora/ast": "^2.1.1",
+    "@yozora/ast-util": "^2.1.1",
+    "@yozora/parser": "^2.1.1",
     "dayjs": "^1.11.7",
     "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5"
   }
 }
