@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-core-plugin",
-  "version": "1.0.0-alpha.6",
+  "version": "1.0.0-alpha.7",
   "description": "Asset parser core.",
   "author": {
     "name": "guanghechen",
@@ -40,7 +40,7 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-core": "^1.0.0-alpha.6",
+    "@guanghechen/asset-core": "^1.0.0-alpha.7",
     "@guanghechen/invariant": "^5.0.0"
   }
 }

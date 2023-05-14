@@ -493,11 +493,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/asset-core-plugin@^1.0.0-alpha.6, @guanghechen/asset-core-plugin@workspace:packages/asset-core-plugin":
+"@guanghechen/asset-core-plugin@^1.0.0-alpha.7, @guanghechen/asset-core-plugin@workspace:packages/asset-core-plugin":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-core-plugin@workspace:packages/asset-core-plugin"
   dependencies:
-    "@guanghechen/asset-core": ^1.0.0-alpha.6
+    "@guanghechen/asset-core": ^1.0.0-alpha.7
     "@guanghechen/invariant": ^5.0.0
   languageName: unknown
   linkType: soft
@@ -506,8 +506,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-core-service@workspace:packages/asset-core-service"
   dependencies:
-    "@guanghechen/asset-core": ^1.0.0-alpha.6
-    "@guanghechen/asset-core-plugin": ^1.0.0-alpha.6
+    "@guanghechen/asset-core": ^1.0.0-alpha.7
+    "@guanghechen/asset-core-plugin": ^1.0.0-alpha.7
     "@guanghechen/invariant": ^5.0.0
     "@types/uuid": ^9.0.1
     chokidar: 3.5.3
@@ -517,7 +517,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-core@^1.0.0-alpha.6, @guanghechen/asset-core@workspace:packages/asset-core":
+"@guanghechen/asset-core@^1.0.0-alpha.7, @guanghechen/asset-core@workspace:packages/asset-core":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-core@workspace:packages/asset-core"
   dependencies:
@@ -529,8 +529,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-parser-file@workspace:packages/asset-parser-file"
   dependencies:
-    "@guanghechen/asset-core": ^1.0.0-alpha.6
-    "@guanghechen/asset-core-plugin": ^1.0.0-alpha.6
+    "@guanghechen/asset-core": ^1.0.0-alpha.7
+    "@guanghechen/asset-core-plugin": ^1.0.0-alpha.7
     mime: ^3.0.0
   languageName: unknown
   linkType: soft
@@ -539,8 +539,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-parser-markdown@workspace:packages/asset-parser-markdown"
   dependencies:
-    "@guanghechen/asset-core": ^1.0.0-alpha.6
-    "@guanghechen/asset-core-plugin": ^1.0.0-alpha.6
+    "@guanghechen/asset-core": ^1.0.0-alpha.7
+    "@guanghechen/asset-core-plugin": ^1.0.0-alpha.7
     "@guanghechen/helper-is": ^5.0.0
     "@guanghechen/parse-lineno": ^2.3.0
     "@types/js-yaml": ^4.0.5
