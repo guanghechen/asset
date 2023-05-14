@@ -559,12 +559,14 @@ __metadata:
     "@babel/core": 7.21.8
     "@babel/eslint-parser": 7.21.8
     "@babel/plugin-syntax-import-assertions": ^7.20.0
+    "@guanghechen/conventional-changelog": ^5.0.0
     "@guanghechen/eslint-config": ^5.0.0
     "@guanghechen/eslint-config-ts": ^5.0.0
     "@guanghechen/invariant": ^5.0.0
     "@guanghechen/jest-config": ^5.0.0
     "@guanghechen/rollup-config": ^5.0.0
     "@guanghechen/rollup-config-cli": ^5.0.0
+    "@guanghechen/script-doc-link": ^5.0.2
     "@types/jest": ^29.5.1
     "@types/mime": ^3.0.1
     "@types/node": ^18.16.9
@@ -590,6 +592,29 @@ __metadata:
     typescript: 5.0.4
   languageName: unknown
   linkType: soft
+
+"@guanghechen/chalk-logger@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@guanghechen/chalk-logger@npm:5.0.0"
+  dependencies:
+    "@guanghechen/helper-is": 5.0.0
+    "@guanghechen/invariant": 5.0.0
+    "@guanghechen/utility-types": 5.0.0
+    chalk: ^5.2.0
+    dayjs: ^1.11.7
+    json5: ^2.2.3
+  checksum: c4f8bed30abaf885c4fe4c74b558169fd0d682f090ba51281bc2b2908b3afff52c57157c6218c34147c27947c676295818d5323f0161c0a691b69f9bc69ee1d7
+  languageName: node
+  linkType: hard
+
+"@guanghechen/conventional-changelog@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@guanghechen/conventional-changelog@npm:5.0.0"
+  dependencies:
+    gitmojis: ^3.13.4
+  checksum: d4397e5f39fedc0e777d32c7b88e89c635d5d65314f2bc1768257c473d09b662ee0f29da0d6347df364685e24546bb42565a0cb5493202bcd71010397bdcdfd9
+  languageName: node
+  linkType: hard
 
 "@guanghechen/eslint-config-ts@npm:^5.0.0":
   version: 5.0.0
@@ -622,6 +647,13 @@ __metadata:
     "@guanghechen/invariant": 5.0.0
     "@guanghechen/utility-types": 5.0.0
   checksum: 4f654b0ef0e2b72f3fefc0331f5d878937d3f4b37433be7e76b1fb6d9ff1634b8d97daaa6bf5d747d55fd80ad1de2f6833a0bd1f949d0ae2a71f32b71bc79328
+  languageName: node
+  linkType: hard
+
+"@guanghechen/helper-func@npm:5.0.0":
+  version: 5.0.0
+  resolution: "@guanghechen/helper-func@npm:5.0.0"
+  checksum: c7d2e0437b37481c9c946d913c215018af5f936b0ba39a6e6408af295be432602ca0cebc73cb109b2362c72de00a6f96cfb7619a94afb29593cb58f6603e3f7b
   languageName: node
   linkType: hard
 
@@ -698,6 +730,24 @@ __metadata:
   peerDependencies:
     rollup: ^2.0.0 || ^3.0.0
   checksum: 2e097848ec13af55fb6399e61372e9a824a7f9e4810cabddd77f24158365df48ae0b2d8a097bf1df8bbcc6f79452d15061c4a1f55c3bff69f26e128f4614608c
+  languageName: node
+  linkType: hard
+
+"@guanghechen/script-doc-link@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "@guanghechen/script-doc-link@npm:5.0.2"
+  dependencies:
+    "@guanghechen/chalk-logger": 5.0.0
+    "@guanghechen/helper-fs": 5.0.0
+    "@guanghechen/helper-func": 5.0.0
+    "@guanghechen/helper-is": 5.0.0
+    "@guanghechen/invariant": 5.0.0
+    "@guanghechen/utility-types": 5.0.0
+    globby: ^13.1.4
+    minimist: ^1.2.8
+  bin:
+    ghc-doc-link-rewrite: lib/esm/cli.mjs
+  checksum: 6268085fd84541a92382760b3b870893ce1d9850313d7ab870b533e748bfb915233e9a7cad11c59fbe3fea8bd0dc773da0a435f32e2b8c3f2cb871f64e104c74
   languageName: node
   linkType: hard
 
@@ -5214,6 +5264,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"gitmojis@npm:^3.13.4":
+  version: 3.13.4
+  resolution: "gitmojis@npm:3.13.4"
+  checksum: f9d8ec955eb63e4a5c5ba7303a110d55c12b8bfb77f08e991f392d3d002c2c818f13b0ce2a087768affbd30add37155587bb12387051035206ff8e30e198e7f5
+  languageName: node
+  linkType: hard
+
 "glob-parent@npm:5.1.2, glob-parent@npm:^5.1.2, glob-parent@npm:~5.1.2":
   version: 5.1.2
   resolution: "glob-parent@npm:5.1.2"
@@ -7465,7 +7522,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"minimist@npm:^1.2.0, minimist@npm:^1.2.5, minimist@npm:^1.2.6":
+"minimist@npm:^1.2.0, minimist@npm:^1.2.5, minimist@npm:^1.2.6, minimist@npm:^1.2.8":
   version: 1.2.8
   resolution: "minimist@npm:1.2.8"
   checksum: 75a6d645fb122dad29c06a7597bddea977258957ed88d7a6df59b5cd3fe4a527e253e9bbf2e783e4b73657f9098b96a5fe96ab8a113655d4109108577ecf85b0
