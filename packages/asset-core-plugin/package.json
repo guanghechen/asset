@@ -41,6 +41,6 @@
   },
   "dependencies": {
     "@guanghechen/asset-core": "^1.0.0-alpha.6",
-    "@guanghechen/invariant": "^4.6.2"
+    "@guanghechen/invariant": "^5.0.0"
   }
 }

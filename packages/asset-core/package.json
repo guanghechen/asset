@@ -40,6 +40,6 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/invariant": "^4.6.2"
+    "@guanghechen/invariant": "^5.0.0"
   }
 }
