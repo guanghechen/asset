@@ -37,8 +37,7 @@
   ],
   "scripts": {
     "build": "rimraf lib/ && cross-env NODE_ENV=production rollup -c ../../rollup.config.mjs",
-    "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build",
-    "test": "cross-env TS_NODE_FILES=true jest --config ../../jest.config.mjs --rootDir ."
+    "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.7",
