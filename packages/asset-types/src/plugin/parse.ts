@@ -12,10 +12,9 @@ export interface IAssetPluginParseApi {
 }
 
 export interface IAssetPluginParseNext {
-  (embryo: Readonly<IAssetPluginParseOutput> | null):
-    | IAssetPluginParseOutput
-    | null
-    | Promise<IAssetPluginParseOutput | null>
+  (
+    embryo: Readonly<IAssetPluginParseOutput> | null,
+  ): IAssetPluginParseOutput | null | Promise<IAssetPluginParseOutput | null>
 }
 
 export interface IAssetPluginParse {

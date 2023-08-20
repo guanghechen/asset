@@ -15,10 +15,9 @@ export interface IAssetPluginPolishApi {
 }
 
 export interface IAssetPluginPolishNext {
-  (embryo: Readonly<IAssetPluginPolishOutput> | null):
-    | IAssetPluginPolishOutput
-    | null
-    | Promise<IAssetPluginPolishOutput | null>
+  (
+    embryo: Readonly<IAssetPluginPolishOutput> | null,
+  ): IAssetPluginPolishOutput | null | Promise<IAssetPluginPolishOutput | null>
 }
 
 export interface IAssetPluginPolish {
