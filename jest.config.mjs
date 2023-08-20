@@ -10,6 +10,7 @@ export default async function () {
   const baseConfig = await tsMonorepoConfig(__dirname, { useESM: true })
   const { default: manifest } = await import(path.resolve('package.json'), {
     assert: { type: 'json' },
+    tsconfigFilepath: path.join(__dirname, 'tsconfig.test.esm.json'),
   })
 
   return {
