@@ -3,11 +3,13 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@guanghechen/asset-core": ["packages/asset-core/src"],
-      "@guanghechen/asset-core-plugin": ["packages/asset-core-plugin/src"],
-      "@guanghechen/asset-core-service": ["packages/asset-core-service/src"],
-      "@guanghechen/asset-parser-markdown": ["packages/asset-parser-markdown/src"],
-      "@guanghechen/asset-parser-file": ["packages/asset-parser-file/src"]
+      "@guanghechen/asset-api": ["packages/asset-api/src"],
+      "@guanghechen/asset-api-local": ["packages/asset-api-local/src"],
+      "@guanghechen/asset-resolver-file": ["packages/asset-resolver-file/src"],
+      "@guanghechen/asset-resolver-image": ["packages/asset-resolver-image/src"],
+      "@guanghechen/asset-resolver-markdown": ["packages/asset-resolver-markdown/src"],
+      "@guanghechen/asset-types": ["packages/asset-types/src"],
+      "@guanghechen/asset-util": ["packages/asset-util/src"]
     }
   }
 }

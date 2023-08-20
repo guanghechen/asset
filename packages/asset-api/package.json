@@ -41,6 +41,6 @@
   },
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.7",
-    "@guanghechen/scheduler": "^5.0.0"
+    "@guanghechen/scheduler": "^5.1.0"
   }
 }
