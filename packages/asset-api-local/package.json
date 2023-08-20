@@ -1,0 +1,55 @@
+{
+  "name": "@guanghechen/asset-api-local",
+  "version": "1.0.0-alpha.7",
+  "description": "Asset service core.",
+  "author": {
+    "name": "guanghechen",
+    "url": "https://github.com/guanghechen/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guanghechen/asset.git",
+    "directory": "packages/asset-api-local"
+  },
+  "homepage": "https://github.com/guanghechen/asset/tree/main/packages/asset-api-local#readme",
+  "type": "module",
+  "exports": {
+    "types": "./lib/types/index.d.ts",
+    "import": "./lib/esm/index.mjs",
+    "require": "./lib/cjs/index.cjs"
+  },
+  "source": "./src/index.ts",
+  "types": "./lib/types/index.d.ts",
+  "main": "./lib/cjs/index.cjs",
+  "module": "./lib/esm/index.mjs",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 16.15.1"
+  },
+  "files": [
+    "lib/",
+    "!lib/**/*.js.map",
+    "!lib/**/*.d.ts.map",
+    "package.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rimraf lib/ && cross-env NODE_ENV=production rollup -c ../../rollup.config.mjs",
+    "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
+  },
+  "dependencies": {
+    "@guanghechen/asset-api": "^1.0.0-alpha.7",
+    "@guanghechen/asset-types": "^1.0.0-alpha.7",
+    "@guanghechen/asset-util": "^1.0.0-alpha.7",
+    "@guanghechen/invariant": "^5.0.5",
+    "@guanghechen/scheduler": "^5.0.0",
+    "chokidar": "3.5.3",
+    "fast-glob": "^3.3.1",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/uuid": "^9.0.2"
+  }
+}
