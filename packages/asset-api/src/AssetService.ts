@@ -1,36 +1,52 @@
-import { AssetChangeEvent, AssetChangePipeline, delay } from '@guanghechen/asset-api'
-import type { IAssetDataMap, IAssetResolver, IAssetResolverApi } from '@guanghechen/asset-types'
+import { AssetChangeEvent } from '@guanghechen/asset-types'
+import type {
+  IAssetDataMap,
+  IAssetResolver,
+  IAssetResolverApi,
+  IAssetSaveOptions,
+  IAssetService,
+  IAssetSourceStorage,
+  IAssetTargetStorage,
+  IAssetUrlPrefixResolver,
+  IRawAssetServiceConfig,
+} from '@guanghechen/asset-types'
+import { delay } from '@guanghechen/asset-util'
 import invariant from '@guanghechen/invariant'
-import type { IReporter } from '@guanghechen/scheduler'
+import type { IReporter, IScheduler } from '@guanghechen/scheduler'
 import { SequentialScheduler } from '@guanghechen/scheduler'
-import chokidar from 'chokidar'
-import path from 'node:path'
-import type { ISaveOptions } from './AssetResolverApi'
+import { AssetChangePipeline } from './AssetChangePipeline'
 import { AssetResolverApi } from './AssetResolverApi'
-import type { IAssetConfig, IAssetUrlPrefixResolver, IRawAssetConfig } from './types'
-import { collectAssetLocations } from './util/location'
+import type { IAssetChangeTaskPipeline } from './types'
+
+export interface IAssetServiceConfig {
+  GUID_NAMESPACE: string
+  api: IAssetResolverApi
+  pipeline: IAssetChangeTaskPipeline
+  scheduler: IScheduler
+  sourceStorage: IAssetSourceStorage
+  acceptedPattern: string[]
+}
 
 export interface IAssetServiceProps {
   resolver: IAssetResolver
-  staticRoot: string
+  targetStorage: IAssetTargetStorage
   reporter?: IReporter
-  // Wait a few million seconds after file content changed.
-  delayAfterContentChanged?: number
+  delayAfterContentChanged?: number // Wait a few million seconds after file content changed.
   assetDataMapFilepath?: string
   defaultAcceptedPattern?: string[]
   caseSensitive?: boolean
-  saveOptions?: Partial<ISaveOptions>
+  saveOptions?: Partial<IAssetSaveOptions>
   assetPatterns?: string[]
   resolveUrlPathPrefix: IAssetUrlPrefixResolver
 }
 
-export class AssetService {
+export class AssetService implements IAssetService {
   protected readonly resolver: IAssetResolver
+  protected readonly targetStorage: IAssetTargetStorage
   protected readonly reporter: IReporter | undefined
-  protected readonly assetResolverConfigs: IAssetConfig[]
-  protected readonly staticRoot: string
+  protected readonly assetResolverConfigs: IAssetServiceConfig[]
   protected readonly assetDataMapFilepath: string
-  protected readonly saveOptions: Partial<ISaveOptions>
+  protected readonly saveOptions: Partial<IAssetSaveOptions>
   protected readonly defaultAcceptedPattern: string[]
   protected readonly defaultCaseSensitive: boolean
   protected readonly delayAfterContentChanged: number
@@ -39,14 +55,13 @@ export class AssetService {
   protected _isWatching: boolean
 
   constructor(props: IAssetServiceProps) {
-    this.resolver = props.resolver
-    this.reporter = props.reporter
+    const { resolver, targetStorage, reporter, assetDataMapFilepath = 'asset.map.json' } = props
+
+    this.resolver = resolver
+    this.targetStorage = targetStorage
+    this.reporter = reporter
     this.assetResolverConfigs = []
-    this.staticRoot = props.staticRoot
-    this.assetDataMapFilepath = path.resolve(
-      this.staticRoot,
-      props.assetDataMapFilepath ?? 'asset.map.json',
-    )
+    this.assetDataMapFilepath = targetStorage.resolve(assetDataMapFilepath)
     this.saveOptions = { ...props.saveOptions }
     this.defaultAcceptedPattern = props.defaultAcceptedPattern?.slice() ?? ['**/*', '!.gitkeep']
     this.defaultCaseSensitive = props.caseSensitive ?? true
@@ -56,24 +71,31 @@ export class AssetService {
     this._isWatching = false
   }
 
-  public registerAsset(assetConfig: IRawAssetConfig): this {
+  public registerAsset(assetConfig: IRawAssetServiceConfig): this {
     invariant(
       this._runningTick === 0,
       `[${this.constructor.name}] Don't add new AssetResolverApi while the service is running.`,
     )
 
-    const { resolver, reporter, delayAfterContentChanged, saveOptions, resolveUrlPathPrefix } = this
+    const {
+      resolver,
+      targetStorage,
+      reporter,
+      delayAfterContentChanged,
+      saveOptions,
+      resolveUrlPathPrefix,
+    } = this
     const {
       GUID_NAMESPACE,
-      sourceRoot,
+      sourceStorage,
       acceptedPattern = this.defaultAcceptedPattern.slice(),
       caseSensitive = this.defaultCaseSensitive,
     } = assetConfig
 
     const api = new AssetResolverApi({
       GUID_NAMESPACE,
-      sourceRoot,
-      staticRoot: this.staticRoot,
+      sourceStorage,
+      targetStorage,
       resolveUrlPathPrefix,
       caseSensitive,
       assetDataMapFilepath: this.assetDataMapFilepath,
@@ -83,12 +105,12 @@ export class AssetService {
     const pipeline = new AssetChangePipeline({ api, resolver, delayAfterContentChanged })
     const scheduler = new SequentialScheduler({ reporter, pipeline })
     this.assetResolverConfigs.push({
-      api,
       GUID_NAMESPACE,
-      sourceRoot,
-      acceptedPattern,
+      api,
       pipeline,
       scheduler,
+      sourceStorage,
+      acceptedPattern,
     })
     return this
   }
@@ -97,9 +119,8 @@ export class AssetService {
     this._runningTick += 1
     const { resolver, assetResolverConfigs } = this
     try {
-      for (const { api, sourceRoot, acceptedPattern } of assetResolverConfigs) {
-        const locations = await collectAssetLocations(acceptedPattern, {
-          cwd: sourceRoot,
+      for (const { api, sourceStorage, acceptedPattern } of assetResolverConfigs) {
+        const locations = await sourceStorage.collectAssetLocations(acceptedPattern, {
           absolute: true,
         })
         await resolver.create(api, locations)
@@ -110,38 +131,34 @@ export class AssetService {
     }
   }
 
-  public async watch(watchOptions?: Partial<chokidar.WatchOptions>): Promise<void> {
+  public async watch(): Promise<void> {
     if (this._isWatching) return
     this._runningTick += 1
     this._isWatching = true
 
     try {
       const { assetResolverConfigs } = this
-      for (const { sourceRoot, pipeline, acceptedPattern } of assetResolverConfigs) {
-        chokidar
-          .watch(acceptedPattern, {
-            persistent: true,
-            ...watchOptions,
-            cwd: sourceRoot,
-          })
-          .on('add', filepath =>
+      for (const { sourceStorage, pipeline, acceptedPattern } of assetResolverConfigs) {
+        sourceStorage.watch(acceptedPattern, {
+          onAdd: filepath => {
             pipeline.push({
               type: AssetChangeEvent.CREATED,
               payload: { locations: [filepath] },
-            }),
-          )
-          .on('change', filepath =>
+            })
+          },
+          onChange: filepath => {
             pipeline.push({
               type: AssetChangeEvent.MODIFIED,
               payload: { locations: [filepath] },
-            }),
-          )
-          .on('unlink', filepath =>
+            })
+          },
+          onUnlink: filepath => {
             pipeline.push({
               type: AssetChangeEvent.REMOVED,
               payload: { locations: [filepath] },
-            }),
-          )
+            })
+          },
+        })
       }
 
       await delay(500)

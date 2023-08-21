@@ -4,12 +4,13 @@
     "baseUrl": ".",
     "paths": {
       "@guanghechen/asset-api": ["packages/asset-api/src"],
-      "@guanghechen/asset-api-local": ["packages/asset-api-local/src"],
       "@guanghechen/asset-resolver-file": ["packages/asset-resolver-file/src"],
       "@guanghechen/asset-resolver-image": ["packages/asset-resolver-image/src"],
       "@guanghechen/asset-resolver-markdown": ["packages/asset-resolver-markdown/src"],
+      "@guanghechen/asset-storage-file": ["packages/asset-storage-file/src"],
+      "@guanghechen/asset-storage-memo": ["packages/asset-storage-memo/src"],
       "@guanghechen/asset-types": ["packages/asset-types/src"],
-      "@guanghechen/asset-util": ["packages/asset-util/src"]
+      "@guanghechen/asset-util": ["packages/asset-util/src"],
     }
   }
 }

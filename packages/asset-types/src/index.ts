@@ -5,7 +5,11 @@ export * from './plugin/polish'
 
 export * from './asset'
 export * from './asset-manager'
-export * from './asset-resolver-api'
+export * from './asset-path-resolver'
 export * from './asset-resolver'
+export * from './asset-resolver-api'
+export * from './asset-service'
+export * from './asset-storage'
+export * from './asset-task'
 
 export * from './enum'

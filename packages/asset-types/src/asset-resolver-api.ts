@@ -3,6 +3,8 @@ import type { IAssetDataMap } from './asset-manager'
 import type { AssetDataType } from './enum'
 import type { IAssetPluginLocateInput } from './plugin/locate'
 
+export type IAssetUrlPrefixResolver = (params: { assetType: string; mimetype: string }) => string
+
 export interface IAssetResolverApi {
   /**
    * Create an initial asset.
@@ -22,10 +24,10 @@ export interface IAssetResolverApi {
    */
   normalizeLocation(srcLocation: string): string
   /**
-   * Resolve asset location with the relative path pieces.
-   * @param srcPathPieces
+   * Resolve asset location with the relative path.
+   * @param srcLocation
    */
-  resolveSrcLocation(...srcPathPieces: string[]): string
+  resolveSrcLocation(srcLocation: string): string
   /**
    * Resolve page slug.
    * @param slug

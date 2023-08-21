@@ -1,8 +1,8 @@
 import type { IAsset, IAssetDataMap, IAssetManager } from '@guanghechen/asset-types'
 
 export interface IAssetManagerProps {
-  normalizeTag?(tag: string): string
-  normalizeCategory?(categoryPath: string[]): string
+  normalizeTag?: (tag: string) => string
+  normalizeCategory?: (categoryPath: string[]) => string
 }
 
 const defaultAssetManagerProps: Required<IAssetManagerProps> = (() => {

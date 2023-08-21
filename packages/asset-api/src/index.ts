@@ -1,9 +1,7 @@
-export * from './pipeline/pipeline'
-export * from './pipeline/task'
-export * from './pipeline/types'
-
-export * from './util/hash'
-export * from './util/misc'
-
+export * from './AssetChangePipeline'
+export * from './AssetChangeTask'
 export * from './AssetManager'
 export * from './AssetResolver'
+export * from './AssetResolverApi'
+export * from './AssetService'
+export * from './types'

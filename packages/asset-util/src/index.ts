@@ -1,3 +1,4 @@
+export * from './hash'
 export * from './mime'
-export * from './normalizePattern'
-export * from './normalizeUrlPath'
+export * from './misc'
+export * from './normalize'

@@ -25,10 +25,7 @@ export interface IAssetResolverProps {
 }
 
 interface IAssetWithLocation extends IAsset {
-  /**
-   * Source virtual filepath (*nix style).
-   */
-  src: string
+  src: string // Source virtual filepath (*nix style).
   filename: string
   data: unknown | null
 }
@@ -87,9 +84,7 @@ export class AssetResolver implements IAssetResolver {
     const api: IAssetPluginLocateApi = {
       loadContent: relativeSrcLocation => {
         const resolvedLocation = assetResolverApi.resolveSrcLocation(
-          location,
-          '..',
-          relativeSrcLocation,
+          `${location}/../${relativeSrcLocation}`,
         )
         return assetResolverApi.loadSrcContent(resolvedLocation)
       },
@@ -148,9 +143,7 @@ export class AssetResolver implements IAssetResolver {
     const api: IAssetPluginParseApi = {
       loadContent: relativeSrcLocation => {
         const resolvedLocation = assetResolverApi.resolveSrcLocation(
-          location,
-          '..',
-          relativeSrcLocation,
+          `${location}/../${relativeSrcLocation}`,
         )
         return assetResolverApi.loadSrcContent(resolvedLocation)
       },
@@ -185,17 +178,13 @@ export class AssetResolver implements IAssetResolver {
     const api: IAssetPluginPolishApi = {
       loadContent: relativeSrcLocation => {
         const resolvedLocation = assetResolverApi.resolveSrcLocation(
-          location,
-          '..',
-          relativeSrcLocation,
+          `${location}/../${relativeSrcLocation}`,
         )
         return assetResolverApi.loadSrcContent(resolvedLocation)
       },
       resolveAsset: relativeLocation => {
         const resolvedLocation = assetResolverApi.resolveSrcLocation(
-          location,
-          '..',
-          decodeURIComponent(relativeLocation),
+          `${location}/../${decodeURIComponent(relativeLocation)}`,
         )
         const locationId = assetResolverApi.normalizeLocation(resolvedLocation)
         const asset = locationMap.get(locationId)

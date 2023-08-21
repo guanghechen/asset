@@ -12,3 +12,9 @@ export enum AssetDataType {
    */
   TEXT = 'string',
 }
+
+export enum AssetChangeEvent {
+  CREATED = 'created',
+  MODIFIED = 'modified',
+  REMOVED = 'removed',
+}

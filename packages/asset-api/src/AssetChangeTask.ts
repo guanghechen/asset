@@ -1,8 +1,12 @@
-import type { IAssetDataMap, IAssetResolver, IAssetResolverApi } from '@guanghechen/asset-types'
+import { AssetChangeEvent } from '@guanghechen/asset-types'
+import type {
+  IAssetChangeTaskData,
+  IAssetDataMap,
+  IAssetResolver,
+  IAssetResolverApi,
+} from '@guanghechen/asset-types'
+import { delay } from '@guanghechen/asset-util'
 import { AtomicTask } from '@guanghechen/scheduler'
-import { delay } from '../util/misc'
-import type { IAssetChangeTaskData } from './types'
-import { AssetChangeEvent } from './types'
 
 export interface IAssetChangeTaskProps {
   api: IAssetResolverApi

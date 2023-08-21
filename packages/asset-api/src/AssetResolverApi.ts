@@ -1,30 +1,25 @@
-import { calcFingerprint } from '@guanghechen/asset-api'
 import { AssetDataType } from '@guanghechen/asset-types'
 import type {
   IAsset,
   IAssetDataMap,
   IAssetPluginLocateInput,
   IAssetResolverApi,
+  IAssetSaveOptions,
+  IAssetSourceStorage,
+  IAssetTargetStorage,
+  IAssetUrlPrefixResolver,
+  IBinaryLike,
 } from '@guanghechen/asset-types'
-import { mime, normalizeUrlPath } from '@guanghechen/asset-util'
-import type { BinaryLike } from 'node:crypto'
-import fs from 'node:fs/promises'
-import path from 'node:path'
+import { calcFingerprint, mime, normalizeUrlPath } from '@guanghechen/asset-util'
 import { v5 as uuid } from 'uuid'
-import type { IAssetUrlPrefixResolver } from './types'
-import { assertExistedFilepath, assertSafeLocation, mkdirsIfNotExists } from './util/asset'
-
-export interface ISaveOptions {
-  prettier: boolean
-}
 
 export interface IAssetResolverApiProps {
   GUID_NAMESPACE: string // uuid
-  sourceRoot: string
-  staticRoot: string
+  sourceStorage: IAssetSourceStorage
+  targetStorage: IAssetTargetStorage
   caseSensitive: boolean
   assetDataMapFilepath: string
-  saveOptions: Partial<ISaveOptions>
+  saveOptions: Partial<IAssetSaveOptions>
   resolveUrlPathPrefix: IAssetUrlPrefixResolver
 }
 
@@ -32,18 +27,20 @@ const extnameRegex = /\.([\w]+)$/
 
 export class AssetResolverApi implements IAssetResolverApi {
   protected readonly GUID_NAMESPACE: string
-  protected readonly sourceRoot: string
-  protected readonly staticRoot: string
+  protected readonly sourceStorage: IAssetSourceStorage
+  protected readonly targetStorage: IAssetTargetStorage
   protected readonly assetDataMapFilepath: string
   protected readonly caseSensitive: boolean
-  protected readonly saveOptions: Readonly<ISaveOptions>
+  protected readonly saveOptions: Readonly<IAssetSaveOptions>
   protected readonly resolveUrlPathPrefix: IAssetUrlPrefixResolver
 
   constructor(props: IAssetResolverApiProps) {
-    this.GUID_NAMESPACE = props.GUID_NAMESPACE
-    this.sourceRoot = props.sourceRoot
-    this.staticRoot = props.staticRoot
-    this.assetDataMapFilepath = path.resolve(this.staticRoot, props.assetDataMapFilepath)
+    const { GUID_NAMESPACE, sourceStorage, targetStorage, assetDataMapFilepath } = props
+
+    this.GUID_NAMESPACE = GUID_NAMESPACE
+    this.sourceStorage = sourceStorage
+    this.targetStorage = targetStorage
+    this.assetDataMapFilepath = targetStorage.resolve(assetDataMapFilepath)
 
     this.saveOptions = { prettier: props.saveOptions.prettier ?? false }
     this.caseSensitive = props.caseSensitive
@@ -51,16 +48,17 @@ export class AssetResolverApi implements IAssetResolverApi {
   }
 
   public async initAsset(srcLocation: string): Promise<IAssetPluginLocateInput | null> {
-    assertSafeLocation(this.sourceRoot, srcLocation)
-    assertExistedFilepath(srcLocation)
+    const { sourceStorage } = this
+    await sourceStorage.assertSafeLocation(srcLocation)
+    await sourceStorage.assertExistedFile(srcLocation)
 
-    const stat = await fs.stat(srcLocation)
-    const content = await fs.readFile(srcLocation)
+    const stat = await sourceStorage.statFile(srcLocation)
+    const content = await sourceStorage.readFile(srcLocation)
     const hash = calcFingerprint(content)
-    const filename = path.basename(srcLocation)
+    const filename = sourceStorage.basename(srcLocation)
     const locationId = this.normalizeLocation(srcLocation)
     const guid = this._genAssetGuid(locationId)
-    const src = this._normalizeLocation(this.sourceRoot, srcLocation)
+    const src = this._normalizeSrcLocation(srcLocation)
     const extname: string | undefined = srcLocation.match(extnameRegex)?.[1]
 
     return {
@@ -87,21 +85,22 @@ export class AssetResolverApi implements IAssetResolverApi {
     const { uri, dataType, data, encoding } = params
     if (data === null) return
 
-    const dstLocation = path.join(this.staticRoot, uri.replace(/[?#][\s\S]+$/, ''))
-    assertSafeLocation(this.staticRoot, dstLocation)
-    mkdirsIfNotExists(dstLocation, false)
+    const { targetStorage } = this
+    const dstLocation = targetStorage.resolve(uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''))
+    await targetStorage.assertSafeLocation(dstLocation)
+    await targetStorage.mkdirsIfNotExists(dstLocation, false)
 
     switch (dataType) {
       case AssetDataType.BINARY:
-        await fs.writeFile(dstLocation, data as BinaryLike, encoding)
+        await targetStorage.writeFile(dstLocation, data as IBinaryLike, encoding)
         break
       case AssetDataType.JSON: {
         const content = JSON.stringify(data, null, this.saveOptions.prettier ? 2 : 0)
-        await fs.writeFile(dstLocation, content, 'utf8')
+        await targetStorage.writeFile(dstLocation, content, 'utf8')
         break
       }
       case AssetDataType.TEXT:
-        await fs.writeFile(dstLocation, data as string, encoding)
+        await targetStorage.writeFile(dstLocation, data as string, encoding)
         break
       default:
         throw new Error(`[${this.constructor.name}.saveAsset] Unexpected dataType: ${dataType}`)
@@ -109,27 +108,30 @@ export class AssetResolverApi implements IAssetResolverApi {
   }
 
   public async saveAssetDataMap(data: IAssetDataMap): Promise<void> {
-    const content = JSON.stringify(data, null, this.saveOptions.prettier ? 2 : 0)
-    mkdirsIfNotExists(this.assetDataMapFilepath, false)
-    await fs.writeFile(this.assetDataMapFilepath, content, 'utf8')
+    const { targetStorage, assetDataMapFilepath, saveOptions } = this
+    const content = JSON.stringify(data, null, saveOptions.prettier ? 2 : 0)
+    await targetStorage.mkdirsIfNotExists(assetDataMapFilepath, false)
+    await targetStorage.writeFile(assetDataMapFilepath, content, 'utf8')
   }
 
   public normalizeLocation(srcLocation: string): string {
-    const relativeLocation: string = this._normalizeLocation(this.sourceRoot, srcLocation)
+    const relativeLocation: string = this._normalizeSrcLocation(srcLocation)
     const text: string = this.caseSensitive ? relativeLocation : relativeLocation.toLowerCase()
     const identifier = this._genLocationGuid(text)
     return identifier
   }
 
   public async loadSrcContent(srcLocation: string): Promise<Buffer> {
-    assertSafeLocation(this.sourceRoot, srcLocation)
-    assertExistedFilepath(srcLocation)
-    const content = await fs.readFile(srcLocation)
+    const { sourceStorage } = this
+    await sourceStorage.assertSafeLocation(srcLocation)
+    await sourceStorage.assertExistedFile(srcLocation)
+    const content = await sourceStorage.readFile(srcLocation)
     return content
   }
 
-  public resolveSrcLocation(...pathPieces: string[]): string {
-    return path.resolve(this.sourceRoot, ...pathPieces)
+  public resolveSrcLocation(srcLocation: string): string {
+    const { sourceStorage } = this
+    return sourceStorage.resolve(srcLocation)
   }
 
   public resolveSlug(slug: string | null | undefined): string | null {
@@ -144,8 +146,9 @@ export class AssetResolverApi implements IAssetResolverApi {
     return normalizeUrlPath(extname ? `${url}.${extname}` : url)
   }
 
-  protected _normalizeLocation(rootDir: string, location: string): string {
-    const relativeLocation = path.relative(rootDir, path.resolve(rootDir, location))
+  protected _normalizeSrcLocation(location: string): string {
+    const { sourceStorage } = this
+    const relativeLocation = sourceStorage.relative(location)
     return normalizeUrlPath(relativeLocation)
   }
 

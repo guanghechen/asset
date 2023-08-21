@@ -1,7 +1,7 @@
 {
-  "name": "@guanghechen/asset-api",
+  "name": "@guanghechen/asset-storage-file",
   "version": "1.0.0-alpha.8",
-  "description": "asset core",
+  "description": "Asset service core.",
   "author": {
     "name": "guanghechen",
     "url": "https://github.com/guanghechen/"
@@ -9,9 +9,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/guanghechen/asset.git",
-    "directory": "packages/asset-api"
+    "directory": "packages/asset-storage-file"
   },
-  "homepage": "https://github.com/guanghechen/asset/tree/main/packages/asset-api#readme",
+  "homepage": "https://github.com/guanghechen/asset/tree/main/packages/asset-storage-file#readme",
   "type": "module",
   "exports": {
     "types": "./lib/types/index.d.ts",
@@ -41,12 +41,8 @@
   },
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.8",
-    "@guanghechen/asset-util": "^1.0.0-alpha.8",
     "@guanghechen/invariant": "^5.0.5",
-    "@guanghechen/scheduler": "^5.1.0",
-    "uuid": "^9.0.0"
-  },
-  "devDependencies": {
-    "@types/uuid": "^9.0.2"
+    "chokidar": "3.5.3",
+    "fast-glob": "^3.3.1"
   }
 }

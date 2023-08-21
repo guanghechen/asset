@@ -1,9 +1,13 @@
-import type { IAssetResolver, IAssetResolverApi } from '@guanghechen/asset-types'
+import { AssetChangeEvent } from '@guanghechen/asset-types'
+import type {
+  IAssetChangeTaskData,
+  IAssetResolver,
+  IAssetResolverApi,
+} from '@guanghechen/asset-types'
 import type { ITask } from '@guanghechen/scheduler'
 import { BaseCommonPipeline, isPipelineTerminated } from '@guanghechen/scheduler'
-import { AssetChangeTask } from './task'
-import type { IAssetChangeTaskData, IAssetChangeTaskPipeline } from './types'
-import { AssetChangeEvent } from './types'
+import { AssetChangeTask } from './AssetChangeTask'
+import type { IAssetChangeTaskPipeline } from './types'
 
 export interface IAssetChangePipelineProps {
   api: IAssetResolverApi
