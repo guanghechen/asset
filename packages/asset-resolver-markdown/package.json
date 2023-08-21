@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-resolver-markdown",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "description": "markdown asset",
   "author": {
     "name": "guanghechen",
@@ -40,8 +40,8 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.8",
-    "@guanghechen/asset-util": "^1.0.0-alpha.8",
+    "@guanghechen/asset-types": "^1.0.0-alpha.9",
+    "@guanghechen/asset-util": "^1.0.0-alpha.9",
     "@guanghechen/helper-is": "^5.0.5",
     "@guanghechen/parse-lineno": "^2.3.5",
     "@yozora/ast": "^2.2.0",

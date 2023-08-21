@@ -495,8 +495,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-api@workspace:packages/asset-api"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.8
-    "@guanghechen/asset-util": ^1.0.0-alpha.8
+    "@guanghechen/asset-types": ^1.0.0-alpha.9
+    "@guanghechen/asset-util": ^1.0.0-alpha.9
     "@guanghechen/invariant": ^5.0.5
     "@guanghechen/scheduler": ^5.1.0
     "@types/uuid": ^9.0.2
@@ -508,8 +508,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-file@workspace:packages/asset-resolver-file"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.8
-    "@guanghechen/asset-util": ^1.0.0-alpha.8
+    "@guanghechen/asset-types": ^1.0.0-alpha.9
+    "@guanghechen/asset-util": ^1.0.0-alpha.9
   languageName: unknown
   linkType: soft
 
@@ -517,8 +517,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-image@workspace:packages/asset-resolver-image"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.8
-    "@guanghechen/asset-util": ^1.0.0-alpha.8
+    "@guanghechen/asset-types": ^1.0.0-alpha.9
+    "@guanghechen/asset-util": ^1.0.0-alpha.9
     image-size: ^1.0.2
   languageName: unknown
   linkType: soft
@@ -527,8 +527,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-markdown@workspace:packages/asset-resolver-markdown"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.8
-    "@guanghechen/asset-util": ^1.0.0-alpha.8
+    "@guanghechen/asset-types": ^1.0.0-alpha.9
+    "@guanghechen/asset-util": ^1.0.0-alpha.9
     "@guanghechen/helper-is": ^5.0.5
     "@guanghechen/parse-lineno": ^2.3.5
     "@types/js-yaml": ^4.0.5
@@ -545,7 +545,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-storage-file@workspace:packages/asset-storage-file"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.8
+    "@guanghechen/asset-types": ^1.0.0-alpha.9
     "@guanghechen/invariant": ^5.0.5
     chokidar: 3.5.3
     fast-glob: ^3.3.1
@@ -556,18 +556,18 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-storage-memo@workspace:packages/asset-storage-memo"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.8
+    "@guanghechen/asset-types": ^1.0.0-alpha.9
     "@guanghechen/invariant": ^5.0.5
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-types@^1.0.0-alpha.8, @guanghechen/asset-types@workspace:packages/asset-types":
+"@guanghechen/asset-types@^1.0.0-alpha.9, @guanghechen/asset-types@workspace:packages/asset-types":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-types@workspace:packages/asset-types"
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-util@^1.0.0-alpha.8, @guanghechen/asset-util@workspace:packages/asset-util":
+"@guanghechen/asset-util@^1.0.0-alpha.9, @guanghechen/asset-util@workspace:packages/asset-util":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-util@workspace:packages/asset-util"
   dependencies:
