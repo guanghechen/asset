@@ -1,3 +1,4 @@
+import { calcFingerprint } from '@guanghechen/asset-api'
 import { AssetDataType } from '@guanghechen/asset-types'
 import type {
   IAsset,
@@ -10,7 +11,6 @@ import type { BinaryLike } from 'node:crypto'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { v5 as uuid } from 'uuid'
-import { calcFingerprint } from '../../asset-api/src/util/hash'
 import type { IAssetUrlPrefixResolver } from './types'
 import { assertExistedFilepath, assertSafeLocation, mkdirsIfNotExists } from './util/asset'
 
