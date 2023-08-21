@@ -495,9 +495,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-api-local@workspace:packages/asset-api-local"
   dependencies:
-    "@guanghechen/asset-api": ^1.0.0-alpha.7
-    "@guanghechen/asset-types": ^1.0.0-alpha.7
-    "@guanghechen/asset-util": ^1.0.0-alpha.7
+    "@guanghechen/asset-api": ^1.0.0-alpha.8
+    "@guanghechen/asset-types": ^1.0.0-alpha.8
+    "@guanghechen/asset-util": ^1.0.0-alpha.8
     "@guanghechen/invariant": ^5.0.5
     "@guanghechen/scheduler": ^5.1.0
     "@types/uuid": ^9.0.2
@@ -507,11 +507,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-api@^1.0.0-alpha.7, @guanghechen/asset-api@workspace:packages/asset-api":
+"@guanghechen/asset-api@^1.0.0-alpha.8, @guanghechen/asset-api@workspace:packages/asset-api":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-api@workspace:packages/asset-api"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.7
+    "@guanghechen/asset-types": ^1.0.0-alpha.8
     "@guanghechen/scheduler": ^5.1.0
   languageName: unknown
   linkType: soft
@@ -520,8 +520,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-file@workspace:packages/asset-resolver-file"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.7
-    "@guanghechen/asset-util": ^1.0.0-alpha.7
+    "@guanghechen/asset-types": ^1.0.0-alpha.8
+    "@guanghechen/asset-util": ^1.0.0-alpha.8
   languageName: unknown
   linkType: soft
 
@@ -529,8 +529,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-image@workspace:packages/asset-resolver-image"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.7
-    "@guanghechen/asset-util": ^1.0.0-alpha.7
+    "@guanghechen/asset-types": ^1.0.0-alpha.8
+    "@guanghechen/asset-util": ^1.0.0-alpha.8
     image-size: ^1.0.2
   languageName: unknown
   linkType: soft
@@ -539,8 +539,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-markdown@workspace:packages/asset-resolver-markdown"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.7
-    "@guanghechen/asset-util": ^1.0.0-alpha.7
+    "@guanghechen/asset-types": ^1.0.0-alpha.8
+    "@guanghechen/asset-util": ^1.0.0-alpha.8
     "@guanghechen/helper-is": ^5.0.5
     "@guanghechen/parse-lineno": ^2.3.5
     "@types/js-yaml": ^4.0.5
@@ -553,13 +553,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-types@^1.0.0-alpha.7, @guanghechen/asset-types@workspace:packages/asset-types":
+"@guanghechen/asset-types@^1.0.0-alpha.8, @guanghechen/asset-types@workspace:packages/asset-types":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-types@workspace:packages/asset-types"
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-util@^1.0.0-alpha.7, @guanghechen/asset-util@workspace:packages/asset-util":
+"@guanghechen/asset-util@^1.0.0-alpha.8, @guanghechen/asset-util@workspace:packages/asset-util":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-util@workspace:packages/asset-util"
   dependencies:

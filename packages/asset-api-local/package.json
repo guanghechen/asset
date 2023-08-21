@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-api-local",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "description": "Asset service core.",
   "author": {
     "name": "guanghechen",
@@ -40,9 +40,9 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-api": "^1.0.0-alpha.7",
-    "@guanghechen/asset-types": "^1.0.0-alpha.7",
-    "@guanghechen/asset-util": "^1.0.0-alpha.7",
+    "@guanghechen/asset-api": "^1.0.0-alpha.8",
+    "@guanghechen/asset-types": "^1.0.0-alpha.8",
+    "@guanghechen/asset-util": "^1.0.0-alpha.8",
     "@guanghechen/invariant": "^5.0.5",
     "@guanghechen/scheduler": "^5.1.0",
     "chokidar": "3.5.3",
