@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.10](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.9...@guanghechen/asset-api@1.0.0-alpha.10) (2023-08-27)
+
+
+### Bug Fixes
+
+* close AssetTaskPipeline before trying finish the scheduler ([5a4f7c5](https://github.com/guanghechen/asset/commit/5a4f7c596703607ec29a7da13f3cb7e3ec4e8c66))
+
+
+### Performance Improvements
+
+* 🎨 refactor with @guanghechen/scheduler and @guanghechen/task ([5835ff7](https://github.com/guanghechen/asset/commit/5835ff71b9817cf66a2830d2dd4086c8729e75e7))
+
+
+
+
+
 # [1.0.0-alpha.9](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.8...@guanghechen/asset-api@1.0.0-alpha.9) (2023-08-21)
 
 

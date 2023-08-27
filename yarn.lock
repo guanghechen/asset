@@ -495,7 +495,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-api@workspace:packages/asset-api"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.9
+    "@guanghechen/asset-types": ^1.0.0-alpha.10
     "@guanghechen/asset-util": ^1.0.0-alpha.9
     "@guanghechen/invariant": ^5.0.6
     "@guanghechen/pipeline": ^1.0.0-alpha.1
@@ -510,7 +510,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-file@workspace:packages/asset-resolver-file"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.9
+    "@guanghechen/asset-types": ^1.0.0-alpha.10
     "@guanghechen/asset-util": ^1.0.0-alpha.9
   languageName: unknown
   linkType: soft
@@ -519,7 +519,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-image@workspace:packages/asset-resolver-image"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.9
+    "@guanghechen/asset-types": ^1.0.0-alpha.10
     "@guanghechen/asset-util": ^1.0.0-alpha.9
     image-size: ^1.0.2
   languageName: unknown
@@ -529,7 +529,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-markdown@workspace:packages/asset-resolver-markdown"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.9
+    "@guanghechen/asset-types": ^1.0.0-alpha.10
     "@guanghechen/asset-util": ^1.0.0-alpha.9
     "@guanghechen/helper-is": ^5.0.6
     "@guanghechen/parse-lineno": ^2.3.5
@@ -547,7 +547,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-storage-file@workspace:packages/asset-storage-file"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.9
+    "@guanghechen/asset-types": ^1.0.0-alpha.10
     "@guanghechen/invariant": ^5.0.6
     chokidar: 3.5.3
     fast-glob: ^3.3.1
@@ -558,12 +558,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-storage-memo@workspace:packages/asset-storage-memo"
   dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.9
+    "@guanghechen/asset-types": ^1.0.0-alpha.10
     "@guanghechen/invariant": ^5.0.6
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-types@^1.0.0-alpha.9, @guanghechen/asset-types@workspace:packages/asset-types":
+"@guanghechen/asset-types@^1.0.0-alpha.10, @guanghechen/asset-types@workspace:packages/asset-types":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-types@workspace:packages/asset-types"
   languageName: unknown
