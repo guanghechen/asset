@@ -21,4 +21,9 @@ export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskSch
     const pipeline = new AssetTaskPipeline({ api, resolver, delayAfterContentChanged })
     super({ name: 'AssetTaskScheduler', reporter, pipeline })
   }
+
+  public override finish(): Promise<void> {
+    this._pipeline.close()
+    return super.finish()
+  }
 }
