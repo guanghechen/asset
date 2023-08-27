@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.9",
-    "@guanghechen/invariant": "^5.0.5",
+    "@guanghechen/invariant": "^5.0.6",
     "chokidar": "3.5.3",
     "fast-glob": "^3.3.1"
   }

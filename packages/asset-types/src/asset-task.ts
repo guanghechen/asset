@@ -1,8 +1,9 @@
 import type { AssetChangeEvent } from './enum'
 
-export interface IAssetChangeTaskData {
+export interface IAssetTaskData {
   type: AssetChangeEvent
+  alive: boolean
   payload: {
-    locations: string[]
+    location: string
   }
 }

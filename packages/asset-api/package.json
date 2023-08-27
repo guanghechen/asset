@@ -42,8 +42,10 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.9",
     "@guanghechen/asset-util": "^1.0.0-alpha.9",
-    "@guanghechen/invariant": "^5.0.5",
-    "@guanghechen/scheduler": "^5.1.0",
+    "@guanghechen/invariant": "^5.0.6",
+    "@guanghechen/pipeline": "^1.0.0-alpha.1",
+    "@guanghechen/scheduler": "^6.0.0-alpha.1",
+    "@guanghechen/task": "^1.0.0-alpha.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

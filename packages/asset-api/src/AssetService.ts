@@ -12,17 +12,15 @@ import type {
 } from '@guanghechen/asset-types'
 import { delay } from '@guanghechen/asset-util'
 import invariant from '@guanghechen/invariant'
-import type { IReporter, IScheduler } from '@guanghechen/scheduler'
-import { SequentialScheduler } from '@guanghechen/scheduler'
-import { AssetChangePipeline } from './AssetChangePipeline'
+import type { IReporter } from '@guanghechen/scheduler'
 import { AssetResolverApi } from './AssetResolverApi'
-import type { IAssetChangeTaskPipeline } from './types'
+import { AssetTaskScheduler } from './AssetTaskScheduler'
+import type { IAssetTaskScheduler } from './types'
 
 export interface IAssetServiceConfig {
   GUID_NAMESPACE: string
   api: IAssetResolverApi
-  pipeline: IAssetChangeTaskPipeline
-  scheduler: IScheduler
+  scheduler: IAssetTaskScheduler
   sourceStorage: IAssetSourceStorage
   acceptedPattern: string[]
 }
@@ -102,12 +100,15 @@ export class AssetService implements IAssetService {
       saveOptions,
     })
 
-    const pipeline = new AssetChangePipeline({ api, resolver, delayAfterContentChanged })
-    const scheduler = new SequentialScheduler({ reporter, pipeline })
+    const scheduler = new AssetTaskScheduler({
+      api,
+      resolver,
+      reporter,
+      delayAfterContentChanged,
+    })
     this.assetResolverConfigs.push({
       GUID_NAMESPACE,
       api,
-      pipeline,
       scheduler,
       sourceStorage,
       acceptedPattern,
@@ -138,24 +139,27 @@ export class AssetService implements IAssetService {
 
     try {
       const { assetResolverConfigs } = this
-      for (const { sourceStorage, pipeline, acceptedPattern } of assetResolverConfigs) {
+      for (const { sourceStorage, scheduler, acceptedPattern } of assetResolverConfigs) {
         sourceStorage.watch(acceptedPattern, {
           onAdd: filepath => {
-            pipeline.push({
+            scheduler.schedule({
               type: AssetChangeEvent.CREATED,
-              payload: { locations: [filepath] },
+              alive: true,
+              payload: { location: filepath },
             })
           },
           onChange: filepath => {
-            pipeline.push({
+            scheduler.schedule({
               type: AssetChangeEvent.MODIFIED,
-              payload: { locations: [filepath] },
+              alive: true,
+              payload: { location: filepath },
             })
           },
           onUnlink: filepath => {
-            pipeline.push({
+            scheduler.schedule({
               type: AssetChangeEvent.REMOVED,
-              payload: { locations: [filepath] },
+              alive: true,
+              payload: { location: filepath },
             })
           },
         })
@@ -171,9 +175,10 @@ export class AssetService implements IAssetService {
 
   public async stopWatch(): Promise<void> {
     if (!this._isWatching) return
-    await Promise.allSettled(this.assetResolverConfigs.map(resolver => resolver.pipeline.close()))
     await Promise.allSettled(
-      this.assetResolverConfigs.map(resolver => resolver.scheduler.waitDrain()),
+      this.assetResolverConfigs.map(resolver =>
+        resolver.scheduler.finish().then(() => resolver.scheduler.cleanup()),
+      ),
     )
   }
 
