@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-storage-memo",
-  "version": "1.0.0-alpha.10",
+  "version": "1.0.0-alpha.11",
   "description": "Asset service core.",
   "author": {
     "name": "guanghechen",
@@ -40,7 +40,7 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.10",
+    "@guanghechen/asset-types": "^1.0.0-alpha.11",
     "@guanghechen/invariant": "^5.0.6"
   }
 }
