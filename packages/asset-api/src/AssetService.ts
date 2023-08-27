@@ -3,7 +3,6 @@ import type {
   IAssetDataMap,
   IAssetResolver,
   IAssetResolverApi,
-  IAssetSaveOptions,
   IAssetService,
   IAssetSourceStorage,
   IAssetTargetStorage,
@@ -33,7 +32,6 @@ export interface IAssetServiceProps {
   assetDataMapFilepath?: string
   defaultAcceptedPattern?: string[]
   caseSensitive?: boolean
-  saveOptions?: Partial<IAssetSaveOptions>
   assetPatterns?: string[]
   resolveUrlPathPrefix: IAssetUrlPrefixResolver
 }
@@ -44,7 +42,6 @@ export class AssetService implements IAssetService {
   protected readonly reporter: IReporter | undefined
   protected readonly assetResolverConfigs: IAssetServiceConfig[]
   protected readonly assetDataMapFilepath: string
-  protected readonly saveOptions: Partial<IAssetSaveOptions>
   protected readonly defaultAcceptedPattern: string[]
   protected readonly defaultCaseSensitive: boolean
   protected readonly delayAfterContentChanged: number
@@ -60,7 +57,6 @@ export class AssetService implements IAssetService {
     this.reporter = reporter
     this.assetResolverConfigs = []
     this.assetDataMapFilepath = targetStorage.resolve(assetDataMapFilepath)
-    this.saveOptions = { ...props.saveOptions }
     this.defaultAcceptedPattern = props.defaultAcceptedPattern?.slice() ?? ['**/*', '!.gitkeep']
     this.defaultCaseSensitive = props.caseSensitive ?? true
     this.delayAfterContentChanged = props.delayAfterContentChanged ?? 200
@@ -75,14 +71,8 @@ export class AssetService implements IAssetService {
       `[${this.constructor.name}] Don't add new AssetResolverApi while the service is running.`,
     )
 
-    const {
-      resolver,
-      targetStorage,
-      reporter,
-      delayAfterContentChanged,
-      saveOptions,
-      resolveUrlPathPrefix,
-    } = this
+    const { resolver, targetStorage, reporter, delayAfterContentChanged, resolveUrlPathPrefix } =
+      this
     const {
       GUID_NAMESPACE,
       sourceStorage,
@@ -97,7 +87,6 @@ export class AssetService implements IAssetService {
       resolveUrlPathPrefix,
       caseSensitive,
       assetDataMapFilepath: this.assetDataMapFilepath,
-      saveOptions,
     })
 
     const scheduler = new AssetTaskScheduler({

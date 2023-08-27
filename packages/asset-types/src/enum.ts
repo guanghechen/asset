@@ -4,13 +4,13 @@ export enum AssetDataType {
    */
   BINARY = 'binary',
   /**
-   * JSON Object.
-   */
-  JSON = 'json',
-  /**
    * LITERAL text.
    */
   TEXT = 'string',
+  /**
+   * JSON Object.
+   */
+  JSON = 'json',
 }
 
 export enum AssetChangeEvent {

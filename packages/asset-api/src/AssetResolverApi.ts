@@ -4,13 +4,13 @@ import type {
   IAssetDataMap,
   IAssetPluginLocateInput,
   IAssetResolverApi,
-  IAssetSaveOptions,
   IAssetSourceStorage,
   IAssetTargetStorage,
   IAssetUrlPrefixResolver,
   IBinaryLike,
 } from '@guanghechen/asset-types'
 import { calcFingerprint, mime, normalizeUrlPath } from '@guanghechen/asset-util'
+import invariant from '@guanghechen/invariant'
 import { v5 as uuid } from 'uuid'
 
 export interface IAssetResolverApiProps {
@@ -19,7 +19,6 @@ export interface IAssetResolverApiProps {
   targetStorage: IAssetTargetStorage
   caseSensitive: boolean
   assetDataMapFilepath: string
-  saveOptions: Partial<IAssetSaveOptions>
   resolveUrlPathPrefix: IAssetUrlPrefixResolver
 }
 
@@ -31,7 +30,6 @@ export class AssetResolverApi implements IAssetResolverApi {
   protected readonly targetStorage: IAssetTargetStorage
   protected readonly assetDataMapFilepath: string
   protected readonly caseSensitive: boolean
-  protected readonly saveOptions: Readonly<IAssetSaveOptions>
   protected readonly resolveUrlPathPrefix: IAssetUrlPrefixResolver
 
   constructor(props: IAssetResolverApiProps) {
@@ -42,7 +40,6 @@ export class AssetResolverApi implements IAssetResolverApi {
     this.targetStorage = targetStorage
     this.assetDataMapFilepath = targetStorage.resolve(assetDataMapFilepath)
 
-    this.saveOptions = { prettier: props.saveOptions.prettier ?? false }
     this.caseSensitive = props.caseSensitive
     this.resolveUrlPathPrefix = props.resolveUrlPathPrefix
   }
@@ -53,7 +50,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     await sourceStorage.assertExistedFile(srcLocation)
 
     const stat = await sourceStorage.statFile(srcLocation)
-    const content = await sourceStorage.readFile(srcLocation)
+    const content = await sourceStorage.readBinaryFile(srcLocation)
     const hash = calcFingerprint(content)
     const filename = sourceStorage.basename(srcLocation)
     const locationId = this.normalizeLocation(srcLocation)
@@ -92,15 +89,18 @@ export class AssetResolverApi implements IAssetResolverApi {
 
     switch (dataType) {
       case AssetDataType.BINARY:
-        await targetStorage.writeFile(dstLocation, data as IBinaryLike, encoding)
+        await targetStorage.writeBinaryFile(dstLocation, data as IBinaryLike)
         break
       case AssetDataType.JSON: {
-        const content = JSON.stringify(data, null, this.saveOptions.prettier ? 2 : 0)
-        await targetStorage.writeFile(dstLocation, content, 'utf8')
+        await targetStorage.writeJsonFile(dstLocation, data)
         break
       }
       case AssetDataType.TEXT:
-        await targetStorage.writeFile(dstLocation, data as string, encoding)
+        invariant(
+          encoding != null,
+          `[${this.constructor.name}.saveAsset] encoding is required for text type file`,
+        )
+        await targetStorage.writeTextFile(dstLocation, data as string, encoding)
         break
       default:
         throw new Error(`[${this.constructor.name}.saveAsset] Unexpected dataType: ${dataType}`)
@@ -108,10 +108,9 @@ export class AssetResolverApi implements IAssetResolverApi {
   }
 
   public async saveAssetDataMap(data: IAssetDataMap): Promise<void> {
-    const { targetStorage, assetDataMapFilepath, saveOptions } = this
-    const content = JSON.stringify(data, null, saveOptions.prettier ? 2 : 0)
+    const { targetStorage, assetDataMapFilepath } = this
     await targetStorage.mkdirsIfNotExists(assetDataMapFilepath, false)
-    await targetStorage.writeFile(assetDataMapFilepath, content, 'utf8')
+    await targetStorage.writeJsonFile(assetDataMapFilepath, data)
   }
 
   public normalizeLocation(srcLocation: string): string {
@@ -125,7 +124,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     const { sourceStorage } = this
     await sourceStorage.assertSafeLocation(srcLocation)
     await sourceStorage.assertExistedFile(srcLocation)
-    const content = await sourceStorage.readFile(srcLocation)
+    const content = await sourceStorage.readBinaryFile(srcLocation)
     return content
   }
 

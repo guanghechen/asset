@@ -7,10 +7,6 @@ export interface IAssetCollectOptions {
   absolute?: boolean
 }
 
-export interface IAssetSaveOptions {
-  prettier: boolean
-}
-
 export interface IAssetWatchOptions {
   onAdd(filepath: string): void
   onChange(filepath: string): void
@@ -35,51 +31,27 @@ export interface IAssetSourceStorage extends IAssetPathResolver {
    */
   assertExistedFile(location: string): Promise<void | never>
 
-  /**
-   *
-   * @param patterns
-   * @param options
-   */
   collectAssetLocations(patterns: string[], options: IAssetCollectOptions): Promise<string[]>
 
-  /**
-   *
-   * @param filepath
-   */
-  readFile(filepath: string): Promise<IBinaryLike>
+  readTextFile(filepath: string, encoding: BufferEncoding): Promise<string>
 
-  /**
-   *
-   * @param filepath
-   */
+  readJsonFile(filepath: string): Promise<unknown>
+
+  readBinaryFile(filepath: string): Promise<IBinaryLike>
+
   statFile(filepath: string): Promise<IAssetStat>
 
-  /**
-   *
-   * @param patterns
-   * @param options
-   */
   watch(patterns: string[], options: IAssetWatchOptions): this
 }
 
 export interface IAssetTargetStorage extends IAssetPathResolver {
-  /**
-   *
-   */
   clear(): Promise<void>
 
-  /**
-   *
-   * @param filepath
-   * @param isDir
-   */
   mkdirsIfNotExists(filepath: string, isDir: boolean): Promise<void>
 
-  /**
-   *
-   * @param filepath
-   * @param content
-   * @param utf8
-   */
-  writeFile(filepath: string, content: string | IBinaryLike, utf8?: BufferEncoding): Promise<void>
+  writeBinaryFile(filepath: string, content: IBinaryLike): Promise<void>
+
+  writeTextFile(filepath: string, content: string, encoding: BufferEncoding): Promise<void>
+
+  writeJsonFile(filepath: string, content: unknown): Promise<void>
 }

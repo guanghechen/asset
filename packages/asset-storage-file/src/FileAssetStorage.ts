@@ -15,6 +15,7 @@ import { FileAssetPathResolver } from './FileAssetPathResolver'
 
 export interface IFileAssetStorageProps {
   rootDir: string
+  prettier?: boolean
   watchOptions?: Partial<chokidar.WatchOptions>
   onWriteFile?: (
     storage: IAssetTargetStorage,
@@ -28,6 +29,7 @@ export class FileAssetStorage
   extends FileAssetPathResolver
   implements IAssetSourceStorage, IAssetTargetStorage
 {
+  protected readonly prettier: boolean
   protected readonly watchOptions: Partial<chokidar.WatchOptions>
   protected readonly onWriteFile?: (
     storage: IAssetTargetStorage,
@@ -38,6 +40,7 @@ export class FileAssetStorage
 
   constructor(props: IFileAssetStorageProps) {
     super({ rootDir: props.rootDir })
+    this.prettier = props.prettier ?? true
     this.watchOptions = props.watchOptions ?? {}
     this.onWriteFile = props.onWriteFile
   }
@@ -87,8 +90,34 @@ export class FileAssetStorage
     await mkdir(dirPath, { recursive: true })
   }
 
-  public async readFile(filepath: string): Promise<IBinaryLike> {
+  public async readTextFile(filepath: string, encoding: BufferEncoding): Promise<string> {
+    return await readFile(filepath, encoding)
+  }
+
+  public async readJsonFile(filepath: string): Promise<unknown> {
+    const content: string = await readFile(filepath, 'utf8')
+    return JSON.parse(content)
+  }
+
+  public async readBinaryFile(filepath: string): Promise<Buffer> {
     return await readFile(filepath)
+  }
+
+  public async writeBinaryFile(filepath: string, content: Buffer): Promise<void> {
+    await writeFile(filepath, content)
+  }
+
+  public async writeTextFile(
+    filepath: string,
+    content: string,
+    encoding: BufferEncoding,
+  ): Promise<void> {
+    await writeFile(filepath, content, encoding)
+  }
+
+  public async writeJsonFile(filepath: string, content: unknown): Promise<void> {
+    const s: string = this.prettier ? JSON.stringify(content, null, 2) : JSON.stringify(content)
+    await writeFile(filepath, s, 'utf8')
   }
 
   public async statFile(filepath: string): Promise<IAssetStat> {
