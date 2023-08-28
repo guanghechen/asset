@@ -4,6 +4,7 @@ export * from './plugin/plugin'
 export * from './plugin/polish'
 
 export * from './asset'
+export * from './asset-file'
 export * from './asset-manager'
 export * from './asset-path-resolver'
 export * from './asset-resolver'

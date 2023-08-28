@@ -1,56 +1,42 @@
+import { AssetTargetStorage } from '@guanghechen/asset-storage'
+import { AssetDataType, FileType } from '@guanghechen/asset-types'
 import type {
   IAssetCollectOptions,
   IAssetSourceStorage,
   IAssetStat,
   IAssetTargetStorage,
   IAssetWatchOptions,
-  IBinaryLike,
+  IBinaryFileItem,
+  IJsonFileItem,
+  ITextFileItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import chokidar from 'chokidar'
 import fastGlob from 'fast-glob'
 import { existsSync } from 'node:fs'
 import { mkdir, readFile, stat, unlink, writeFile } from 'node:fs/promises'
-import { FileAssetPathResolver } from './FileAssetPathResolver'
 
 export interface IFileAssetStorageProps {
   rootDir: string
   prettier?: boolean
   watchOptions?: Partial<chokidar.WatchOptions>
-  onWriteFile?: (
-    storage: IAssetTargetStorage,
-    filepath: string,
-    content: string | IBinaryLike,
-    encoding: BufferEncoding | undefined,
-  ) => void
 }
 
 export class FileAssetStorage
-  extends FileAssetPathResolver
+  extends AssetTargetStorage
   implements IAssetSourceStorage, IAssetTargetStorage
 {
   protected readonly prettier: boolean
   protected readonly watchOptions: Partial<chokidar.WatchOptions>
-  protected readonly onWriteFile?: (
-    storage: IAssetTargetStorage,
-    filepath: string,
-    content: string | IBinaryLike,
-    encoding: BufferEncoding | undefined,
-  ) => void
 
   constructor(props: IFileAssetStorageProps) {
     super({ rootDir: props.rootDir })
     this.prettier = props.prettier ?? true
     this.watchOptions = props.watchOptions ?? {}
-    this.onWriteFile = props.onWriteFile
-  }
-
-  public async clear(): Promise<void> {
-    // Do nothing
   }
 
   public async assertExistedLocation(location: string): Promise<void | never> {
-    const absoluteLocation: string = this.resolve(location)
+    const absoluteLocation: string = this.absolute(location)
     invariant(
       existsSync(absoluteLocation),
       `[assertExistedLocation] Cannot find file. (${location})`,
@@ -58,7 +44,7 @@ export class FileAssetStorage
   }
 
   public async assertExistedFile(location: string): Promise<void | never> {
-    const absoluteLocation: string = this.resolve(location)
+    const absoluteLocation: string = this.absolute(location)
     invariant(existsSync(absoluteLocation), `[assertExistedFile] Cannot find file. (${location})`)
 
     const assertion: boolean = (await stat(absoluteLocation)).isFile()
@@ -70,7 +56,7 @@ export class FileAssetStorage
     options: IAssetCollectOptions,
   ): Promise<string[]> {
     const cwd = options.cwd || this.rootDir
-    await this.assertSafeLocation(cwd)
+    this.assertSafeLocation(cwd)
 
     const filepaths: string[] = await fastGlob(patterns, {
       cwd,
@@ -90,21 +76,42 @@ export class FileAssetStorage
     await mkdir(dirPath, { recursive: true })
   }
 
+  public async readBinaryFile(filepath: string): Promise<Buffer> {
+    const absolutePath: string = this.absolute(filepath)
+    return await readFile(absolutePath)
+  }
+
   public async readTextFile(filepath: string, encoding: BufferEncoding): Promise<string> {
-    return await readFile(filepath, encoding)
+    const absolutePath: string = this.absolute(filepath)
+    return await readFile(absolutePath, encoding)
   }
 
   public async readJsonFile(filepath: string): Promise<unknown> {
-    const content: string = await readFile(filepath, 'utf8')
+    const absolutePath: string = this.absolute(filepath)
+    const content: string = await readFile(absolutePath, 'utf8')
     return JSON.parse(content)
   }
 
-  public async readBinaryFile(filepath: string): Promise<Buffer> {
-    return await readFile(filepath)
-  }
-
   public async writeBinaryFile(filepath: string, content: Buffer): Promise<void> {
-    await writeFile(filepath, content)
+    const absolutePath: string = this.absolute(filepath)
+    await writeFile(absolutePath, content)
+
+    const fileStat = await stat(filepath)
+    const newItem: IBinaryFileItem = {
+      type: FileType.FILE,
+      contentType: AssetDataType.BINARY,
+      absolutePath,
+      content,
+      encoding: undefined,
+      stat: {
+        birthtime: fileStat.birthtime,
+        mtime: fileStat.mtime,
+      },
+    }
+
+    // Notify
+    this._monitors.onWrittenBinaryFile.notify(newItem)
+    this._monitors.onWrittenFile.notify(newItem)
   }
 
   public async writeTextFile(
@@ -112,12 +119,48 @@ export class FileAssetStorage
     content: string,
     encoding: BufferEncoding,
   ): Promise<void> {
-    await writeFile(filepath, content, encoding)
+    const absolutePath: string = this.absolute(filepath)
+    await writeFile(absolutePath, content, encoding)
+
+    const fileStat = await stat(filepath)
+    const newItem: ITextFileItem = {
+      type: FileType.FILE,
+      contentType: AssetDataType.TEXT,
+      absolutePath,
+      content,
+      encoding,
+      stat: {
+        birthtime: fileStat.birthtime,
+        mtime: fileStat.mtime,
+      },
+    }
+
+    // Notify
+    this._monitors.onWrittenTextFile.notify(newItem)
+    this._monitors.onWrittenFile.notify(newItem)
   }
 
   public async writeJsonFile(filepath: string, content: unknown): Promise<void> {
+    const absolutePath: string = this.absolute(filepath)
     const s: string = this.prettier ? JSON.stringify(content, null, 2) : JSON.stringify(content)
-    await writeFile(filepath, s, 'utf8')
+    await writeFile(absolutePath, s, 'utf8')
+
+    const fileStat = await stat(filepath)
+    const newItem: IJsonFileItem = {
+      type: FileType.FILE,
+      contentType: AssetDataType.JSON,
+      absolutePath,
+      content,
+      encoding: undefined,
+      stat: {
+        birthtime: fileStat.birthtime,
+        mtime: fileStat.mtime,
+      },
+    }
+
+    // Notify
+    this._monitors.onWrittenJsonFile.notify(newItem)
+    this._monitors.onWrittenFile.notify(newItem)
   }
 
   public async statFile(filepath: string): Promise<IAssetStat> {
@@ -136,14 +179,5 @@ export class FileAssetStorage
       .on('change', filepath => onChange(filepath))
       .on('unlink', filepath => onUnlink(filepath))
     return this
-  }
-
-  public async writeFile(
-    filepath: string,
-    content: string | IBinaryLike,
-    encoding?: BufferEncoding,
-  ): Promise<void> {
-    await writeFile(filepath, content, encoding)
-    this.onWriteFile?.(this, filepath, content, encoding)
   }
 }

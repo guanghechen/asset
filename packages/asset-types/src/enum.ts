@@ -13,6 +13,11 @@ export enum AssetDataType {
   JSON = 'json',
 }
 
+export enum FileType {
+  FILE = 'file',
+  FOLDER = 'folder',
+}
+
 export enum AssetChangeEvent {
   CREATED = 'created',
   MODIFIED = 'modified',

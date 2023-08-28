@@ -1,6 +1,13 @@
+import type { IMonitorUnsubscribe } from '@guanghechen/monitor'
+import type {
+  IAssetStat,
+  IBinaryFileItem,
+  IBinaryLike,
+  IFileItem,
+  IJsonFileItem,
+  ITextFileItem,
+} from './asset-file'
 import type { IAssetPathResolver } from './asset-path-resolver'
-
-export type IBinaryLike = Buffer
 
 export interface IAssetCollectOptions {
   cwd?: string // filepath under the storage rootDir
@@ -13,10 +20,26 @@ export interface IAssetWatchOptions {
   onUnlink(filepath: string): void
 }
 
-export interface IAssetStat {
-  birthtime: Date
-  mtime: Date
+export interface IAssetTargetStorageMonitor {
+  onWrittenBinaryFile(item: IBinaryFileItem): void
+
+  onWrittenTextFile(item: ITextFileItem): void
+
+  onWrittenJsonFile(item: IJsonFileItem): void
+
+  onWrittenFile(item: IFileItem): void
 }
+
+export type IParametersOfOnWrittenBinaryFile = Parameters<
+  IAssetTargetStorageMonitor['onWrittenBinaryFile']
+>
+export type IParametersOfOnWrittenTextFile = Parameters<
+  IAssetTargetStorageMonitor['onWrittenTextFile']
+>
+export type IParametersOfOnWrittenJsonFile = Parameters<
+  IAssetTargetStorageMonitor['onWrittenJsonFile']
+>
+export type IParametersOfOnWrittenFile = Parameters<IAssetTargetStorageMonitor['onWrittenFile']>
 
 export interface IAssetSourceStorage extends IAssetPathResolver {
   /**
@@ -33,11 +56,11 @@ export interface IAssetSourceStorage extends IAssetPathResolver {
 
   collectAssetLocations(patterns: string[], options: IAssetCollectOptions): Promise<string[]>
 
+  readBinaryFile(filepath: string): Promise<IBinaryLike>
+
   readTextFile(filepath: string, encoding: BufferEncoding): Promise<string>
 
   readJsonFile(filepath: string): Promise<unknown>
-
-  readBinaryFile(filepath: string): Promise<IBinaryLike>
 
   statFile(filepath: string): Promise<IAssetStat>
 
@@ -45,7 +68,11 @@ export interface IAssetSourceStorage extends IAssetPathResolver {
 }
 
 export interface IAssetTargetStorage extends IAssetPathResolver {
-  clear(): Promise<void>
+  readonly destroyed: boolean
+
+  destroy(): Promise<void>
+
+  monitor(monitor: Partial<IAssetTargetStorageMonitor>): IMonitorUnsubscribe
 
   mkdirsIfNotExists(filepath: string, isDir: boolean): Promise<void>
 

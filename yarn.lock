@@ -498,9 +498,9 @@ __metadata:
     "@guanghechen/asset-types": ^1.0.0-alpha.11
     "@guanghechen/asset-util": ^1.0.0-alpha.9
     "@guanghechen/invariant": ^5.0.6
-    "@guanghechen/pipeline": ^1.0.0-alpha.1
-    "@guanghechen/scheduler": ^6.0.0-alpha.1
-    "@guanghechen/task": ^1.0.0-alpha.1
+    "@guanghechen/pipeline": ^1.0.0-alpha.2
+    "@guanghechen/scheduler": ^6.0.0-alpha.2
+    "@guanghechen/task": ^1.0.0-alpha.2
     "@types/uuid": ^9.0.2
     uuid: ^9.0.0
   languageName: unknown
@@ -547,6 +547,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-storage-file@workspace:packages/asset-storage-file"
   dependencies:
+    "@guanghechen/asset-storage": ^1.0.0-alpha.11
     "@guanghechen/asset-types": ^1.0.0-alpha.11
     "@guanghechen/invariant": ^5.0.6
     chokidar: 3.5.3
@@ -558,8 +559,22 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-storage-memo@workspace:packages/asset-storage-memo"
   dependencies:
+    "@guanghechen/asset-storage": ^1.0.0-alpha.11
     "@guanghechen/asset-types": ^1.0.0-alpha.11
     "@guanghechen/invariant": ^5.0.6
+  languageName: unknown
+  linkType: soft
+
+"@guanghechen/asset-storage@^1.0.0-alpha.11, @guanghechen/asset-storage@workspace:packages/asset-storage":
+  version: 0.0.0-use.local
+  resolution: "@guanghechen/asset-storage@workspace:packages/asset-storage"
+  dependencies:
+    "@guanghechen/asset-types": ^1.0.0-alpha.11
+    "@guanghechen/invariant": ^5.0.6
+    "@guanghechen/monitor": ^1.0.0-alpha.2
+    "@guanghechen/shared": ^1.0.0-alpha.2
+    chokidar: 3.5.3
+    fast-glob: ^3.3.1
   languageName: unknown
   linkType: soft
 
@@ -595,7 +610,7 @@ __metadata:
     "@guanghechen/script-doc-link": ^5.0.8
     "@types/jest": ^29.5.4
     "@types/mime": ^3.0.1
-    "@types/node": ^18.17.11
+    "@types/node": ^18.17.12
     cross-env: 7.0.3
     eslint: 8.48.0
     eslint-config-prettier: 9.0.0
@@ -639,6 +654,13 @@ __metadata:
   dependencies:
     gitmojis: ^3.13.5
   checksum: 3111a5e4b09fd0360cef4cdfd82291cda0de1917bd42e695ad0387eaabbd3fed7d54bd5b5d5f8dd1927d0e73e2e55c02572bf62356e9ec1e449146b4c73de2fa
+  languageName: node
+  linkType: hard
+
+"@guanghechen/error@npm:^1.0.0-alpha.2":
+  version: 1.0.0-alpha.2
+  resolution: "@guanghechen/error@npm:1.0.0-alpha.2"
+  checksum: 2b5f0d008b4fc49952297ab376569056a6646519431e70fc88acddd0547751318ca57215a758c4260f3e80a574f61d5975cb83f318db34cd621c4e97d53d1581
   languageName: node
   linkType: hard
 
@@ -715,10 +737,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/monitor@npm:^1.0.0-alpha.1":
-  version: 1.0.0-alpha.1
-  resolution: "@guanghechen/monitor@npm:1.0.0-alpha.1"
-  checksum: 167cfb728286bd6b4bcf49294c0134678f8acdba1a4a239d4b01a707c218d9fd798c3e8ec571ec2495a9466a73973158e34473a4c64fe3ff25959aba4f91d988
+"@guanghechen/monitor@npm:^1.0.0-alpha.2":
+  version: 1.0.0-alpha.2
+  resolution: "@guanghechen/monitor@npm:1.0.0-alpha.2"
+  checksum: 2e206807b71295b64b7e6e449592e37adbab6307981900ea2844327db3b102581e3ab2471bade049c48edb952c21d9b1226c7e2af6dfec6477d333d54366507e
   languageName: node
   linkType: hard
 
@@ -729,12 +751,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/pipeline@npm:^1.0.0-alpha.1":
-  version: 1.0.0-alpha.1
-  resolution: "@guanghechen/pipeline@npm:1.0.0-alpha.1"
+"@guanghechen/pipeline@npm:^1.0.0-alpha.2":
+  version: 1.0.0-alpha.2
+  resolution: "@guanghechen/pipeline@npm:1.0.0-alpha.2"
   dependencies:
-    "@guanghechen/monitor": ^1.0.0-alpha.1
-  checksum: de5a57fd79be5a31f9f5271ddc9f6c1531a06462d029dfa883765538bbb8c43ae635191bc8bded76a22c4b2359de4cf601a79492722f63e96177df0323342034
+    "@guanghechen/monitor": ^1.0.0-alpha.2
+  checksum: a36d1c7b2185ecf04b6f6815d127f4a20343839203cf703cb1a792d4ef325b07dc99d7a68ef18da2fbbfa14679301bce894fd9ae24243e6093fbeb32ae60038d
   languageName: node
   linkType: hard
 
@@ -787,13 +809,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/scheduler@npm:^6.0.0-alpha.1":
-  version: 6.0.0-alpha.1
-  resolution: "@guanghechen/scheduler@npm:6.0.0-alpha.1"
+"@guanghechen/scheduler@npm:^6.0.0-alpha.2":
+  version: 6.0.0-alpha.2
+  resolution: "@guanghechen/scheduler@npm:6.0.0-alpha.2"
   dependencies:
-    "@guanghechen/pipeline": ^1.0.0-alpha.1
-    "@guanghechen/task": ^1.0.0-alpha.1
-  checksum: 9884bebc91bdcf3f77bbb92d8be1cd139036a43eb0503b0f11d25b2c5e0ccc197c6a361b393fa8f8077f0fb7091c83c62a9754bfbef2031d0733f62ed2459d3b
+    "@guanghechen/error": ^1.0.0-alpha.2
+    "@guanghechen/pipeline": ^1.0.0-alpha.2
+    "@guanghechen/task": ^1.0.0-alpha.2
+  checksum: 4f0eb5205af68a07a0d900fbcdc77d47cd6f6cd6dc6d64c1661e746d940253b55616fc8c18c3c6231625aa9e0fa5265f11f795ad1657a4a89c3cd06ab9478b15
   languageName: node
   linkType: hard
 
@@ -815,12 +838,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/task@npm:^1.0.0-alpha.1":
-  version: 1.0.0-alpha.1
-  resolution: "@guanghechen/task@npm:1.0.0-alpha.1"
+"@guanghechen/shared@npm:^1.0.0-alpha.2":
+  version: 1.0.0-alpha.2
+  resolution: "@guanghechen/shared@npm:1.0.0-alpha.2"
+  checksum: 2f09d6e786192c84a44bf7dff60a7f3797ac83555d247eed9d0f0cd64be754a6fa918cbfed221626c7ecff42ad4a7600ffbab4448256073a807c9ff2a2402a24
+  languageName: node
+  linkType: hard
+
+"@guanghechen/task@npm:^1.0.0-alpha.2":
+  version: 1.0.0-alpha.2
+  resolution: "@guanghechen/task@npm:1.0.0-alpha.2"
   dependencies:
-    "@guanghechen/monitor": ^1.0.0-alpha.1
-  checksum: e8914a0a88b8d6d6c9ccf01e5b934bd6b0126b759ecefab33072505f7dee99203f508414ce49317af1395e2eafc678cb4615bc6619777e67305ba81e24b38edd
+    "@guanghechen/error": ^1.0.0-alpha.2
+    "@guanghechen/monitor": ^1.0.0-alpha.2
+  checksum: 9d809c0ea305f3eb318ceba120adf8aba41f6fae5fe88cd180b189ab86b7a130c579df32f422fa9178c2e9010c1601d05f663f6e7ed2a5f4435b01c6cc5da4ad
   languageName: node
   linkType: hard
 
@@ -1998,10 +2029,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.17.11":
-  version: 18.17.11
-  resolution: "@types/node@npm:18.17.11"
-  checksum: c31d9f4a6f7c5c413b6548ded0fab046571832718361c5cda325960f32d6b386dd0a7fa9228911111fee54c180d09df82a622efdabdbef89fa9e1923891892bc
+"@types/node@npm:^18.17.12":
+  version: 18.17.12
+  resolution: "@types/node@npm:18.17.12"
+  checksum: 79f8bcca3067a3c529f30e172df8d14f25ab9e4cd6a05ed897a924ab1dec774e8ea172ef5c4a67ffec433d423a0c81778f17db22606d574bc83871b60aab298e
   languageName: node
   linkType: hard
 

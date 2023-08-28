@@ -1,4 +1,5 @@
 import type { IAssetResolver, IAssetResolverApi, IAssetTaskData } from '@guanghechen/asset-types'
+import type { SoraErrorLevel } from '@guanghechen/error'
 import type { IReporter } from '@guanghechen/scheduler'
 import { Scheduler } from '@guanghechen/scheduler'
 import type { ITask } from '@guanghechen/task'
@@ -20,6 +21,12 @@ export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskSch
     const { api, resolver, reporter, delayAfterContentChanged } = props
     const pipeline = new AssetTaskPipeline({ api, resolver, delayAfterContentChanged })
     super({ name: 'AssetTaskScheduler', reporter, pipeline })
+
+    this.monitor({
+      onAddError: (type: string, error: unknown, level: SoraErrorLevel | undefined): void => {
+        reporter?.reportError({ type, error, level })
+      },
+    })
   }
 
   public override finish(): Promise<void> {

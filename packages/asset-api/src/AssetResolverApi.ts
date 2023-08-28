@@ -38,7 +38,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     this.GUID_NAMESPACE = GUID_NAMESPACE
     this.sourceStorage = sourceStorage
     this.targetStorage = targetStorage
-    this.assetDataMapFilepath = targetStorage.resolve(assetDataMapFilepath)
+    this.assetDataMapFilepath = targetStorage.absolute(assetDataMapFilepath)
 
     this.caseSensitive = props.caseSensitive
     this.resolveUrlPathPrefix = props.resolveUrlPathPrefix
@@ -83,7 +83,9 @@ export class AssetResolverApi implements IAssetResolverApi {
     if (data === null) return
 
     const { targetStorage } = this
-    const dstLocation = targetStorage.resolve(uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''))
+    const dstLocation = targetStorage.absolute(
+      uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''),
+    )
     await targetStorage.assertSafeLocation(dstLocation)
     await targetStorage.mkdirsIfNotExists(dstLocation, false)
 
@@ -130,7 +132,7 @@ export class AssetResolverApi implements IAssetResolverApi {
 
   public resolveSrcLocation(srcLocation: string): string {
     const { sourceStorage } = this
-    return sourceStorage.resolve(srcLocation)
+    return sourceStorage.absolute(srcLocation)
   }
 
   public resolveSlug(slug: string | null | undefined): string | null {

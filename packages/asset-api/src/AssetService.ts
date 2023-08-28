@@ -56,7 +56,7 @@ export class AssetService implements IAssetService {
     this.targetStorage = targetStorage
     this.reporter = reporter
     this.assetResolverConfigs = []
-    this.assetDataMapFilepath = targetStorage.resolve(assetDataMapFilepath)
+    this.assetDataMapFilepath = targetStorage.absolute(assetDataMapFilepath)
     this.defaultAcceptedPattern = props.defaultAcceptedPattern?.slice() ?? ['**/*', '!.gitkeep']
     this.defaultCaseSensitive = props.caseSensitive ?? true
     this.delayAfterContentChanged = props.delayAfterContentChanged ?? 200

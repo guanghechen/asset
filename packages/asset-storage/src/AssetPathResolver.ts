@@ -2,14 +2,14 @@ import type { IAssetPathResolver } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import path from 'node:path'
 
-export interface IMemoAssetPathResolverProps {
+export interface IAssetPathResolverProps {
   rootDir: string
 }
 
-export class MemoAssetPathResolver implements IAssetPathResolver {
+export class AssetPathResolver implements IAssetPathResolver {
   public readonly rootDir: string
 
-  constructor(props: IMemoAssetPathResolverProps) {
+  constructor(props: IAssetPathResolverProps) {
     this.rootDir = props.rootDir
   }
 
@@ -18,7 +18,7 @@ export class MemoAssetPathResolver implements IAssetPathResolver {
     return relativeLocation.replace(/[/\\]+/g, '/').replace(/[/]?$/, '/')
   }
 
-  public async assertSafeLocation(location: string): Promise<void | never> {
+  public assertSafeLocation(location: string): void | never {
     const rootDir: string = this.rootDir
     invariant(
       !this.relative(location).startsWith('..'),
@@ -34,14 +34,16 @@ export class MemoAssetPathResolver implements IAssetPathResolver {
     return path.dirname(location)
   }
 
+  public absolute(location: string): string {
+    const rootDir: string = this.rootDir
+    const absoluteFilepath = path.resolve(rootDir, path.normalize(location))
+    this.assertSafeLocation(absoluteFilepath)
+    return absoluteFilepath
+  }
+
   public relative(location: string): string {
     const rootDir: string = this.rootDir
     return this._relative(rootDir, location)
-  }
-
-  public resolve(location: string): string {
-    const rootDir: string = this.rootDir
-    return path.resolve(rootDir, path.normalize(location))
   }
 
   protected _relative(cwd: string, location: string): string {
