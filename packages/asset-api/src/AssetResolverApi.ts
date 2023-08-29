@@ -25,34 +25,32 @@ export interface IAssetResolverApiProps {
 const extnameRegex = /\.([\w]+)$/
 
 export class AssetResolverApi implements IAssetResolverApi {
-  protected readonly GUID_NAMESPACE: string
-  protected readonly sourceStorage: IAssetSourceStorage
-  protected readonly targetStorage: IAssetTargetStorage
-  protected readonly assetDataMapFilepath: string
-  protected readonly caseSensitive: boolean
-  protected readonly resolveUrlPathPrefix: IAssetUrlPrefixResolver
+  protected readonly _GUID_NAMESPACE: string
+  protected readonly _sourceStorage: IAssetSourceStorage
+  protected readonly _targetStorage: IAssetTargetStorage
+  protected readonly _assetDataMapFilepath: string
+  protected readonly _caseSensitive: boolean
+  protected readonly _resolveUrlPathPrefix: IAssetUrlPrefixResolver
 
   constructor(props: IAssetResolverApiProps) {
     const { GUID_NAMESPACE, sourceStorage, targetStorage, assetDataMapFilepath } = props
-
-    this.GUID_NAMESPACE = GUID_NAMESPACE
-    this.sourceStorage = sourceStorage
-    this.targetStorage = targetStorage
-    this.assetDataMapFilepath = targetStorage.absolute(assetDataMapFilepath)
-
-    this.caseSensitive = props.caseSensitive
-    this.resolveUrlPathPrefix = props.resolveUrlPathPrefix
+    this._GUID_NAMESPACE = GUID_NAMESPACE
+    this._sourceStorage = sourceStorage
+    this._targetStorage = targetStorage
+    this._assetDataMapFilepath = targetStorage.absolute(assetDataMapFilepath)
+    this._caseSensitive = props.caseSensitive
+    this._resolveUrlPathPrefix = props.resolveUrlPathPrefix
   }
 
   public async initAsset(srcLocation: string): Promise<IAssetPluginLocateInput | null> {
-    const { sourceStorage } = this
-    await sourceStorage.assertSafeLocation(srcLocation)
-    await sourceStorage.assertExistedFile(srcLocation)
+    const { _sourceStorage } = this
+    await _sourceStorage.assertSafeLocation(srcLocation)
+    await _sourceStorage.assertExistedFile(srcLocation)
 
-    const stat = await sourceStorage.statFile(srcLocation)
-    const content = await sourceStorage.readBinaryFile(srcLocation)
+    const stat = await _sourceStorage.statFile(srcLocation)
+    const content = await _sourceStorage.readBinaryFile(srcLocation)
     const hash = calcFingerprint(content)
-    const filename = sourceStorage.basename(srcLocation)
+    const filename = _sourceStorage.basename(srcLocation)
     const locationId = this.normalizeLocation(srcLocation)
     const guid = this._genAssetGuid(locationId)
     const src = this._normalizeSrcLocation(srcLocation)
@@ -82,27 +80,27 @@ export class AssetResolverApi implements IAssetResolverApi {
     const { uri, dataType, data, encoding } = params
     if (data === null) return
 
-    const { targetStorage } = this
-    const dstLocation = targetStorage.absolute(
+    const { _targetStorage } = this
+    const dstLocation = _targetStorage.absolute(
       uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''),
     )
-    await targetStorage.assertSafeLocation(dstLocation)
-    await targetStorage.mkdirsIfNotExists(dstLocation, false)
+    await _targetStorage.assertSafeLocation(dstLocation)
+    await _targetStorage.mkdirsIfNotExists(dstLocation, false)
 
     switch (dataType) {
       case AssetDataType.BINARY:
-        await targetStorage.writeBinaryFile(dstLocation, data as IBinaryLike)
+        await _targetStorage.writeBinaryFile(dstLocation, data as IBinaryLike)
         break
       case AssetDataType.JSON: {
-        await targetStorage.writeJsonFile(dstLocation, data)
+        await _targetStorage.writeJsonFile(dstLocation, data)
         break
       }
       case AssetDataType.TEXT:
         invariant(
-          encoding != null,
+          !!encoding,
           `[${this.constructor.name}.saveAsset] encoding is required for text type file`,
         )
-        await targetStorage.writeTextFile(dstLocation, data as string, encoding)
+        await _targetStorage.writeTextFile(dstLocation, data as string, encoding)
         break
       default:
         throw new Error(`[${this.constructor.name}.saveAsset] Unexpected dataType: ${dataType}`)
@@ -110,29 +108,29 @@ export class AssetResolverApi implements IAssetResolverApi {
   }
 
   public async saveAssetDataMap(data: IAssetDataMap): Promise<void> {
-    const { targetStorage, assetDataMapFilepath } = this
-    await targetStorage.mkdirsIfNotExists(assetDataMapFilepath, false)
-    await targetStorage.writeJsonFile(assetDataMapFilepath, data)
+    const { _targetStorage, _assetDataMapFilepath } = this
+    await _targetStorage.mkdirsIfNotExists(_assetDataMapFilepath, false)
+    await _targetStorage.writeJsonFile(_assetDataMapFilepath, data)
   }
 
   public normalizeLocation(srcLocation: string): string {
     const relativeLocation: string = this._normalizeSrcLocation(srcLocation)
-    const text: string = this.caseSensitive ? relativeLocation : relativeLocation.toLowerCase()
+    const text: string = this._caseSensitive ? relativeLocation : relativeLocation.toLowerCase()
     const identifier = this._genLocationGuid(text)
     return identifier
   }
 
   public async loadSrcContent(srcLocation: string): Promise<Buffer> {
-    const { sourceStorage } = this
-    await sourceStorage.assertSafeLocation(srcLocation)
-    await sourceStorage.assertExistedFile(srcLocation)
-    const content = await sourceStorage.readBinaryFile(srcLocation)
+    const { _sourceStorage } = this
+    await _sourceStorage.assertSafeLocation(srcLocation)
+    await _sourceStorage.assertExistedFile(srcLocation)
+    const content = await _sourceStorage.readBinaryFile(srcLocation)
     return content
   }
 
   public resolveSrcLocation(srcLocation: string): string {
-    const { sourceStorage } = this
-    return sourceStorage.absolute(srcLocation)
+    const { _sourceStorage } = this
+    return _sourceStorage.absolute(srcLocation)
   }
 
   public resolveSlug(slug: string | null | undefined): string | null {
@@ -141,23 +139,23 @@ export class AssetResolverApi implements IAssetResolverApi {
 
   public resolveUri(params: Pick<IAsset, 'guid' | 'type' | 'mimetype' | 'extname'>): string {
     const { guid, type, mimetype } = params
-    const urlPathPrefix = this.resolveUrlPathPrefix({ assetType: type, mimetype })
+    const urlPathPrefix = this._resolveUrlPathPrefix({ assetType: type, mimetype })
     const extname: string | undefined = mime.getExtension(mimetype) ?? params.extname
     const url = `/${urlPathPrefix}/${guid}`
     return normalizeUrlPath(extname ? `${url}.${extname}` : url)
   }
 
   protected _normalizeSrcLocation(location: string): string {
-    const { sourceStorage } = this
-    const relativeLocation = sourceStorage.relative(location)
+    const { _sourceStorage } = this
+    const relativeLocation = _sourceStorage.relative(location)
     return normalizeUrlPath(relativeLocation)
   }
 
   protected _genAssetGuid(identifier: string): string {
-    return uuid(`#asset-${identifier}`, this.GUID_NAMESPACE)
+    return uuid(`#asset-${identifier}`, this._GUID_NAMESPACE)
   }
 
   protected _genLocationGuid(identifier: string): string {
-    return uuid(`#location-${identifier}`, this.GUID_NAMESPACE)
+    return uuid(`#location-${identifier}`, this._GUID_NAMESPACE)
   }
 }

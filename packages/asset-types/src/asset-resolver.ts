@@ -24,12 +24,14 @@ export interface IAssetResolver {
   dump(): IAssetDataMap
   /**
    * Create assets on the given locations.
+   * @param api
    * @param locations
    */
-  create(assetResolverApi: IAssetResolverApi, locations: string[]): Promise<void>
+  create(api: IAssetResolverApi, locations: string[]): Promise<void>
   /**
    * Mark the assets on the locations invalid and remove them from assetManager.
+   * @param api
    * @param locations
    */
-  remove(assetResolverApi: IAssetResolverApi, locations: string[]): Promise<void>
+  remove(api: IAssetResolverApi, locations: string[]): Promise<void>
 }

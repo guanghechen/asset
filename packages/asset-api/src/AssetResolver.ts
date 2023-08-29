@@ -31,51 +31,52 @@ interface IAssetWithLocation extends IAsset {
 }
 
 export class AssetResolver implements IAssetResolver {
-  protected readonly assetManager: IAssetManager
-  protected readonly locationMap: Map<string, IAssetWithLocation | null> = new Map()
-  protected readonly plugins: IAssetResolverPlugin[] = []
+  protected readonly _assetManager: IAssetManager
+  protected readonly _locationMap: Map<string, IAssetWithLocation | null> = new Map()
+  protected readonly _plugins: IAssetResolverPlugin[] = []
 
   constructor(props: IAssetResolverProps = {}) {
-    this.assetManager = props.assetManager ?? new AssetManager()
+    const { assetManager = new AssetManager() } = props
+    this._assetManager = assetManager
   }
 
   public use(...plugins: Array<IAssetResolverPlugin | IAssetResolverPlugin[]>): this {
     for (const plugin of plugins.flat()) {
       if (plugin.displayName) {
-        this.plugins.push(plugin)
+        this._plugins.push(plugin)
       }
     }
     return this
   }
 
   public dump(): IAssetDataMap {
-    return this.assetManager.dump()
+    return this._assetManager.dump()
   }
 
-  public async create(assetResolverApi: IAssetResolverApi, locations: string[]): Promise<void> {
-    await Promise.all(locations.map(location => this._locate(assetResolverApi, location)))
-    await Promise.all(locations.map(location => this._parse(assetResolverApi, location)))
-    await Promise.all(locations.map(location => this._polish(assetResolverApi, location)))
+  public async create(api: IAssetResolverApi, locations: string[]): Promise<void> {
+    await Promise.all(locations.map(location => this._locate(api, location)))
+    await Promise.all(locations.map(location => this._parse(api, location)))
+    await Promise.all(locations.map(location => this._polish(api, location)))
   }
 
-  public async remove(assetResolverApi: IAssetResolverApi, locations: string[]): Promise<void> {
-    const { assetManager, locationMap } = this
+  public async remove(api: IAssetResolverApi, locations: string[]): Promise<void> {
+    const { _assetManager, _locationMap } = this
     for (const location of locations) {
-      const locationId = assetResolverApi.normalizeLocation(location)
-      const asset = locationMap.get(locationId)
+      const locationId = api.normalizeLocation(location)
+      const asset = _locationMap.get(locationId)
       if (asset) {
-        assetManager.remove(asset.guid)
-        locationMap.delete(locationId)
+        _assetManager.remove(asset.guid)
+        _locationMap.delete(locationId)
       }
     }
   }
 
   protected async _locate(assetResolverApi: IAssetResolverApi, location: string): Promise<void> {
-    const { locationMap } = this
+    const { _locationMap } = this
     const locationId = assetResolverApi.normalizeLocation(location)
 
-    if (locationMap.has(locationId)) return
-    locationMap.set(locationId, null)
+    if (_locationMap.has(locationId)) return
+    _locationMap.set(locationId, null)
 
     const input: IAssetPluginLocateInput | null = await assetResolverApi.initAsset(location)
     if (input == null) return
@@ -93,7 +94,7 @@ export class AssetResolver implements IAssetResolver {
         assetResolverApi.resolveUri({ guid, type, mimetype, extname }),
     }
 
-    const reducer: IAssetPluginLocateNext = this.plugins
+    const reducer: IAssetPluginLocateNext = this._plugins
       .filter((plugin): plugin is IAssetLocatePlugin => !!plugin.locate)
       .reduceRight<IAssetPluginLocateNext>(
         (next, middleware) => embryo => middleware.locate(input, embryo, api, next),
@@ -130,14 +131,14 @@ export class AssetResolver implements IAssetResolver {
         categories,
         tags,
       }
-      this.assetManager.insert(asset)
-      locationMap.set(locationId, { ...asset, filename: input.filename, src, data: null })
+      this._assetManager.insert(asset)
+      _locationMap.set(locationId, { ...asset, filename: input.filename, src, data: null })
     }
   }
 
   protected async _parse(assetResolverApi: IAssetResolverApi, location: string): Promise<void> {
     const locationId = assetResolverApi.normalizeLocation(location)
-    const asset = this.locationMap.get(locationId)
+    const asset = this._locationMap.get(locationId)
     if (!asset) return
 
     const api: IAssetPluginParseApi = {
@@ -155,7 +156,7 @@ export class AssetResolver implements IAssetResolver {
       filename: asset.filename,
     }
 
-    const reducer: IAssetPluginParseNext = this.plugins
+    const reducer: IAssetPluginParseNext = this._plugins
       .filter((plugin): plugin is IAssetParsePlugin => !!plugin.parse)
       .reduceRight<IAssetPluginParseNext>(
         (next, middleware) => embryo => middleware.parse(input, embryo, api, next),
@@ -170,12 +171,12 @@ export class AssetResolver implements IAssetResolver {
   }
 
   protected async _polish(assetResolverApi: IAssetResolverApi, location: string): Promise<void> {
-    const { locationMap } = this
+    const { _locationMap } = this
     const locationId = assetResolverApi.normalizeLocation(location)
-    const asset = locationMap.get(locationId)
+    const asset = _locationMap.get(locationId)
     if (!asset) return
 
-    const api: IAssetPluginPolishApi = {
+    const pluginApi: IAssetPluginPolishApi = {
       loadContent: relativeSrcLocation => {
         const resolvedLocation = assetResolverApi.resolveSrcLocation(
           `${location}/../${relativeSrcLocation}`,
@@ -187,7 +188,7 @@ export class AssetResolver implements IAssetResolver {
           `${location}/../${decodeURIComponent(relativeLocation)}`,
         )
         const locationId = assetResolverApi.normalizeLocation(resolvedLocation)
-        const asset = locationMap.get(locationId)
+        const asset = _locationMap.get(locationId)
         return asset ? { uri: asset.uri, slug: asset.slug, title: asset.title } : null
       },
     }
@@ -198,10 +199,10 @@ export class AssetResolver implements IAssetResolver {
       data: asset.data,
     }
 
-    const reducer: IAssetPluginPolishNext = this.plugins
+    const reducer: IAssetPluginPolishNext = this._plugins
       .filter((plugin): plugin is IAssetPolishPlugin => !!plugin.polish)
       .reduceRight<IAssetPluginPolishNext>(
-        (next, middleware) => embryo => middleware.polish(input, embryo, api, next),
+        (next, middleware) => embryo => middleware.polish(input, embryo, pluginApi, next),
         embryo => embryo,
       )
     const result = await reducer(null)

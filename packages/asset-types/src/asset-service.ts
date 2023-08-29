@@ -1,3 +1,5 @@
+import type { IAssetTaskScheduler } from '@guanghechen/asset-api'
+import type { IAssetResolverApi } from './asset-resolver-api'
 import type { IAssetSourceStorage } from './asset-storage'
 
 export interface IRawAssetServiceConfig {
@@ -7,8 +9,24 @@ export interface IRawAssetServiceConfig {
   caseSensitive?: boolean
 }
 
+export interface IAssetServiceConfig {
+  GUID_NAMESPACE: string
+  api: IAssetResolverApi
+  scheduler: IAssetTaskScheduler
+  sourceStorage: IAssetSourceStorage
+  acceptedPattern: string[]
+}
+
+export interface IAssetServiceWatcher {
+  unwatch(): Promise<void>
+}
+
+export interface IAssetServiceConfigManager {
+  readonly configs: IAssetServiceConfig[]
+  register(assetConfig: IRawAssetServiceConfig): this
+}
+
 export interface IAssetService {
-  registerAsset(assetConfig: IRawAssetServiceConfig): this
-  build(): Promise<void>
-  watch(): Promise<void>
+  build(configs: IAssetServiceConfig[]): Promise<void>
+  watch(configs: IAssetServiceConfig[]): Promise<IAssetServiceWatcher>
 }

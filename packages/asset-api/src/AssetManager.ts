@@ -1,99 +1,90 @@
 import type { IAsset, IAssetDataMap, IAssetManager } from '@guanghechen/asset-types'
 
-export interface IAssetManagerProps {
-  normalizeTag?: (tag: string) => string
-  normalizeCategory?: (categoryPath: string[]) => string
-}
-
-const defaultAssetManagerProps: Required<IAssetManagerProps> = (() => {
-  const regex = /[\s\\/]+/g
-  const normalize = (text: string): string => text.trim().replace(regex, '_').toLowerCase()
-  return {
-    normalizeTag: normalize,
-    normalizeCategory: categoryPath =>
-      categoryPath
-        .map(normalize)
-        .filter(x => !!x)
-        .join('/'),
-  }
-})()
+const regex = /[\s\\/]+/g
+const normalize = (text: string): string => text.trim().replace(regex, '_').toLowerCase()
 
 export class AssetManager implements IAssetManager {
-  protected readonly assetMap: Map<string, IAsset> = new Map()
-  protected readonly categoryMap: Map<string, Set<string>> = new Map()
-  protected readonly tagMap: Map<string, Set<string>> = new Map()
-  protected readonly normalizeCategory: (categoryPath: string[]) => string
-  protected readonly normalizeTag: (tag: string) => string
-
-  constructor(props: IAssetManagerProps = {}) {
-    const {
-      normalizeCategory = defaultAssetManagerProps.normalizeCategory,
-      normalizeTag = defaultAssetManagerProps.normalizeTag,
-    } = props ?? {}
-
-    this.normalizeCategory = normalizeCategory
-    this.normalizeTag = normalizeTag
-  }
+  protected readonly _assetMap: Map<string, IAsset> = new Map()
+  protected readonly _categoryMap: Map<string, Set<string>> = new Map()
+  protected readonly _tagMap: Map<string, Set<string>> = new Map()
 
   public load(json: Readonly<IAssetDataMap>, replace: boolean): void {
     if (replace) {
-      this.assetMap.clear()
-      this.categoryMap.clear()
-      this.tagMap.clear()
+      this._assetMap.clear()
+      this._categoryMap.clear()
+      this._tagMap.clear()
     }
     json.assets.forEach(asset => this.insert(asset))
   }
 
   public dump(): IAssetDataMap {
     return {
-      assets: Array.from(this.assetMap.values()).sort((x, y) => x.uri.localeCompare(y.uri)),
+      assets: Array.from(this._assetMap.values()).sort((x, y) => x.uri.localeCompare(y.uri)),
     }
   }
 
   public getByGuid(guid: string): IAsset | undefined {
-    return this.assetMap.get(guid)
+    return this._assetMap.get(guid)
   }
 
   public getByTag(tag: string): IAsset[] {
-    const tagId = this.normalizeTag(tag)
-    const assetIds = this.tagMap.get(tagId)
+    const tagId = this._normalizeTag(tag)
+    const assetIds = this._tagMap.get(tagId)
     return this._getAssets(assetIds)
   }
 
   public getByCategory(categoryPath: string[]): IAsset[] {
-    const categoryId = this.normalizeCategory(categoryPath)
-    const assetIds = this.categoryMap.get(categoryId)
+    const categoryId = this._normalizeCategory(categoryPath)
+    const assetIds = this._categoryMap.get(categoryId)
     return this._getAssets(assetIds)
   }
 
   public insert(asset: IAsset): void {
-    if (this.assetMap.has(asset.guid)) {
+    if (this._assetMap.has(asset.guid)) {
       console.error(`[AssetManager.insert] Duplicated asset: guid(${asset.guid})`)
       return
     }
 
-    const { assetMap, categoryMap, tagMap, normalizeTag, normalizeCategory } = this
+    const {
+      _assetMap: assetMap,
+      _categoryMap: categoryMap,
+      _tagMap: tagMap,
+      _normalizeTag: normalizeTag,
+      _normalizeCategory: normalizeCategory,
+    } = this
     assetMap.set(asset.guid, asset)
 
     for (const categoryPath of asset.categories) {
       const categoryId = normalizeCategory(categoryPath)
-      const assetIds: Set<string> = categoryMap.get(categoryId) ?? new Set<string>()
+      let assetIds: Set<string> | undefined = categoryMap.get(categoryId)
+      if (assetIds === undefined) {
+        assetIds = new Set<string>()
+        categoryMap.set(categoryId, assetIds)
+      }
       assetIds.add(asset.guid)
-      categoryMap.set(categoryId, assetIds)
     }
 
     for (const tag of asset.tags) {
       const tagId = normalizeTag(tag)
-      const assetIds: Set<string> = tagMap.get(tagId) ?? new Set<string>()
+      let assetIds: Set<string> | undefined = tagMap.get(tagId)
+      if (assetIds === undefined) {
+        assetIds = new Set<string>()
+        tagMap.set(tagId, assetIds)
+      }
       assetIds.add(asset.guid)
-      tagMap.set(tagId, assetIds)
     }
   }
 
   public remove(guid: string): void {
     const asset = this.getByGuid(guid)
     if (asset) {
-      const { assetMap, categoryMap, tagMap, normalizeTag, normalizeCategory } = this
+      const {
+        _assetMap: assetMap,
+        _categoryMap: categoryMap,
+        _tagMap: tagMap,
+        _normalizeTag: normalizeTag,
+        _normalizeCategory: normalizeCategory,
+      } = this
       assetMap.delete(guid)
 
       for (const categoryPath of asset.categories) {
@@ -110,11 +101,22 @@ export class AssetManager implements IAssetManager {
     }
   }
 
+  protected _normalizeTag(tag: string): string {
+    return normalize(tag)
+  }
+
+  protected _normalizeCategory(categoryPath: string[]): string {
+    return categoryPath
+      .map(normalize)
+      .filter(x => !!x)
+      .join('/')
+  }
+
   protected _getAssets(assetIds: Iterable<string> | undefined): IAsset[] {
     if (assetIds === undefined) return []
     const assets: IAsset[] = []
     for (const assetId of assetIds) {
-      const asset = this.assetMap.get(assetId)
+      const asset = this._assetMap.get(assetId)
       if (asset) assets.push(asset)
     }
     return assets
