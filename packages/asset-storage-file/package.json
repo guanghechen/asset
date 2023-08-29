@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-storage-file",
-  "version": "1.0.0-alpha.12",
+  "version": "1.0.0-alpha.13",
   "description": "Asset service core.",
   "author": {
     "name": "guanghechen",
@@ -40,8 +40,8 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-storage": "^1.0.0-alpha.12",
-    "@guanghechen/asset-types": "^1.0.0-alpha.12",
+    "@guanghechen/asset-storage": "^1.0.0-alpha.13",
+    "@guanghechen/asset-types": "^1.0.0-alpha.13",
     "@guanghechen/invariant": "^5.0.6",
     "chokidar": "3.5.3",
     "fast-glob": "^3.3.1"

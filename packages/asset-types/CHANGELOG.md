@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.12...@guanghechen/asset-types@1.0.0-alpha.13) (2023-08-29)
+
+
+### Performance Improvements
+
+* 🎨 decouple AssetService and AssetServiceConfigManager ([2fe2375](https://github.com/guanghechen/asset/commit/2fe2375db525ef193c80991b162c05b3a6ba1d4e))
+
+
+
+
+
 # [1.0.0-alpha.12](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.11...@guanghechen/asset-types@1.0.0-alpha.12) (2023-08-28)
 
 
