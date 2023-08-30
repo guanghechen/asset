@@ -5,9 +5,11 @@ import type {
   IAssetUrlPrefixResolver,
   IRawAssetServiceConfig,
 } from '@guanghechen/asset-types'
+import type { IReporter } from '@guanghechen/types'
 import { AssetResolverApi } from './AssetResolverApi'
 
 export interface IAssetServiceConfigManagerProps {
+  reporter: IReporter
   targetStorage: IAssetTargetStorage
   assetDataMapFilepath?: string
   defaultAcceptedPattern?: string[]
@@ -16,6 +18,7 @@ export interface IAssetServiceConfigManagerProps {
 }
 
 export class AssetServiceConfigManager implements IAssetServiceConfigManager {
+  protected readonly _reporter: IReporter
   protected readonly _configs: IAssetServiceConfig[]
   protected readonly _targetStorage: IAssetTargetStorage
   protected readonly _assetDataMapFilepath: string
@@ -24,8 +27,9 @@ export class AssetServiceConfigManager implements IAssetServiceConfigManager {
   protected readonly _resolveUrlPathPrefix: IAssetUrlPrefixResolver
 
   constructor(props: IAssetServiceConfigManagerProps) {
-    const { targetStorage, assetDataMapFilepath = 'asset.map.json' } = props
+    const { reporter, targetStorage, assetDataMapFilepath = 'asset.map.json' } = props
 
+    this._reporter = reporter
     this._targetStorage = targetStorage
     this._configs = []
     this._assetDataMapFilepath = targetStorage.absolute(assetDataMapFilepath)
@@ -40,6 +44,7 @@ export class AssetServiceConfigManager implements IAssetServiceConfigManager {
 
   public register(assetConfig: IRawAssetServiceConfig): this {
     const {
+      _reporter,
       _assetDataMapFilepath,
       _targetStorage,
       _defaultAcceptedPattern,
@@ -59,6 +64,7 @@ export class AssetServiceConfigManager implements IAssetServiceConfigManager {
       targetStorage: _targetStorage,
       caseSensitive,
       assetDataMapFilepath: _assetDataMapFilepath,
+      reporter: _reporter,
       resolveUrlPathPrefix: _resolveUrlPathPrefix,
     })
 

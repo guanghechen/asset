@@ -93,7 +93,7 @@ export class FileAssetStorage
     return JSON.parse(content)
   }
 
-  public async writeBinaryFile(filepath: string, content: Buffer): Promise<void> {
+  public override async writeBinaryFile(filepath: string, content: Buffer): Promise<void> {
     const absolutePath: string = this.absolute(filepath)
     await writeFile(absolutePath, content)
 
@@ -111,11 +111,11 @@ export class FileAssetStorage
     }
 
     // Notify
-    this._monitors.onWrittenBinaryFile.notify(newItem)
-    this._monitors.onWrittenFile.notify(newItem)
+    this._monitors.onBinaryFileWritten.notify(newItem)
+    this._monitors.onFileWritten.notify(newItem)
   }
 
-  public async writeTextFile(
+  public override async writeTextFile(
     filepath: string,
     content: string,
     encoding: BufferEncoding,
@@ -137,11 +137,11 @@ export class FileAssetStorage
     }
 
     // Notify
-    this._monitors.onWrittenTextFile.notify(newItem)
-    this._monitors.onWrittenFile.notify(newItem)
+    this._monitors.onTextFileWritten.notify(newItem)
+    this._monitors.onFileWritten.notify(newItem)
   }
 
-  public async writeJsonFile(filepath: string, content: unknown): Promise<void> {
+  public override async writeJsonFile(filepath: string, content: unknown): Promise<void> {
     const absolutePath: string = this.absolute(filepath)
     const s: string = this.prettier ? JSON.stringify(content, null, 2) : JSON.stringify(content)
     await writeFile(absolutePath, s, 'utf8')
@@ -160,16 +160,19 @@ export class FileAssetStorage
     }
 
     // Notify
-    this._monitors.onWrittenJsonFile.notify(newItem)
-    this._monitors.onWrittenFile.notify(newItem)
+    this._monitors.onJsonFileWritten.notify(newItem)
+    this._monitors.onFileWritten.notify(newItem)
+  }
+
+  public override async removeFile(filepath: string): Promise<void> {
+    await unlink(filepath)
+
+    // Notify
+    this._monitors.onFileRemoved.notify(filepath)
   }
 
   public async statFile(filepath: string): Promise<IAssetStat> {
     return await stat(filepath)
-  }
-
-  public async unlinkFile(filepath: string): Promise<void> {
-    return void (await unlink(filepath))
   }
 
   public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {

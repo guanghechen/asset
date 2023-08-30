@@ -67,37 +67,41 @@ export class AssetResolver implements IAssetResolver {
       if (asset) {
         _assetManager.remove(asset.guid)
         _locationMap.delete(locationId)
+        await api.removeAsset(asset.uri)
       }
     }
   }
 
-  protected async _locate(assetResolverApi: IAssetResolverApi, location: string): Promise<void> {
+  public async update(api: IAssetResolverApi, locations: string[]): Promise<void> {
+    await Promise.all(locations.map(location => this._locate(api, location)))
+    await Promise.all(locations.map(location => this._parse(api, location)))
+    await Promise.all(locations.map(location => this._polish(api, location)))
+  }
+
+  protected async _locate(api: IAssetResolverApi, location: string): Promise<void> {
     const { _locationMap } = this
-    const locationId = assetResolverApi.normalizeLocation(location)
+    const locationId = api.normalizeLocation(location)
 
     if (_locationMap.has(locationId)) return
     _locationMap.set(locationId, null)
 
-    const input: IAssetPluginLocateInput | null = await assetResolverApi.initAsset(location)
+    const input: IAssetPluginLocateInput | null = await api.initAsset(location)
     if (input == null) return
 
     const { guid, hash, src, extname } = input
-    const api: IAssetPluginLocateApi = {
+    const pluginApi: IAssetPluginLocateApi = {
       loadContent: relativeSrcLocation => {
-        const resolvedLocation = assetResolverApi.resolveSrcLocation(
-          `${location}/../${relativeSrcLocation}`,
-        )
-        return assetResolverApi.loadSrcContent(resolvedLocation)
+        const resolvedLocation = api.resolveSrcLocation(`${location}/../${relativeSrcLocation}`)
+        return api.loadSrcContent(resolvedLocation)
       },
-      resolveSlug: assetResolverApi.resolveSlug.bind(assetResolverApi),
-      resolveUri: (type, mimetype) =>
-        assetResolverApi.resolveUri({ guid, type, mimetype, extname }),
+      resolveSlug: api.resolveSlug.bind(api),
+      resolveUri: (type, mimetype) => api.resolveUri({ guid, type, mimetype, extname }),
     }
 
     const reducer: IAssetPluginLocateNext = this._plugins
       .filter((plugin): plugin is IAssetLocatePlugin => !!plugin.locate)
       .reduceRight<IAssetPluginLocateNext>(
-        (next, middleware) => embryo => middleware.locate(input, embryo, api, next),
+        (next, middleware) => embryo => middleware.locate(input, embryo, pluginApi, next),
         embryo => embryo,
       )
     const result = await reducer(null)
@@ -115,7 +119,7 @@ export class AssetResolver implements IAssetResolver {
         categories,
         tags,
       } = result
-      const resolvedUri = uri ?? assetResolverApi.resolveUri({ guid, type, mimetype, extname })
+      const resolvedUri = uri ?? api.resolveUri({ guid, type, mimetype, extname })
       const asset: IAsset = {
         guid,
         hash,
@@ -136,19 +140,17 @@ export class AssetResolver implements IAssetResolver {
     }
   }
 
-  protected async _parse(assetResolverApi: IAssetResolverApi, location: string): Promise<void> {
-    const locationId = assetResolverApi.normalizeLocation(location)
+  protected async _parse(api: IAssetResolverApi, location: string): Promise<void> {
+    const locationId = api.normalizeLocation(location)
     const asset = this._locationMap.get(locationId)
     if (!asset) return
 
-    const api: IAssetPluginParseApi = {
+    const pluginApi: IAssetPluginParseApi = {
       loadContent: relativeSrcLocation => {
-        const resolvedLocation = assetResolverApi.resolveSrcLocation(
-          `${location}/../${relativeSrcLocation}`,
-        )
-        return assetResolverApi.loadSrcContent(resolvedLocation)
+        const resolvedLocation = api.resolveSrcLocation(`${location}/../${relativeSrcLocation}`)
+        return api.loadSrcContent(resolvedLocation)
       },
-      resolveSlug: assetResolverApi.resolveSlug.bind(assetResolverApi),
+      resolveSlug: api.resolveSlug.bind(api),
     }
     const input: IAssetPluginParseInput = {
       type: asset.type,
@@ -159,7 +161,7 @@ export class AssetResolver implements IAssetResolver {
     const reducer: IAssetPluginParseNext = this._plugins
       .filter((plugin): plugin is IAssetParsePlugin => !!plugin.parse)
       .reduceRight<IAssetPluginParseNext>(
-        (next, middleware) => embryo => middleware.parse(input, embryo, api, next),
+        (next, middleware) => embryo => middleware.parse(input, embryo, pluginApi, next),
         embryo => embryo,
       )
     const result = await reducer(null)
@@ -170,24 +172,22 @@ export class AssetResolver implements IAssetResolver {
     }
   }
 
-  protected async _polish(assetResolverApi: IAssetResolverApi, location: string): Promise<void> {
+  protected async _polish(api: IAssetResolverApi, location: string): Promise<void> {
     const { _locationMap } = this
-    const locationId = assetResolverApi.normalizeLocation(location)
+    const locationId = api.normalizeLocation(location)
     const asset = _locationMap.get(locationId)
     if (!asset) return
 
     const pluginApi: IAssetPluginPolishApi = {
       loadContent: relativeSrcLocation => {
-        const resolvedLocation = assetResolverApi.resolveSrcLocation(
-          `${location}/../${relativeSrcLocation}`,
-        )
-        return assetResolverApi.loadSrcContent(resolvedLocation)
+        const resolvedLocation = api.resolveSrcLocation(`${location}/../${relativeSrcLocation}`)
+        return api.loadSrcContent(resolvedLocation)
       },
       resolveAsset: relativeLocation => {
-        const resolvedLocation = assetResolverApi.resolveSrcLocation(
+        const resolvedLocation = api.resolveSrcLocation(
           `${location}/../${decodeURIComponent(relativeLocation)}`,
         )
-        const locationId = assetResolverApi.normalizeLocation(resolvedLocation)
+        const locationId = api.normalizeLocation(resolvedLocation)
         const asset = _locationMap.get(locationId)
         return asset ? { uri: asset.uri, slug: asset.slug, title: asset.title } : null
       },
@@ -209,7 +209,7 @@ export class AssetResolver implements IAssetResolver {
 
     if (result) {
       const { dataType, data, encoding } = result
-      await assetResolverApi.saveAsset({ uri: asset.uri, dataType, data, encoding })
+      await api.saveAsset({ uri: asset.uri, dataType, data, encoding })
     }
   }
 }

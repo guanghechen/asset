@@ -63,8 +63,8 @@ export class MemoAssetStorage extends AssetTargetStorage implements IAssetTarget
     this.cache.set(identifier, newItem)
 
     // Notify
-    this._monitors.onWrittenBinaryFile.notify(newItem)
-    this._monitors.onWrittenFile.notify(newItem)
+    this._monitors.onBinaryFileWritten.notify(newItem)
+    this._monitors.onFileWritten.notify(newItem)
   }
 
   public override async writeTextFile(
@@ -95,8 +95,8 @@ export class MemoAssetStorage extends AssetTargetStorage implements IAssetTarget
     this.cache.set(identifier, newItem)
 
     // Notify
-    this._monitors.onWrittenTextFile.notify(newItem)
-    this._monitors.onWrittenFile.notify(newItem)
+    this._monitors.onTextFileWritten.notify(newItem)
+    this._monitors.onFileWritten.notify(newItem)
   }
 
   public override async writeJsonFile(filepath: string, content: unknown): Promise<void> {
@@ -123,7 +123,15 @@ export class MemoAssetStorage extends AssetTargetStorage implements IAssetTarget
     this.cache.set(identifier, newItem)
 
     // Notify
-    this._monitors.onWrittenJsonFile.notify(newItem)
-    this._monitors.onWrittenFile.notify(newItem)
+    this._monitors.onJsonFileWritten.notify(newItem)
+    this._monitors.onFileWritten.notify(newItem)
+  }
+
+  public override async removeFile(filepath: string): Promise<void> {
+    const identifier = this.identity(filepath)
+    this.cache.delete(identifier)
+
+    // Notify
+    this._monitors.onFileRemoved.notify(filepath)
   }
 }

@@ -6,7 +6,7 @@ import type {
   IAssetPolishPlugin,
 } from '@guanghechen/asset-types'
 import { calcHeadingToc } from '@yozora/ast-util'
-import type { IMarkdownAssetPolishOutput } from '../types'
+import type { IMarkdownAssetPolishOutput, IMarkdownPolishedData } from '../types'
 import { isMarkdownPolishOutput } from '../types'
 
 export interface IMarkdownPolishTocProps {
@@ -27,11 +27,11 @@ export class MarkdownPolishToc implements IAssetPolishPlugin {
   public async polish(
     input: Readonly<IAssetPluginPolishInput>,
     embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api: Readonly<IAssetPluginPolishApi>,
+    _api: Readonly<IAssetPluginPolishApi>,
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownPolishOutput(input, embryo)) {
-      const data = await embryo.data
+      const data: IMarkdownPolishedData = embryo.data
       const toc = calcHeadingToc(data.ast, this.identifierPrefix)
       const result: IMarkdownAssetPolishOutput = {
         ...embryo,

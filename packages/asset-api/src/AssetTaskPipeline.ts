@@ -1,7 +1,7 @@
 import { AssetChangeEvent } from '@guanghechen/asset-types'
 import type { IAssetResolver, IAssetResolverApi, IAssetTaskData } from '@guanghechen/asset-types'
 import { Pipeline } from '@guanghechen/pipeline'
-import type { ITask } from '@guanghechen/task'
+import type { ITask } from '@guanghechen/types'
 import type { IAssetTaskContext } from './AssetTask'
 import { AssetTask } from './AssetTask'
 import type { IAssetTaskPipeline } from './types'

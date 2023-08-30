@@ -42,11 +42,12 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.14",
     "@guanghechen/invariant": "^5.0.6",
-    "@guanghechen/monitor": "^1.0.0-alpha.2",
+    "@guanghechen/monitor": "^1.0.0-alpha.3",
+    "@guanghechen/types": "^1.0.0-alpha.1",
     "chokidar": "3.5.3",
     "fast-glob": "^3.3.1"
   },
   "devDependencies": {
-    "@guanghechen/shared": "^1.0.0-alpha.2"
+    "@guanghechen/shared": "^1.0.0-alpha.3"
   }
 }

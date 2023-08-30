@@ -1,14 +1,15 @@
 import type {
   IAssetTargetStorage,
   IAssetTargetStorageMonitor,
-  IParametersOfOnWrittenBinaryFile,
-  IParametersOfOnWrittenFile,
-  IParametersOfOnWrittenJsonFile,
-  IParametersOfOnWrittenTextFile,
+  IParametersOfOnBinaryFileWritten,
+  IParametersOfOnFileRemoved,
+  IParametersOfOnFileWritten,
+  IParametersOfOnJsonFileWritten,
+  IParametersOfOnTextFileWritten,
 } from '@guanghechen/asset-types'
 import { Monitor } from '@guanghechen/monitor'
-import type { IMonitor, IMonitorUnsubscribe } from '@guanghechen/monitor'
 import { noop } from '@guanghechen/shared'
+import type { IMonitor, IMonitorUnsubscribe } from '@guanghechen/types'
 import { AssetPathResolver } from './AssetPathResolver'
 
 export interface IAssetStorageProps {
@@ -18,20 +19,22 @@ export interface IAssetStorageProps {
 export abstract class AssetTargetStorage extends AssetPathResolver implements IAssetTargetStorage {
   private _destroyed: boolean
   protected readonly _monitors: {
-    onWrittenBinaryFile: IMonitor<IParametersOfOnWrittenBinaryFile>
-    onWrittenTextFile: IMonitor<IParametersOfOnWrittenTextFile>
-    onWrittenJsonFile: IMonitor<IParametersOfOnWrittenJsonFile>
-    onWrittenFile: IMonitor<IParametersOfOnWrittenFile>
+    onBinaryFileWritten: IMonitor<IParametersOfOnBinaryFileWritten>
+    onTextFileWritten: IMonitor<IParametersOfOnTextFileWritten>
+    onJsonFileWritten: IMonitor<IParametersOfOnJsonFileWritten>
+    onFileWritten: IMonitor<IParametersOfOnFileWritten>
+    onFileRemoved: IMonitor<IParametersOfOnFileRemoved>
   }
 
   constructor(props: IAssetStorageProps) {
     const { rootDir } = props
     super({ rootDir })
     this._monitors = {
-      onWrittenBinaryFile: new Monitor<IParametersOfOnWrittenBinaryFile>('onWrittenBinaryFile'),
-      onWrittenTextFile: new Monitor<IParametersOfOnWrittenTextFile>('onWrittenTextFile'),
-      onWrittenJsonFile: new Monitor<IParametersOfOnWrittenJsonFile>('onWrittenJsonFile'),
-      onWrittenFile: new Monitor<IParametersOfOnWrittenFile>('onWrittenFile'),
+      onBinaryFileWritten: new Monitor<IParametersOfOnBinaryFileWritten>('onBinaryFileWritten'),
+      onTextFileWritten: new Monitor<IParametersOfOnTextFileWritten>('onTextFileWritten'),
+      onJsonFileWritten: new Monitor<IParametersOfOnJsonFileWritten>('onJsonFileWritten'),
+      onFileWritten: new Monitor<IParametersOfOnFileWritten>('onFileWritten'),
+      onFileRemoved: new Monitor<IParametersOfOnFileRemoved>('onFileRemoved'),
     }
     this._destroyed = false
   }
@@ -44,29 +47,38 @@ export abstract class AssetTargetStorage extends AssetPathResolver implements IA
     if (this._destroyed) return
 
     this._destroyed = true
-    this._monitors.onWrittenBinaryFile.destroy()
-    this._monitors.onWrittenTextFile.destroy()
-    this._monitors.onWrittenJsonFile.destroy()
-    this._monitors.onWrittenFile.destroy()
+    this._monitors.onBinaryFileWritten.destroy()
+    this._monitors.onTextFileWritten.destroy()
+    this._monitors.onJsonFileWritten.destroy()
+    this._monitors.onFileWritten.destroy()
   }
 
   public monitor(monitor: Partial<IAssetTargetStorageMonitor>): IMonitorUnsubscribe {
     if (this.destroyed) return noop
 
-    const { onWrittenBinaryFile, onWrittenTextFile, onWrittenJsonFile, onWrittenFile } = monitor
-    const unsubscribeOnWrittenBinaryFile =
-      this._monitors.onWrittenBinaryFile.subscribe(onWrittenBinaryFile)
-    const unsubscribeOnWrittenTextFile =
-      this._monitors.onWrittenTextFile.subscribe(onWrittenTextFile)
-    const unsubscribeOnWrittenJsonFile =
-      this._monitors.onWrittenJsonFile.subscribe(onWrittenJsonFile)
-    const unsubscribeOnWrittenFile = this._monitors.onWrittenFile.subscribe(onWrittenFile)
+    const {
+      onBinaryFileWritten,
+      onTextFileWritten,
+      onJsonFileWritten,
+      onFileWritten,
+      onFileRemoved,
+    } = monitor
+
+    const unsubscribeOnBinaryFileWritten =
+      this._monitors.onBinaryFileWritten.subscribe(onBinaryFileWritten)
+    const unsubscribeOnTextFileWritten =
+      this._monitors.onTextFileWritten.subscribe(onTextFileWritten)
+    const unsubscribeOnJsonFileWritten =
+      this._monitors.onJsonFileWritten.subscribe(onJsonFileWritten)
+    const unsubscribeOnFileWritten = this._monitors.onFileWritten.subscribe(onFileWritten)
+    const unsubscribeOnFileRemoved = this._monitors.onFileRemoved.subscribe(onFileRemoved)
 
     return (): void => {
-      unsubscribeOnWrittenBinaryFile()
-      unsubscribeOnWrittenTextFile()
-      unsubscribeOnWrittenJsonFile()
-      unsubscribeOnWrittenFile()
+      unsubscribeOnBinaryFileWritten()
+      unsubscribeOnTextFileWritten()
+      unsubscribeOnJsonFileWritten()
+      unsubscribeOnFileWritten()
+      unsubscribeOnFileRemoved()
     }
   }
 
@@ -81,4 +93,6 @@ export abstract class AssetTargetStorage extends AssetPathResolver implements IA
   ): Promise<void>
 
   public abstract writeJsonFile(filepath: string, content: unknown): Promise<void>
+
+  public abstract removeFile(filepath: string): Promise<void>
 }

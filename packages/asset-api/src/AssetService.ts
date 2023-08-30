@@ -10,7 +10,7 @@ import type {
   IAssetWatcher,
 } from '@guanghechen/asset-types'
 import { delay } from '@guanghechen/asset-util'
-import type { IReporter, IScheduler } from '@guanghechen/scheduler'
+import type { IReporter, IScheduler } from '@guanghechen/types'
 import { AssetTaskScheduler } from './AssetTaskScheduler'
 
 export interface IAssetServiceProps {
@@ -32,7 +32,7 @@ export class AssetService implements IAssetService {
       : Number(props.delayAfterContentChanged)
   }
 
-  public async build(configs: IAssetServiceConfig[]): Promise<void> {
+  public async build(configs: Iterable<IAssetServiceConfig>): Promise<void> {
     const resolver = this._resolver
     for (const { api, sourceStorage, acceptedPattern } of configs) {
       const locations = await sourceStorage.collectAssetLocations(acceptedPattern, {
@@ -43,7 +43,7 @@ export class AssetService implements IAssetService {
     }
   }
 
-  public async watch(configs: IAssetServiceConfig[]): Promise<IAssetServiceWatcher> {
+  public async watch(configs: Iterable<IAssetServiceConfig>): Promise<IAssetServiceWatcher> {
     const { _resolver, _reporter, _delayAfterContentChanged } = this
     const schedulers: Array<IScheduler<IAssetTaskData>> = []
     const watchers: IAssetWatcher[] = []

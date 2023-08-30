@@ -1,8 +1,7 @@
 import type { IAssetResolver, IAssetResolverApi, IAssetTaskData } from '@guanghechen/asset-types'
-import type { SoraErrorLevel } from '@guanghechen/error'
-import type { IReporter } from '@guanghechen/scheduler'
+import { ErrorLevelEnum } from '@guanghechen/constant'
 import { Scheduler } from '@guanghechen/scheduler'
-import type { ITask } from '@guanghechen/task'
+import type { IReporter, ITask } from '@guanghechen/types'
 import { AssetTaskPipeline } from './AssetTaskPipeline'
 import type { IAssetTaskScheduler } from './types'
 
@@ -12,7 +11,7 @@ type T = ITask
 interface IProps {
   api: IAssetResolverApi
   resolver: IAssetResolver
-  reporter: IReporter | undefined
+  reporter: IReporter
   delayAfterContentChanged: number
 }
 
@@ -23,8 +22,21 @@ export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskSch
     super({ name: 'AssetTaskScheduler', reporter, pipeline })
 
     this.monitor({
-      onAddError: (type: string, error: unknown, level: SoraErrorLevel | undefined): void => {
-        reporter?.reportError({ type, error, level })
+      onAddError: (type: string, error: unknown, level: ErrorLevelEnum | undefined): void => {
+        switch (level) {
+          case ErrorLevelEnum.FATAL:
+            reporter.fatal('[AssetTaskScheduler] {}', type, error)
+            break
+          case ErrorLevelEnum.ERROR:
+            reporter.error('[AssetTaskScheduler] {}', type, error)
+            break
+          case ErrorLevelEnum.WARN:
+            reporter.warn('[AssetTaskScheduler] {}', type, error)
+            break
+          default:
+            reporter.error('[AssetTaskScheduler] type unexpected level: ', type, level, error)
+            break
+        }
       },
     })
   }

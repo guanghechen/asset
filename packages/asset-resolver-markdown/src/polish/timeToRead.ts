@@ -5,7 +5,7 @@ import type {
   IAssetPluginPolishOutput,
   IAssetPolishPlugin,
 } from '@guanghechen/asset-types'
-import type { IMarkdownAssetPolishOutput } from '../types'
+import type { IMarkdownAssetPolishOutput, IMarkdownPolishedData } from '../types'
 import { isMarkdownPolishOutput } from '../types'
 import { getTimeToRead } from '../util/timeToRead'
 
@@ -27,11 +27,11 @@ export class MarkdownPolishTimeToRead implements IAssetPolishPlugin {
   public async polish(
     input: Readonly<IAssetPluginPolishInput>,
     embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api: Readonly<IAssetPluginPolishApi>,
+    _api: Readonly<IAssetPluginPolishApi>,
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownPolishOutput(input, embryo)) {
-      const data = await embryo.data
+      const data: IMarkdownPolishedData = embryo.data
       const timeToRead: number =
         data.frontmatter.timeToRead && Number.isInteger(data.frontmatter.timeToRead)
           ? data.frontmatter.timeToRead

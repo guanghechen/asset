@@ -9,7 +9,7 @@ import type { Root } from '@yozora/ast'
 import { getExcerptAst } from '@yozora/ast-util'
 import type { IParser } from '@yozora/core-parser'
 import YozoraParser from '@yozora/parser'
-import type { IMarkdownAssetPolishOutput } from '../types'
+import type { IMarkdownAssetPolishOutput, IMarkdownPolishedData } from '../types'
 import { isMarkdownPolishOutput } from '../types'
 
 export interface IMarkdownPolishExcerptProps {
@@ -44,11 +44,11 @@ export class MarkdownPolishExcerpt implements IAssetPolishPlugin {
   public async polish(
     input: Readonly<IAssetPluginPolishInput>,
     embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api: Readonly<IAssetPluginPolishApi>,
+    _api: Readonly<IAssetPluginPolishApi>,
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownPolishOutput(input, embryo)) {
-      const data = await embryo.data
+      const data: IMarkdownPolishedData = embryo.data
       const excerpt: Root = data.frontmatter.excerpt
         ? this.parser.parse(data.frontmatter.excerpt)
         : getExcerptAst(data.ast, this.pruneLength, this.endingSeparator)

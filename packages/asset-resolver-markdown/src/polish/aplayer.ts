@@ -5,7 +5,7 @@ import type {
   IAssetPluginPolishOutput,
   IAssetPolishPlugin,
 } from '@guanghechen/asset-types'
-import type { IMarkdownAssetPolishOutput } from '../types'
+import type { IMarkdownAssetPolishOutput, IMarkdownPolishedData } from '../types'
 import { isMarkdownPolishOutput } from '../types'
 import type { IAPlayerAudioItem, IAplayerOptions } from '../types.aplayer'
 
@@ -19,7 +19,7 @@ export class MarkdownPolishAplayer implements IAssetPolishPlugin {
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownPolishOutput(input, embryo)) {
-      const data = await embryo.data
+      const data: IMarkdownPolishedData = embryo.data
       if (data.frontmatter.aplayer) {
         const rawAplayer = data.frontmatter.aplayer
         const audios: IAPlayerAudioItem[] = []

@@ -42,13 +42,16 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.14",
     "@guanghechen/asset-util": "^1.0.0-alpha.9",
+    "@guanghechen/constant": "^1.0.0-alpha.1",
     "@guanghechen/invariant": "^5.0.6",
-    "@guanghechen/pipeline": "^1.0.0-alpha.2",
-    "@guanghechen/scheduler": "^6.0.0-alpha.2",
-    "@guanghechen/task": "^1.0.0-alpha.2",
+    "@guanghechen/pipeline": "^1.0.0-alpha.3",
+    "@guanghechen/scheduler": "^6.0.0-alpha.3",
+    "@guanghechen/task": "^1.0.0-alpha.3",
+    "@guanghechen/types": "^1.0.0-alpha.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@guanghechen/shared": "^1.0.0-alpha.3",
     "@types/uuid": "^9.0.2"
   }
 }

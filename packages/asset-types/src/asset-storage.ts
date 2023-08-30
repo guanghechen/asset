@@ -1,4 +1,4 @@
-import type { IMonitorUnsubscribe } from '@guanghechen/monitor'
+import type { IMonitorUnsubscribe } from '@guanghechen/types'
 import type {
   IAssetStat,
   IBinaryFileItem,
@@ -22,25 +22,28 @@ export interface IAssetWatchOptions {
 }
 
 export interface IAssetTargetStorageMonitor {
-  onWrittenBinaryFile(item: IBinaryFileItem): void
+  onBinaryFileWritten(item: IBinaryFileItem): void
 
-  onWrittenTextFile(item: ITextFileItem): void
+  onTextFileWritten(item: ITextFileItem): void
 
-  onWrittenJsonFile(item: IJsonFileItem): void
+  onJsonFileWritten(item: IJsonFileItem): void
 
-  onWrittenFile(item: IFileItem): void
+  onFileWritten(item: IFileItem): void
+
+  onFileRemoved(filepath: string): void
 }
 
-export type IParametersOfOnWrittenBinaryFile = Parameters<
-  IAssetTargetStorageMonitor['onWrittenBinaryFile']
+export type IParametersOfOnBinaryFileWritten = Parameters<
+  IAssetTargetStorageMonitor['onBinaryFileWritten']
 >
-export type IParametersOfOnWrittenTextFile = Parameters<
-  IAssetTargetStorageMonitor['onWrittenTextFile']
+export type IParametersOfOnTextFileWritten = Parameters<
+  IAssetTargetStorageMonitor['onTextFileWritten']
 >
-export type IParametersOfOnWrittenJsonFile = Parameters<
-  IAssetTargetStorageMonitor['onWrittenJsonFile']
+export type IParametersOfOnJsonFileWritten = Parameters<
+  IAssetTargetStorageMonitor['onJsonFileWritten']
 >
-export type IParametersOfOnWrittenFile = Parameters<IAssetTargetStorageMonitor['onWrittenFile']>
+export type IParametersOfOnFileWritten = Parameters<IAssetTargetStorageMonitor['onFileWritten']>
+export type IParametersOfOnFileRemoved = Parameters<IAssetTargetStorageMonitor['onFileRemoved']>
 
 export interface IAssetSourceStorage extends IAssetPathResolver {
   /**
@@ -82,4 +85,6 @@ export interface IAssetTargetStorage extends IAssetPathResolver {
   writeTextFile(filepath: string, content: string, encoding: BufferEncoding): Promise<void>
 
   writeJsonFile(filepath: string, content: unknown): Promise<void>
+
+  removeFile(filepath: string): Promise<void>
 }

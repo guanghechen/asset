@@ -11,6 +11,7 @@ import type {
 } from '@guanghechen/asset-types'
 import { calcFingerprint, mime, normalizeUrlPath } from '@guanghechen/asset-util'
 import invariant from '@guanghechen/invariant'
+import type { IReporter } from '@guanghechen/types'
 import { v5 as uuid } from 'uuid'
 
 export interface IAssetResolverApiProps {
@@ -19,12 +20,14 @@ export interface IAssetResolverApiProps {
   targetStorage: IAssetTargetStorage
   caseSensitive: boolean
   assetDataMapFilepath: string
+  reporter: IReporter
   resolveUrlPathPrefix: IAssetUrlPrefixResolver
 }
 
 const extnameRegex = /\.([\w]+)$/
 
 export class AssetResolverApi implements IAssetResolverApi {
+  protected readonly _reporter: IReporter
   protected readonly _GUID_NAMESPACE: string
   protected readonly _sourceStorage: IAssetSourceStorage
   protected readonly _targetStorage: IAssetTargetStorage
@@ -33,12 +36,13 @@ export class AssetResolverApi implements IAssetResolverApi {
   protected readonly _resolveUrlPathPrefix: IAssetUrlPrefixResolver
 
   constructor(props: IAssetResolverApiProps) {
-    const { GUID_NAMESPACE, sourceStorage, targetStorage, assetDataMapFilepath } = props
+    const { GUID_NAMESPACE, sourceStorage, targetStorage, assetDataMapFilepath, reporter } = props
     this._GUID_NAMESPACE = GUID_NAMESPACE
     this._sourceStorage = sourceStorage
     this._targetStorage = targetStorage
     this._assetDataMapFilepath = targetStorage.absolute(assetDataMapFilepath)
     this._caseSensitive = props.caseSensitive
+    this._reporter = props.reporter
     this._resolveUrlPathPrefix = props.resolveUrlPathPrefix
   }
 
@@ -80,10 +84,10 @@ export class AssetResolverApi implements IAssetResolverApi {
     const { uri, dataType, data, encoding } = params
     if (data === null) return
 
+    const dstLocation = this.resolveDstLocationFromUri(uri)
+    this._reporter.verbose('[saveAsset] uri({}), dstLocation({})', uri, dstLocation)
+
     const { _targetStorage } = this
-    const dstLocation = _targetStorage.absolute(
-      uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''),
-    )
     await _targetStorage.assertSafeLocation(dstLocation)
     await _targetStorage.mkdirsIfNotExists(dstLocation, false)
 
@@ -105,6 +109,12 @@ export class AssetResolverApi implements IAssetResolverApi {
       default:
         throw new Error(`[${this.constructor.name}.saveAsset] Unexpected dataType: ${dataType}`)
     }
+  }
+
+  public async removeAsset(uri: string): Promise<void> {
+    const dstLocation = this.resolveDstLocationFromUri(uri)
+    this._reporter.verbose('[removeAsset] uri({}), dstLocation({})', uri, dstLocation)
+    await this._targetStorage.removeFile(dstLocation)
   }
 
   public async saveAssetDataMap(data: IAssetDataMap): Promise<void> {
@@ -129,8 +139,11 @@ export class AssetResolverApi implements IAssetResolverApi {
   }
 
   public resolveSrcLocation(srcLocation: string): string {
-    const { _sourceStorage } = this
-    return _sourceStorage.absolute(srcLocation)
+    return this._sourceStorage.absolute(srcLocation)
+  }
+
+  public resolveDstLocationFromUri(uri: string): string {
+    return this._targetStorage.absolute(uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''))
   }
 
   public resolveSlug(slug: string | null | undefined): string | null {

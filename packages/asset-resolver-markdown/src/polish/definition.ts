@@ -8,7 +8,7 @@ import type {
 import type { Definition } from '@yozora/ast'
 import { DefinitionType } from '@yozora/ast'
 import { calcDefinitionMap, shallowMutateAstInPreorder } from '@yozora/ast-util'
-import type { IMarkdownAssetPolishOutput } from '../types'
+import type { IMarkdownAssetPolishOutput, IMarkdownPolishedData } from '../types'
 import { isMarkdownPolishOutput } from '../types'
 
 export interface IMarkdownPolishDefinitionProps {
@@ -36,11 +36,11 @@ export class MarkdownPolishDefinition implements IAssetPolishPlugin {
   public async polish(
     input: Readonly<IAssetPluginPolishInput>,
     embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api: Readonly<IAssetPluginPolishApi>,
+    _api: Readonly<IAssetPluginPolishApi>,
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownPolishOutput(input, embryo)) {
-      const data = await embryo.data
+      const data: IMarkdownPolishedData = embryo.data
       const { root, definitionMap } = calcDefinitionMap(data.ast, undefined, this.presetDefinitions)
       const ast = this.removeDefinitionNodes
         ? shallowMutateAstInPreorder(root, [DefinitionType], () => null)

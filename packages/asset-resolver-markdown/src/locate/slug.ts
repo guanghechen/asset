@@ -34,7 +34,7 @@ export class MarkdownLocateSlug implements IAssetLocatePlugin {
   public async locate(
     input: Readonly<IAssetPluginLocateInput>,
     embryo: Readonly<IAssetPluginLocateOutput> | null,
-    api: Readonly<IAssetPluginLocateApi>,
+    _api: Readonly<IAssetPluginLocateApi>,
     next: IAssetPluginLocateNext,
   ): Promise<IAssetPluginLocateOutput | null> {
     if (isMarkdownAssetLocateOutput(embryo)) {

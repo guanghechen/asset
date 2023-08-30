@@ -34,4 +34,10 @@ export interface IAssetResolver {
    * @param locations
    */
   remove(api: IAssetResolverApi, locations: string[]): Promise<void>
+  /**
+   * Update the assets on the locations.
+   * @param api
+   * @param locations
+   */
+  update(api: IAssetResolverApi, locations: string[]): Promise<void>
 }

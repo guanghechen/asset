@@ -29,6 +29,11 @@ export interface IAssetResolverApi {
    */
   resolveSrcLocation(srcLocation: string): string
   /**
+   * Resolve asset destination location with the asset uri.
+   * @param uri
+   */
+  resolveDstLocationFromUri(uri: string): string
+  /**
    * Resolve page slug.
    * @param slug
    */
@@ -48,6 +53,11 @@ export interface IAssetResolverApi {
     data: unknown
     encoding?: BufferEncoding
   }): Promise<void>
+  /**
+   * Remove the asset
+   * @param uri
+   */
+  removeAsset(uri: string): Promise<void>
   /**
    * Save asset data map.
    * @param data

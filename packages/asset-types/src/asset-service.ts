@@ -22,6 +22,6 @@ export interface IAssetServiceConfigManager {
 }
 
 export interface IAssetService {
-  build(configs: IAssetServiceConfig[]): Promise<void>
-  watch(configs: IAssetServiceConfig[]): Promise<IAssetServiceWatcher>
+  build(configs: Iterable<IAssetServiceConfig>): Promise<void>
+  watch(configs: Iterable<IAssetServiceConfig>): Promise<IAssetServiceWatcher>
 }

@@ -47,8 +47,7 @@ export class AssetTask extends AtomicTask {
         await _ctx.resolver.remove(_ctx.api, [_data.payload.location])
         break
       case AssetChangeEvent.MODIFIED:
-        await _ctx.resolver.remove(_ctx.api, [_data.payload.location])
-        await _ctx.resolver.create(_ctx.api, [_data.payload.location])
+        await _ctx.resolver.update(_ctx.api, [_data.payload.location])
         await delay(_ctx.delayAfterContentChanged)
         break
       default: {

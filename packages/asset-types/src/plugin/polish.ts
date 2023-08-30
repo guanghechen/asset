@@ -56,7 +56,7 @@ export interface IAssetPluginPolishOutput<D = unknown> {
   /**
    * Asset data.
    */
-  data: D | Promise<D>
+  data: D
   /**
    * Which charset should the output data take.
    */
