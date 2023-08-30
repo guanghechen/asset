@@ -6,6 +6,7 @@ import type {
   IAssetStat,
   IAssetTargetStorage,
   IAssetWatchOptions,
+  IAssetWatcher,
   IBinaryFileItem,
   IJsonFileItem,
   ITextFileItem,
@@ -171,13 +172,22 @@ export class FileAssetStorage
     return void (await unlink(filepath))
   }
 
-  public watch(patterns: string[], options: IAssetWatchOptions): this {
+  public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
     const { onAdd, onChange, onUnlink } = options
-    chokidar
+    const watcher = chokidar
       .watch(patterns, { persistent: true, ...this.watchOptions, cwd: this.rootDir })
       .on('add', filepath => onAdd(filepath))
       .on('change', filepath => onChange(filepath))
       .on('unlink', filepath => onUnlink(filepath))
-    return this
+
+    let unWatching = false
+    return {
+      unwatch: async (): Promise<void> => {
+        if (unWatching) return
+        unWatching = true
+
+        await watcher.close()
+      },
+    }
   }
 }

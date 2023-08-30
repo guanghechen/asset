@@ -13,4 +13,5 @@ export * from './asset-service'
 export * from './asset-storage'
 export * from './asset-task'
 
+export * from './common'
 export * from './enum'

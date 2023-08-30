@@ -8,6 +8,7 @@ import type {
   ITextFileItem,
 } from './asset-file'
 import type { IAssetPathResolver } from './asset-path-resolver'
+import type { IAssetWatcher } from './common'
 
 export interface IAssetCollectOptions {
   cwd?: string // filepath under the storage rootDir
@@ -64,7 +65,7 @@ export interface IAssetSourceStorage extends IAssetPathResolver {
 
   statFile(filepath: string): Promise<IAssetStat>
 
-  watch(patterns: string[], options: IAssetWatchOptions): this
+  watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher
 }
 
 export interface IAssetTargetStorage extends IAssetPathResolver {

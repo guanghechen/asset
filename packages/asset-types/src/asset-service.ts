@@ -1,6 +1,6 @@
-import type { IAssetTaskScheduler } from '@guanghechen/asset-api'
 import type { IAssetResolverApi } from './asset-resolver-api'
 import type { IAssetSourceStorage } from './asset-storage'
+import type { IAssetServiceWatcher } from './common'
 
 export interface IRawAssetServiceConfig {
   GUID_NAMESPACE: string
@@ -12,13 +12,8 @@ export interface IRawAssetServiceConfig {
 export interface IAssetServiceConfig {
   GUID_NAMESPACE: string
   api: IAssetResolverApi
-  scheduler: IAssetTaskScheduler
   sourceStorage: IAssetSourceStorage
   acceptedPattern: string[]
-}
-
-export interface IAssetServiceWatcher {
-  unwatch(): Promise<void>
 }
 
 export interface IAssetServiceConfigManager {
