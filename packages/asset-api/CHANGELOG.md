@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.14](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.13...@guanghechen/asset-api@1.0.0-alpha.14) (2023-08-30)
+
+
+### Performance Improvements
+
+* 🎨 decouple AssetService and AssetServiceConfigManager, make AssetServiceConfig simpler ([9a42ab0](https://github.com/guanghechen/asset/commit/9a42ab0a3e2e654815508e82f2e5b340ff6b677b))
+
+
+
+
+
 # [1.0.0-alpha.13](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.12...@guanghechen/asset-api@1.0.0-alpha.13) (2023-08-29)
 
 
