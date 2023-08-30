@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.15](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.14...@guanghechen/asset-types@1.0.0-alpha.15) (2023-08-30)
+
+
+### Performance Improvements
+
+* 🎨 support removeAsset and refactor due to the upgrade of sora ([423738c](https://github.com/guanghechen/asset/commit/423738c06fa45516e6904746227c8ce0cc85ba67))
+
+
+
+
+
 # [1.0.0-alpha.14](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.13...@guanghechen/asset-types@1.0.0-alpha.14) (2023-08-30)
 
 
