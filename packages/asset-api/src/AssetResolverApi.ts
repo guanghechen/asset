@@ -85,7 +85,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     if (data === null) return
 
     const dstLocation = this.resolveDstLocationFromUri(uri)
-    this._reporter.verbose('[saveAsset] uri({}), dstLocation({})', uri, dstLocation)
+    this._reporter.verbose('[saveAsset] uri: {}', uri)
 
     const { _targetStorage } = this
     await _targetStorage.assertSafeLocation(dstLocation)

@@ -73,6 +73,17 @@ export class AssetResolver implements IAssetResolver {
   }
 
   public async update(api: IAssetResolverApi, locations: string[]): Promise<void> {
+    const { _assetManager, _locationMap } = this
+    for (const location of locations) {
+      const locationId = api.normalizeLocation(location)
+      const asset = _locationMap.get(locationId)
+      if (asset) {
+        _assetManager.remove(asset.guid)
+        _locationMap.delete(locationId)
+        // no need to remove asset.
+      }
+    }
+
     await Promise.all(locations.map(location => this._locate(api, location)))
     await Promise.all(locations.map(location => this._parse(api, location)))
     await Promise.all(locations.map(location => this._polish(api, location)))
