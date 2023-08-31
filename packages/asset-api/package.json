@@ -52,6 +52,6 @@
   },
   "devDependencies": {
     "@guanghechen/shared": "^1.0.0-alpha.3",
-    "@types/uuid": "^9.0.2"
+    "@types/uuid": "^9.0.3"
   }
 }

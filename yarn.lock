@@ -504,7 +504,7 @@ __metadata:
     "@guanghechen/shared": ^1.0.0-alpha.3
     "@guanghechen/task": ^1.0.0-alpha.3
     "@guanghechen/types": ^1.0.0-alpha.1
-    "@types/uuid": ^9.0.2
+    "@types/uuid": ^9.0.3
     uuid: ^9.0.0
   languageName: unknown
   linkType: soft
@@ -535,7 +535,7 @@ __metadata:
     "@guanghechen/asset-types": ^1.0.0-alpha.15
     "@guanghechen/asset-util": ^1.0.0-alpha.9
     "@guanghechen/helper-is": ^5.0.6
-    "@guanghechen/parse-lineno": ^2.3.5
+    "@guanghechen/parse-lineno": ^2.3.6
     "@types/js-yaml": ^4.0.5
     "@yozora/ast": ^2.2.0
     "@yozora/ast-util": ^2.2.0
@@ -760,10 +760,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/parse-lineno@npm:^2.3.5":
-  version: 2.3.5
-  resolution: "@guanghechen/parse-lineno@npm:2.3.5"
-  checksum: 24a75e033127f2f791f80d5d32629724e183972c004a11a2ab3808e3bf48e310babb826750d522ef531dadf054b34a3f6e09a09c34e925f39d5c96c67bce6777
+"@guanghechen/parse-lineno@npm:^2.3.6":
+  version: 2.3.6
+  resolution: "@guanghechen/parse-lineno@npm:2.3.6"
+  checksum: 6fcc5481d415326f018e65256a71b6d08cef0d3a601d57dbd10513220a89492ad3ddcbd3047142651717d36283e470913cf7c1438d0c51a4bdb02616c9b7f687
   languageName: node
   linkType: hard
 
@@ -2093,10 +2093,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^9.0.2":
-  version: 9.0.2
-  resolution: "@types/uuid@npm:9.0.2"
-  checksum: 1754bcf3444e1e3aeadd6e774fc328eb53bc956665e2e8fb6ec127aa8e1f43d9a224c3d22a9a6233dca8dd81a12dc7fed4d84b8876dd5ec82d40f574f7ff8b68
+"@types/uuid@npm:^9.0.3":
+  version: 9.0.3
+  resolution: "@types/uuid@npm:9.0.3"
+  checksum: 3dde198defd71c067dd14b3050a8fe6d1ead5fe94ec318472e2c30a399d13f18941fe66cffabdcac7267177c9de2f975fdee6f0cc87cde610a2578e1ce4cc3af
   languageName: node
   linkType: hard
 
