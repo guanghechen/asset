@@ -49,7 +49,7 @@ export class AssetResolver implements IAssetResolver {
     return this
   }
 
-  public dump(): IAssetDataMap {
+  public async dump(): Promise<IAssetDataMap> {
     return this._assetManager.dump()
   }
 
@@ -105,7 +105,7 @@ export class AssetResolver implements IAssetResolver {
         const resolvedLocation = api.resolveSrcLocation(`${location}/../${relativeSrcLocation}`)
         return api.loadSrcContent(resolvedLocation)
       },
-      resolveSlug: api.resolveSlug.bind(api),
+      resolveSlug: slug => api.resolveSlug(slug),
       resolveUri: (type, mimetype) => api.resolveUri({ guid, type, mimetype, extname }),
     }
 
@@ -130,7 +130,7 @@ export class AssetResolver implements IAssetResolver {
         categories,
         tags,
       } = result
-      const resolvedUri = uri ?? api.resolveUri({ guid, type, mimetype, extname })
+      const resolvedUri: string = uri ?? (await api.resolveUri({ guid, type, mimetype, extname }))
       const asset: IAsset = {
         guid,
         hash,
@@ -161,7 +161,7 @@ export class AssetResolver implements IAssetResolver {
         const resolvedLocation = api.resolveSrcLocation(`${location}/../${relativeSrcLocation}`)
         return api.loadSrcContent(resolvedLocation)
       },
-      resolveSlug: api.resolveSlug.bind(api),
+      resolveSlug: slug => api.resolveSlug(slug),
     }
     const input: IAssetPluginParseInput = {
       type: asset.type,
@@ -194,7 +194,7 @@ export class AssetResolver implements IAssetResolver {
         const resolvedLocation = api.resolveSrcLocation(`${location}/../${relativeSrcLocation}`)
         return api.loadSrcContent(resolvedLocation)
       },
-      resolveAsset: relativeLocation => {
+      resolveAssetMeta: async relativeLocation => {
         const resolvedLocation = api.resolveSrcLocation(
           `${location}/../${decodeURIComponent(relativeLocation)}`,
         )

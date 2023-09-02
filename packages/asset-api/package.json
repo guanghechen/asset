@@ -1,17 +1,17 @@
 {
   "name": "@guanghechen/asset-api",
   "version": "1.0.0-alpha.16",
-  "description": "asset core",
+  "description": "asset api",
   "author": {
     "name": "guanghechen",
     "url": "https://github.com/guanghechen/"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guanghechen/asset.git",
+    "url": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-api@1.0.0-alpha.16",
     "directory": "packages/asset-api"
   },
-  "homepage": "https://github.com/guanghechen/asset/tree/main/packages/asset-api#readme",
+  "homepage": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-api@1.0.0-alpha.16/packages/asset-api#readme",
   "type": "module",
   "exports": {
     "types": "./lib/types/index.d.ts",

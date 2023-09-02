@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guanghechen/asset.git",
+    "url": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-resolver-file@1.0.0-alpha.15",
     "directory": "packages/asset-resolver-file"
   },
-  "homepage": "https://github.com/guanghechen/asset/tree/main/packages/asset-resolver-file#readme",
+  "homepage": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-resolver-file@1.0.0-alpha.15/packages/asset-resolver-file#readme",
   "type": "module",
   "exports": {
     "types": "./lib/types/index.d.ts",

@@ -1,4 +1,5 @@
 import type {
+  IAssetMeta,
   IAssetPluginPolishApi,
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
@@ -25,16 +26,16 @@ export class MarkdownPolishAplayer implements IAssetPolishPlugin {
         const audios: IAPlayerAudioItem[] = []
 
         if (rawAplayer.audio) {
-          const resolveUri = (_url: string | undefined): string | undefined => {
-            const asset = _url ? api.resolveAsset(_url) : undefined
+          const resolveUri = async (_url: string | undefined): Promise<string | undefined> => {
+            const asset: IAssetMeta | null = _url ? await api.resolveAssetMeta(_url) : null
             return asset ? asset.slug || asset.uri : _url
           }
 
           const rawAudios = Array.isArray(rawAplayer.audio) ? rawAplayer.audio : [rawAplayer.audio]
           for (const rawAudio of rawAudios) {
-            const audioUrl: string | undefined = resolveUri(rawAudio.url)
-            const audioCover: string | undefined = resolveUri(rawAudio.cover)
-            const audioLrc: string | undefined = resolveUri(rawAudio.lrc)
+            const audioUrl: string | undefined = await resolveUri(rawAudio.url)
+            const audioCover: string | undefined = await resolveUri(rawAudio.cover)
+            const audioLrc: string | undefined = await resolveUri(rawAudio.lrc)
 
             if (rawAudio.name && rawAudio.artist && audioUrl && audioCover) {
               audios.push({

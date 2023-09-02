@@ -51,7 +51,7 @@ export class AssetResolverFile implements IAssetResolverPlugin {
     if (!embryo && this.resolvable(input.src)) {
       const type: string = FileAssetType
       const mimetype: string = mime.getType(input.filename) ?? 'unknown'
-      const uri = api.resolveUri(type, mimetype)
+      const uri: string | null = await api.resolveUri(type, mimetype)
       const result: IAssetPluginLocateOutput = {
         type,
         mimetype,

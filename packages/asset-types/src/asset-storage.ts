@@ -46,6 +46,8 @@ export type IParametersOfOnFileWritten = Parameters<IAssetTargetStorageMonitor['
 export type IParametersOfOnFileRemoved = Parameters<IAssetTargetStorageMonitor['onFileRemoved']>
 
 export interface IAssetSourceStorage extends IAssetPathResolver {
+  readonly caseSensitive: boolean
+
   /**
    * Ensure the location is existed.
    * @param location absolute path or relative path to the {rootDir}

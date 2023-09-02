@@ -8,7 +8,7 @@ export interface IAssetPluginParseApi {
    * Resolve asset slug.
    * @param slug
    */
-  resolveSlug(slug: string | null | undefined): string | null
+  resolveSlug(slug: string | null | undefined): Promise<string | null>
 }
 
 export interface IAssetPluginParseNext {

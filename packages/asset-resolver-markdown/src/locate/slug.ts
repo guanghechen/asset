@@ -17,18 +17,19 @@ export interface IMarkdownLocateSlugProps {
   /**
    * Customized slug resolver.
    */
-  resolveSlug?(slug: string | null, src: string): string | null
+  resolveSlug?(slug: string | null, src: string): Promise<string | null>
 }
 
 export class MarkdownLocateSlug implements IAssetLocatePlugin {
   public readonly displayName: string = '@guanghechen/asset-resolver-markdown/slug'
-  public readonly resolveSlug: (slug: string | null, src: string) => string | null
+  public readonly resolveSlug: (slug: string | null, src: string) => Promise<string | null>
 
   constructor(props: IMarkdownLocateSlugProps = {}) {
     const slugPrefix = props.slugPrefix ?? '/page/post/'
     this.resolveSlug =
       props.resolveSlug ??
-      ((slug, src): string | null => slug || slugPrefix + src.replace(/(\bindex)?\.[^.]+$/, ''))
+      ((slug, src): Promise<string | null> =>
+        Promise.resolve(slug || slugPrefix + src.replace(/(\bindex)?\.[^.]+$/, '')))
   }
 
   public async locate(
@@ -38,7 +39,7 @@ export class MarkdownLocateSlug implements IAssetLocatePlugin {
     next: IAssetPluginLocateNext,
   ): Promise<IAssetPluginLocateOutput | null> {
     if (isMarkdownAssetLocateOutput(embryo)) {
-      let slug = this.resolveSlug(embryo.slug, input.src)
+      let slug: string | null = await this.resolveSlug(embryo.slug, input.src)
       if (slug) slug = normalizeUrlPath(slug)
       if (slug !== embryo.slug) {
         const result: IAssetPluginLocateOutput = { ...embryo, slug }

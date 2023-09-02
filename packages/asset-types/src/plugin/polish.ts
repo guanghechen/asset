@@ -1,4 +1,4 @@
-import type { IAsset } from '../asset'
+import type { IAssetMeta } from '../asset'
 import type { AssetDataType } from '../enum'
 
 export interface IAssetPluginPolishApi {
@@ -11,7 +11,7 @@ export interface IAssetPluginPolishApi {
    * Resolve asset by locationId.
    * @param locationId
    */
-  resolveAsset(locationId: string): Readonly<Pick<IAsset, 'uri' | 'slug' | 'title'>> | null
+  resolveAssetMeta(locationId: string): Promise<Readonly<IAssetMeta> | null>
 }
 
 export interface IAssetPluginPolishNext {

@@ -1,5 +1,6 @@
 import { AssetDataType } from '@guanghechen/asset-types'
 import type {
+  IAssetMeta,
   IAssetPluginLocateApi,
   IAssetPluginLocateInput,
   IAssetPluginLocateNext,
@@ -16,7 +17,7 @@ import type {
 } from '@guanghechen/asset-types'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
 import type { Resource, Root } from '@yozora/ast'
-import { shallowMutateAstInPreorder } from '@yozora/ast-util'
+import { shallowMutateAstInPreorderAsync } from '@yozora/ast-util'
 import type { IParser } from '@yozora/core-parser'
 import { YozoraParser } from '@yozora/parser'
 import dayjs from 'dayjs'
@@ -79,14 +80,17 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
             : input.updatedAt
         const title: string = frontmatter.title || input.title
         const type: string = MarkdownAssetType
-        const mimetype = 'application/json'
-        const uri = api.resolveUri(type, mimetype)
+        const mimetype: string = 'application/json'
+        const uri: string | null = await api.resolveUri(type, mimetype)
+        const slug: string | null = await api.resolveSlug(
+          typeof frontmatter.slug === 'string' ? frontmatter.slug : undefined,
+        )
         const result: IAssetPluginLocateOutput = {
           type,
           mimetype,
           title,
           description: frontmatter.description || title,
-          slug: api.resolveSlug(frontmatter.slug || undefined),
+          slug,
           uri,
           createdAt,
           updatedAt,
@@ -135,11 +139,14 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownAssetPolishInput(input) && input.data) {
-      const ast = shallowMutateAstInPreorder(input.data.ast, null, node => {
+      const ast: Root = await shallowMutateAstInPreorderAsync(input.data.ast, null, async node => {
         const n = node as unknown as Resource
         if (n.url && /^\./.test(n.url)) {
-          const asset = api.resolveAsset(n.url)
-          if (asset) return { ...node, url: asset.slug || asset.uri }
+          const asset: IAssetMeta | null = await api.resolveAssetMeta(n.url)
+          if (asset) {
+            const url: string = asset.slug || asset.uri
+            return n.url === url ? node : { ...node, url }
+          }
         }
         return node
       })

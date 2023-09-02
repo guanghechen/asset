@@ -1,4 +1,4 @@
-import type { IAsset } from './asset'
+import type { IAssetLocation } from './asset'
 import type { IAssetDataMap } from './asset-manager'
 import type { AssetDataType } from './enum'
 import type { IAssetPluginLocateInput } from './plugin/locate'
@@ -37,12 +37,12 @@ export interface IAssetResolverApi {
    * Resolve page slug.
    * @param slug
    */
-  resolveSlug(slug: string | null | undefined): string | null
+  resolveSlug(slug: string | null | undefined): Promise<string | null>
   /**
    * Resolve asset uri.
-   * @param params
+   * @param asset
    */
-  resolveUri(params: Pick<IAsset, 'guid' | 'type' | 'mimetype' | 'extname'>): string
+  resolveUri(asset: Readonly<IAssetLocation>): Promise<string>
   /**
    * Save the resolved asset.
    * @param params

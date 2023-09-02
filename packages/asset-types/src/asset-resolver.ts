@@ -21,7 +21,7 @@ export interface IAssetResolver {
   /**
    * Export asset data map.
    */
-  dump(): IAssetDataMap
+  dump(): Promise<IAssetDataMap>
   /**
    * Create assets on the given locations.
    * @param api

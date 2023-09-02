@@ -55,7 +55,7 @@ export class AssetTask extends AtomicTask {
         throw new Error(`[AssetService] handleTask: unknown task: ${details}`)
       }
     }
-    const assetDataMap: IAssetDataMap = _ctx.resolver.dump()
+    const assetDataMap: IAssetDataMap = await _ctx.resolver.dump()
     await _ctx.api.saveAssetDataMap(assetDataMap)
   }
 }

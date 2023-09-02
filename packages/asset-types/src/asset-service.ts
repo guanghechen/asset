@@ -6,11 +6,9 @@ export interface IRawAssetServiceConfig {
   GUID_NAMESPACE: string
   sourceStorage: IAssetSourceStorage
   acceptedPattern?: string[]
-  caseSensitive?: boolean
 }
 
 export interface IAssetServiceConfig {
-  GUID_NAMESPACE: string
   api: IAssetResolverApi
   sourceStorage: IAssetSourceStorage
   acceptedPattern: string[]

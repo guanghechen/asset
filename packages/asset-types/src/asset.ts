@@ -1,12 +1,23 @@
-export interface IAsset {
+export interface IAssetMeta {
+  /**
+   * Asset url path.
+   */
+  uri: string
+  /**
+   * A stable page url to reveal this asset.
+   */
+  slug: string | null
+  /**
+   * Title of asset.
+   */
+  title: string
+}
+
+export interface IAssetLocation {
   /**
    * Asset global unique identifier.
    */
   guid: string
-  /**
-   * The fingerprint of the asset content.
-   */
-  hash: string
   /**
    * Asset content type.
    */
@@ -19,22 +30,17 @@ export interface IAsset {
    * File extension (without dot prefix).
    */
   extname: string | undefined
+}
+
+export interface IAsset extends IAssetMeta, IAssetLocation {
   /**
-   * Title of asset.
+   * The fingerprint of the asset content.
    */
-  title: string
+  hash: string
   /**
    * Description of the content.
    */
   description: string | null
-  /**
-   * Asset url path.
-   */
-  uri: string
-  /**
-   * A stable page url to reveal this asset.
-   */
-  slug: string | null
   /**
    * The created date of the asset (ISOString).
    */

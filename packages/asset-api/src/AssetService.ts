@@ -2,7 +2,6 @@ import { AssetChangeEvent } from '@guanghechen/asset-types'
 import type {
   IAssetDataMap,
   IAssetResolver,
-  IAssetResolverApi,
   IAssetService,
   IAssetServiceConfig,
   IAssetServiceWatcher,
@@ -39,7 +38,10 @@ export class AssetService implements IAssetService {
         absolute: true,
       })
       await resolver.create(api, locations)
-      await this.dumpAssetDataMap(api)
+
+      // dump asset data map
+      const assetDataMap: IAssetDataMap = await this._resolver.dump()
+      await api.saveAssetDataMap(assetDataMap)
     }
   }
 
@@ -98,10 +100,5 @@ export class AssetService implements IAssetService {
         )
       },
     }
-  }
-
-  protected async dumpAssetDataMap(api: IAssetResolverApi): Promise<void> {
-    const assetDataMap: IAssetDataMap = this._resolver.dump()
-    await api.saveAssetDataMap(assetDataMap)
   }
 }

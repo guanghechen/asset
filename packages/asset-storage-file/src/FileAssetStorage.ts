@@ -20,6 +20,7 @@ import { mkdir, readFile, stat, unlink, writeFile } from 'node:fs/promises'
 export interface IFileAssetStorageProps {
   rootDir: string
   prettier?: boolean
+  caseSensitive?: boolean
   watchOptions?: Partial<chokidar.WatchOptions>
 }
 
@@ -27,13 +28,17 @@ export class FileAssetStorage
   extends AssetTargetStorage
   implements IAssetSourceStorage, IAssetTargetStorage
 {
-  protected readonly prettier: boolean
-  protected readonly watchOptions: Partial<chokidar.WatchOptions>
+  public readonly caseSensitive: boolean
+  protected readonly _prettier: boolean
+  protected readonly _watchOptions: Partial<chokidar.WatchOptions>
 
   constructor(props: IFileAssetStorageProps) {
-    super({ rootDir: props.rootDir })
-    this.prettier = props.prettier ?? true
-    this.watchOptions = props.watchOptions ?? {}
+    const { rootDir, caseSensitive = true, prettier = true, watchOptions = {} } = props
+
+    super({ rootDir })
+    this.caseSensitive = caseSensitive
+    this._prettier = prettier
+    this._watchOptions = watchOptions
   }
 
   public async assertExistedLocation(location: string): Promise<void | never> {
@@ -143,7 +148,7 @@ export class FileAssetStorage
 
   public override async writeJsonFile(filepath: string, content: unknown): Promise<void> {
     const absolutePath: string = this.absolute(filepath)
-    const s: string = this.prettier ? JSON.stringify(content, null, 2) : JSON.stringify(content)
+    const s: string = this._prettier ? JSON.stringify(content, null, 2) : JSON.stringify(content)
     await writeFile(absolutePath, s, 'utf8')
 
     const fileStat = await stat(filepath)
@@ -178,7 +183,7 @@ export class FileAssetStorage
   public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
     const { onAdd, onChange, onUnlink } = options
     const watcher = chokidar
-      .watch(patterns, { persistent: true, ...this.watchOptions, cwd: this.rootDir })
+      .watch(patterns, { persistent: true, ...this._watchOptions, cwd: this.rootDir })
       .on('add', filepath => onAdd(filepath))
       .on('change', filepath => onChange(filepath))
       .on('unlink', filepath => onUnlink(filepath))

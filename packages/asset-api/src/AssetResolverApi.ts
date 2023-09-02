@@ -1,7 +1,7 @@
 import { AssetDataType } from '@guanghechen/asset-types'
 import type {
-  IAsset,
   IAssetDataMap,
+  IAssetLocation,
   IAssetPluginLocateInput,
   IAssetResolverApi,
   IAssetSourceStorage,
@@ -18,8 +18,7 @@ export interface IAssetResolverApiProps {
   GUID_NAMESPACE: string // uuid
   sourceStorage: IAssetSourceStorage
   targetStorage: IAssetTargetStorage
-  caseSensitive: boolean
-  assetDataMapFilepath: string
+  dataMapUri: string
   reporter: IReporter
   resolveUrlPathPrefix: IAssetUrlPrefixResolver
 }
@@ -27,23 +26,29 @@ export interface IAssetResolverApiProps {
 const extnameRegex = /\.([\w]+)$/
 
 export class AssetResolverApi implements IAssetResolverApi {
-  protected readonly _reporter: IReporter
   protected readonly _GUID_NAMESPACE: string
   protected readonly _sourceStorage: IAssetSourceStorage
   protected readonly _targetStorage: IAssetTargetStorage
-  protected readonly _assetDataMapFilepath: string
-  protected readonly _caseSensitive: boolean
+  protected readonly _dataMapUri: string
+  protected readonly _reporter: IReporter
   protected readonly _resolveUrlPathPrefix: IAssetUrlPrefixResolver
 
   constructor(props: IAssetResolverApiProps) {
-    const { GUID_NAMESPACE, sourceStorage, targetStorage, assetDataMapFilepath, reporter } = props
+    const {
+      GUID_NAMESPACE,
+      sourceStorage,
+      targetStorage,
+      dataMapUri,
+      reporter,
+      resolveUrlPathPrefix,
+    } = props
+
     this._GUID_NAMESPACE = GUID_NAMESPACE
     this._sourceStorage = sourceStorage
     this._targetStorage = targetStorage
-    this._assetDataMapFilepath = targetStorage.absolute(assetDataMapFilepath)
-    this._caseSensitive = props.caseSensitive
-    this._reporter = props.reporter
-    this._resolveUrlPathPrefix = props.resolveUrlPathPrefix
+    this._dataMapUri = dataMapUri
+    this._reporter = reporter
+    this._resolveUrlPathPrefix = resolveUrlPathPrefix
   }
 
   public async initAsset(srcLocation: string): Promise<IAssetPluginLocateInput | null> {
@@ -111,22 +116,26 @@ export class AssetResolverApi implements IAssetResolverApi {
     }
   }
 
+  public async saveAssetDataMap(data: IAssetDataMap): Promise<void> {
+    await this.saveAsset({
+      uri: this._dataMapUri,
+      dataType: AssetDataType.JSON,
+      data,
+    })
+  }
+
   public async removeAsset(uri: string): Promise<void> {
     const dstLocation = this.resolveDstLocationFromUri(uri)
     this._reporter.verbose('[removeAsset] uri({}), dstLocation({})', uri, dstLocation)
     await this._targetStorage.removeFile(dstLocation)
   }
 
-  public async saveAssetDataMap(data: IAssetDataMap): Promise<void> {
-    const { _targetStorage, _assetDataMapFilepath } = this
-    await _targetStorage.mkdirsIfNotExists(_assetDataMapFilepath, false)
-    await _targetStorage.writeJsonFile(_assetDataMapFilepath, data)
-  }
-
   public normalizeLocation(srcLocation: string): string {
     const relativeLocation: string = this._normalizeSrcLocation(srcLocation)
-    const text: string = this._caseSensitive ? relativeLocation : relativeLocation.toLowerCase()
-    const identifier = this._genLocationGuid(text)
+    const text: string = this._sourceStorage.caseSensitive
+      ? relativeLocation
+      : relativeLocation.toLowerCase()
+    const identifier: string = this._genLocationGuid(text)
     return identifier
   }
 
@@ -134,7 +143,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     const { _sourceStorage } = this
     await _sourceStorage.assertSafeLocation(srcLocation)
     await _sourceStorage.assertExistedFile(srcLocation)
-    const content = await _sourceStorage.readBinaryFile(srcLocation)
+    const content: Buffer = await _sourceStorage.readBinaryFile(srcLocation)
     return content
   }
 
@@ -146,14 +155,14 @@ export class AssetResolverApi implements IAssetResolverApi {
     return this._targetStorage.absolute(uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''))
   }
 
-  public resolveSlug(slug: string | null | undefined): string | null {
+  public async resolveSlug(slug: string | null | undefined): Promise<string | null> {
     return slug ?? null
   }
 
-  public resolveUri(params: Pick<IAsset, 'guid' | 'type' | 'mimetype' | 'extname'>): string {
-    const { guid, type, mimetype } = params
+  public async resolveUri(asset: Readonly<IAssetLocation>): Promise<string> {
+    const { guid, type, mimetype } = asset
     const urlPathPrefix = this._resolveUrlPathPrefix({ assetType: type, mimetype })
-    const extname: string | undefined = mime.getExtension(mimetype) ?? params.extname
+    const extname: string | undefined = mime.getExtension(mimetype) ?? asset.extname
     const url = `/${urlPathPrefix}/${guid}`
     return normalizeUrlPath(extname ? `${url}.${extname}` : url)
   }

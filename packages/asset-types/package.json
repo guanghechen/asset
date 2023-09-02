@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guanghechen/asset.git",
+    "url": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-types@1.0.0-alpha.15",
     "directory": "packages/asset-types"
   },
-  "homepage": "https://github.com/guanghechen/asset/tree/main/packages/asset-types#readme",
+  "homepage": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-types@1.0.0-alpha.15/packages/asset-types#readme",
   "type": "module",
   "exports": {
     "types": "./lib/types/index.d.ts",

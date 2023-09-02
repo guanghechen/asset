@@ -52,7 +52,7 @@ export class AssetResolverImage implements IAssetResolverPlugin {
     if (!embryo && this.accepted(input.src) && !this.rejected(input.src)) {
       const type: string = ImageAssetType
       const mimetype: string = mime.getType(input.filename) ?? 'unknown'
-      let uri = api.resolveUri(type, mimetype)
+      let uri: string | null = await api.resolveUri(type, mimetype)
 
       if (uri?.startsWith('/')) {
         try {
