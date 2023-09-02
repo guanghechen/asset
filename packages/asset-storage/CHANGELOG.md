@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.17](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.16...@guanghechen/asset-storage@1.0.0-alpha.17) (2023-09-02)
+
+
+### Performance Improvements
+
+* 🎨 update due to the @guanghechen/pipeline changes & make resolver api methods asynchronous ([ed6d8f0](https://github.com/guanghechen/asset/commit/ed6d8f0e58870d4a176bf5b164dd06938bbf1846))
+
+
+
+
+
 # [1.0.0-alpha.16](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.15...@guanghechen/asset-storage@1.0.0-alpha.16) (2023-09-02)
 
 
