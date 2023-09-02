@@ -44,10 +44,10 @@
     "@guanghechen/asset-util": "^1.0.0-alpha.10",
     "@guanghechen/constant": "^1.0.0-alpha.1",
     "@guanghechen/invariant": "^5.0.6",
-    "@guanghechen/pipeline": "^1.0.0-alpha.3",
-    "@guanghechen/scheduler": "^6.0.0-alpha.3",
-    "@guanghechen/task": "^1.0.0-alpha.3",
-    "@guanghechen/types": "^1.0.0-alpha.1",
+    "@guanghechen/pipeline": "^1.0.0-alpha.4",
+    "@guanghechen/scheduler": "^6.0.0-alpha.4",
+    "@guanghechen/task": "^1.0.0-alpha.4",
+    "@guanghechen/types": "^1.0.0-alpha.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {

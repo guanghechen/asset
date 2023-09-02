@@ -499,11 +499,11 @@ __metadata:
     "@guanghechen/asset-util": ^1.0.0-alpha.10
     "@guanghechen/constant": ^1.0.0-alpha.1
     "@guanghechen/invariant": ^5.0.6
-    "@guanghechen/pipeline": ^1.0.0-alpha.3
-    "@guanghechen/scheduler": ^6.0.0-alpha.3
+    "@guanghechen/pipeline": ^1.0.0-alpha.4
+    "@guanghechen/scheduler": ^6.0.0-alpha.4
     "@guanghechen/shared": ^1.0.0-alpha.3
-    "@guanghechen/task": ^1.0.0-alpha.3
-    "@guanghechen/types": ^1.0.0-alpha.1
+    "@guanghechen/task": ^1.0.0-alpha.4
+    "@guanghechen/types": ^1.0.0-alpha.2
     "@types/uuid": ^9.0.3
     uuid: ^9.0.0
   languageName: unknown
@@ -574,9 +574,9 @@ __metadata:
   dependencies:
     "@guanghechen/asset-types": ^1.0.0-alpha.16
     "@guanghechen/invariant": ^5.0.6
-    "@guanghechen/monitor": ^1.0.0-alpha.3
+    "@guanghechen/monitor": ^1.0.0-alpha.4
     "@guanghechen/shared": ^1.0.0-alpha.3
-    "@guanghechen/types": ^1.0.0-alpha.1
+    "@guanghechen/types": ^1.0.0-alpha.2
     chokidar: 3.5.3
     fast-glob: ^3.3.1
   languageName: unknown
@@ -614,7 +614,7 @@ __metadata:
     "@guanghechen/script-doc-link": ^5.0.8
     "@types/jest": ^29.5.4
     "@types/mime": ^3.0.1
-    "@types/node": ^18.17.12
+    "@types/node": ^18.17.14
     cross-env: 7.0.3
     eslint: 8.48.0
     eslint-config-prettier: 9.0.0
@@ -668,13 +668,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/error@npm:^1.0.0-alpha.3":
-  version: 1.0.0-alpha.3
-  resolution: "@guanghechen/error@npm:1.0.0-alpha.3"
+"@guanghechen/error@npm:^1.0.0-alpha.4":
+  version: 1.0.0-alpha.4
+  resolution: "@guanghechen/error@npm:1.0.0-alpha.4"
   dependencies:
     "@guanghechen/constant": ^1.0.0-alpha.1
-    "@guanghechen/types": ^1.0.0-alpha.1
-  checksum: b4ebb0379d194ed51707b844e9bbe2f541a62596598af81ceaf70b66c1137df52f2bf19a81efe2b6570d1b1a16cca141d656a2cb4ea915a3a0fb92aa35fc6c16
+    "@guanghechen/types": ^1.0.0-alpha.2
+  checksum: 218b1d6ae837d7f298fcf4a7e86ebd972e31f0a75090af0bd24001e97a0061269462823b0c3befecaeff1e0fa354519e01fa63ffcff3a515a7ac356e061a9c31
   languageName: node
   linkType: hard
 
@@ -751,12 +751,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/monitor@npm:^1.0.0-alpha.3":
-  version: 1.0.0-alpha.3
-  resolution: "@guanghechen/monitor@npm:1.0.0-alpha.3"
+"@guanghechen/monitor@npm:^1.0.0-alpha.4":
+  version: 1.0.0-alpha.4
+  resolution: "@guanghechen/monitor@npm:1.0.0-alpha.4"
   dependencies:
-    "@guanghechen/types": ^1.0.0-alpha.1
-  checksum: e7ef06662850d03decf38b8017d917f9908b96eed0c7db5c2b6fda3492fdbab5cc522cbcb9a3dae7718d8553e72e68032db346a3ba39929f9da167d90519bad5
+    "@guanghechen/types": ^1.0.0-alpha.2
+  checksum: 54194c0e79da1a87c2d92204cc3441a17f7560de32b50da791ffcec837ab439df30a91622734b19fbc59a5d0505a12125b1eb530003eede1b1c64a07bc7d1cee
   languageName: node
   linkType: hard
 
@@ -767,14 +767,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/pipeline@npm:^1.0.0-alpha.3":
-  version: 1.0.0-alpha.3
-  resolution: "@guanghechen/pipeline@npm:1.0.0-alpha.3"
+"@guanghechen/pipeline@npm:^1.0.0-alpha.4":
+  version: 1.0.0-alpha.4
+  resolution: "@guanghechen/pipeline@npm:1.0.0-alpha.4"
   dependencies:
     "@guanghechen/constant": ^1.0.0-alpha.1
-    "@guanghechen/monitor": ^1.0.0-alpha.3
-    "@guanghechen/types": ^1.0.0-alpha.1
-  checksum: 90a5c9c6648123eecb1792629e67b37d87713c2622d4988b2fd3bc0be670f2cad594d95889df34755248310513b01f36b77e69fa940961df55fa4393a79e703a
+    "@guanghechen/monitor": ^1.0.0-alpha.4
+    "@guanghechen/types": ^1.0.0-alpha.2
+  checksum: 2cf5eb915f819c8ce732f4bb87ab7588fea06592d12503f37df1eea2c864a18331f413278fb9070e2c9691ab551ff27632279d3e9504e51289a3593a9e529fc1
   languageName: node
   linkType: hard
 
@@ -827,14 +827,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/scheduler@npm:^6.0.0-alpha.3":
-  version: 6.0.0-alpha.3
-  resolution: "@guanghechen/scheduler@npm:6.0.0-alpha.3"
+"@guanghechen/scheduler@npm:^6.0.0-alpha.4":
+  version: 6.0.0-alpha.4
+  resolution: "@guanghechen/scheduler@npm:6.0.0-alpha.4"
   dependencies:
     "@guanghechen/constant": ^1.0.0-alpha.1
-    "@guanghechen/task": ^1.0.0-alpha.3
-    "@guanghechen/types": ^1.0.0-alpha.1
-  checksum: c5e97cbb332e7f36ea506af9201aebef82fcd7fd7b2dbbb59b1f9f655a850b09b1fcf815f87ebbb59a804a4d7b3ed57ae7aa2c1cc5740f534835b8aacfd030fe
+    "@guanghechen/task": ^1.0.0-alpha.4
+    "@guanghechen/types": ^1.0.0-alpha.2
+  checksum: 8259e2840a74d3c7aadca877e23acf92d5fd8f662543a4f6e75d544f1bffb079d422544de404bcc004e52fb96f8b4801338270047e3c55abec7a447b2ea7bd24
   languageName: node
   linkType: hard
 
@@ -863,23 +863,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/task@npm:^1.0.0-alpha.3":
-  version: 1.0.0-alpha.3
-  resolution: "@guanghechen/task@npm:1.0.0-alpha.3"
+"@guanghechen/task@npm:^1.0.0-alpha.4":
+  version: 1.0.0-alpha.4
+  resolution: "@guanghechen/task@npm:1.0.0-alpha.4"
   dependencies:
     "@guanghechen/constant": ^1.0.0-alpha.1
-    "@guanghechen/error": ^1.0.0-alpha.3
-    "@guanghechen/monitor": ^1.0.0-alpha.3
-  checksum: 6d46410a6b2d9138dc0323695c66baa9404453db722c4d391210eb0ad0bb5ab484bbdf6fe0a2e59c4e55dce281960e69cee0319167c2f86de76ac7f6ba31c765
+    "@guanghechen/error": ^1.0.0-alpha.4
+    "@guanghechen/monitor": ^1.0.0-alpha.4
+  checksum: 9d0a59fd3c63fdeffe8b3d897f7254643ec03a08b7077858097bf6ae23889f615b6f6ecbf97ff2d6de2f4089879595f6f496e31986e56f89b11a80446d56b955
   languageName: node
   linkType: hard
 
-"@guanghechen/types@npm:^1.0.0-alpha.1":
-  version: 1.0.0-alpha.1
-  resolution: "@guanghechen/types@npm:1.0.0-alpha.1"
+"@guanghechen/types@npm:^1.0.0-alpha.2":
+  version: 1.0.0-alpha.2
+  resolution: "@guanghechen/types@npm:1.0.0-alpha.2"
   dependencies:
     "@guanghechen/constant": ^1.0.0-alpha.1
-  checksum: b4d46739f63a6bb2f959be0584ab36d3a946d6cea5539b218697ab0fcdbf550d2c3d8f16d113c2c0213eb720482d6890991455dedbc2ce028031bb6361d33c0d
+  checksum: c938df74dc9bbe41268d10b3910de773b50fccfe718c5f7cd07077faabd51d2eaa944552f7653312fdd39383bc2371d3491b21e3e9c65385ff9568a5baa93a8e
   languageName: node
   linkType: hard
 
@@ -2052,16 +2052,16 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 20.5.8
-  resolution: "@types/node@npm:20.5.8"
-  checksum: ccd73e0e99ddfcf42e10b7a30a58a432bc39eeb9d1d59084ed818be468e05375b212a29d03529149aff58366c0eddb9bf367cb335db6620a4855ce315c5ecf28
+  version: 20.5.9
+  resolution: "@types/node@npm:20.5.9"
+  checksum: 717490e94131722144878b4ca1a963ede1673bb8f2ef78c2f5b50b918df6dc9b35e7f8283e5c2a7a9f137730f7c08dc6228e53d4494a94c9ee16881e6ce6caed
   languageName: node
   linkType: hard
 
-"@types/node@npm:^18.17.12":
-  version: 18.17.13
-  resolution: "@types/node@npm:18.17.13"
-  checksum: d70f263b7591f3993ddc348b809c867f9e4cc5151c7108ffdc89f32777da829e14a471932357da099afbd8db03f62bfc8119cd2d56f06b826bb28bb879feaf9f
+"@types/node@npm:^18.17.14":
+  version: 18.17.14
+  resolution: "@types/node@npm:18.17.14"
+  checksum: f96ce1e588426a26cf82440193084f8bbab47bfb3c2e668cf174095f99ce808a20654b2137448c7e88cfd7b6c2b8521ffb6f714f521b3502ac595a0df0bff679
   languageName: node
   linkType: hard
 
@@ -3886,14 +3886,19 @@ __metadata:
   linkType: hard
 
 "cosmiconfig@npm:^8.2.0":
-  version: 8.2.0
-  resolution: "cosmiconfig@npm:8.2.0"
+  version: 8.3.2
+  resolution: "cosmiconfig@npm:8.3.2"
   dependencies:
-    import-fresh: ^3.2.1
+    import-fresh: ^3.3.0
     js-yaml: ^4.1.0
-    parse-json: ^5.0.0
+    parse-json: ^5.2.0
     path-type: ^4.0.0
-  checksum: 836d5d8efa750f3fb17b03d6ca74cd3154ed025dffd045304b3ef59637f662bde1e5dc88f8830080d180ec60841719cf4ea2ce73fb21ec694b16865c478ff297
+  peerDependencies:
+    typescript: ">=4.9.5"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 24fb9ac74d7e4ef99e05f47a576d67b85cd6ab2c54ae7e0cd431e3bfccea38af715244fac2faee155a5e712fd3e665859b240c5f0013ba83ab040440fd54bc0d
   languageName: node
   linkType: hard
 
@@ -5619,7 +5624,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"import-fresh@npm:^3.2.1":
+"import-fresh@npm:^3.2.1, import-fresh@npm:^3.3.0":
   version: 3.3.0
   resolution: "import-fresh@npm:3.3.0"
   dependencies:

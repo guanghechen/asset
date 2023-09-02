@@ -2,9 +2,8 @@ import { AssetChangeEvent } from '@guanghechen/asset-types'
 import type { IAssetResolver, IAssetResolverApi, IAssetTaskData } from '@guanghechen/asset-types'
 import { Pipeline } from '@guanghechen/pipeline'
 import type { ITask } from '@guanghechen/types'
-import type { IAssetTaskContext } from './AssetTask'
 import { AssetTask } from './AssetTask'
-import type { IAssetTaskPipeline } from './types'
+import type { IAssetTaskContext, IAssetTaskPipeline } from './types'
 
 type D = IAssetTaskData
 type T = ITask
@@ -25,32 +24,41 @@ export class AssetTaskPipeline extends Pipeline<D, T> implements IAssetTaskPipel
     this._ctx = { api, resolver, delayAfterContentChanged }
   }
 
-  protected override cook(material: D, others: D[]): T | undefined {
+  public override async push(material: D): Promise<void> {
+    const data: D = {
+      type: material.type,
+      alive: material.alive,
+      location: await this._ctx.api.resolveSrcLocation(material.location),
+    }
+    await super.push(data)
+  }
+
+  protected override async cook(material: D, others: D[]): Promise<T | undefined> {
     if (!material.alive) return undefined
 
-    const location: string = material.payload.location
+    const location: string = material.location
     switch (material.type) {
       case AssetChangeEvent.CREATED:
       case AssetChangeEvent.MODIFIED: {
         const ir: number = others.findIndex(
-          data => data.type === AssetChangeEvent.REMOVED && data.payload.location === location,
+          data => data.type === AssetChangeEvent.REMOVED && data.location === location,
         )
         if (ir >= 0) {
           for (let k = 0; k <= ir; ++k) {
             const data = others[k]
-            if (data.payload.location === location) data.alive = false
+            if (data.location === location) data.alive = false
           }
           return undefined
         }
 
         for (let k = 0; k < others.length; ++k) {
           const data = others[k]
-          if (data.payload.location === location) data.alive = false
+          if (data.location === location) data.alive = false
         }
         break
       }
       case AssetChangeEvent.REMOVED: {
-        if (others.some(data => data.payload.location === location)) return undefined
+        if (others.some(data => data.location === location)) return undefined
         break
       }
       default:

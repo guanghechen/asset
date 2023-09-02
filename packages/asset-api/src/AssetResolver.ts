@@ -101,9 +101,12 @@ export class AssetResolver implements IAssetResolver {
 
     const { guid, hash, src, extname } = input
     const pluginApi: IAssetPluginLocateApi = {
-      loadContent: relativeSrcLocation => {
-        const resolvedLocation = api.resolveSrcLocation(`${location}/../${relativeSrcLocation}`)
-        return api.loadSrcContent(resolvedLocation)
+      loadContent: async relativeSrcLocation => {
+        const resolvedLocation: string = await api.resolveSrcLocation(
+          `${location}/../${relativeSrcLocation}`,
+        )
+        const content: Buffer | null = await api.loadSrcContent(resolvedLocation)
+        return content
       },
       resolveSlug: slug => api.resolveSlug(slug),
       resolveUri: (type, mimetype) => api.resolveUri({ guid, type, mimetype, extname }),
@@ -157,9 +160,12 @@ export class AssetResolver implements IAssetResolver {
     if (!asset) return
 
     const pluginApi: IAssetPluginParseApi = {
-      loadContent: relativeSrcLocation => {
-        const resolvedLocation = api.resolveSrcLocation(`${location}/../${relativeSrcLocation}`)
-        return api.loadSrcContent(resolvedLocation)
+      loadContent: async relativeSrcLocation => {
+        const resolvedLocation: string = await api.resolveSrcLocation(
+          `${location}/../${relativeSrcLocation}`,
+        )
+        const content: Buffer | null = await api.loadSrcContent(resolvedLocation)
+        return content
       },
       resolveSlug: slug => api.resolveSlug(slug),
     }
@@ -190,15 +196,18 @@ export class AssetResolver implements IAssetResolver {
     if (!asset) return
 
     const pluginApi: IAssetPluginPolishApi = {
-      loadContent: relativeSrcLocation => {
-        const resolvedLocation = api.resolveSrcLocation(`${location}/../${relativeSrcLocation}`)
-        return api.loadSrcContent(resolvedLocation)
+      loadContent: async relativeSrcLocation => {
+        const resolvedLocation: string = await api.resolveSrcLocation(
+          `${location}/../${relativeSrcLocation}`,
+        )
+        const content: Buffer | null = await api.loadSrcContent(resolvedLocation)
+        return content
       },
       resolveAssetMeta: async relativeLocation => {
-        const resolvedLocation = api.resolveSrcLocation(
+        const resolvedLocation: string = await api.resolveSrcLocation(
           `${location}/../${decodeURIComponent(relativeLocation)}`,
         )
-        const locationId = api.normalizeLocation(resolvedLocation)
+        const locationId: string = api.normalizeLocation(resolvedLocation)
         const asset = _locationMap.get(locationId)
         return asset ? { uri: asset.uri, slug: asset.slug, title: asset.title } : null
       },

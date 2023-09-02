@@ -1,5 +1,5 @@
 import type { IAssetResolver, IAssetResolverApi, IAssetTaskData } from '@guanghechen/asset-types'
-import { ErrorLevelEnum } from '@guanghechen/constant'
+import { ErrorLevelEnum, TaskStatusEnum } from '@guanghechen/constant'
 import { Scheduler } from '@guanghechen/scheduler'
 import type { IReporter, ITask } from '@guanghechen/types'
 import { AssetTaskPipeline } from './AssetTaskPipeline'
@@ -41,8 +41,10 @@ export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskSch
     })
   }
 
-  public override finish(): Promise<void> {
-    this._pipeline.close()
-    return super.finish()
+  public override async finish(): Promise<void> {
+    if (this.status === TaskStatusEnum.PENDING || this.alive) {
+      await this._pipeline.close()
+      await super.finish()
+    }
   }
 }

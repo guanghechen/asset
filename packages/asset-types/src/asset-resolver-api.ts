@@ -27,12 +27,12 @@ export interface IAssetResolverApi {
    * Resolve asset location with the relative path.
    * @param srcLocation
    */
-  resolveSrcLocation(srcLocation: string): string
+  resolveSrcLocation(srcLocation: string): Promise<string>
   /**
    * Resolve asset destination location with the asset uri.
    * @param uri
    */
-  resolveDstLocationFromUri(uri: string): string
+  resolveDstLocationFromUri(uri: string): Promise<string>
   /**
    * Resolve page slug.
    * @param slug

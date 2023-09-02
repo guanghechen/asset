@@ -61,24 +61,24 @@ export class AssetService implements IAssetService {
 
       const watcher = sourceStorage.watch(acceptedPattern, {
         onAdd: filepath => {
-          scheduler.schedule({
+          void scheduler.schedule({
             type: AssetChangeEvent.CREATED,
             alive: true,
-            payload: { location: filepath },
+            location: filepath,
           })
         },
         onChange: filepath => {
-          scheduler.schedule({
+          void scheduler.schedule({
             type: AssetChangeEvent.MODIFIED,
             alive: true,
-            payload: { location: filepath },
+            location: filepath,
           })
         },
         onUnlink: filepath => {
-          scheduler.schedule({
+          void scheduler.schedule({
             type: AssetChangeEvent.REMOVED,
             alive: true,
-            payload: { location: filepath },
+            location: filepath,
           })
         },
       })

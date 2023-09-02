@@ -89,7 +89,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     const { uri, dataType, data, encoding } = params
     if (data === null) return
 
-    const dstLocation = this.resolveDstLocationFromUri(uri)
+    const dstLocation: string = await this.resolveDstLocationFromUri(uri)
     this._reporter.verbose('[saveAsset] uri: {}', uri)
 
     const { _targetStorage } = this
@@ -125,7 +125,7 @@ export class AssetResolverApi implements IAssetResolverApi {
   }
 
   public async removeAsset(uri: string): Promise<void> {
-    const dstLocation = this.resolveDstLocationFromUri(uri)
+    const dstLocation: string = await this.resolveDstLocationFromUri(uri)
     this._reporter.verbose('[removeAsset] uri({}), dstLocation({})', uri, dstLocation)
     await this._targetStorage.removeFile(dstLocation)
   }
@@ -147,11 +147,11 @@ export class AssetResolverApi implements IAssetResolverApi {
     return content
   }
 
-  public resolveSrcLocation(srcLocation: string): string {
+  public async resolveSrcLocation(srcLocation: string): Promise<string> {
     return this._sourceStorage.absolute(srcLocation)
   }
 
-  public resolveDstLocationFromUri(uri: string): string {
+  public async resolveDstLocationFromUri(uri: string): Promise<string> {
     return this._targetStorage.absolute(uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''))
   }
 
