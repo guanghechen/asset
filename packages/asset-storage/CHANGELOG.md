@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.16](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.15...@guanghechen/asset-storage@1.0.0-alpha.16) (2023-09-02)
+
+
+### Performance Improvements
+
+* refine assets ([0bd02fe](https://github.com/guanghechen/asset/commit/0bd02fee00d2d9314a75845f3f79918d63283308))
+
+
+
+
+
 # [1.0.0-alpha.15](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.14...@guanghechen/asset-storage@1.0.0-alpha.15) (2023-08-30)
 
 
