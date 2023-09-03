@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-manager",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "description": "file asset",
   "author": {
     "name": "guanghechen",
@@ -40,6 +40,6 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.17"
+    "@guanghechen/asset-types": "^1.0.0-alpha.18"
   }
 }
