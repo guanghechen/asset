@@ -1,4 +1,6 @@
+import { AssetResolverApi } from '@guanghechen/asset-resolver'
 import type {
+  IAssetResolver,
   IAssetServiceConfig,
   IAssetServiceConfigManager,
   IAssetTargetStorage,
@@ -6,12 +8,13 @@ import type {
   IRawAssetServiceConfig,
 } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/types'
-import { AssetResolverApi } from './AssetResolverApi'
+import { AssetResolverLocator } from './AssetResolverLocator'
+import { AssetTaskApi } from './AssetTaskApi'
 
 export interface IAssetServiceConfigManagerProps {
   reporter: IReporter
+  resolver: IAssetResolver
   targetStorage: IAssetTargetStorage
-  dataMapUri: string
   defaultAcceptedPattern?: string[]
   resolveUrlPathPrefix: IAssetUrlPrefixResolver
 }
@@ -19,24 +22,24 @@ export interface IAssetServiceConfigManagerProps {
 export class AssetServiceConfigManager implements IAssetServiceConfigManager {
   protected readonly _configs: IAssetServiceConfig[]
   protected readonly _reporter: IReporter
+  protected readonly _resolver: IAssetResolver
   protected readonly _targetStorage: IAssetTargetStorage
-  protected readonly _dataMapUri: string
   protected readonly _defaultAcceptedPattern: string[]
   protected readonly _resolveUrlPathPrefix: IAssetUrlPrefixResolver
 
   constructor(props: IAssetServiceConfigManagerProps) {
     const {
       reporter,
+      resolver,
       targetStorage,
-      dataMapUri,
       defaultAcceptedPattern = ['**/*', '!.gitkeep'],
       resolveUrlPathPrefix,
     } = props
 
     this._configs = []
     this._reporter = reporter
+    this._resolver = resolver
     this._targetStorage = targetStorage
-    this._dataMapUri = dataMapUri
     this._defaultAcceptedPattern = defaultAcceptedPattern
     this._resolveUrlPathPrefix = resolveUrlPathPrefix
   }
@@ -46,22 +49,34 @@ export class AssetServiceConfigManager implements IAssetServiceConfigManager {
   }
 
   public register(assetConfig: IRawAssetServiceConfig): this {
+    const { _reporter, _resolver, _targetStorage, _defaultAcceptedPattern, _resolveUrlPathPrefix } =
+      this
     const {
-      _reporter,
-      _targetStorage,
-      _dataMapUri,
-      _defaultAcceptedPattern,
-      _resolveUrlPathPrefix,
-    } = this
-    const { GUID_NAMESPACE, sourceStorage, acceptedPattern = _defaultAcceptedPattern } = assetConfig
+      GUID_NAMESPACE,
+      assetManager,
+      dataMapUri,
+      sourceStorage,
+      acceptedPattern = _defaultAcceptedPattern,
+      delayAfterContentChanged,
+    } = assetConfig
 
-    const api = new AssetResolverApi({
+    const locator = new AssetResolverLocator({ assetManager })
+    const resolverApi = new AssetResolverApi({
       GUID_NAMESPACE,
       sourceStorage,
-      targetStorage: _targetStorage,
-      dataMapUri: _dataMapUri,
-      reporter: _reporter,
       resolveUrlPathPrefix: _resolveUrlPathPrefix,
+    })
+
+    const api = new AssetTaskApi({
+      api: resolverApi,
+      manager: assetManager,
+      locator,
+      resolver: _resolver,
+      reporter: _reporter,
+      sourceStorage,
+      targetStorage: _targetStorage,
+      dataMapUri,
+      delayAfterContentChanged,
     })
 
     this._configs.push({ api, sourceStorage, acceptedPattern: acceptedPattern.slice() })

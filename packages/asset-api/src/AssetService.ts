@@ -1,7 +1,5 @@
 import { AssetChangeEvent } from '@guanghechen/asset-types'
 import type {
-  IAssetDataMap,
-  IAssetResolver,
   IAssetService,
   IAssetServiceConfig,
   IAssetServiceWatcher,
@@ -13,50 +11,33 @@ import type { IReporter, IScheduler } from '@guanghechen/types'
 import { AssetTaskScheduler } from './AssetTaskScheduler'
 
 export interface IAssetServiceProps {
-  resolver: IAssetResolver
   reporter: IReporter
-  delayAfterContentChanged?: number // Wait a few million seconds after file content changed.
 }
 
 export class AssetService implements IAssetService {
-  protected readonly _resolver: IAssetResolver
   protected readonly _reporter: IReporter
-  protected readonly _delayAfterContentChanged: number
 
   constructor(props: IAssetServiceProps) {
-    this._resolver = props.resolver
     this._reporter = props.reporter
-    this._delayAfterContentChanged = Number.isNaN(props.delayAfterContentChanged)
-      ? 200
-      : Number(props.delayAfterContentChanged)
   }
 
   public async build(configs: Iterable<IAssetServiceConfig>): Promise<void> {
-    const resolver = this._resolver
     for (const { api, sourceStorage, acceptedPattern } of configs) {
       const locations = await sourceStorage.collectAssetLocations(acceptedPattern, {
         absolute: true,
       })
-      await resolver.create(api, locations)
+      await api.create(locations)
 
       // dump asset data map
-      const assetDataMap: IAssetDataMap = await this._resolver.dump()
-      await api.saveAssetDataMap(assetDataMap)
+      await api.saveAssetDataMap()
     }
   }
 
   public async watch(configs: Iterable<IAssetServiceConfig>): Promise<IAssetServiceWatcher> {
-    const { _resolver, _reporter, _delayAfterContentChanged } = this
     const schedulers: Array<IScheduler<IAssetTaskData>> = []
     const watchers: IAssetWatcher[] = []
-
     for (const { api, sourceStorage, acceptedPattern } of configs) {
-      const scheduler = new AssetTaskScheduler({
-        api,
-        resolver: _resolver,
-        reporter: _reporter,
-        delayAfterContentChanged: _delayAfterContentChanged,
-      })
+      const scheduler = new AssetTaskScheduler({ api, reporter: this._reporter })
       schedulers.push(scheduler)
 
       const watcher = sourceStorage.watch(acceptedPattern, {

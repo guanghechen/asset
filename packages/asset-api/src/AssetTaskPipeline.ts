@@ -1,34 +1,30 @@
 import { AssetChangeEvent } from '@guanghechen/asset-types'
-import type { IAssetResolver, IAssetResolverApi, IAssetTaskData } from '@guanghechen/asset-types'
+import type { IAssetTaskApi, IAssetTaskData } from '@guanghechen/asset-types'
 import { Pipeline } from '@guanghechen/pipeline'
 import type { ITask } from '@guanghechen/types'
 import { AssetTask } from './AssetTask'
-import type { IAssetTaskContext, IAssetTaskPipeline } from './types'
+import type { IAssetTaskPipeline } from './types'
 
 type D = IAssetTaskData
 type T = ITask
 
 interface IProps {
-  api: IAssetResolverApi
-  resolver: IAssetResolver
-  delayAfterContentChanged: number
+  api: IAssetTaskApi
 }
 
 export class AssetTaskPipeline extends Pipeline<D, T> implements IAssetTaskPipeline {
-  protected readonly _ctx: IAssetTaskContext
+  protected readonly _api: IAssetTaskApi
 
   constructor(props: IProps) {
     super()
-
-    const { api, resolver, delayAfterContentChanged } = props
-    this._ctx = { api, resolver, delayAfterContentChanged }
+    this._api = props.api
   }
 
   public override async push(material: D): Promise<void> {
     const data: D = {
       type: material.type,
       alive: material.alive,
-      location: await this._ctx.api.resolveSrcLocation(material.location),
+      location: await this._api.resolveSrcLocation(material.location),
     }
     await super.push(data)
   }
@@ -64,6 +60,6 @@ export class AssetTaskPipeline extends Pipeline<D, T> implements IAssetTaskPipel
       default:
         throw new TypeError(`Unknown asset change event type: ${material.type}`)
     }
-    return new AssetTask({ ctx: this._ctx, data: material })
+    return new AssetTask({ api: this._api, data: material })
   }
 }

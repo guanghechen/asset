@@ -1,15 +1,19 @@
-import type { IAssetResolverApi } from './asset-resolver-api'
+import type { IAssetManager } from './asset-manager'
 import type { IAssetSourceStorage } from './asset-storage'
+import type { IAssetTaskApi } from './asset-task-api'
 import type { IAssetServiceWatcher } from './common'
 
 export interface IRawAssetServiceConfig {
   GUID_NAMESPACE: string
+  assetManager: IAssetManager
+  dataMapUri: string
   sourceStorage: IAssetSourceStorage
   acceptedPattern?: string[]
+  delayAfterContentChanged?: number
 }
 
 export interface IAssetServiceConfig {
-  api: IAssetResolverApi
+  api: IAssetTaskApi
   sourceStorage: IAssetSourceStorage
   acceptedPattern: string[]
 }

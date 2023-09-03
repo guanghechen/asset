@@ -495,17 +495,24 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-api@workspace:packages/asset-api"
   dependencies:
+    "@guanghechen/asset-manager": ^1.0.0-alpha.0
+    "@guanghechen/asset-resolver": ^1.0.0-alpha.0
     "@guanghechen/asset-types": ^1.0.0-alpha.17
     "@guanghechen/asset-util": ^1.0.0-alpha.10
     "@guanghechen/constant": ^1.0.0-alpha.1
     "@guanghechen/invariant": ^5.0.6
     "@guanghechen/pipeline": ^1.0.0-alpha.4
     "@guanghechen/scheduler": ^6.0.0-alpha.4
-    "@guanghechen/shared": ^1.0.0-alpha.3
     "@guanghechen/task": ^1.0.0-alpha.4
     "@guanghechen/types": ^1.0.0-alpha.2
-    "@types/uuid": ^9.0.3
-    uuid: ^9.0.0
+  languageName: unknown
+  linkType: soft
+
+"@guanghechen/asset-manager@^1.0.0-alpha.0, @guanghechen/asset-manager@workspace:packages/asset-manager":
+  version: 0.0.0-use.local
+  resolution: "@guanghechen/asset-manager@workspace:packages/asset-manager"
+  dependencies:
+    "@guanghechen/asset-types": ^1.0.0-alpha.17
   languageName: unknown
   linkType: soft
 
@@ -543,6 +550,17 @@ __metadata:
     "@yozora/parser": ^2.2.0
     dayjs: ^1.11.9
     js-yaml: ^4.1.0
+  languageName: unknown
+  linkType: soft
+
+"@guanghechen/asset-resolver@^1.0.0-alpha.0, @guanghechen/asset-resolver@workspace:packages/asset-resolver":
+  version: 0.0.0-use.local
+  resolution: "@guanghechen/asset-resolver@workspace:packages/asset-resolver"
+  dependencies:
+    "@guanghechen/asset-types": ^1.0.0-alpha.17
+    "@guanghechen/asset-util": ^1.0.0-alpha.10
+    "@types/uuid": ^9.0.3
+    uuid: ^9.0.0
   languageName: unknown
   linkType: soft
 

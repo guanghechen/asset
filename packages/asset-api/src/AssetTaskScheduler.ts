@@ -1,4 +1,4 @@
-import type { IAssetResolver, IAssetResolverApi, IAssetTaskData } from '@guanghechen/asset-types'
+import type { IAssetTaskApi, IAssetTaskData } from '@guanghechen/asset-types'
 import { ErrorLevelEnum, TaskStatusEnum } from '@guanghechen/constant'
 import { Scheduler } from '@guanghechen/scheduler'
 import type { IReporter, ITask } from '@guanghechen/types'
@@ -9,16 +9,14 @@ type D = IAssetTaskData
 type T = ITask
 
 interface IProps {
-  api: IAssetResolverApi
-  resolver: IAssetResolver
+  api: IAssetTaskApi
   reporter: IReporter
-  delayAfterContentChanged: number
 }
 
 export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskScheduler {
   constructor(props: IProps) {
-    const { api, resolver, reporter, delayAfterContentChanged } = props
-    const pipeline = new AssetTaskPipeline({ api, resolver, delayAfterContentChanged })
+    const { api, reporter } = props
+    const pipeline = new AssetTaskPipeline({ api })
     super({ name: 'AssetTaskScheduler', reporter, pipeline })
 
     this.monitor({

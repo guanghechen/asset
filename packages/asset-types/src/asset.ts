@@ -58,3 +58,8 @@ export interface IAsset extends IAssetMeta, IAssetLocation {
    */
   tags: string[]
 }
+
+export interface IResolvingAsset extends IAsset {
+  filename: string
+  data: unknown | null
+}

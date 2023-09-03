@@ -40,6 +40,8 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
+    "@guanghechen/asset-manager": "^1.0.0-alpha.0",
+    "@guanghechen/asset-resolver": "^1.0.0-alpha.0",
     "@guanghechen/asset-types": "^1.0.0-alpha.17",
     "@guanghechen/asset-util": "^1.0.0-alpha.10",
     "@guanghechen/constant": "^1.0.0-alpha.1",
@@ -47,11 +49,6 @@
     "@guanghechen/pipeline": "^1.0.0-alpha.4",
     "@guanghechen/scheduler": "^6.0.0-alpha.4",
     "@guanghechen/task": "^1.0.0-alpha.4",
-    "@guanghechen/types": "^1.0.0-alpha.2",
-    "uuid": "^9.0.0"
-  },
-  "devDependencies": {
-    "@guanghechen/shared": "^1.0.0-alpha.3",
-    "@types/uuid": "^9.0.3"
+    "@guanghechen/types": "^1.0.0-alpha.2"
   }
 }

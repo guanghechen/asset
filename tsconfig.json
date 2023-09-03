@@ -4,6 +4,8 @@
     "baseUrl": ".",
     "paths": {
       "@guanghechen/asset-api": ["packages/asset-api/src"],
+      "@guanghechen/asset-manager": ["packages/asset-manager/src"],
+      "@guanghechen/asset-resolver": ["packages/asset-resolver/src"],
       "@guanghechen/asset-resolver-file": ["packages/asset-resolver-file/src"],
       "@guanghechen/asset-resolver-image": ["packages/asset-resolver-image/src"],
       "@guanghechen/asset-resolver-markdown": ["packages/asset-resolver-markdown/src"],

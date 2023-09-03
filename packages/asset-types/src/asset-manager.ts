@@ -29,12 +29,12 @@ export interface IAssetManager {
    * Find assets by category path.
    * @param categoryPath
    */
-  getByCategory(categoryPath: string[]): IAsset[]
+  getByCategory(categoryPath: ReadonlyArray<string>): IAsset[]
   /**
    * Add new asset.
    * @param asset
    */
-  insert(asset: IAsset): void
+  insert(asset: Readonly<IAsset>): void
   /**
    * Remove an asset.
    * @param guid

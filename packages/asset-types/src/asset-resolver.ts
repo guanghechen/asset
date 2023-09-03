@@ -1,16 +1,21 @@
-import type { IAssetDataMap } from './asset-manager'
 import type { IAssetResolverApi } from './asset-resolver-api'
+import type { IAssetResolverLocator } from './asset-resolver-locator'
 import type {
   IAssetLocatePlugin,
   IAssetParsePlugin,
   IAssetPlugin,
   IAssetPolishPlugin,
 } from './plugin/plugin'
+import type { IAssetPluginPolishOutput } from './plugin/polish'
 
 export type IAssetResolverPlugin = IAssetPlugin &
   Partial<IAssetLocatePlugin> &
   Partial<IAssetParsePlugin> &
   Partial<IAssetPolishPlugin>
+
+export interface IAssetResolvedData extends IAssetPluginPolishOutput {
+  uri: string
+}
 
 export interface IAssetResolver {
   /**
@@ -19,25 +24,13 @@ export interface IAssetResolver {
    */
   use(...plugins: Array<IAssetResolverPlugin | IAssetResolverPlugin[]>): this
   /**
-   * Export asset data map.
-   */
-  dump(): Promise<IAssetDataMap>
-  /**
-   * Create assets on the given locations.
+   *
    * @param api
    * @param locations
    */
-  create(api: IAssetResolverApi, locations: string[]): Promise<void>
-  /**
-   * Mark the assets on the locations invalid and remove them from assetManager.
-   * @param api
-   * @param locations
-   */
-  remove(api: IAssetResolverApi, locations: string[]): Promise<void>
-  /**
-   * Update the assets on the locations.
-   * @param api
-   * @param locations
-   */
-  update(api: IAssetResolverApi, locations: string[]): Promise<void>
+  resolve(
+    locations: string[],
+    locator: IAssetResolverLocator,
+    api: IAssetResolverApi,
+  ): Promise<Array<IAssetResolvedData | null>>
 }
