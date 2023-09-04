@@ -5,19 +5,13 @@ export interface IAssetPathResolver {
    * Ensure the location is under the {rootDir} folder.
    * @param location absolute path or relative path to the {rootDir}
    */
-  assertSafeLocation(location: string): Promise<void | never> | void | never
+  assertSafeLocation(location: string): void | never
 
   /**
-   * Get the basename of a location. i.e., `bar.txt` from `/a/b/c/d/bar.txt`
-   * @param location absolute path or relative path to the {rootDir}
+   * Check if the location is relative path.
+   * @param location
    */
-  basename(location: string): string
-
-  /**
-   * Get the dirname of a location. i.e., `bar.txt` from `/a/b/c/d`
-   * @param location absolute path or relative path to the {rootDir}
-   */
-  dirname(location: string): string
+  isSafeLocation(location: string): boolean
 
   /**
    * Get the relative path to the {rootDir}

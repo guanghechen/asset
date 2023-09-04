@@ -24,7 +24,7 @@ export class AssetTaskPipeline extends Pipeline<D, T> implements IAssetTaskPipel
     const data: D = {
       type: material.type,
       alive: material.alive,
-      location: await this._api.resolveSrcLocation(material.location),
+      location: material.location,
     }
     await super.push(data)
   }

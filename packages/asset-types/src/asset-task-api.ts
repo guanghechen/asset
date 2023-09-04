@@ -4,15 +4,6 @@ export interface IAssetTaskApi {
    */
   readonly delayAfterContentChanged: number
   /**
-   * Export asset data map.
-   */
-  saveAssetDataMap(): Promise<void>
-  /**
-   * Resolve asset location with the relative path.
-   * @param srcLocation
-   */
-  resolveSrcLocation(srcLocation: string): Promise<string>
-  /**
    * Create assets on the given locations.
    * @param locations
    */

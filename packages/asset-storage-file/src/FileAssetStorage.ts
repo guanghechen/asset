@@ -16,6 +16,7 @@ import chokidar from 'chokidar'
 import fastGlob from 'fast-glob'
 import { existsSync } from 'node:fs'
 import { mkdir, readFile, stat, unlink, writeFile } from 'node:fs/promises'
+import path from 'node:path'
 
 export interface IFileAssetStorageProps {
   rootDir: string
@@ -77,7 +78,7 @@ export class FileAssetStorage
   }
 
   public async mkdirsIfNotExists(filepath: string, isDir: boolean): Promise<void> {
-    const dirPath = isDir ? filepath : this.dirname(filepath)
+    const dirPath = isDir ? filepath : path.dirname(filepath)
     if (existsSync(dirPath)) return
     await mkdir(dirPath, { recursive: true })
   }

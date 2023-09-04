@@ -40,6 +40,7 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
+    "@guanghechen/asset-manager": "^1.0.0-alpha.1",
     "@guanghechen/asset-types": "^1.0.0-alpha.18",
     "@guanghechen/asset-util": "^1.0.0-alpha.10",
     "uuid": "^9.0.0"

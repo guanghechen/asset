@@ -9,6 +9,7 @@ import type {
   ITextFileItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
+import path from 'node:path'
 
 export interface IMemoAssetStorageProps {
   rootDir: string
@@ -25,14 +26,14 @@ export class MemoAssetStorage extends AssetTargetStorage implements IAssetTarget
   }
 
   public override async mkdirsIfNotExists(filepath: string, isDir: boolean): Promise<void> {
-    const dirPath = isDir ? filepath : this.dirname(filepath)
+    const dirPath = isDir ? filepath : path.dirname(filepath)
     for (let p = dirPath; p.length > 0; ) {
       const identifier = this.identity(p)
       if (this.cache.has(identifier)) break
 
       this.cache.set(identifier, { type: FileType.FOLDER, absolutePath: this.absolute(p) })
 
-      const q = this.dirname(p)
+      const q = path.dirname(p)
       if (p === q) break
       p = q
     }

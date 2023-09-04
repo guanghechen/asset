@@ -2,6 +2,8 @@ import type { IAssetPathResolver } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import path from 'node:path'
 
+const urlRegex: RegExp = /^\w+:\/\//
+
 export interface IAssetPathResolverProps {
   rootDir: string
 }
@@ -19,34 +21,32 @@ export class AssetPathResolver implements IAssetPathResolver {
   }
 
   public assertSafeLocation(location: string): void | never {
-    const rootDir: string = this.rootDir
     invariant(
-      !this.relative(location).startsWith('..'),
-      `[assertSafeLocation] !!!unsafe location. rootDir: ${rootDir}, location: ${location}`,
+      this.isSafeLocation(location),
+      `[assertSafeLocation] !!!unsafe location. rootDir: ${this.rootDir}, location: ${location}`,
     )
   }
 
-  public basename(location: string): string {
-    return path.basename(location)
-  }
-
-  public dirname(location: string): string {
-    return path.dirname(location)
-  }
-
   public absolute(location: string): string {
-    const rootDir: string = this.rootDir
-    const absoluteFilepath = path.resolve(rootDir, path.normalize(location))
+    const absoluteFilepath = this._absolute(this.rootDir, location)
     this.assertSafeLocation(absoluteFilepath)
     return absoluteFilepath
   }
 
+  public isSafeLocation(location: string): boolean {
+    return !this.relative(location).startsWith('..')
+  }
+
   public relative(location: string): string {
-    const rootDir: string = this.rootDir
-    return this._relative(rootDir, location)
+    return this._relative(this.rootDir, location)
+  }
+
+  protected _absolute(cwd: string, location: string): string {
+    if (urlRegex.test(location)) return location
+    return path.resolve(cwd, path.normalize(location))
   }
 
   protected _relative(cwd: string, location: string): string {
-    return path.normalize(path.relative(cwd, path.resolve(cwd, location)))
+    return path.normalize(path.relative(cwd, this._absolute(cwd, location)))
   }
 }

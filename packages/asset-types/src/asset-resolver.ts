@@ -1,20 +1,23 @@
+import type { IAsset } from './asset'
 import type { IAssetResolverApi } from './asset-resolver-api'
-import type { IAssetResolverLocator } from './asset-resolver-locator'
+import type { AssetDataType } from './enum'
 import type {
   IAssetLocatePlugin,
   IAssetParsePlugin,
   IAssetPlugin,
   IAssetPolishPlugin,
 } from './plugin/plugin'
-import type { IAssetPluginPolishOutput } from './plugin/polish'
 
 export type IAssetResolverPlugin = IAssetPlugin &
   Partial<IAssetLocatePlugin> &
   Partial<IAssetParsePlugin> &
   Partial<IAssetPolishPlugin>
 
-export interface IAssetResolvedData extends IAssetPluginPolishOutput {
-  uri: string
+export interface IAssetResolvedData {
+  asset: IAsset
+  dataType: AssetDataType
+  data: unknown
+  encoding: BufferEncoding | undefined
 }
 
 export interface IAssetResolver {
@@ -24,13 +27,9 @@ export interface IAssetResolver {
    */
   use(...plugins: Array<IAssetResolverPlugin | IAssetResolverPlugin[]>): this
   /**
-   *
-   * @param api
+   * Resolve assets in the specified locations.
    * @param locations
+   * @param api
    */
-  resolve(
-    locations: string[],
-    locator: IAssetResolverLocator,
-    api: IAssetResolverApi,
-  ): Promise<Array<IAssetResolvedData | null>>
+  resolve(locations: string[], api: IAssetResolverApi): Promise<IAssetResolvedData[]>
 }

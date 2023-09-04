@@ -36,7 +36,5 @@ export class AssetTask extends AtomicTask {
         throw new Error(`[AssetService] handleTask: unknown task: ${details}`)
       }
     }
-
-    await _api.saveAssetDataMap()
   }
 }

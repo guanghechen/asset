@@ -27,39 +27,40 @@ export class AssetService implements IAssetService {
         absolute: true,
       })
       await api.create(locations)
-
-      // dump asset data map
-      await api.saveAssetDataMap()
     }
   }
 
   public async watch(configs: Iterable<IAssetServiceConfig>): Promise<IAssetServiceWatcher> {
+    const reporter = this._reporter
     const schedulers: Array<IScheduler<IAssetTaskData>> = []
     const watchers: IAssetWatcher[] = []
     for (const { api, sourceStorage, acceptedPattern } of configs) {
-      const scheduler = new AssetTaskScheduler({ api, reporter: this._reporter })
+      const scheduler = new AssetTaskScheduler({ api, reporter })
       schedulers.push(scheduler)
 
       const watcher = sourceStorage.watch(acceptedPattern, {
         onAdd: filepath => {
+          const location: string = sourceStorage.absolute(filepath)
           void scheduler.schedule({
             type: AssetChangeEvent.CREATED,
             alive: true,
-            location: filepath,
+            location,
           })
         },
         onChange: filepath => {
+          const location: string = sourceStorage.absolute(filepath)
           void scheduler.schedule({
             type: AssetChangeEvent.MODIFIED,
             alive: true,
-            location: filepath,
+            location,
           })
         },
         onUnlink: filepath => {
+          const location: string = sourceStorage.absolute(filepath)
           void scheduler.schedule({
             type: AssetChangeEvent.REMOVED,
             alive: true,
-            location: filepath,
+            location,
           })
         },
       })

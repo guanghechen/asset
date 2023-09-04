@@ -1,4 +1,3 @@
-export * from './AssetResolverLocator'
 export * from './AssetService'
 export * from './AssetServiceConfigManager'
 export * from './AssetTask'
