@@ -7,16 +7,14 @@ import type {
 } from '@guanghechen/asset-types'
 import type { Root } from '@yozora/ast'
 import { getExcerptAst } from '@yozora/ast-util'
-import type { IParser } from '@yozora/core-parser'
-import YozoraParser from '@yozora/parser'
-import type { IMarkdownAssetPolishOutput, IMarkdownPolishedData } from '../types'
+import type { IMarkdownAssetPolishOutput, IMarkdownPolishedData, IParser } from '../types'
 import { isMarkdownPolishOutput } from '../types'
 
 export interface IMarkdownPolishExcerptProps {
   /**
    * Markdown parser.
    */
-  parser?: IParser
+  parser: IParser
   /**
    * @default 140
    */
@@ -34,9 +32,8 @@ export class MarkdownPolishExcerpt implements IAssetPolishPlugin {
   protected readonly pruneLength: number
   public readonly endingSeparator: string
 
-  constructor(props: IMarkdownPolishExcerptProps = {}) {
-    this.parser =
-      props.parser ?? new YozoraParser({ defaultParseOptions: { shouldReservePosition: false } })
+  constructor(props: IMarkdownPolishExcerptProps) {
+    this.parser = props.parser
     this.pruneLength = props.pruneLength ?? 140
     this.endingSeparator = props.endingSeparator ?? '<!-- more -->'
   }

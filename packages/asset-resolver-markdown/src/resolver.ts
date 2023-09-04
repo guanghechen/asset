@@ -18,23 +18,21 @@ import type {
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
 import type { Resource, Root } from '@yozora/ast'
 import { shallowMutateAstInPreorderAsync } from '@yozora/ast-util'
-import type { IParser } from '@yozora/core-parser'
-import { YozoraParser } from '@yozora/parser'
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
-import type { IMarkdownPolishedData, IMarkdownResolvedData } from './types'
+import type { IMarkdownPolishedData, IMarkdownResolvedData, IParser } from './types'
 import { MarkdownAssetType, isMarkdownAssetPolishInput } from './types'
 
 export interface IAssetResolverMarkdownProps {
+  /**
+   * Markdown parser.
+   */
+  parser: IParser
   /**
    * Encoding of markdown files.
    * @default 'utf8'
    */
   encoding?: BufferEncoding
-  /**
-   * Markdown parser.
-   */
-  parser?: IParser
   /**
    * Check if the given file is in markdown format.
    * @default filename => /\.md$/.test(filename)
@@ -49,9 +47,8 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
   protected readonly frontmatterRegex: RegExp = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
   protected readonly resolvable: (filename: string) => boolean
 
-  constructor(props: IAssetResolverMarkdownProps = {}) {
-    this.parser =
-      props.parser ?? new YozoraParser({ defaultParseOptions: { shouldReservePosition: false } })
+  constructor(props: IAssetResolverMarkdownProps) {
+    this.parser = props.parser
     this.encoding = props.encoding ?? 'utf8'
     this.resolvable = props.resolvable ?? (filename => /\.md$/.test(filename))
   }

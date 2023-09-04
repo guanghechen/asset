@@ -9,6 +9,16 @@ import type { Definition, EcmaImport, FootnoteDefinition, Root } from '@yozora/a
 import type { IHeadingToc } from '@yozora/ast-util'
 import type { IAplayerOptions } from './types.aplayer'
 
+export interface IParser {
+  /**
+   * Processing raw markdown content into ast object.
+   * @param content     source content
+   * @param startIndex  start index of content
+   * @param endIndex    end index of contents
+   */
+  parse(contents: Iterable<string> | string): Root
+}
+
 export const MarkdownAssetType = 'markdown'
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type MarkdownAssetType = typeof MarkdownAssetType
