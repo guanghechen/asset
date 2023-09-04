@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.19](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.18...@guanghechen/asset-storage@1.0.0-alpha.19) (2023-09-04)
+
+
+### Performance Improvements
+
+* :art:  refactor @guanghechen/asset-resolver and @guanghechen/asset-api ([bf6f55f](https://github.com/guanghechen/asset/commit/bf6f55f989bf44b8afa95592d66b8ccf604bf12b))
+
+
+
+
+
 # [1.0.0-alpha.18](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.17...@guanghechen/asset-storage@1.0.0-alpha.18) (2023-09-03)
 
 **Note:** Version bump only for package @guanghechen/asset-storage

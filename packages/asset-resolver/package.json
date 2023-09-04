@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-resolver",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "description": "file asset",
   "author": {
     "name": "guanghechen",
@@ -40,8 +40,8 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-manager": "^1.0.0-alpha.1",
-    "@guanghechen/asset-types": "^1.0.0-alpha.18",
+    "@guanghechen/asset-manager": "^1.0.0-alpha.2",
+    "@guanghechen/asset-types": "^1.0.0-alpha.19",
     "@guanghechen/asset-util": "^1.0.0-alpha.10",
     "uuid": "^9.0.0"
   },

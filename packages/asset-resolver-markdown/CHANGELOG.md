@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.20](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.19...@guanghechen/asset-resolver-markdown@1.0.0-alpha.20) (2023-09-04)
+
+
+### Performance Improvements
+
+* 🎨 not rely on @yozora/parser ([a7b8fc6](https://github.com/guanghechen/asset/commit/a7b8fc67fcf6434a5197d74a209daf5765aaa751))
+
+
+
+
+
 # [1.0.0-alpha.19](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.18...@guanghechen/asset-resolver-markdown@1.0.0-alpha.19) (2023-09-03)
 
 **Note:** Version bump only for package @guanghechen/asset-resolver-markdown
