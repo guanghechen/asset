@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.21](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.20...@guanghechen/asset-api@1.0.0-alpha.21) (2023-09-05)
+
+
+### Performance Improvements
+
+* ⬆️ upgrade dependencies ([fca2f63](https://github.com/guanghechen/asset/commit/fca2f631225e3468a5df8243559e226d1d306385))
+* 🎨 use the term 'srcPath' instead of 'location' & refactor asset storage ([62970d7](https://github.com/guanghechen/asset/commit/62970d7a679e1ce344cf2710e3f9715006da2a29))
+
+
+
+
+
 # [1.0.0-alpha.20](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.19...@guanghechen/asset-api@1.0.0-alpha.20) (2023-09-04)
 
 

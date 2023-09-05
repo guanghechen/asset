@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-api",
-  "version": "1.0.0-alpha.20",
+  "version": "1.0.0-alpha.21",
   "description": "asset api",
   "author": {
     "name": "guanghechen",
@@ -40,9 +40,9 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-manager": "^1.0.0-alpha.2",
-    "@guanghechen/asset-resolver": "^1.0.0-alpha.2",
-    "@guanghechen/asset-types": "^1.0.0-alpha.19",
+    "@guanghechen/asset-manager": "^1.0.0-alpha.3",
+    "@guanghechen/asset-resolver": "^1.0.0-alpha.3",
+    "@guanghechen/asset-types": "^1.0.0-alpha.20",
     "@guanghechen/asset-util": "^1.0.0-alpha.10",
     "@guanghechen/constant": "^1.0.0-alpha.1",
     "@guanghechen/invariant": "^5.0.6",
