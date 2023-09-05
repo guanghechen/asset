@@ -8,20 +8,20 @@ export interface IAssetResolverLocator {
   dumpAssetDataMap(): Promise<IAssetDataMap>
   /**
    * Set asset to locator.
-   * @param locationId
+   * @param srcPathId
    * @param asset
    */
-  insertAsset(locationId: string, asset: IAsset | null): Promise<void>
+  insertAsset(srcPathId: string, asset: IAsset | null): Promise<void>
   /**
    * Try to locate an resolving asset.
-   * @param locationId
+   * @param srcPathId
    */
-  locateAsset(locationId: string): Promise<IAsset | null | undefined>
+  locateAsset(srcPathId: string): Promise<IAsset | null | undefined>
   /**
    * Remove asset from locator.
-   * @param locationId
+   * @param srcPathId
    */
-  removeAsset(locationId: string): Promise<void>
+  removeAsset(srcPathId: string): Promise<void>
   /**
    * Resolve asset uri prefix.
    * @param assetType

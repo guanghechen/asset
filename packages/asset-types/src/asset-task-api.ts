@@ -4,18 +4,18 @@ export interface IAssetTaskApi {
    */
   readonly delayAfterContentChanged: number
   /**
-   * Create assets on the given locations.
-   * @param locations
+   * Create assets on the given srcPaths.
+   * @param srcPaths
    */
-  create(locations: string[]): Promise<void>
+  create(srcPaths: string[]): Promise<void>
   /**
-   * Mark the assets on the locations invalid and remove them from assetManager.
-   * @param locations
+   * Mark the assets on the srcPaths invalid and remove them from assetManager.
+   * @param srcPaths
    */
-  remove(locations: string[]): Promise<void>
+  remove(srcPaths: string[]): Promise<void>
   /**
-   * Update the assets on the locations.
-   * @param locations
+   * Update the assets on the srcPaths.
+   * @param srcPaths
    */
-  update(locations: string[]): Promise<void>
+  update(srcPaths: string[]): Promise<void>
 }

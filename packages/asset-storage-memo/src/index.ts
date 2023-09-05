@@ -1,1 +1,1 @@
-export * from './MemoAssetStorage'
+export * from './MemoTargetAssetStorage'

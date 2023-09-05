@@ -22,13 +22,13 @@ export class AssetTask extends AtomicTask {
     const { _api, _data } = this
     switch (_data.type) {
       case AssetChangeEvent.CREATED:
-        await _api.create([_data.location])
+        await _api.create([_data.srcPath])
         break
       case AssetChangeEvent.REMOVED:
-        await _api.remove([_data.location])
+        await _api.remove([_data.srcPath])
         break
       case AssetChangeEvent.MODIFIED:
-        await _api.update([_data.location])
+        await _api.update([_data.srcPath])
         await delay(_api.delayAfterContentChanged)
         break
       default: {

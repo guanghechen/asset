@@ -9,35 +9,35 @@ export interface IAssetResolverApi {
   dumpAssetDataMap(): Promise<IAssetDataMap>
   /**
    * Create an initial asset.
-   * @param location
+   * @param srcPath
    */
-  initAsset(location: string): Promise<IAssetPluginLocateInput | null>
+  initAsset(srcPath: string): Promise<IAssetPluginLocateInput | null>
   /**
    * Set asset to locator.
-   * @param location
+   * @param srcPath
    * @param asset
    */
-  insertAsset(location: string, asset: IAsset | null): Promise<void>
+  insertAsset(srcPath: string, asset: IAsset | null): Promise<void>
   /**
    *
-   * @param location
+   * @param srcPath
    */
-  isRelativeLocation(location: string): boolean
+  isRelativePath(srcPath: string): boolean
   /**
-   * Load content by source file location.
-   * @param location
+   * Load content by source file srcPath.
+   * @param srcPath
    */
-  loadContent(location: string): Promise<Buffer | null>
+  loadContent(srcPath: string): Promise<Buffer | null>
   /**
    * Try to locate an resolving asset.
-   * @param location
+   * @param srcPath
    */
-  locateAsset(location: string): Promise<IAsset | null | undefined>
+  locateAsset(srcPath: string): Promise<IAsset | null | undefined>
   /**
    * Remove asset from locator.
-   * @param location
+   * @param srcPath
    */
-  removeAsset(location: string): Promise<void>
+  removeAsset(srcPath: string): Promise<void>
   /**
    * Resolve page slug.
    * @param slug

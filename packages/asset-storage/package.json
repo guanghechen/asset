@@ -42,10 +42,7 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.19",
     "@guanghechen/invariant": "^5.0.6",
-    "@guanghechen/monitor": "^1.0.0-alpha.4",
-    "@guanghechen/types": "^1.0.0-alpha.2",
-    "chokidar": "3.5.3",
-    "fast-glob": "^3.3.1"
+    "@guanghechen/monitor": "^1.0.0-alpha.4"
   },
   "devDependencies": {
     "@guanghechen/shared": "^1.0.0-alpha.3"

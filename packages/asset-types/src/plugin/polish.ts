@@ -8,10 +8,10 @@ export interface IAssetPluginPolishApi {
    */
   loadContent(pathRelativeToCurDir: string): Promise<Buffer | null>
   /**
-   * Resolve asset by locationId.
-   * @param locationId
+   * Resolve asset by srcPathId.
+   * @param srcPathId
    */
-  resolveAssetMeta(locationId: string): Promise<Readonly<IAssetMeta> | null>
+  resolveAssetMeta(srcPathId: string): Promise<Readonly<IAssetMeta> | null>
 }
 
 export interface IAssetPluginPolishNext {

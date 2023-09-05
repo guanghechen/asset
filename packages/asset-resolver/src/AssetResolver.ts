@@ -25,12 +25,12 @@ import path from 'node:path'
 
 interface ILocateStageData {
   asset: IAsset
-  location: string
+  srcPath: string
 }
 
 interface IParseStageData {
   asset: IAsset
-  location: string
+  srcPath: string
   filename: string
   data: unknown
 }
@@ -64,17 +64,17 @@ export class AssetResolver implements IAssetResolver {
     return this
   }
 
-  public async resolve(locations: string[], api: IAssetResolverApi): Promise<IAssetResolvedData[]> {
+  public async resolve(srcPaths: string[], api: IAssetResolverApi): Promise<IAssetResolvedData[]> {
     // locate stage
     const locateStageDataList: ILocateStageData[] = []
     await Promise.all(
-      locations.map(location =>
-        this._locate(location, api).then(result => {
+      srcPaths.map(srcPath =>
+        this._locate(srcPath, api).then(result => {
           if (result !== null) locateStageDataList.push(result)
           else {
             this._reporter.warn(
-              '[AssetResolver.resolve] locate stage got null, location({})',
-              location,
+              '[AssetResolver.resolve] locate stage got null, srcPath({})',
+              srcPath,
             )
           }
         }),
@@ -89,8 +89,8 @@ export class AssetResolver implements IAssetResolver {
           if (result !== null) parseStageDataList.push(result)
           else {
             this._reporter.warn(
-              '[AssetResolver.resolve] parse stage got null, location({})',
-              stageData.location,
+              '[AssetResolver.resolve] parse stage got null, srcPath({})',
+              stageData.srcPath,
             )
           }
         }),
@@ -105,8 +105,8 @@ export class AssetResolver implements IAssetResolver {
           if (result !== null) polishStageDataList.push(result)
           else {
             this._reporter.warn(
-              '[AssetResolver.resolve] polish stage got null, location({})',
-              stageData.location,
+              '[AssetResolver.resolve] polish stage got null, srcPath({})',
+              stageData.srcPath,
             )
           }
         }),
@@ -117,24 +117,24 @@ export class AssetResolver implements IAssetResolver {
   }
 
   protected async _locate(
-    location: string,
+    srcPath: string,
     api: IAssetResolverApi,
   ): Promise<ILocateStageData | null> {
-    const asset: IAsset | null | undefined = await api.locateAsset(location)
+    const asset: IAsset | null | undefined = await api.locateAsset(srcPath)
     if (asset !== undefined) {
       if (asset === null) return null
-      return { asset, location }
+      return { asset, srcPath: srcPath }
     }
-    await api.insertAsset(location, null)
+    await api.insertAsset(srcPath, null)
 
-    const input: IAssetPluginLocateInput | null = await api.initAsset(location)
+    const input: IAssetPluginLocateInput | null = await api.initAsset(srcPath)
     if (input === null) return null
 
     const { guid, hash, extname } = input
     const pluginApi: IAssetPluginLocateApi = {
-      loadContent: async relativeLocation => {
-        if (!api.isRelativeLocation(relativeLocation)) return null
-        return api.loadContent(`${location}/../${relativeLocation}`)
+      loadContent: async relativePath => {
+        if (!api.isRelativePath(relativePath)) return null
+        return api.loadContent(`${srcPath}/../${relativePath}`)
       },
       resolveSlug: slug => api.resolveSlug(slug),
       resolveUri: (type, mimetype) => api.resolveUri({ guid, type, mimetype, extname }),
@@ -166,21 +166,22 @@ export class AssetResolver implements IAssetResolver {
       categories,
       tags,
     }
-    await api.insertAsset(location, resolvedAsset)
-    return { asset: resolvedAsset, location }
+    await api.insertAsset(srcPath, resolvedAsset)
+    return { asset: resolvedAsset, srcPath: srcPath }
   }
 
   protected async _parse(
     locateStageData: ILocateStageData,
     api: IAssetResolverApi,
   ): Promise<IParseStageData | null> {
-    const { asset, location } = locateStageData
-    const filename: string = path.basename(location)
+    const { asset, srcPath } = locateStageData
+    const filename: string = path.basename(srcPath)
     const input: IAssetPluginParseInput = { type: asset.type, title: asset.title, filename }
     const pluginApi: IAssetPluginParseApi = {
-      loadContent: async relativeLocation => {
-        if (!api.isRelativeLocation(relativeLocation)) return null
-        return api.loadContent(`${location}/../${relativeLocation}`)
+      loadContent: async relativePath => {
+        if (!api.isRelativePath(relativePath)) return null
+        if (!api.isRelativePath(relativePath)) return null
+        return api.loadContent(`${srcPath}/../${relativePath}`)
       },
       resolveSlug: slug => api.resolveSlug(slug),
     }
@@ -190,24 +191,24 @@ export class AssetResolver implements IAssetResolver {
     )
 
     const result: IAssetPluginParseOutput | null = await reducer(null)
-    return { asset, location, filename, data: result?.data ?? null }
+    return { asset, srcPath: srcPath, filename, data: result?.data ?? null }
   }
 
   protected async _polish(
     parseStageData: IParseStageData,
     api: IAssetResolverApi,
   ): Promise<IPolishStageData | null> {
-    const { location, asset, filename, data } = parseStageData
+    const { srcPath, asset, filename, data } = parseStageData
     const input: IAssetPluginPolishInput = { type: asset.type, title: asset.title, filename, data }
     const pluginApi: IAssetPluginPolishApi = {
-      loadContent: async relativeLocation => {
-        if (!api.isRelativeLocation(relativeLocation)) return null
-        return api.loadContent(`${location}/../${relativeLocation}`)
+      loadContent: async relativePath => {
+        if (!api.isRelativePath(relativePath)) return null
+        return api.loadContent(`${srcPath}/../${relativePath}`)
       },
-      resolveAssetMeta: async relativeLocation => {
-        if (!api.isRelativeLocation(relativeLocation)) return null
+      resolveAssetMeta: async relativePath => {
+        if (!api.isRelativePath(relativePath)) return null
         const locateStageData: ILocateStageData | null = await this._locate(
-          `${location}/../${decodeURIComponent(relativeLocation)}`,
+          `${srcPath}/../${decodeURIComponent(relativePath)}`,
           api,
         )
         if (locateStageData === null) return null

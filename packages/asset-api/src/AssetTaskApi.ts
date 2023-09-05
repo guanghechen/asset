@@ -38,9 +38,9 @@ export class AssetTaskApi implements IAssetTaskApi {
     this._dataMapUri = props.dataMapUri
   }
 
-  public async create(locations: string[]): Promise<void> {
+  public async create(srcPaths: string[]): Promise<void> {
     const { _resolver, _api } = this
-    const results = await _resolver.resolve(locations, _api)
+    const results = await _resolver.resolve(srcPaths, _api)
     const tasks: Array<Promise<void>> = []
 
     for (const result of results) {
@@ -53,13 +53,13 @@ export class AssetTaskApi implements IAssetTaskApi {
     await Promise.all(tasks)
   }
 
-  public async remove(locations: string[]): Promise<void> {
+  public async remove(srcPaths: string[]): Promise<void> {
     const { _api } = this
     const tasks: Array<Promise<void>> = []
 
-    for (const location of locations) {
-      const asset = await _api.locateAsset(location)
-      tasks.push(_api.removeAsset(location))
+    for (const srcPath of srcPaths) {
+      const asset = await _api.locateAsset(srcPath)
+      tasks.push(_api.removeAsset(srcPath))
       if (asset) tasks.push(this._removeAsset(asset.uri))
     }
 
@@ -68,10 +68,10 @@ export class AssetTaskApi implements IAssetTaskApi {
     await Promise.all(tasks)
   }
 
-  public async update(locations: string[]): Promise<void> {
+  public async update(srcPaths: string[]): Promise<void> {
     const { _api } = this
-    await Promise.all(locations.map(location => _api.removeAsset(location)))
-    await this.create(locations)
+    await Promise.all(srcPaths.map(srcPath => _api.removeAsset(srcPath)))
+    await this.create(srcPaths)
   }
 
   protected async _saveAsset(
@@ -82,19 +82,19 @@ export class AssetTaskApi implements IAssetTaskApi {
   ): Promise<void> {
     if (data === null) return
 
-    const dstLocation: string = await this._resolveDstLocationFromUri(uri)
+    const dstPath: string = await this._resolveDstPathFromUri(uri)
     this._reporter.verbose('[saveAsset] uri: {}', uri)
 
     const { _targetStorage } = this
-    _targetStorage.assertSafeLocation(dstLocation)
-    await _targetStorage.mkdirsIfNotExists(dstLocation, false)
+    _targetStorage.assertSafePath(dstPath)
+    await _targetStorage.mkdirsIfNotExists(dstPath, false)
 
     switch (dataType) {
       case AssetDataType.BINARY:
-        await _targetStorage.writeBinaryFile(dstLocation, data as IBinaryLike)
+        await _targetStorage.writeBinaryFile(dstPath, data as IBinaryLike)
         break
       case AssetDataType.JSON: {
-        await _targetStorage.writeJsonFile(dstLocation, data)
+        await _targetStorage.writeJsonFile(dstPath, data)
         break
       }
       case AssetDataType.TEXT:
@@ -102,7 +102,7 @@ export class AssetTaskApi implements IAssetTaskApi {
           !!encoding,
           `[${this.constructor.name}.saveAsset] encoding is required for text type file`,
         )
-        await _targetStorage.writeTextFile(dstLocation, data as string, encoding)
+        await _targetStorage.writeTextFile(dstPath, data as string, encoding)
         break
       default:
         throw new Error(`[${this.constructor.name}.saveAsset] Unexpected dataType: ${dataType}`)
@@ -115,12 +115,12 @@ export class AssetTaskApi implements IAssetTaskApi {
   }
 
   protected async _removeAsset(uri: string): Promise<void> {
-    const dstLocation: string = await this._resolveDstLocationFromUri(uri)
-    this._reporter.verbose('[removeAsset] uri({}), dstLocation({})', uri, dstLocation)
-    await this._targetStorage.removeFile(dstLocation)
+    const dstPath: string = await this._resolveDstPathFromUri(uri)
+    this._reporter.verbose('[removeAsset] uri({}), dstPath({})', uri, dstPath)
+    await this._targetStorage.removeFile(dstPath)
   }
 
-  protected async _resolveDstLocationFromUri(uri: string): Promise<string> {
+  protected async _resolveDstPathFromUri(uri: string): Promise<string> {
     return this._targetStorage.absolute(uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''))
   }
 }

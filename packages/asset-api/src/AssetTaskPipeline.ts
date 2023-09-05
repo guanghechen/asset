@@ -24,7 +24,7 @@ export class AssetTaskPipeline extends Pipeline<D, T> implements IAssetTaskPipel
     const data: D = {
       type: material.type,
       alive: material.alive,
-      location: material.location,
+      srcPath: material.srcPath,
     }
     await super.push(data)
   }
@@ -32,29 +32,29 @@ export class AssetTaskPipeline extends Pipeline<D, T> implements IAssetTaskPipel
   protected override async cook(material: D, others: D[]): Promise<T | undefined> {
     if (!material.alive) return undefined
 
-    const location: string = material.location
+    const srcPath: string = material.srcPath
     switch (material.type) {
       case AssetChangeEvent.CREATED:
       case AssetChangeEvent.MODIFIED: {
         const ir: number = others.findIndex(
-          data => data.type === AssetChangeEvent.REMOVED && data.location === location,
+          data => data.type === AssetChangeEvent.REMOVED && data.srcPath === srcPath,
         )
         if (ir >= 0) {
           for (let k = 0; k <= ir; ++k) {
             const data = others[k]
-            if (data.location === location) data.alive = false
+            if (data.srcPath === srcPath) data.alive = false
           }
           return undefined
         }
 
         for (let k = 0; k < others.length; ++k) {
           const data = others[k]
-          if (data.location === location) data.alive = false
+          if (data.srcPath === srcPath) data.alive = false
         }
         break
       }
       case AssetChangeEvent.REMOVED: {
-        if (others.some(data => data.location === location)) return undefined
+        if (others.some(data => data.srcPath === srcPath)) return undefined
         break
       }
       default:

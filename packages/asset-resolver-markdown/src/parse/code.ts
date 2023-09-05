@@ -64,16 +64,16 @@ export class MarkdownParseCode implements IAssetParsePlugin {
         const sourcefileMatch = srcFileRegex.exec(meta!)
         if (sourcefileMatch == null) return o
 
-        const srcRelativeLocation: string = sourcefileMatch[1]
-        const rawContent = await api.loadContent(srcRelativeLocation)
+        const relativeSrcPath: string = sourcefileMatch[1]
+        const rawContent = await api.loadContent(relativeSrcPath)
         if (rawContent === null) return o
 
         const content = rawContent.toString(srcEncoding)
         let value: string = content
 
-        const sourcelineMatch = srcLineRegex.exec(meta!)
-        if (sourcelineMatch != null) {
-          const lineIntervals: Array<[number, number]> = collectIntervals(sourcelineMatch[1])
+        const srcLineMatch = srcLineRegex.exec(meta!)
+        if (srcLineMatch != null) {
+          const lineIntervals: Array<[number, number]> = collectIntervals(srcLineMatch[1])
 
           let commonIndent = Number.MAX_SAFE_INTEGER
           if (lineIntervals.length > 0) {

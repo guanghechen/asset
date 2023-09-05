@@ -23,10 +23,10 @@ export class AssetService implements IAssetService {
 
   public async build(configs: Iterable<IAssetServiceConfig>): Promise<void> {
     for (const { api, sourceStorage, acceptedPattern } of configs) {
-      const locations = await sourceStorage.collectAssetLocations(acceptedPattern, {
+      const srcPaths = await sourceStorage.collectAssetSrcPaths(acceptedPattern, {
         absolute: true,
       })
-      await api.create(locations)
+      await api.create(srcPaths)
     }
   }
 
@@ -40,27 +40,27 @@ export class AssetService implements IAssetService {
 
       const watcher = sourceStorage.watch(acceptedPattern, {
         onAdd: filepath => {
-          const location: string = sourceStorage.absolute(filepath)
+          const srcPath: string = sourceStorage.absolute(filepath)
           void scheduler.schedule({
             type: AssetChangeEvent.CREATED,
             alive: true,
-            location,
+            srcPath,
           })
         },
         onChange: filepath => {
-          const location: string = sourceStorage.absolute(filepath)
+          const srcPath: string = sourceStorage.absolute(filepath)
           void scheduler.schedule({
             type: AssetChangeEvent.MODIFIED,
             alive: true,
-            location,
+            srcPath,
           })
         },
         onUnlink: filepath => {
-          const location: string = sourceStorage.absolute(filepath)
+          const srcPath: string = sourceStorage.absolute(filepath)
           void scheduler.schedule({
             type: AssetChangeEvent.REMOVED,
             alive: true,
-            location,
+            srcPath,
           })
         },
       })

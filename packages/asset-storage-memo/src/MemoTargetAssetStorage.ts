@@ -11,24 +11,24 @@ import type {
 import invariant from '@guanghechen/invariant'
 import path from 'node:path'
 
-export interface IMemoAssetStorageProps {
+export interface IMemoTargetAssetStorageProps {
   rootDir: string
   initialData: Iterable<[string, IFileItem | IFolderItem]>
 }
 
-export class MemoAssetStorage extends AssetTargetStorage implements IAssetTargetStorage {
+export class MemoTargetAssetStorage extends AssetTargetStorage implements IAssetTargetStorage {
   protected readonly cache: Map<string, IFileItem | IFolderItem>
 
-  constructor(props: IMemoAssetStorageProps) {
+  constructor(props: IMemoTargetAssetStorageProps) {
     const { rootDir, initialData } = props
-    super({ rootDir })
+    super({ rootDir, caseSensitive: true })
     this.cache = new Map(initialData)
   }
 
   public override async mkdirsIfNotExists(filepath: string, isDir: boolean): Promise<void> {
     const dirPath = isDir ? filepath : path.dirname(filepath)
     for (let p = dirPath; p.length > 0; ) {
-      const identifier = this.identity(p)
+      const identifier = this.identify(p)
       if (this.cache.has(identifier)) break
 
       this.cache.set(identifier, { type: FileType.FOLDER, absolutePath: this.absolute(p) })
@@ -40,7 +40,7 @@ export class MemoAssetStorage extends AssetTargetStorage implements IAssetTarget
   }
 
   public override async writeBinaryFile(filepath: string, content: Buffer): Promise<void> {
-    const identifier = this.identity(filepath)
+    const identifier = this.identify(filepath)
     const item = this.cache.get(identifier)
     invariant(
       !item || (item.type === FileType.FILE && item.contentType === AssetDataType.BINARY),
@@ -73,7 +73,7 @@ export class MemoAssetStorage extends AssetTargetStorage implements IAssetTarget
     content: string,
     encoding: BufferEncoding,
   ): Promise<void> {
-    const identifier = this.identity(filepath)
+    const identifier = this.identify(filepath)
     const item = this.cache.get(identifier)
     invariant(
       !item || (item.type === FileType.FILE && item.contentType === AssetDataType.TEXT),
@@ -101,7 +101,7 @@ export class MemoAssetStorage extends AssetTargetStorage implements IAssetTarget
   }
 
   public override async writeJsonFile(filepath: string, content: unknown): Promise<void> {
-    const identifier = this.identity(filepath)
+    const identifier = this.identify(filepath)
     const item = this.cache.get(identifier)
     invariant(
       !item || (item.type === FileType.FILE && item.contentType === AssetDataType.JSON),
@@ -129,7 +129,7 @@ export class MemoAssetStorage extends AssetTargetStorage implements IAssetTarget
   }
 
   public override async removeFile(filepath: string): Promise<void> {
-    const identifier = this.identity(filepath)
+    const identifier = this.identify(filepath)
     this.cache.delete(identifier)
 
     // Notify

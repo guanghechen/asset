@@ -17,12 +17,12 @@ interface IAssetResolverLocatorProps {
 
 export class AssetResolverLocator implements IAssetResolverLocator {
   protected readonly _assetManager: IAssetManager
-  protected readonly _locationMap: Map<string, IAsset | null> = new Map()
+  protected readonly _srcPathMap: Map<string, IAsset | null> = new Map()
   protected readonly _resolveUriPrefix: (assetType: string, mimeType: string) => Promise<string>
 
   constructor(props: IAssetResolverLocatorProps) {
     this._assetManager = new AssetManager()
-    this._locationMap = new Map()
+    this._srcPathMap = new Map()
     this._resolveUriPrefix = props.resolveUriPrefix
   }
 
@@ -30,20 +30,20 @@ export class AssetResolverLocator implements IAssetResolverLocator {
     return this._assetManager.dump()
   }
 
-  public async insertAsset(locationId: string, asset: IAsset | null): Promise<void> {
+  public async insertAsset(srcPathId: string, asset: IAsset | null): Promise<void> {
     if (asset) this._assetManager.insert(asset)
-    this._locationMap.set(locationId, asset)
+    this._srcPathMap.set(srcPathId, asset)
   }
 
-  public async locateAsset(locationId: string): Promise<IAsset | null | undefined> {
-    return this._locationMap.get(locationId)
+  public async locateAsset(srcPathId: string): Promise<IAsset | null | undefined> {
+    return this._srcPathMap.get(srcPathId)
   }
 
-  public async removeAsset(locationId: string): Promise<void> {
-    const asset = this._locationMap.get(locationId)
+  public async removeAsset(srcPathId: string): Promise<void> {
+    const asset = this._srcPathMap.get(srcPathId)
     if (asset) {
       this._assetManager.remove(asset.guid)
-      this._locationMap.delete(locationId)
+      this._srcPathMap.delete(srcPathId)
     }
   }
 

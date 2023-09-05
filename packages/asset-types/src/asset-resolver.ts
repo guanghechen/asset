@@ -27,9 +27,9 @@ export interface IAssetResolver {
    */
   use(...plugins: Array<IAssetResolverPlugin | IAssetResolverPlugin[]>): this
   /**
-   * Resolve assets in the specified locations.
-   * @param locations
+   * Resolve assets in the specified srcPaths.
+   * @param srcPaths
    * @param api
    */
-  resolve(locations: string[], api: IAssetResolverApi): Promise<IAssetResolvedData[]>
+  resolve(srcPaths: string[], api: IAssetResolverApi): Promise<IAssetResolvedData[]>
 }

@@ -49,18 +49,18 @@ export interface IAssetSourceStorage extends IAssetPathResolver {
   readonly caseSensitive: boolean
 
   /**
-   * Ensure the location is existed.
-   * @param location absolute path or relative path to the {rootDir}
+   * Ensure the srcPath is existed.
+   * @param srcPath absolute path or relative path to the {rootDir}
    */
-  assertExistedLocation(location: string): Promise<void | never>
+  assertExistedPath(srcPath: string): Promise<void | never>
 
   /**
-   * Ensure the location is existed and it pointer to a file.
-   * @param location absolute path or relative path to the {rootDir}
+   * Ensure the srcPath is existed and it pointer to a file.
+   * @param srcPath absolute path or relative path to the {rootDir}
    */
-  assertExistedFile(location: string): Promise<void | never>
+  assertExistedFile(srcPath: string): Promise<void | never>
 
-  collectAssetLocations(patterns: string[], options: IAssetCollectOptions): Promise<string[]>
+  collectAssetSrcPaths(patterns: string[], options: IAssetCollectOptions): Promise<string[]>
 
   readBinaryFile(filepath: string): Promise<IBinaryLike>
 
