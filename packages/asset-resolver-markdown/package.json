@@ -43,7 +43,7 @@
     "@guanghechen/asset-types": "^1.0.0-alpha.19",
     "@guanghechen/asset-util": "^1.0.0-alpha.10",
     "@guanghechen/helper-is": "^5.0.6",
-    "@guanghechen/parse-lineno": "^2.3.6",
+    "@guanghechen/parse-lineno": "^2.3.7",
     "@yozora/ast": "^2.2.0",
     "@yozora/ast-util": "^2.2.0",
     "@yozora/character": "^2.2.0",

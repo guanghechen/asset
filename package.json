@@ -40,8 +40,8 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@babel/core": "7.22.11",
-    "@babel/eslint-parser": "7.22.11",
+    "@babel/core": "7.22.15",
+    "@babel/eslint-parser": "7.22.15",
     "@babel/plugin-syntax-import-assertions": "^7.22.5",
     "@guanghechen/conventional-changelog": "^5.0.1",
     "@guanghechen/eslint-config": "^5.0.2",
