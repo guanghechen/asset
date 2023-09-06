@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.21](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.20...@guanghechen/asset-types@1.0.0-alpha.21) (2023-09-06)
+
+
+### Performance Improvements
+
+* 🔧 update entries, support both esm and cjs ([1c422df](https://github.com/guanghechen/asset/commit/1c422df615d11c2f0a3adbba913b2652c802dd2f))
+
+
+
+
+
 # [1.0.0-alpha.20](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.19...@guanghechen/asset-types@1.0.0-alpha.20) (2023-09-05)
 
 
