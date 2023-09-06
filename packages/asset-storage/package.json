@@ -42,9 +42,9 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.20",
     "@guanghechen/invariant": "^5.0.6",
-    "@guanghechen/monitor": "^1.0.0-alpha.5"
+    "@guanghechen/monitor": "^1.0.0-alpha.6"
   },
   "devDependencies": {
-    "@guanghechen/shared": "^1.0.0-alpha.3"
+    "@guanghechen/shared": "^1.0.0-alpha.4"
   }
 }
