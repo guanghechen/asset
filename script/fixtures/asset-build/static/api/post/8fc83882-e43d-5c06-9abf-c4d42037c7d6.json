@@ -74,28 +74,6 @@
             ]
           }
         ]
-      },
-      {
-        "type": "definition",
-        "identifier": "b",
-        "label": "b",
-        "url": "/post/b"
-      },
-      {
-        "type": "footnoteDefinition",
-        "identifier": "footnote-1",
-        "label": "1",
-        "children": [
-          {
-            "type": "paragraph",
-            "children": [
-              {
-                "type": "text",
-                "value": "This is a footnote."
-              }
-            ]
-          }
-        ]
       }
     ]
   },
@@ -170,7 +148,6 @@
       }
     ]
   },
-  "timeToRead": 38,
   "excerpt": {
     "type": "root",
     "children": [
@@ -206,5 +183,6 @@
         "value": "#include <cstdio>\n\nint main() {\n  printf(\"Hello, world!\");\n  return 0;\n}\n"
       }
     ]
-  }
+  },
+  "timeToRead": 3
 }

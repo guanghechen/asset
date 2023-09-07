@@ -42,6 +42,6 @@
   "dependencies": {
     "@guanghechen/asset-storage": "^1.0.0-alpha.21",
     "@guanghechen/asset-types": "^1.0.0-alpha.21",
-    "@guanghechen/invariant": "^5.0.6"
+    "@guanghechen/invariant": "^5.0.7"
   }
 }

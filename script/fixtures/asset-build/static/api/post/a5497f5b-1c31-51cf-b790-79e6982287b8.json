@@ -37,12 +37,6 @@
             ]
           }
         ]
-      },
-      {
-        "type": "definition",
-        "identifier": "a",
-        "label": "a",
-        "url": "/home/about/me"
       }
     ]
   },
@@ -72,7 +66,6 @@
       }
     ]
   },
-  "timeToRead": 2,
   "excerpt": {
     "type": "root",
     "children": [
@@ -111,13 +104,8 @@
             ]
           }
         ]
-      },
-      {
-        "type": "definition",
-        "identifier": "a",
-        "label": "a",
-        "url": "/home/about/me"
       }
     ]
-  }
+  },
+  "timeToRead": 1
 }

@@ -1,0 +1,84 @@
+{
+  "assets": [
+    {
+      "guid": "8fc83882-e43d-5c06-9abf-c4d42037c7d6",
+      "hash": "407ba282c0ef340ad07d05f7745ae93188618524",
+      "type": "markdown",
+      "mimetype": "application/json",
+      "extname": "md",
+      "title": "Simple asset resolver",
+      "description": "A simple asset resolve script for collecting and parsing asset files to structured data.",
+      "uri": "/api/post/8fc83882-e43d-5c06-9abf-c4d42037c7d6.json",
+      "slug": "/home/about/me",
+      "createdAt": "2020-07-26T02:00:57.614Z",
+      "updatedAt": "2020-07-27T09:03:57.614Z",
+      "categories": [
+        [
+          "a",
+          "b",
+          "c"
+        ],
+        [
+          "a",
+          "b",
+          "d"
+        ],
+        [
+          "a",
+          "b",
+          "e"
+        ]
+      ],
+      "tags": [
+        "随笔",
+        "essay",
+        "note"
+      ]
+    },
+    {
+      "guid": "a5497f5b-1c31-51cf-b790-79e6982287b8",
+      "hash": "3599bb76ce6a480f1454c3fd7ab9baf0a1662997",
+      "type": "markdown",
+      "mimetype": "application/json",
+      "extname": "md",
+      "title": "b",
+      "description": "b",
+      "uri": "/api/post/a5497f5b-1c31-51cf-b790-79e6982287b8.json",
+      "slug": "/post/b",
+      "createdAt": "2022-11-12T10:57:15.438Z",
+      "updatedAt": "2022-11-12T10:57:15.438Z",
+      "categories": [],
+      "tags": []
+    },
+    {
+      "guid": "70d1c1a0-4753-5ca5-99a7-82c076128879",
+      "hash": "a8db3a9a3512903f110a0c4848d98ecb0f57a5ff",
+      "type": "file",
+      "mimetype": "text/plain",
+      "extname": "txt",
+      "title": "a",
+      "description": null,
+      "uri": "/asset/file/post/70d1c1a0-4753-5ca5-99a7-82c076128879.txt",
+      "slug": null,
+      "createdAt": "2022-11-12T10:57:15.437Z",
+      "updatedAt": "2022-11-12T10:57:15.438Z",
+      "categories": [],
+      "tags": []
+    },
+    {
+      "guid": "b5a50095-36f3-5282-baa2-3a46b79e4ee8",
+      "hash": "a8f3120380649fd4f19f0aca14367e2c916af583",
+      "type": "file",
+      "mimetype": "text/x-c++src",
+      "extname": "cpp",
+      "title": "d",
+      "description": null,
+      "uri": "/asset/file/post/b5a50095-36f3-5282-baa2-3a46b79e4ee8.cpp",
+      "slug": null,
+      "createdAt": "2022-11-12T10:57:15.438Z",
+      "updatedAt": "2022-11-12T10:57:15.438Z",
+      "categories": [],
+      "tags": []
+    }
+  ]
+}
