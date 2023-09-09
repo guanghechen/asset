@@ -19,6 +19,17 @@ export interface IParser {
   parse(contents: Iterable<string> | string): Root
 }
 
+export interface IPreviewImageItem {
+  /**
+   * Image url
+   */
+  src: string
+  /**
+   * Alt of image.
+   */
+  alt: string
+}
+
 export const MarkdownAssetType = 'markdown'
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type MarkdownAssetType = typeof MarkdownAssetType
@@ -82,6 +93,10 @@ export interface IMarkdownPolishedData {
    * Markdown post excerpt ast.
    */
   excerpt?: Root
+  /**
+   * Images collected from the ast.
+   */
+  images?: IPreviewImageItem[]
   /**
    * Time to read the post. (ms)
    */
