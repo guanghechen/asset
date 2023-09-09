@@ -40,7 +40,7 @@ export class AssetService implements IAssetService {
 
       const watcher = sourceStorage.watch(acceptedPattern, {
         onAdd: filepath => {
-          const srcPath: string = sourceStorage.absolute(filepath)
+          const srcPath: string = sourceStorage.pathResolver.absolute(filepath)
           void scheduler.schedule({
             type: AssetChangeEvent.CREATED,
             alive: true,
@@ -48,15 +48,15 @@ export class AssetService implements IAssetService {
           })
         },
         onChange: filepath => {
-          const srcPath: string = sourceStorage.absolute(filepath)
+          const srcPath: string = sourceStorage.pathResolver.absolute(filepath)
           void scheduler.schedule({
             type: AssetChangeEvent.MODIFIED,
             alive: true,
             srcPath,
           })
         },
-        onUnlink: filepath => {
-          const srcPath: string = sourceStorage.absolute(filepath)
+        onRemove: filepath => {
+          const srcPath: string = sourceStorage.pathResolver.absolute(filepath)
           void scheduler.schedule({
             type: AssetChangeEvent.REMOVED,
             alive: true,

@@ -1,6 +1,7 @@
 import { AssetTargetStorage } from '@guanghechen/asset-storage'
 import { AssetDataType, FileType } from '@guanghechen/asset-types'
 import type {
+  IAssetPathResolver,
   IAssetTargetStorage,
   IBinaryFileItem,
   IJsonFileItem,
@@ -10,19 +11,18 @@ import { existsSync } from 'node:fs'
 import { mkdir, stat, unlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
-export interface IFileTargetAssetStorageProps {
-  rootDir: string
-  caseSensitive?: boolean
+export interface IFileAssetTargetStorageProps {
+  pathResolver: IAssetPathResolver
   prettier?: boolean
 }
 
-export class FileTargetAssetStorage extends AssetTargetStorage implements IAssetTargetStorage {
+export class FileAssetTargetStorage extends AssetTargetStorage implements IAssetTargetStorage {
   protected readonly _prettier: boolean
 
-  constructor(props: IFileTargetAssetStorageProps) {
-    const { rootDir, caseSensitive = true, prettier = true } = props
+  constructor(props: IFileAssetTargetStorageProps) {
+    const { pathResolver, prettier = true } = props
 
-    super({ rootDir, caseSensitive })
+    super({ pathResolver })
     this._prettier = prettier
   }
 
@@ -33,7 +33,7 @@ export class FileTargetAssetStorage extends AssetTargetStorage implements IAsset
   }
 
   public override async writeBinaryFile(filepath: string, content: Buffer): Promise<void> {
-    const absolutePath: string = this.absolute(filepath)
+    const absolutePath: string = this.pathResolver.absolute(filepath)
     await writeFile(absolutePath, content)
 
     const fileStat = await stat(filepath)
@@ -59,7 +59,7 @@ export class FileTargetAssetStorage extends AssetTargetStorage implements IAsset
     content: string,
     encoding: BufferEncoding,
   ): Promise<void> {
-    const absolutePath: string = this.absolute(filepath)
+    const absolutePath: string = this.pathResolver.absolute(filepath)
     await writeFile(absolutePath, content, encoding)
 
     const fileStat = await stat(filepath)
@@ -81,7 +81,7 @@ export class FileTargetAssetStorage extends AssetTargetStorage implements IAsset
   }
 
   public override async writeJsonFile(filepath: string, content: unknown): Promise<void> {
-    const absolutePath: string = this.absolute(filepath)
+    const absolutePath: string = this.pathResolver.absolute(filepath)
     const s: string = this._prettier ? JSON.stringify(content, null, 2) : JSON.stringify(content)
     await writeFile(absolutePath, s, 'utf8')
 

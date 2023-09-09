@@ -18,7 +18,7 @@ export interface IAssetCollectOptions {
 export interface IAssetWatchOptions {
   onAdd(filepath: string): void
   onChange(filepath: string): void
-  onUnlink(filepath: string): void
+  onRemove(filepath: string): void
 }
 
 export interface IAssetTargetStorageMonitor {
@@ -45,19 +45,9 @@ export type IParametersOfOnJsonFileWritten = Parameters<
 export type IParametersOfOnFileWritten = Parameters<IAssetTargetStorageMonitor['onFileWritten']>
 export type IParametersOfOnFileRemoved = Parameters<IAssetTargetStorageMonitor['onFileRemoved']>
 
-export interface IAssetSourceStorage extends IAssetPathResolver {
-  readonly caseSensitive: boolean
+export interface IAssetSourceStorage {
+  readonly pathResolver: IAssetPathResolver
 
-  /**
-   * Ensure the srcPath is existed.
-   * @param srcPath absolute path or relative path to the {rootDir}
-   */
-  assertExistedPath(srcPath: string): Promise<void | never>
-
-  /**
-   * Ensure the srcPath is existed and it pointer to a file.
-   * @param srcPath absolute path or relative path to the {rootDir}
-   */
   assertExistedFile(srcPath: string): Promise<void | never>
 
   collectAssetSrcPaths(patterns: string[], options: IAssetCollectOptions): Promise<string[]>
@@ -73,7 +63,8 @@ export interface IAssetSourceStorage extends IAssetPathResolver {
   watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher
 }
 
-export interface IAssetTargetStorage extends IAssetPathResolver {
+export interface IAssetTargetStorage {
+  readonly pathResolver: IAssetPathResolver
   readonly destroyed: boolean
 
   destroy(): Promise<void>

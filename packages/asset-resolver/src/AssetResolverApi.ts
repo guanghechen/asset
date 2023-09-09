@@ -37,33 +37,33 @@ export class AssetResolverApi implements IAssetResolverApi {
   }
 
   public insertAsset(srcPath: string, asset: IAsset | null): Promise<void> {
-    const id: string = this._sourceStorage.identify(srcPath)
+    const id: string = this._sourceStorage.pathResolver.identify(srcPath)
     return this._locator.insertAsset(id, asset)
   }
 
   public locateAsset(srcPath: string): Promise<IAsset | null | undefined> {
-    const id: string = this._sourceStorage.identify(srcPath)
+    const id: string = this._sourceStorage.pathResolver.identify(srcPath)
     return this._locator.locateAsset(id)
   }
 
   public removeAsset(srcPath: string): Promise<void> {
-    const id: string = this._sourceStorage.identify(srcPath)
+    const id: string = this._sourceStorage.pathResolver.identify(srcPath)
     return this._locator.removeAsset(id)
   }
 
   public async initAsset(srcPath: string): Promise<IAssetPluginLocateInput | null> {
     const { _sourceStorage } = this
-    _sourceStorage.assertSafePath(srcPath)
+    _sourceStorage.pathResolver.assertSafePath(srcPath)
     await _sourceStorage.assertExistedFile(srcPath)
 
-    const id: string = _sourceStorage.identify(srcPath)
+    const id: string = _sourceStorage.pathResolver.identify(srcPath)
     const guid: string = uuid(`#path-${id}`, this.GUID_NAMESPACE)
 
     const stat = await _sourceStorage.statFile(srcPath)
     const content: Buffer | null = await _sourceStorage.readBinaryFile(srcPath)
     const hash: string = calcFingerprint(content)
     const filename: string = path.basename(srcPath)
-    const src: string = normalizeUrlPath(_sourceStorage.relative(srcPath))
+    const src: string = normalizeUrlPath(_sourceStorage.pathResolver.relative(srcPath))
     const createdAt: string = new Date(stat.birthtime).toISOString()
     const updatedAt: string = new Date(stat.mtime).toISOString()
     const extname: string | undefined = srcPath.match(extnameRegex)?.[1]
@@ -75,12 +75,12 @@ export class AssetResolverApi implements IAssetResolverApi {
   }
 
   public isRelativePath(srcPath: string): boolean {
-    return this._sourceStorage.isSafePath(srcPath)
+    return this._sourceStorage.pathResolver.isSafePath(srcPath)
   }
 
   public async loadContent(srcPath_: string): Promise<Buffer> {
-    const srcPath: string = this._sourceStorage.absolute(srcPath_)
-    this._sourceStorage.assertSafePath(srcPath)
+    const srcPath: string = this._sourceStorage.pathResolver.absolute(srcPath_)
+    this._sourceStorage.pathResolver.assertSafePath(srcPath)
     await this._sourceStorage.assertExistedFile(srcPath)
     const content: Buffer = await this._sourceStorage.readBinaryFile(srcPath)
     return content

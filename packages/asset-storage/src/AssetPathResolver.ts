@@ -27,22 +27,35 @@ export class AssetPathResolver implements IAssetPathResolver {
 
   public absolute(filepath: string): string {
     const absoluteFilepath = this._absolute(this.rootDir, filepath)
-    this.assertSafePath(absoluteFilepath)
+    const relativeFilepath = this._relative(this.rootDir, absoluteFilepath)
+    invariant(
+      this._isSafePath(relativeFilepath),
+      `[assertSafePath] !!!unsafe filepath. rootDir: ${this.rootDir}, filepath: ${filepath}`,
+    )
     return absoluteFilepath
   }
 
+  public relative(filepath: string): string {
+    const absoluteFilepath = this._absolute(this.rootDir, filepath)
+    const relativeFilepath = this._relative(this.rootDir, absoluteFilepath)
+    invariant(
+      this._isSafePath(relativeFilepath),
+      `[assertSafePath] !!!unsafe filepath. rootDir: ${this.rootDir}, filepath: ${filepath}`,
+    )
+    return relativeFilepath
+  }
+
   public identify(filepath: string): string {
-    let relativePath: string = this.relative(filepath)
-    relativePath = relativePath.replace(/[/\\]+/g, '/').replace(/[/]?$/, '/')
-    return this.caseSensitive ? relativePath : relativePath.toLowerCase()
+    const p: string = this.relative(filepath)
+      .replace(/[/\\]+/g, '/')
+      .replace(/[/]?$/, '/')
+    return this.caseSensitive ? p : p.toLowerCase()
   }
 
   public isSafePath(filepath: string): boolean {
-    return !this.relative(filepath).startsWith('..')
-  }
-
-  public relative(filepath: string): string {
-    return this._relative(this.rootDir, filepath)
+    const absoluteFilepath: string = this._absolute(this.rootDir, filepath)
+    const relativeFilepath: string = this._relative(this.rootDir, absoluteFilepath)
+    return this._isSafePath(relativeFilepath)
   }
 
   protected _absolute(cwd: string, filepath: string): string {
@@ -50,7 +63,13 @@ export class AssetPathResolver implements IAssetPathResolver {
     return path.resolve(cwd, path.normalize(filepath))
   }
 
-  protected _relative(cwd: string, filepath: string): string {
-    return path.normalize(path.relative(cwd, this._absolute(cwd, filepath)))
+  protected _relative(cwd: string, absoluteFilepath: string): string {
+    const relativeFilepath: string = path.relative(cwd, absoluteFilepath)
+    const normalizedFilepath: string = path.normalize(relativeFilepath)
+    return normalizedFilepath
+  }
+
+  protected _isSafePath(relativeFilepath: string): boolean {
+    return !relativeFilepath.startsWith('..')
   }
 }

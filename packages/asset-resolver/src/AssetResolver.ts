@@ -180,7 +180,6 @@ export class AssetResolver implements IAssetResolver {
     const pluginApi: IAssetPluginParseApi = {
       loadContent: async relativePath => {
         if (!api.isRelativePath(relativePath)) return null
-        if (!api.isRelativePath(relativePath)) return null
         return api.loadContent(`${srcPath}/../${relativePath}`)
       },
       resolveSlug: slug => api.resolveSlug(slug),

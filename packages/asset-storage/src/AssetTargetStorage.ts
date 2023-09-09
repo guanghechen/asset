@@ -1,4 +1,5 @@
 import type {
+  IAssetPathResolver,
   IAssetTargetStorage,
   IAssetTargetStorageMonitor,
   IParametersOfOnBinaryFileWritten,
@@ -10,14 +11,14 @@ import type {
 import { Monitor } from '@guanghechen/monitor'
 import type { IMonitor, IMonitorUnsubscribe } from '@guanghechen/monitor'
 import { noop } from '@guanghechen/shared'
-import { AssetPathResolver } from './AssetPathResolver'
 
 export interface IAssetTargetStorageProps {
-  rootDir: string
-  caseSensitive: boolean
+  pathResolver: IAssetPathResolver
 }
 
-export abstract class AssetTargetStorage extends AssetPathResolver implements IAssetTargetStorage {
+export abstract class AssetTargetStorage implements IAssetTargetStorage {
+  public readonly pathResolver: IAssetPathResolver
+
   private _destroyed: boolean
   protected readonly _monitors: {
     onBinaryFileWritten: IMonitor<IParametersOfOnBinaryFileWritten>
@@ -28,9 +29,7 @@ export abstract class AssetTargetStorage extends AssetPathResolver implements IA
   }
 
   constructor(props: IAssetTargetStorageProps) {
-    const { rootDir, caseSensitive } = props
-
-    super({ rootDir, caseSensitive })
+    this.pathResolver = props.pathResolver
     this._monitors = {
       onBinaryFileWritten: new Monitor<IParametersOfOnBinaryFileWritten>('onBinaryFileWritten'),
       onTextFileWritten: new Monitor<IParametersOfOnTextFileWritten>('onTextFileWritten'),

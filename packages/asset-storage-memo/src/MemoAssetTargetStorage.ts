@@ -1,6 +1,7 @@
 import { AssetTargetStorage } from '@guanghechen/asset-storage'
 import { AssetDataType, FileType } from '@guanghechen/asset-types'
 import type {
+  IAssetPathResolver,
   IAssetTargetStorage,
   IBinaryFileItem,
   IFileItem,
@@ -11,27 +12,30 @@ import type {
 import invariant from '@guanghechen/invariant'
 import path from 'node:path'
 
-export interface IMemoTargetAssetStorageProps {
-  rootDir: string
+export interface IMemoAssetTargetStorageProps {
+  pathResolver: IAssetPathResolver
   initialData: Iterable<[string, IFileItem | IFolderItem]>
 }
 
-export class MemoTargetAssetStorage extends AssetTargetStorage implements IAssetTargetStorage {
-  protected readonly cache: Map<string, IFileItem | IFolderItem>
+export class MemoAssetTargetStorage extends AssetTargetStorage implements IAssetTargetStorage {
+  protected readonly _cache: Map<string, IFileItem | IFolderItem>
 
-  constructor(props: IMemoTargetAssetStorageProps) {
-    const { rootDir, initialData } = props
-    super({ rootDir, caseSensitive: true })
-    this.cache = new Map(initialData)
+  constructor(props: IMemoAssetTargetStorageProps) {
+    const { pathResolver, initialData } = props
+    super({ pathResolver })
+    this._cache = new Map(initialData)
   }
 
   public override async mkdirsIfNotExists(filepath: string, isDir: boolean): Promise<void> {
     const dirPath = isDir ? filepath : path.dirname(filepath)
     for (let p = dirPath; p.length > 0; ) {
-      const identifier = this.identify(p)
-      if (this.cache.has(identifier)) break
+      const identifier = this.pathResolver.identify(p)
+      if (this._cache.has(identifier)) break
 
-      this.cache.set(identifier, { type: FileType.FOLDER, absolutePath: this.absolute(p) })
+      this._cache.set(identifier, {
+        type: FileType.FOLDER,
+        absolutePath: this.pathResolver.absolute(p),
+      })
 
       const q = path.dirname(p)
       if (p === q) break
@@ -40,14 +44,14 @@ export class MemoTargetAssetStorage extends AssetTargetStorage implements IAsset
   }
 
   public override async writeBinaryFile(filepath: string, content: Buffer): Promise<void> {
-    const identifier = this.identify(filepath)
-    const item = this.cache.get(identifier)
+    const identifier = this.pathResolver.identify(filepath)
+    const item = this._cache.get(identifier)
     invariant(
       !item || (item.type === FileType.FILE && item.contentType === AssetDataType.BINARY),
-      `[${this.constructor.name}.writeFile] invalid filepath: ${filepath}`,
+      `[${this.constructor.name}.writeBinaryFile] invalid filepath: ${filepath}`,
     )
 
-    const absolutePath: string = this.absolute(filepath)
+    const absolutePath: string = this.pathResolver.absolute(filepath)
     await this.mkdirsIfNotExists(absolutePath, false)
 
     const newItem: IBinaryFileItem = {
@@ -61,7 +65,7 @@ export class MemoTargetAssetStorage extends AssetTargetStorage implements IAsset
         mtime: new Date(),
       },
     }
-    this.cache.set(identifier, newItem)
+    this._cache.set(identifier, newItem)
 
     // Notify
     this._monitors.onBinaryFileWritten.notify(newItem)
@@ -73,15 +77,16 @@ export class MemoTargetAssetStorage extends AssetTargetStorage implements IAsset
     content: string,
     encoding: BufferEncoding,
   ): Promise<void> {
-    const identifier = this.identify(filepath)
-    const item = this.cache.get(identifier)
+    const identifier = this.pathResolver.identify(filepath)
+    const item = this._cache.get(identifier)
     invariant(
       !item || (item.type === FileType.FILE && item.contentType === AssetDataType.TEXT),
-      `[${this.constructor.name}.writeFile] invalid filepath: ${filepath}`,
+      `[${this.constructor.name}.writeTextFile] invalid filepath: ${filepath}`,
     )
 
-    const absolutePath: string = this.absolute(filepath)
+    const absolutePath: string = this.pathResolver.absolute(filepath)
     await this.mkdirsIfNotExists(absolutePath, false)
+
     const newItem: ITextFileItem = {
       type: FileType.FILE,
       contentType: AssetDataType.TEXT,
@@ -93,7 +98,7 @@ export class MemoTargetAssetStorage extends AssetTargetStorage implements IAsset
         mtime: new Date(),
       },
     }
-    this.cache.set(identifier, newItem)
+    this._cache.set(identifier, newItem)
 
     // Notify
     this._monitors.onTextFileWritten.notify(newItem)
@@ -101,15 +106,16 @@ export class MemoTargetAssetStorage extends AssetTargetStorage implements IAsset
   }
 
   public override async writeJsonFile(filepath: string, content: unknown): Promise<void> {
-    const identifier = this.identify(filepath)
-    const item = this.cache.get(identifier)
+    const identifier = this.pathResolver.identify(filepath)
+    const item = this._cache.get(identifier)
     invariant(
       !item || (item.type === FileType.FILE && item.contentType === AssetDataType.JSON),
-      `[${this.constructor.name}.writeFile] invalid filepath: ${filepath}`,
+      `[${this.constructor.name}.writeJsonFile] invalid filepath: ${filepath}`,
     )
 
-    const absolutePath: string = this.absolute(filepath)
+    const absolutePath: string = this.pathResolver.absolute(filepath)
     await this.mkdirsIfNotExists(absolutePath, false)
+
     const newItem: IJsonFileItem = {
       type: FileType.FILE,
       contentType: AssetDataType.JSON,
@@ -121,7 +127,7 @@ export class MemoTargetAssetStorage extends AssetTargetStorage implements IAsset
         mtime: new Date(),
       },
     }
-    this.cache.set(identifier, newItem)
+    this._cache.set(identifier, newItem)
 
     // Notify
     this._monitors.onJsonFileWritten.notify(newItem)
@@ -129,8 +135,8 @@ export class MemoTargetAssetStorage extends AssetTargetStorage implements IAsset
   }
 
   public override async removeFile(filepath: string): Promise<void> {
-    const identifier = this.identify(filepath)
-    this.cache.delete(identifier)
+    const identifier = this.pathResolver.identify(filepath)
+    this._cache.delete(identifier)
 
     // Notify
     this._monitors.onFileRemoved.notify(filepath)

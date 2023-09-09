@@ -86,7 +86,7 @@ export class AssetTaskApi implements IAssetTaskApi {
     this._reporter.verbose('[saveAsset] uri: {}', uri)
 
     const { _targetStorage } = this
-    _targetStorage.assertSafePath(dstPath)
+    _targetStorage.pathResolver.assertSafePath(dstPath)
     await _targetStorage.mkdirsIfNotExists(dstPath, false)
 
     switch (dataType) {
@@ -121,6 +121,8 @@ export class AssetTaskApi implements IAssetTaskApi {
   }
 
   protected async _resolveDstPathFromUri(uri: string): Promise<string> {
-    return this._targetStorage.absolute(uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''))
+    return this._targetStorage.pathResolver.absolute(
+      uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''),
+    )
   }
 }

@@ -1,5 +1,6 @@
 export interface IAssetPathResolver {
   readonly rootDir: string
+  readonly caseSensitive: boolean
 
   /**
    * Ensure the filepath is under the {rootDir} folder.
