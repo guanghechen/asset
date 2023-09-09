@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.23](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.22...@guanghechen/asset-storage@1.0.0-alpha.23) (2023-09-09)
+
+
+### Performance Improvements
+
+* :art:  refactor asset storage ([9364f2b](https://github.com/guanghechen/asset/commit/9364f2b8720043092682331a97105328703e1af6))
+
+
+
+
+
 # [1.0.0-alpha.22](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.21...@guanghechen/asset-storage@1.0.0-alpha.22) (2023-09-07)
 
 
