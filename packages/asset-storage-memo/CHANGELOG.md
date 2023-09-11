@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.24](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-memo@1.0.0-alpha.23...@guanghechen/asset-storage-memo@1.0.0-alpha.24) (2023-09-11)
+
+
+### Bug Fixes
+
+* ✨ export MemoAssetSourceStorage ([de2e943](https://github.com/guanghechen/asset/commit/de2e943a56a10ae4bb23964163232fd6b289b352))
+
+
+
+
+
 # [1.0.0-alpha.23](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-memo@1.0.0-alpha.22...@guanghechen/asset-storage-memo@1.0.0-alpha.23) (2023-09-09)
 
 
