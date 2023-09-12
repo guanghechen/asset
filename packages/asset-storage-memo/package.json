@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-storage-memo",
-  "version": "1.0.0-alpha.24",
+  "version": "1.0.0-alpha.25",
   "description": "Memo storage for assets.",
   "author": {
     "name": "guanghechen",
@@ -40,8 +40,8 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-storage": "^1.0.0-alpha.23",
-    "@guanghechen/asset-types": "^1.0.0-alpha.22",
+    "@guanghechen/asset-storage": "^1.0.0-alpha.24",
+    "@guanghechen/asset-types": "^1.0.0-alpha.23",
     "@guanghechen/invariant": "^5.0.7",
     "@guanghechen/monitor": "^1.0.0-alpha.7",
     "micromatch": "^4.0.5"

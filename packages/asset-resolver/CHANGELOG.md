@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.6](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.5...@guanghechen/asset-resolver@1.0.0-alpha.6) (2023-09-12)
+
+
+### Performance Improvements
+
+* 🎨 move resolveUri and resolveSlug to AssetUriResolver ([78380cc](https://github.com/guanghechen/asset/commit/78380cc60d3c36039b4df1629b86708378a6e0b3))
+
+
+
+
+
 # [1.0.0-alpha.5](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.4...@guanghechen/asset-resolver@1.0.0-alpha.5) (2023-09-09)
 
 
