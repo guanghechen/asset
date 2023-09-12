@@ -22,10 +22,4 @@ export interface IAssetResolverLocator {
    * @param srcPathId
    */
   removeAsset(srcPathId: string): Promise<void>
-  /**
-   * Resolve asset uri prefix.
-   * @param assetType
-   * @param mimeType
-   */
-  resolveUriPrefix(assetType: string, mimeType: string): Promise<string>
 }

@@ -6,24 +6,13 @@ import type {
   IAssetResolverLocator,
 } from '@guanghechen/asset-types'
 
-interface IAssetResolverLocatorProps {
-  /**
-   * Resolve asset uri prefix.
-   * @param assetType
-   * @param mimeType
-   */
-  resolveUriPrefix(assetType: string, mimeType: string): Promise<string>
-}
-
 export class AssetResolverLocator implements IAssetResolverLocator {
   protected readonly _assetManager: IAssetManager
   protected readonly _srcPathMap: Map<string, IAsset | null> = new Map()
-  protected readonly _resolveUriPrefix: (assetType: string, mimeType: string) => Promise<string>
 
-  constructor(props: IAssetResolverLocatorProps) {
+  constructor() {
     this._assetManager = new AssetManager()
     this._srcPathMap = new Map()
-    this._resolveUriPrefix = props.resolveUriPrefix
   }
 
   public async dumpAssetDataMap(): Promise<IAssetDataMap> {
@@ -45,9 +34,5 @@ export class AssetResolverLocator implements IAssetResolverLocator {
       this._assetManager.remove(asset.guid)
       this._srcPathMap.delete(srcPathId)
     }
-  }
-
-  public async resolveUriPrefix(assetType: string, mimeType: string): Promise<string> {
-    return this._resolveUriPrefix(assetType, mimeType)
   }
 }

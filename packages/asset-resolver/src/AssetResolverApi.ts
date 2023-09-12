@@ -6,8 +6,9 @@ import type {
   IAssetResolverApi,
   IAssetResolverLocator,
   IAssetSourceStorage,
+  IAssetUriResolver,
 } from '@guanghechen/asset-types'
-import { calcFingerprint, mime, normalizeUrlPath } from '@guanghechen/asset-util'
+import { calcFingerprint, normalizeUrlPath } from '@guanghechen/asset-util'
 import path from 'node:path'
 import { v5 as uuid } from 'uuid'
 
@@ -15,6 +16,7 @@ export interface IAssetResolverApiProps {
   GUID_NAMESPACE: string
   sourceStorage: IAssetSourceStorage
   locator: IAssetResolverLocator
+  uriResolver: IAssetUriResolver
 }
 
 const extnameRegex = /\.([\w]+)$/
@@ -23,6 +25,7 @@ export class AssetResolverApi implements IAssetResolverApi {
   public readonly GUID_NAMESPACE: string
   protected readonly _sourceStorage: IAssetSourceStorage
   protected readonly _locator: IAssetResolverLocator
+  protected readonly _uriResolver: IAssetUriResolver
 
   constructor(props: IAssetResolverApiProps) {
     const { GUID_NAMESPACE, sourceStorage } = props
@@ -30,6 +33,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     this.GUID_NAMESPACE = GUID_NAMESPACE
     this._sourceStorage = sourceStorage
     this._locator = props.locator
+    this._uriResolver = props.uriResolver
   }
 
   public dumpAssetDataMap(): Promise<IAssetDataMap> {
@@ -49,6 +53,14 @@ export class AssetResolverApi implements IAssetResolverApi {
   public removeAsset(srcPath: string): Promise<void> {
     const id: string = this._sourceStorage.pathResolver.identify(srcPath)
     return this._locator.removeAsset(id)
+  }
+
+  public async resolveSlug(slug: string | null | undefined): Promise<string | null> {
+    return this._uriResolver.resolveSlug(slug)
+  }
+
+  public async resolveUri(asset: Readonly<IAssetLocation>): Promise<string> {
+    return this._uriResolver.resolveUri(asset)
   }
 
   public async initAsset(srcPath: string): Promise<IAssetPluginLocateInput | null> {
@@ -84,17 +96,5 @@ export class AssetResolverApi implements IAssetResolverApi {
     await this._sourceStorage.assertExistedFile(srcPath)
     const content: Buffer = await this._sourceStorage.readBinaryFile(srcPath)
     return content
-  }
-
-  public async resolveSlug(slug: string | null | undefined): Promise<string | null> {
-    return slug ?? null
-  }
-
-  public async resolveUri(asset: Readonly<IAssetLocation>): Promise<string> {
-    const { guid, type, mimetype } = asset
-    const uriPrefix: string = await this._locator.resolveUriPrefix(type, mimetype)
-    const extname: string | undefined = mime.getExtension(mimetype) ?? asset.extname
-    const uri: string = `/${uriPrefix}/${guid}`
-    return normalizeUrlPath(extname ? `${uri}.${extname}` : uri)
   }
 }
