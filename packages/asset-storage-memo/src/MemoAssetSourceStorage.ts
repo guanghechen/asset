@@ -1,4 +1,4 @@
-import { AssetDataType, FileType } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAssetCollectOptions,
   IAssetPathResolver,
@@ -7,7 +7,6 @@ import type {
   IAssetWatchOptions,
   IAssetWatcher,
   IFileItem,
-  IFolderItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import { Monitor } from '@guanghechen/monitor'
@@ -20,12 +19,12 @@ type IParametersOfOnRemove = [filepath: string]
 
 export interface IMemoAssetSourceStorageProps {
   pathResolver: IAssetPathResolver
-  initialData: Iterable<[string, IFileItem | IFolderItem]>
+  initialData: Iterable<[string, IFileItem]>
 }
 
 export class MemoAssetSourceStorage implements IAssetSourceStorage {
   public readonly pathResolver: IAssetPathResolver
-  protected readonly _cache: Map<string, IFileItem | IFolderItem>
+  protected readonly _cache: Map<string, IFileItem>
   protected readonly _monitors: {
     onAdd: IMonitor<IParametersOfOnAdd>
     onChange: IMonitor<IParametersOfOnChange>
@@ -46,10 +45,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
   public async removeFile(filepath: string): Promise<void> {
     const identifier = this.pathResolver.identify(filepath)
     const item = this._cache.get(identifier)
-    invariant(
-      !!item && item.type === FileType.FILE,
-      `[${this.constructor.name}.removeFile] invalid filepath: ${filepath}`,
-    )
+    invariant(!!item, `[${this.constructor.name}.removeFile] invalid filepath: ${filepath}`)
     this._cache.delete(identifier)
     this._monitors.onRemove.notify(filepath)
   }
@@ -60,7 +56,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
 
     if (existItem) {
       invariant(
-        existItem.type === FileType.FILE && existItem.contentType === item.contentType,
+        existItem.datatype === item.datatype,
         `[${this.constructor.name}.updateFile] invalid filepath: ${item.absolutePath}`,
       )
       this._cache.set(identifier, { ...item })
@@ -77,10 +73,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
   public async assertExistedFile(srcPath: string): Promise<void> {
     const identifier = this.pathResolver.identify(srcPath)
     const item = this._cache.get(identifier)
-    invariant(
-      !!item && item.type === FileType.FILE,
-      `[${this.constructor.name}.assertExistedFile] invalid filepath: ${srcPath}`,
-    )
+    invariant(!!item, `[${this.constructor.name}.assertExistedFile] invalid filepath: ${srcPath}`)
   }
 
   public async collectAssetSrcPaths(
@@ -92,11 +85,9 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
 
     const filepaths: string[] = []
     for (const item of this._cache.values()) {
-      if (item.type === FileType.FILE) {
-        const relativeFilepath: string = this.pathResolver.relative(item.absolutePath)
-        if (micromatch.isMatch(relativeFilepath, patterns, { dot: true })) {
-          filepaths.push(item.absolutePath)
-        }
+      const relativeFilepath: string = this.pathResolver.relative(item.absolutePath)
+      if (micromatch.isMatch(relativeFilepath, patterns, { dot: true })) {
+        filepaths.push(item.absolutePath)
       }
     }
     return filepaths
@@ -106,39 +97,36 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     const identifier = this.pathResolver.identify(filepath)
     const item = this._cache.get(identifier)
     invariant(
-      !!item && item.type === FileType.FILE && item.contentType === AssetDataType.BINARY,
+      !!item && item.datatype === AssetDataTypeEnum.BINARY,
       `[${this.constructor.name}.readBinaryFile] invalid filepath: ${filepath}`,
     )
-    return item.content
+    return item.data
   }
 
   public async readTextFile(filepath: string): Promise<string> {
     const identifier = this.pathResolver.identify(filepath)
     const item = this._cache.get(identifier)
     invariant(
-      !!item && item.type === FileType.FILE && item.contentType === AssetDataType.TEXT,
+      !!item && item.datatype === AssetDataTypeEnum.TEXT,
       `[${this.constructor.name}.readTextFile] invalid filepath: ${filepath}`,
     )
-    return item.content
+    return item.data
   }
 
   public async readJsonFile(filepath: string): Promise<unknown> {
     const identifier = this.pathResolver.identify(filepath)
     const item = this._cache.get(identifier)
     invariant(
-      !!item && item.type === FileType.FILE && item.contentType === AssetDataType.JSON,
+      !!item && item.datatype === AssetDataTypeEnum.JSON,
       `[${this.constructor.name}.readJsonFile] invalid filepath: ${filepath}`,
     )
-    return item.content
+    return item.data
   }
 
   public async statFile(filepath: string): Promise<IAssetStat> {
     const identifier = this.pathResolver.identify(filepath)
     const item = this._cache.get(identifier)
-    invariant(
-      !!item && item.type === FileType.FILE,
-      `[${this.constructor.name}.statFile] invalid filepath: ${filepath}`,
-    )
+    invariant(!!item, `[${this.constructor.name}.statFile] invalid filepath: ${filepath}`)
     return item.stat
   }
 

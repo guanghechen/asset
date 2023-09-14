@@ -1,4 +1,4 @@
-import { AssetChangeEvent } from '@guanghechen/asset-types'
+import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type { IAssetTaskApi, IAssetTaskData } from '@guanghechen/asset-types'
 import { Pipeline } from '@guanghechen/pipeline'
 import type { ITask } from '@guanghechen/types'
@@ -34,10 +34,10 @@ export class AssetTaskPipeline extends Pipeline<D, T> implements IAssetTaskPipel
 
     const srcPath: string = material.srcPath
     switch (material.type) {
-      case AssetChangeEvent.CREATED:
-      case AssetChangeEvent.MODIFIED: {
+      case AssetChangeEventEnum.CREATED:
+      case AssetChangeEventEnum.MODIFIED: {
         const ir: number = others.findIndex(
-          data => data.type === AssetChangeEvent.REMOVED && data.srcPath === srcPath,
+          data => data.type === AssetChangeEventEnum.REMOVED && data.srcPath === srcPath,
         )
         if (ir >= 0) {
           for (let k = 0; k <= ir; ++k) {
@@ -53,7 +53,7 @@ export class AssetTaskPipeline extends Pipeline<D, T> implements IAssetTaskPipel
         }
         break
       }
-      case AssetChangeEvent.REMOVED: {
+      case AssetChangeEventEnum.REMOVED: {
         if (others.some(data => data.srcPath === srcPath)) return undefined
         break
       }

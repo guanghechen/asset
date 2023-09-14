@@ -1,7 +1,7 @@
-import type { AssetChangeEvent } from './enum'
+import type { AssetChangeEventEnum } from './enum'
 
 export interface IAssetTaskData {
-  type: AssetChangeEvent
+  type: AssetChangeEventEnum
   alive: boolean
   srcPath: string
 }

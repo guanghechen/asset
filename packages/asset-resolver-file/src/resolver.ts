@@ -1,4 +1,4 @@
-import { AssetDataType } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAssetPluginLocateApi,
   IAssetPluginLocateInput,
@@ -79,7 +79,7 @@ export class AssetResolverFile implements IAssetResolverPlugin {
       const content: Buffer | null = await api.loadContent(input.filename)
       if (content !== null) {
         const result: IFileAssetPolishOutput = {
-          dataType: AssetDataType.BINARY,
+          datatype: AssetDataTypeEnum.BINARY,
           data: content,
         }
         return next(result)

@@ -1,6 +1,6 @@
 import type { IAsset } from './asset'
 import type { IAssetResolverApi } from './asset-resolver-api'
-import type { AssetDataType } from './enum'
+import type { AssetDataTypeEnum } from './enum'
 import type {
   IAssetLocatePlugin,
   IAssetParsePlugin,
@@ -15,7 +15,7 @@ export type IAssetResolverPlugin = IAssetPlugin &
 
 export interface IAssetResolvedData {
   asset: IAsset
-  dataType: AssetDataType
+  datatype: AssetDataTypeEnum
   data: unknown
   encoding: BufferEncoding | undefined
 }

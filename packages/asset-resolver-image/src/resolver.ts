@@ -9,7 +9,7 @@ import type {
   IAssetPluginPolishOutput,
   IAssetResolverPlugin,
 } from '@guanghechen/asset-types'
-import { AssetDataType } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import { mime, normalizePattern } from '@guanghechen/asset-util'
 import sizeOf from 'image-size'
 import type { IImageAssetPolishOutput } from './types'
@@ -103,7 +103,7 @@ export class AssetResolverImage implements IAssetResolverPlugin {
       const content: Buffer | null = await api.loadContent(input.filename)
       if (content !== null) {
         const result: IImageAssetPolishOutput = {
-          dataType: AssetDataType.BINARY,
+          datatype: AssetDataTypeEnum.BINARY,
           data: content,
         }
         return next(result)

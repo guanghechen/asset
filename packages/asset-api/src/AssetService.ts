@@ -1,4 +1,4 @@
-import { AssetChangeEvent } from '@guanghechen/asset-types'
+import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type {
   IAssetService,
   IAssetServiceConfig,
@@ -42,7 +42,7 @@ export class AssetService implements IAssetService {
         onAdd: filepath => {
           const srcPath: string = sourceStorage.pathResolver.absolute(filepath)
           void scheduler.schedule({
-            type: AssetChangeEvent.CREATED,
+            type: AssetChangeEventEnum.CREATED,
             alive: true,
             srcPath,
           })
@@ -50,7 +50,7 @@ export class AssetService implements IAssetService {
         onChange: filepath => {
           const srcPath: string = sourceStorage.pathResolver.absolute(filepath)
           void scheduler.schedule({
-            type: AssetChangeEvent.MODIFIED,
+            type: AssetChangeEventEnum.MODIFIED,
             alive: true,
             srcPath,
           })
@@ -58,7 +58,7 @@ export class AssetService implements IAssetService {
         onRemove: filepath => {
           const srcPath: string = sourceStorage.pathResolver.absolute(filepath)
           void scheduler.schedule({
-            type: AssetChangeEvent.REMOVED,
+            type: AssetChangeEventEnum.REMOVED,
             alive: true,
             srcPath,
           })

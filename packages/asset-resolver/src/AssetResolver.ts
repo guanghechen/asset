@@ -222,6 +222,11 @@ export class AssetResolver implements IAssetResolver {
 
     const result: IAssetPluginPolishOutput | null = await reducer(null)
     if (result === null) return null
-    return { asset, dataType: result.dataType, data: result.data, encoding: result.encoding }
+    return {
+      asset,
+      datatype: result.datatype,
+      data: result.data,
+      encoding: result.encoding,
+    }
   }
 }

@@ -1,24 +1,22 @@
 import { AssetTargetStorage } from '@guanghechen/asset-storage'
-import { AssetDataType, FileType } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAssetPathResolver,
   IAssetTargetStorage,
   IBinaryFileItem,
   IFileItem,
-  IFolderItem,
   IJsonFileItem,
   ITextFileItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
-import path from 'node:path'
 
 export interface IMemoAssetTargetStorageProps {
   pathResolver: IAssetPathResolver
-  initialData: Iterable<[string, IFileItem | IFolderItem]>
+  initialData: Iterable<[string, IFileItem]>
 }
 
 export class MemoAssetTargetStorage extends AssetTargetStorage implements IAssetTargetStorage {
-  protected readonly _cache: Map<string, IFileItem | IFolderItem>
+  protected readonly _cache: Map<string, IFileItem>
 
   constructor(props: IMemoAssetTargetStorageProps) {
     const { pathResolver, initialData } = props
@@ -26,46 +24,34 @@ export class MemoAssetTargetStorage extends AssetTargetStorage implements IAsset
     this._cache = new Map(initialData)
   }
 
-  public override async mkdirsIfNotExists(filepath: string, isDir: boolean): Promise<void> {
-    const dirPath = isDir ? filepath : path.dirname(filepath)
-    for (let p = dirPath; p.length > 0; ) {
-      const identifier = this.pathResolver.identify(p)
-      if (this._cache.has(identifier)) break
-
-      this._cache.set(identifier, {
-        type: FileType.FOLDER,
-        absolutePath: this.pathResolver.absolute(p),
-      })
-
-      const q = path.dirname(p)
-      if (p === q) break
-      p = q
-    }
+  public override async locateFileByUri(uri: string): Promise<IFileItem | undefined> {
+    return this._cache.get(uri)
   }
 
-  public override async writeBinaryFile(filepath: string, content: Buffer): Promise<void> {
-    const identifier = this.pathResolver.identify(filepath)
-    const item = this._cache.get(identifier)
+  public override async writeBinaryFile(
+    uri: string,
+    mimetype: string,
+    content: Buffer,
+  ): Promise<void> {
+    const item = this._cache.get(uri)
     invariant(
-      !item || (item.type === FileType.FILE && item.contentType === AssetDataType.BINARY),
-      `[${this.constructor.name}.writeBinaryFile] invalid filepath: ${filepath}`,
+      !item || item.datatype === AssetDataTypeEnum.BINARY,
+      `[MemoAssetTargetStorage.writeBinaryFile] invalid uri: ${uri}`,
     )
 
-    const absolutePath: string = this.pathResolver.absolute(filepath)
-    await this.mkdirsIfNotExists(absolutePath, false)
-
+    const filepath: string = this._resolvePathFromUri(uri)
     const newItem: IBinaryFileItem = {
-      type: FileType.FILE,
-      contentType: AssetDataType.BINARY,
-      absolutePath,
-      content,
+      datatype: AssetDataTypeEnum.BINARY,
+      mimetype,
+      absolutePath: filepath,
+      data: content,
       encoding: undefined,
       stat: {
         birthtime: (item as IFileItem)?.stat?.birthtime ?? new Date(),
         mtime: new Date(),
       },
     }
-    this._cache.set(identifier, newItem)
+    this._cache.set(uri, newItem)
 
     // Notify
     this._monitors.onBinaryFileWritten.notify(newItem)
@@ -73,68 +59,68 @@ export class MemoAssetTargetStorage extends AssetTargetStorage implements IAsset
   }
 
   public override async writeTextFile(
-    filepath: string,
+    uri: string,
+    mimetype: string,
     content: string,
     encoding: BufferEncoding,
   ): Promise<void> {
-    const identifier = this.pathResolver.identify(filepath)
-    const item = this._cache.get(identifier)
+    const item = this._cache.get(uri)
     invariant(
-      !item || (item.type === FileType.FILE && item.contentType === AssetDataType.TEXT),
-      `[${this.constructor.name}.writeTextFile] invalid filepath: ${filepath}`,
+      !item || item.datatype === AssetDataTypeEnum.TEXT,
+      `[MemoAssetTargetStorage.writeTextFile] invalid uri: ${uri}`,
     )
 
-    const absolutePath: string = this.pathResolver.absolute(filepath)
-    await this.mkdirsIfNotExists(absolutePath, false)
-
+    const filepath: string = this._resolvePathFromUri(uri)
     const newItem: ITextFileItem = {
-      type: FileType.FILE,
-      contentType: AssetDataType.TEXT,
-      absolutePath,
-      content,
+      datatype: AssetDataTypeEnum.TEXT,
+      mimetype,
+      absolutePath: filepath,
+      data: content,
       encoding,
       stat: {
         birthtime: (item as IFileItem)?.stat?.birthtime ?? new Date(),
         mtime: new Date(),
       },
     }
-    this._cache.set(identifier, newItem)
+    this._cache.set(uri, newItem)
 
     // Notify
     this._monitors.onTextFileWritten.notify(newItem)
     this._monitors.onFileWritten.notify(newItem)
   }
 
-  public override async writeJsonFile(filepath: string, content: unknown): Promise<void> {
-    const identifier = this.pathResolver.identify(filepath)
-    const item = this._cache.get(identifier)
+  public override async writeJsonFile(
+    uri: string,
+    mimetype: string,
+    content: unknown,
+  ): Promise<void> {
+    const item = this._cache.get(uri)
     invariant(
-      !item || (item.type === FileType.FILE && item.contentType === AssetDataType.JSON),
-      `[${this.constructor.name}.writeJsonFile] invalid filepath: ${filepath}`,
+      !item || item.datatype === AssetDataTypeEnum.JSON,
+      `[MemoAssetTargetStorage.writeJsonFile] invalid uri: ${uri}`,
     )
 
-    const absolutePath: string = this.pathResolver.absolute(filepath)
-    await this.mkdirsIfNotExists(absolutePath, false)
-
+    const filepath: string = this._resolvePathFromUri(uri)
     const newItem: IJsonFileItem = {
-      type: FileType.FILE,
-      contentType: AssetDataType.JSON,
-      absolutePath,
-      content,
+      datatype: AssetDataTypeEnum.JSON,
+      mimetype,
+      absolutePath: filepath,
+      data: content,
       encoding: undefined,
       stat: {
         birthtime: (item as IFileItem)?.stat?.birthtime ?? new Date(),
         mtime: new Date(),
       },
     }
-    this._cache.set(identifier, newItem)
+    this._cache.set(uri, newItem)
 
     // Notify
     this._monitors.onJsonFileWritten.notify(newItem)
     this._monitors.onFileWritten.notify(newItem)
   }
 
-  public override async removeFile(filepath: string): Promise<void> {
+  public override async removeFile(uri: string): Promise<void> {
+    const filepath: string = this._resolvePathFromUri(uri)
     const identifier = this.pathResolver.identify(filepath)
     this._cache.delete(identifier)
 

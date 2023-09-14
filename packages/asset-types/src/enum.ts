@@ -1,4 +1,4 @@
-export enum AssetDataType {
+export enum AssetDataTypeEnum {
   /**
    * Binary data.
    */
@@ -13,12 +13,7 @@ export enum AssetDataType {
   JSON = 'json',
 }
 
-export enum FileType {
-  FILE = 'file',
-  FOLDER = 'folder',
-}
-
-export enum AssetChangeEvent {
+export enum AssetChangeEventEnum {
   CREATED = 'created',
   MODIFIED = 'modified',
   REMOVED = 'removed',

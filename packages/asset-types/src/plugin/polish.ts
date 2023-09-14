@@ -1,5 +1,5 @@
 import type { IAssetMeta } from '../asset'
-import type { AssetDataType } from '../enum'
+import type { AssetDataTypeEnum } from '../enum'
 
 export interface IAssetPluginPolishApi {
   /**
@@ -52,7 +52,7 @@ export interface IAssetPluginPolishOutput<D = unknown> {
   /**
    * Asset data type.
    */
-  dataType: AssetDataType
+  datatype: AssetDataTypeEnum
   /**
    * Asset data.
    */

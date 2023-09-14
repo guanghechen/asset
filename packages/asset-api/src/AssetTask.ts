@@ -1,4 +1,4 @@
-import { AssetChangeEvent } from '@guanghechen/asset-types'
+import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type { IAssetTaskApi, IAssetTaskData } from '@guanghechen/asset-types'
 import { delay } from '@guanghechen/asset-util'
 import { AtomicTask } from '@guanghechen/task'
@@ -21,13 +21,13 @@ export class AssetTask extends AtomicTask {
   protected override async run(): Promise<void> {
     const { _api, _data } = this
     switch (_data.type) {
-      case AssetChangeEvent.CREATED:
+      case AssetChangeEventEnum.CREATED:
         await _api.create([_data.srcPath])
         break
-      case AssetChangeEvent.REMOVED:
+      case AssetChangeEventEnum.REMOVED:
         await _api.remove([_data.srcPath])
         break
-      case AssetChangeEvent.MODIFIED:
+      case AssetChangeEventEnum.MODIFIED:
         await _api.update([_data.srcPath])
         await delay(_api.delayAfterContentChanged)
         break

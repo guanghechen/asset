@@ -1,4 +1,4 @@
-import { AssetDataType } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAssetMeta,
   IAssetPluginLocateApi,
@@ -150,7 +150,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
 
       const { frontmatter } = input.data
       const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
-        dataType: AssetDataType.JSON,
+        datatype: AssetDataTypeEnum.JSON,
         data: {
           ast,
           frontmatter,

@@ -1,4 +1,4 @@
-import type { AssetDataType, FileType } from './enum'
+import type { AssetDataTypeEnum } from './enum'
 
 export interface IAssetStat {
   birthtime: Date
@@ -6,35 +6,31 @@ export interface IAssetStat {
 }
 
 export interface ITextFileItem {
-  type: FileType.FILE
-  contentType: AssetDataType.TEXT
+  datatype: AssetDataTypeEnum.TEXT
+  mimetype: string
   absolutePath: string
-  content: string
+  data: string
   encoding: BufferEncoding
   stat: IAssetStat
 }
 
 export interface IJsonFileItem {
-  type: FileType.FILE
-  contentType: AssetDataType.JSON
+  datatype: AssetDataTypeEnum.JSON
+  mimetype: string
   absolutePath: string
-  content: unknown
+  data: unknown
   encoding: undefined
   stat: IAssetStat
 }
 
 export interface IBinaryFileItem {
-  type: FileType.FILE
-  contentType: AssetDataType.BINARY
+  datatype: AssetDataTypeEnum.BINARY
+  mimetype: string
   absolutePath: string
-  content: IBinaryLike
+  data: IBinaryLike
   encoding: undefined
   stat: IAssetStat
 }
 
 export type IBinaryLike = Buffer
 export type IFileItem = ITextFileItem | IJsonFileItem | IBinaryFileItem
-export interface IFolderItem {
-  type: FileType.FOLDER
-  absolutePath: string
-}

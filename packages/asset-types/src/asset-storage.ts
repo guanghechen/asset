@@ -69,15 +69,20 @@ export interface IAssetTargetStorage {
 
   destroy(): Promise<void>
 
+  locateFileByUri(uri: string): Promise<IFileItem | undefined>
+
   monitor(monitor: Partial<IAssetTargetStorageMonitor>): IMonitorUnsubscribe
 
-  mkdirsIfNotExists(filepath: string, isDir: boolean): Promise<void>
+  writeBinaryFile(uri: string, mimetype: string, content: IBinaryLike): Promise<void>
 
-  writeBinaryFile(filepath: string, content: IBinaryLike): Promise<void>
+  writeTextFile(
+    uri: string,
+    mimetype: string,
+    content: string,
+    encoding: BufferEncoding,
+  ): Promise<void>
 
-  writeTextFile(filepath: string, content: string, encoding: BufferEncoding): Promise<void>
+  writeJsonFile(uri: string, mimetype: string, content: unknown): Promise<void>
 
-  writeJsonFile(filepath: string, content: unknown): Promise<void>
-
-  removeFile(filepath: string): Promise<void>
+  removeFile(uri: string): Promise<void>
 }

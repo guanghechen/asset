@@ -2,6 +2,7 @@ import type {
   IAssetPathResolver,
   IAssetTargetStorage,
   IAssetTargetStorageMonitor,
+  IFileItem,
   IParametersOfOnBinaryFileWritten,
   IParametersOfOnFileRemoved,
   IParametersOfOnFileWritten,
@@ -83,17 +84,26 @@ export abstract class AssetTargetStorage implements IAssetTargetStorage {
     }
   }
 
-  public abstract mkdirsIfNotExists(filepath: string, isDir: boolean): Promise<void>
+  public abstract locateFileByUri(uri: string): Promise<IFileItem | undefined>
 
-  public abstract writeBinaryFile(filepath: string, content: Buffer): Promise<void>
+  public abstract writeBinaryFile(
+    filepath: string,
+    mimetype: string,
+    content: Buffer,
+  ): Promise<void>
 
   public abstract writeTextFile(
     filepath: string,
+    mimetype: string,
     content: string,
     encoding: BufferEncoding,
   ): Promise<void>
 
-  public abstract writeJsonFile(filepath: string, content: unknown): Promise<void>
+  public abstract writeJsonFile(filepath: string, mimetype: string, content: unknown): Promise<void>
 
   public abstract removeFile(filepath: string): Promise<void>
+
+  protected _resolvePathFromUri(uri: string): string {
+    return this.pathResolver.absolute(uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''))
+  }
 }

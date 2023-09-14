@@ -1,4 +1,4 @@
-import { AssetDataType } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAssetDataMap,
   IAssetResolver,
@@ -44,8 +44,16 @@ export class AssetTaskApi implements IAssetTaskApi {
     const tasks: Array<Promise<void>> = []
 
     for (const result of results) {
-      const { asset, dataType, data, encoding } = result
-      tasks.push(this._saveAsset(asset.uri, dataType, data, encoding))
+      const { asset, datatype, data, encoding } = result
+      tasks.push(
+        this._saveAsset({
+          uri: asset.uri,
+          mimetype: asset.mimetype,
+          datatype,
+          data,
+          encoding,
+        }),
+      )
     }
 
     if (tasks.length > 0) tasks.push(this._saveAssetDataMap())
@@ -74,55 +82,52 @@ export class AssetTaskApi implements IAssetTaskApi {
     await this.create(srcPaths)
   }
 
-  protected async _saveAsset(
-    uri: string,
-    dataType: AssetDataType,
-    data: unknown | null,
-    encoding: BufferEncoding | undefined,
-  ): Promise<void> {
-    if (data === null) return
+  protected async _saveAsset(params: {
+    uri: string
+    mimetype: string
+    datatype: AssetDataTypeEnum
+    data: unknown | null
+    encoding: BufferEncoding | undefined
+  }): Promise<void> {
+    if (params.data === null) return
 
-    const dstPath: string = await this._resolveDstPathFromUri(uri)
+    const { uri, mimetype, data, datatype, encoding } = params
     this._reporter.verbose('[saveAsset] uri: {}', uri)
 
     const { _targetStorage } = this
-    _targetStorage.pathResolver.assertSafePath(dstPath)
-    await _targetStorage.mkdirsIfNotExists(dstPath, false)
-
-    switch (dataType) {
-      case AssetDataType.BINARY:
-        await _targetStorage.writeBinaryFile(dstPath, data as IBinaryLike)
+    switch (datatype) {
+      case AssetDataTypeEnum.BINARY:
+        await _targetStorage.writeBinaryFile(uri, mimetype, data as IBinaryLike)
         break
-      case AssetDataType.JSON: {
-        await _targetStorage.writeJsonFile(dstPath, data)
+      case AssetDataTypeEnum.JSON: {
+        await _targetStorage.writeJsonFile(uri, mimetype, data)
         break
       }
-      case AssetDataType.TEXT:
+      case AssetDataTypeEnum.TEXT:
         invariant(
           !!encoding,
           `[${this.constructor.name}.saveAsset] encoding is required for text type file`,
         )
-        await _targetStorage.writeTextFile(dstPath, data as string, encoding)
+        await _targetStorage.writeTextFile(uri, mimetype, data as string, encoding)
         break
       default:
-        throw new Error(`[${this.constructor.name}.saveAsset] Unexpected dataType: ${dataType}`)
+        throw new Error(`[${this.constructor.name}.saveAsset] Unexpected datatype: ${datatype}`)
     }
   }
 
   protected async _saveAssetDataMap(): Promise<void> {
     const data: IAssetDataMap = await this._api.dumpAssetDataMap()
-    await this._saveAsset(this._dataMapUri, AssetDataType.JSON, data, undefined)
+    await this._saveAsset({
+      uri: this._dataMapUri,
+      mimetype: 'application/json',
+      datatype: AssetDataTypeEnum.JSON,
+      data,
+      encoding: undefined,
+    })
   }
 
   protected async _removeAsset(uri: string): Promise<void> {
-    const dstPath: string = await this._resolveDstPathFromUri(uri)
-    this._reporter.verbose('[removeAsset] uri({}), dstPath({})', uri, dstPath)
-    await this._targetStorage.removeFile(dstPath)
-  }
-
-  protected async _resolveDstPathFromUri(uri: string): Promise<string> {
-    return this._targetStorage.pathResolver.absolute(
-      uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''),
-    )
+    this._reporter.verbose('[removeAsset] uri({})', uri)
+    await this._targetStorage.removeFile(uri)
   }
 }
