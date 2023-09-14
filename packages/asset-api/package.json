@@ -44,11 +44,11 @@
     "@guanghechen/asset-resolver": "^1.0.0-alpha.6",
     "@guanghechen/asset-types": "^1.0.0-alpha.23",
     "@guanghechen/asset-util": "^1.0.0-alpha.11",
-    "@guanghechen/constant": "^1.0.0-alpha.3",
+    "@guanghechen/constant": "^1.0.0-alpha.4",
     "@guanghechen/invariant": "^5.0.7",
-    "@guanghechen/pipeline": "^1.0.0-alpha.7",
-    "@guanghechen/scheduler": "^6.0.0-alpha.7",
-    "@guanghechen/task": "^1.0.0-alpha.7",
-    "@guanghechen/types": "^1.0.0-alpha.4"
+    "@guanghechen/pipeline": "^1.0.0-alpha.8",
+    "@guanghechen/scheduler": "^6.0.0-alpha.8",
+    "@guanghechen/task": "^1.0.0-alpha.8",
+    "@guanghechen/types": "^1.0.0-alpha.5"
   }
 }
