@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.7](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.6...@guanghechen/asset-resolver@1.0.0-alpha.7) (2023-09-14)
+
+
+### Performance Improvements
+
+* refactor AssetTargetStorage to support locateFile by uri ([76fc5e4](https://github.com/guanghechen/asset/commit/76fc5e45a867ba93b9919694313e6b111b9d0dfd))
+* ⬆️ upgrade dependencies ([8f0f007](https://github.com/guanghechen/asset/commit/8f0f0077b1c0c928f4d6c6446a5704e1b808a811))
+
+
+
+
+
 # [1.0.0-alpha.6](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.5...@guanghechen/asset-resolver@1.0.0-alpha.6) (2023-09-12)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.25](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-file@1.0.0-alpha.24...@guanghechen/asset-storage-file@1.0.0-alpha.25) (2023-09-14)
+
+
+### Performance Improvements
+
+* refactor AssetTargetStorage to support locateFile by uri ([76fc5e4](https://github.com/guanghechen/asset/commit/76fc5e45a867ba93b9919694313e6b111b9d0dfd))
+
+
+
+
+
 # [1.0.0-alpha.24](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-file@1.0.0-alpha.23...@guanghechen/asset-storage-file@1.0.0-alpha.24) (2023-09-12)
 
 **Note:** Version bump only for package @guanghechen/asset-storage-file
