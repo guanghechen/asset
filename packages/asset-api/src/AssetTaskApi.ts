@@ -7,9 +7,9 @@ import type {
   IAssetTaskApi,
   IBinaryFileData,
   IJsonFileData,
-  IRawBinaryFileItem,
-  IRawJsonFileItem,
-  IRawTextFileItem,
+  IRawBinaryTargetItem,
+  IRawJsonTargetItem,
+  IRawTextTargetItem,
   ITextFileData,
 } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/types'
@@ -98,7 +98,7 @@ export class AssetTaskApi implements IAssetTaskApi {
     const { _targetStorage } = this
     switch (datatype) {
       case AssetDataTypeEnum.BINARY: {
-        const rawItem: IRawBinaryFileItem = {
+        const rawItem: IRawBinaryTargetItem = {
           datatype,
           mimetype,
           uri,
@@ -108,7 +108,7 @@ export class AssetTaskApi implements IAssetTaskApi {
         break
       }
       case AssetDataTypeEnum.JSON: {
-        const rawItem: IRawJsonFileItem = {
+        const rawItem: IRawJsonTargetItem = {
           datatype,
           mimetype,
           uri,
@@ -126,7 +126,7 @@ export class AssetTaskApi implements IAssetTaskApi {
           throw new Error('[AssetTasApi] encoding is required for text type file')
         }
 
-        const rawItem: IRawTextFileItem = {
+        const rawItem: IRawTextTargetItem = {
           datatype,
           mimetype,
           uri,

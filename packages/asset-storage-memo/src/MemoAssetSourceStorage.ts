@@ -7,7 +7,7 @@ import type {
   IAssetStat,
   IAssetWatchOptions,
   IAssetWatcher,
-  IFileItem,
+  ITargetItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import { Monitor } from '@guanghechen/monitor'
@@ -20,12 +20,12 @@ type IParametersOfOnRemove = [filepath: string]
 
 export interface IMemoAssetSourceStorageProps {
   pathResolver: IAssetPathResolver
-  initialData?: Iterable<[string, IFileItem]>
+  initialData?: Iterable<[string, ITargetItem]>
 }
 
 export class MemoAssetSourceStorage implements IAssetSourceStorage {
   public readonly pathResolver: IAssetPathResolver
-  protected readonly _cache: Map<string, IFileItem>
+  protected readonly _cache: Map<string, ITargetItem>
   protected readonly _monitorAdd: IMonitor<IParametersOfOnAdd>
   protected readonly _monitorChange: IMonitor<IParametersOfOnChange>
   protected readonly _monitorRemove: IMonitor<IParametersOfOnRemove>
@@ -47,7 +47,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     this._monitorRemove.notify(filepath)
   }
 
-  public async updateFile(item: IFileItem): Promise<void> {
+  public async updateFile(item: ITargetItem): Promise<void> {
     const identifier = this.pathResolver.identify(item.absolutePath)
     const existItem = this._cache.get(identifier)
 

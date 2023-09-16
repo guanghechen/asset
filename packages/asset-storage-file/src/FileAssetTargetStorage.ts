@@ -1,12 +1,12 @@
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
-  IAssetFileItem,
   IAssetPathResolver,
   IAssetTargetDataStorage,
   IBinaryFileData,
   IFileData,
   IJsonFileData,
-  IRawFileItem,
+  IRawTargetItem,
+  ITargetItemWithoutData,
   ITextFileData,
 } from '@guanghechen/asset-types'
 import { existsSync, mkdirSync } from 'node:fs'
@@ -28,7 +28,7 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
     this._prettier = prettier
   }
 
-  public async save(rawItem: IRawFileItem): Promise<void> {
+  public async save(rawItem: IRawTargetItem): Promise<void> {
     const { datatype, uri, data } = rawItem
     const filepath: string = this.pathResolver.resolveFromUri(uri)
     const dirpath: string = path.dirname(filepath)
@@ -60,7 +60,7 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
     await unlink(filepath)
   }
 
-  public async load(uri: string, assetItem: IAssetFileItem): Promise<IFileData> {
+  public async load(uri: string, assetItem: ITargetItemWithoutData): Promise<IFileData> {
     const filepath: string = this.pathResolver.resolveFromUri(uri)
     switch (assetItem.datatype) {
       case AssetDataTypeEnum.BINARY: {

@@ -1,9 +1,9 @@
 import type {
-  IAssetFileItem,
   IAssetPathResolver,
   IAssetTargetDataStorage,
   IFileData,
-  IRawFileItem,
+  IRawTargetItem,
+  ITargetItemWithoutData,
 } from '@guanghechen/asset-types'
 
 interface IProps {
@@ -19,11 +19,14 @@ export class MemoAssetTargetDataStore implements IAssetTargetDataStorage {
     this._dataCache = new Map()
   }
 
-  public async load(uri: string, assetItem_: IAssetFileItem): Promise<IFileData | undefined> {
+  public async load(
+    uri: string,
+    assetItem_: ITargetItemWithoutData,
+  ): Promise<IFileData | undefined> {
     return this._dataCache.get(uri)
   }
 
-  public async save(rawItem: IRawFileItem): Promise<void> {
+  public async save(rawItem: IRawTargetItem): Promise<void> {
     this._dataCache.set(rawItem.uri, rawItem.data)
   }
 
