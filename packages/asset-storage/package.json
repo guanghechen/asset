@@ -43,8 +43,5 @@
     "@guanghechen/asset-types": "^1.0.0-alpha.24",
     "@guanghechen/invariant": "^5.0.7",
     "@guanghechen/monitor": "^1.0.0-alpha.8"
-  },
-  "devDependencies": {
-    "@guanghechen/shared": "^1.0.0-alpha.6"
   }
 }

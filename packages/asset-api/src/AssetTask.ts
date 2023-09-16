@@ -1,39 +1,39 @@
 import { AssetChangeEventEnum } from '@guanghechen/asset-types'
-import type { IAssetTaskApi, IAssetTaskData } from '@guanghechen/asset-types'
-import { delay } from '@guanghechen/asset-util'
+import type { IAssetTaskApi } from '@guanghechen/asset-types'
 import { AtomicTask } from '@guanghechen/task'
-
-interface IProps {
-  api: IAssetTaskApi
-  data: Readonly<IAssetTaskData> // should be immutable
-}
 
 export class AssetTask extends AtomicTask {
   protected readonly _api: IAssetTaskApi
-  protected readonly _data: Readonly<IAssetTaskData>
+  protected readonly _type: AssetChangeEventEnum
+  protected readonly _filepaths: string[]
 
-  constructor(props: IProps) {
-    super(props.data.type)
-    this._api = props.api
-    this._data = props.data
+  constructor(api: IAssetTaskApi, type: AssetChangeEventEnum, filepaths: string[]) {
+    super(type)
+    this._api = api
+    this._type = type
+    this._filepaths = filepaths
+  }
+
+  public toJSON(): object {
+    const { _type, _filepaths } = this
+    return { type: _type, filepaths: _filepaths }
   }
 
   protected override async run(): Promise<void> {
-    const { _api, _data } = this
-    switch (_data.type) {
+    const { _api, _type, _filepaths } = this
+    switch (_type) {
       case AssetChangeEventEnum.CREATED:
-        await _api.create([_data.srcPath])
+        await _api.create(_filepaths)
         break
       case AssetChangeEventEnum.REMOVED:
-        await _api.remove([_data.srcPath])
+        await _api.remove(_filepaths)
         break
       case AssetChangeEventEnum.MODIFIED:
-        await _api.update([_data.srcPath])
-        await delay(_api.delayAfterContentChanged)
+        await _api.update(_filepaths)
         break
       default: {
-        const details = _data == null ? _data : JSON.stringify(_data)
-        throw new Error(`[AssetService] handleTask: unknown task: ${details}`)
+        const details = JSON.stringify({ type: _type, filepaths: _filepaths })
+        throw new Error(`[AssetTask] handleTask: unknown task: ${details}`)
       }
     }
   }

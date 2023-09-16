@@ -8,15 +8,9 @@ import type { IAssetTaskScheduler } from './types'
 type D = IAssetTaskData
 type T = ITask
 
-interface IProps {
-  api: IAssetTaskApi
-  reporter: IReporter
-}
-
 export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskScheduler {
-  constructor(props: IProps) {
-    const { api, reporter } = props
-    const pipeline = new AssetTaskPipeline({ api })
+  constructor(api: IAssetTaskApi, reporter: IReporter) {
+    const pipeline = new AssetTaskPipeline(api)
     super({ name: 'AssetTaskScheduler', reporter, pipeline })
 
     this.monitor({
@@ -32,7 +26,7 @@ export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskSch
             reporter.warn('[AssetTaskScheduler] {}', type, error)
             break
           default:
-            reporter.error('[AssetTaskScheduler] type unexpected level: ', type, level, error)
+            reporter.error('[AssetTaskScheduler] {} unexpected level: ', type, level, error)
             break
         }
       },

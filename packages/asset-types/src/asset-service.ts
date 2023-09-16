@@ -1,28 +1,31 @@
-import type { IAssetResolverApi } from './asset-resolver-api'
-import type { IAssetSourceStorage } from './asset-storage'
-import type { IAssetTaskApi } from './asset-task-api'
+import type { IAssetWatchShouldIgnore } from './asset-storage-source'
 import type { IAssetServiceWatcher } from './common'
 
-export interface IRawAssetServiceConfig {
-  api: IAssetResolverApi
-  sourceStorage: IAssetSourceStorage
-  dataMapUri: string
-  acceptedPattern?: string[]
-  delayAfterContentChanged?: number
-}
-
-export interface IAssetServiceConfig {
-  api: IAssetTaskApi
-  sourceStorage: IAssetSourceStorage
-  acceptedPattern: string[]
-}
-
-export interface IAssetServiceConfigManager {
-  readonly configs: IAssetServiceConfig[]
-  register(assetConfig: IRawAssetServiceConfig): this
-}
-
 export interface IAssetService {
-  build(configs: Iterable<IAssetServiceConfig>): Promise<void>
-  watch(configs: Iterable<IAssetServiceConfig>): Promise<IAssetServiceWatcher>
+  /**
+   * Prepare the asset service.
+   */
+  prepare(): Promise<void>
+
+  /**
+   * Close the asset service and waiting all of the tasks in the pipeline terminated (done / cancelled / failed),
+   * the subsequent `build` and `watch` will ignored.
+   */
+  close(): Promise<void>
+
+  /**
+   * Need to call `this.start()` in advance.
+   * @param acceptedPattern
+   */
+  build(acceptedPattern: ReadonlyArray<string>): Promise<void>
+
+  /**
+   * Need to call `this.start()` in advance.
+   * @param acceptedPattern
+   * @param shouldIgnore
+   */
+  watch(
+    acceptedPattern: ReadonlyArray<string>,
+    shouldIgnore?: IAssetWatchShouldIgnore,
+  ): Promise<IAssetServiceWatcher>
 }

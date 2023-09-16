@@ -1,5 +1,4 @@
 export * from './AssetService'
-export * from './AssetServiceConfigManager'
 export * from './AssetTask'
 export * from './AssetTaskApi'
 export * from './AssetTaskPipeline'

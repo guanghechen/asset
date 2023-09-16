@@ -495,12 +495,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-api@workspace:packages/asset-api"
   dependencies:
-    "@guanghechen/asset-manager": ^1.0.0-alpha.7
-    "@guanghechen/asset-resolver": ^1.0.0-alpha.7
     "@guanghechen/asset-types": ^1.0.0-alpha.24
-    "@guanghechen/asset-util": ^1.0.0-alpha.11
     "@guanghechen/constant": ^1.0.0-alpha.4
-    "@guanghechen/invariant": ^5.0.7
     "@guanghechen/pipeline": ^1.0.0-alpha.8
     "@guanghechen/scheduler": ^6.0.0-alpha.8
     "@guanghechen/task": ^1.0.0-alpha.8
@@ -513,6 +509,7 @@ __metadata:
   resolution: "@guanghechen/asset-manager@workspace:packages/asset-manager"
   dependencies:
     "@guanghechen/asset-types": ^1.0.0-alpha.24
+    "@guanghechen/types": ^1.0.0-alpha.5
   languageName: unknown
   linkType: soft
 
@@ -552,13 +549,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-resolver@^1.0.0-alpha.7, @guanghechen/asset-resolver@workspace:packages/asset-resolver":
+"@guanghechen/asset-resolver@workspace:packages/asset-resolver":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver@workspace:packages/asset-resolver"
   dependencies:
     "@guanghechen/asset-manager": ^1.0.0-alpha.7
     "@guanghechen/asset-types": ^1.0.0-alpha.24
     "@guanghechen/asset-util": ^1.0.0-alpha.11
+    "@guanghechen/types": ^1.0.0-alpha.5
     "@types/uuid": ^9.0.3
     uuid: ^9.0.1
   languageName: unknown
@@ -596,7 +594,6 @@ __metadata:
     "@guanghechen/asset-types": ^1.0.0-alpha.24
     "@guanghechen/invariant": ^5.0.7
     "@guanghechen/monitor": ^1.0.0-alpha.8
-    "@guanghechen/shared": ^1.0.0-alpha.6
   languageName: unknown
   linkType: soft
 
@@ -895,13 +892,6 @@ __metadata:
   bin:
     ghc-doc-link-rewrite: lib/esm/cli.mjs
   checksum: cfb36d1999ecd629c8bc19a2c15afec95c014e8472be8c9b9de3207e05b59e340c302c5ea6b45bb535b790f7cbad2e4f5682c1e6457b23ea28f3257865db3180
-  languageName: node
-  linkType: hard
-
-"@guanghechen/shared@npm:^1.0.0-alpha.6":
-  version: 1.0.0-alpha.6
-  resolution: "@guanghechen/shared@npm:1.0.0-alpha.6"
-  checksum: 9719f9b5aff36c0e7982147c16b22d3088150aa572b8b93c4b81dd5b8df0bf7e7641b601ad2eb67c4f0a8adf00177edf81ecbb512347e7a8eccc70efabeae542
   languageName: node
   linkType: hard
 

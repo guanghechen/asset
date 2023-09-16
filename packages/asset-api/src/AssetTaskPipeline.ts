@@ -1,65 +1,46 @@
-import { AssetChangeEventEnum } from '@guanghechen/asset-types'
-import type { IAssetTaskApi, IAssetTaskData } from '@guanghechen/asset-types'
+import type { AssetChangeEventEnum, IAssetTaskApi, IAssetTaskData } from '@guanghechen/asset-types'
 import { Pipeline } from '@guanghechen/pipeline'
-import type { ITask } from '@guanghechen/types'
+import type { IPipelineMaterial, ITask } from '@guanghechen/types'
 import { AssetTask } from './AssetTask'
 import type { IAssetTaskPipeline } from './types'
 
 type D = IAssetTaskData
 type T = ITask
 
-interface IProps {
-  api: IAssetTaskApi
-}
-
 export class AssetTaskPipeline extends Pipeline<D, T> implements IAssetTaskPipeline {
   protected readonly _api: IAssetTaskApi
 
-  constructor(props: IProps) {
+  constructor(api: IAssetTaskApi) {
     super()
-    this._api = props.api
+    this._api = api
   }
 
-  public override async push(material: D): Promise<void> {
-    const data: D = {
-      type: material.type,
-      alive: material.alive,
-      srcPath: material.srcPath,
-    }
-    await super.push(data)
+  public override async push(input: D): Promise<number> {
+    const filepaths: string[] = input.filepaths.slice()
+    if (filepaths.length <= 0) return -1
+
+    const data: D = { type: input.type, filepaths }
+    return super.push(data)
   }
 
-  protected override async cook(material: D, others: D[]): Promise<T | undefined> {
+  protected override async cook(material: IPipelineMaterial<D>): Promise<T | undefined> {
     if (!material.alive) return undefined
 
-    const srcPath: string = material.srcPath
-    switch (material.type) {
-      case AssetChangeEventEnum.CREATED:
-      case AssetChangeEventEnum.MODIFIED: {
-        const ir: number = others.findIndex(
-          data => data.type === AssetChangeEventEnum.REMOVED && data.srcPath === srcPath,
-        )
-        if (ir >= 0) {
-          for (let k = 0; k <= ir; ++k) {
-            const data = others[k]
-            if (data.srcPath === srcPath) data.alive = false
-          }
-          return undefined
-        }
+    const type: AssetChangeEventEnum = material.data.type
+    const filepathSet: Set<string> = new Set(material.data.filepaths)
+    const others: ReadonlyArray<IPipelineMaterial<D>> = this._materials
+    for (const otherMaterial of others) {
+      if (!otherMaterial.alive) continue
+      if (otherMaterial.data.type !== type) break
 
-        for (let k = 0; k < others.length; ++k) {
-          const data = others[k]
-          if (data.srcPath === srcPath) data.alive = false
-        }
-        break
-      }
-      case AssetChangeEventEnum.REMOVED: {
-        if (others.some(data => data.srcPath === srcPath)) return undefined
-        break
-      }
-      default:
-        throw new TypeError(`Unknown asset change event type: ${material.type}`)
+      otherMaterial.alive = false
+      for (const filepath of otherMaterial.data.filepaths) filepathSet.add(filepath)
     }
-    return new AssetTask({ api: this._api, data: material })
+
+    if (filepathSet.size <= 0) return undefined
+
+    const filepaths: string[] = Array.from(filepathSet)
+    filepathSet.clear()
+    return new AssetTask(this._api, type, filepaths)
   }
 }

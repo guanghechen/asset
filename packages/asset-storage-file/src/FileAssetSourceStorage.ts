@@ -75,12 +75,35 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
   }
 
   public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
-    const { onAdd, onChange, onRemove } = options
-    const watcher = chokidar
-      .watch(patterns, { persistent: true, ...this._watchOptions, cwd: this.pathResolver.rootDir })
-      .on('add', filepath => onAdd(filepath))
-      .on('change', filepath => onChange(filepath))
-      .on('unlink', filepath => onRemove(filepath))
+    const { onAdd, onChange, onRemove, shouldIgnore = () => false } = options
+    const { pathResolver, _watchOptions } = this
+
+    const watcher = chokidar.watch(patterns, {
+      persistent: true,
+      ..._watchOptions,
+      cwd: pathResolver.rootDir,
+    })
+
+    if (onAdd) {
+      watcher.on('add', filepath => {
+        if (shouldIgnore(filepath, pathResolver)) return
+        onAdd(filepath, pathResolver)
+      })
+    }
+
+    if (onChange) {
+      watcher.on('change', filepath => {
+        if (shouldIgnore(filepath, pathResolver)) return
+        onChange(filepath, pathResolver)
+      })
+    }
+
+    if (onRemove) {
+      watcher.on('unlink', filepath => {
+        if (shouldIgnore(filepath, pathResolver)) return
+        onRemove(filepath, pathResolver)
+      })
+    }
 
     let unWatching = false
     return {

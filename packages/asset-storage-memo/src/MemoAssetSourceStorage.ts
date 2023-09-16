@@ -1,6 +1,7 @@
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAssetCollectOptions,
+  IAssetFileChangedCallback,
   IAssetPathResolver,
   IAssetSourceStorage,
   IAssetStat,
@@ -19,27 +20,23 @@ type IParametersOfOnRemove = [filepath: string]
 
 export interface IMemoAssetSourceStorageProps {
   pathResolver: IAssetPathResolver
-  initialData: Iterable<[string, IFileItem]>
+  initialData?: Iterable<[string, IFileItem]>
 }
 
 export class MemoAssetSourceStorage implements IAssetSourceStorage {
   public readonly pathResolver: IAssetPathResolver
   protected readonly _cache: Map<string, IFileItem>
-  protected readonly _monitors: {
-    onAdd: IMonitor<IParametersOfOnAdd>
-    onChange: IMonitor<IParametersOfOnChange>
-    onRemove: IMonitor<IParametersOfOnRemove>
-  }
+  protected readonly _monitorAdd: IMonitor<IParametersOfOnAdd>
+  protected readonly _monitorChange: IMonitor<IParametersOfOnChange>
+  protected readonly _monitorRemove: IMonitor<IParametersOfOnRemove>
 
   constructor(props: IMemoAssetSourceStorageProps) {
     const { pathResolver, initialData } = props
     this.pathResolver = pathResolver
     this._cache = new Map(initialData)
-    this._monitors = {
-      onAdd: new Monitor<IParametersOfOnAdd>('onAdd'),
-      onChange: new Monitor<IParametersOfOnChange>('onChange'),
-      onRemove: new Monitor<IParametersOfOnRemove>('onRemove'),
-    }
+    this._monitorAdd = new Monitor<IParametersOfOnAdd>('onAdd')
+    this._monitorChange = new Monitor<IParametersOfOnChange>('onChange')
+    this._monitorRemove = new Monitor<IParametersOfOnRemove>('onRemove')
   }
 
   public async removeFile(filepath: string): Promise<void> {
@@ -47,7 +44,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     const item = this._cache.get(identifier)
     invariant(!!item, `[${this.constructor.name}.removeFile] invalid filepath: ${filepath}`)
     this._cache.delete(identifier)
-    this._monitors.onRemove.notify(filepath)
+    this._monitorRemove.notify(filepath)
   }
 
   public async updateFile(item: IFileItem): Promise<void> {
@@ -60,12 +57,12 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
         `[${this.constructor.name}.updateFile] invalid filepath: ${item.absolutePath}`,
       )
       this._cache.set(identifier, { ...item })
-      this._monitors.onChange.notify(item.absolutePath)
+      this._monitorChange.notify(item.absolutePath)
       return
     }
 
     this._cache.set(identifier, { ...item })
-    this._monitors.onAdd.notify(item.absolutePath)
+    this._monitorAdd.notify(item.absolutePath)
   }
 
   /** Below are override methods */
@@ -131,25 +128,32 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
   }
 
   public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
-    const { onAdd, onChange, onRemove } = options
-    type ICallback = (filepath: string) => void
+    const { onAdd, onChange, onRemove, shouldIgnore = () => false } = options
+    const { pathResolver } = this
 
-    const wrapper = (fn: ICallback): ICallback => {
+    const wrapper = (fn: IAssetFileChangedCallback): ((filepath: string) => void) => {
       return (filepath: string): void => {
-        const relativeFilepath: string = this.pathResolver.relative(filepath)
-        if (micromatch.isMatch(relativeFilepath, patterns, { dot: true })) fn(filepath)
+        const relativeFilepath: string = pathResolver.relative(filepath)
+        if (shouldIgnore(relativeFilepath, pathResolver)) return
+        if (micromatch.isMatch(relativeFilepath, patterns, { dot: true })) {
+          fn(filepath, pathResolver)
+        }
       }
     }
 
-    const unsubscribeOnAdd = this._monitors.onAdd.subscribe(wrapper(onAdd))
-    const unsubscribeOnChange = this._monitors.onChange.subscribe(wrapper(onChange))
-    const unsubscribeOnRemove = this._monitors.onRemove.subscribe(wrapper(onRemove))
+    const unsubscribeOnAdd = onAdd ? this._monitorAdd.subscribe(wrapper(onAdd)) : undefined
+    const unsubscribeOnChange = onChange
+      ? this._monitorChange.subscribe(wrapper(onChange))
+      : undefined
+    const unsubscribeOnRemove = onRemove
+      ? this._monitorRemove.subscribe(wrapper(onRemove))
+      : undefined
 
     return {
       unwatch: async (): Promise<void> => {
-        unsubscribeOnAdd()
-        unsubscribeOnChange()
-        unsubscribeOnRemove()
+        unsubscribeOnAdd?.()
+        unsubscribeOnChange?.()
+        unsubscribeOnRemove?.()
       },
     }
   }

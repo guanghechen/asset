@@ -1,43 +1,34 @@
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
-  IAssetPathResolver,
+  IAssetFileItem,
+  IAssetStat,
+  IAssetTargetDataStorage,
   IAssetTargetStorage,
   IAssetTargetStorageMonitor,
+  IFileData,
   IFileItem,
-  IParametersOfOnBinaryFileWritten,
   IParametersOfOnFileRemoved,
   IParametersOfOnFileWritten,
-  IParametersOfOnJsonFileWritten,
-  IParametersOfOnTextFileWritten,
+  IRawFileItem,
 } from '@guanghechen/asset-types'
+import invariant from '@guanghechen/invariant'
 import { Monitor } from '@guanghechen/monitor'
 import type { IMonitor, IMonitorUnsubscribe } from '@guanghechen/monitor'
-import { noop } from '@guanghechen/shared'
 
-export interface IAssetTargetStorageProps {
-  pathResolver: IAssetPathResolver
-}
+const noop = (..._args: any[]): void => {}
 
-export abstract class AssetTargetStorage implements IAssetTargetStorage {
-  public readonly pathResolver: IAssetPathResolver
-
+export class AssetTargetStorage implements IAssetTargetStorage {
+  protected readonly _monitorFileWritten: IMonitor<IParametersOfOnFileWritten>
+  protected readonly _monitorFileRemoved: IMonitor<IParametersOfOnFileRemoved>
+  protected readonly _assetFileItemMap: Map<string, IAssetFileItem>
+  protected readonly _dataStorage: IAssetTargetDataStorage
   private _destroyed: boolean
-  protected readonly _monitors: {
-    onBinaryFileWritten: IMonitor<IParametersOfOnBinaryFileWritten>
-    onTextFileWritten: IMonitor<IParametersOfOnTextFileWritten>
-    onJsonFileWritten: IMonitor<IParametersOfOnJsonFileWritten>
-    onFileWritten: IMonitor<IParametersOfOnFileWritten>
-    onFileRemoved: IMonitor<IParametersOfOnFileRemoved>
-  }
 
-  constructor(props: IAssetTargetStorageProps) {
-    this.pathResolver = props.pathResolver
-    this._monitors = {
-      onBinaryFileWritten: new Monitor<IParametersOfOnBinaryFileWritten>('onBinaryFileWritten'),
-      onTextFileWritten: new Monitor<IParametersOfOnTextFileWritten>('onTextFileWritten'),
-      onJsonFileWritten: new Monitor<IParametersOfOnJsonFileWritten>('onJsonFileWritten'),
-      onFileWritten: new Monitor<IParametersOfOnFileWritten>('onFileWritten'),
-      onFileRemoved: new Monitor<IParametersOfOnFileRemoved>('onFileRemoved'),
-    }
+  constructor(dataStorage: IAssetTargetDataStorage) {
+    this._monitorFileWritten = new Monitor<IParametersOfOnFileWritten>('onFileWritten')
+    this._monitorFileRemoved = new Monitor<IParametersOfOnFileRemoved>('onFileRemoved')
+    this._assetFileItemMap = new Map<string, IAssetFileItem>()
+    this._dataStorage = dataStorage
     this._destroyed = false
   }
 
@@ -49,61 +40,101 @@ export abstract class AssetTargetStorage implements IAssetTargetStorage {
     if (this._destroyed) return
 
     this._destroyed = true
-    this._monitors.onBinaryFileWritten.destroy()
-    this._monitors.onTextFileWritten.destroy()
-    this._monitors.onJsonFileWritten.destroy()
-    this._monitors.onFileWritten.destroy()
+    this._monitorFileWritten.destroy()
   }
 
   public monitor(monitor: Partial<IAssetTargetStorageMonitor>): IMonitorUnsubscribe {
     if (this.destroyed) return noop
 
-    const {
-      onBinaryFileWritten,
-      onTextFileWritten,
-      onJsonFileWritten,
-      onFileWritten,
-      onFileRemoved,
-    } = monitor
-
-    const unsubscribeOnBinaryFileWritten =
-      this._monitors.onBinaryFileWritten.subscribe(onBinaryFileWritten)
-    const unsubscribeOnTextFileWritten =
-      this._monitors.onTextFileWritten.subscribe(onTextFileWritten)
-    const unsubscribeOnJsonFileWritten =
-      this._monitors.onJsonFileWritten.subscribe(onJsonFileWritten)
-    const unsubscribeOnFileWritten = this._monitors.onFileWritten.subscribe(onFileWritten)
-    const unsubscribeOnFileRemoved = this._monitors.onFileRemoved.subscribe(onFileRemoved)
+    const { onFileWritten, onFileRemoved } = monitor
+    const unsubscribeOnFileWritten = this._monitorFileWritten.subscribe(onFileWritten)
+    const unsubscribeOnFileRemoved = this._monitorFileRemoved.subscribe(onFileRemoved)
 
     return (): void => {
-      unsubscribeOnBinaryFileWritten()
-      unsubscribeOnTextFileWritten()
-      unsubscribeOnJsonFileWritten()
       unsubscribeOnFileWritten()
       unsubscribeOnFileRemoved()
     }
   }
 
-  public abstract locateFileByUri(uri: string): Promise<IFileItem | undefined>
+  public async removeFile(uri: string): Promise<void> {
+    const assetFileItem: IAssetFileItem | undefined = this._assetFileItemMap.get(uri)
+    if (assetFileItem === undefined) {
+      await this._dataStorage.remove(uri)
+      return
+    }
 
-  public abstract writeBinaryFile(
-    filepath: string,
-    mimetype: string,
-    content: Buffer,
-  ): Promise<void>
+    const data = await this._dataStorage.load(uri, assetFileItem)
+    const item: IFileItem = { ...assetFileItem, data: data as any }
 
-  public abstract writeTextFile(
-    filepath: string,
-    mimetype: string,
-    content: string,
-    encoding: BufferEncoding,
-  ): Promise<void>
+    await this._dataStorage.remove(uri)
+    this._assetFileItemMap.delete(uri)
 
-  public abstract writeJsonFile(filepath: string, mimetype: string, content: unknown): Promise<void>
+    // Notify
+    this._monitorFileRemoved.notify(item)
+  }
 
-  public abstract removeFile(filepath: string): Promise<void>
+  public async resolveFile(uri: string): Promise<IFileItem | undefined> {
+    const assetFileItem: IAssetFileItem | undefined = this._assetFileItemMap.get(uri)
+    if (assetFileItem === undefined) return undefined
 
-  protected _resolvePathFromUri(uri: string): string {
-    return this.pathResolver.absolute(uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''))
+    const data: IFileData = this._dataStorage.load(uri, assetFileItem)
+    const item: IFileItem = { ...assetFileItem, data: data as any }
+    return item
+  }
+
+  public async writeFile(rawItem: IRawFileItem): Promise<void> {
+    const title: string = `[${this.constructor.name}.writeFile]`
+    const { datatype, mimetype, uri, data } = rawItem
+    const assetItem = this._assetFileItemMap.get(uri)
+
+    invariant(!assetItem || assetItem.datatype === datatype, `${title} invalid uri(${uri})`)
+
+    const filepath: string = this._dataStorage.pathResolver.resolveFromUri(uri)
+    const mtime: Date = new Date()
+    const birthtime: Date = assetItem?.stat?.birthtime ?? mtime
+    const stat: IAssetStat = { birthtime, mtime }
+
+    let nextAssetItem: IAssetFileItem
+    let fileItem: IFileItem
+    switch (datatype) {
+      case AssetDataTypeEnum.BINARY:
+        nextAssetItem = {
+          datatype,
+          mimetype,
+          absolutePath: filepath,
+          encoding: undefined,
+          stat,
+        }
+        fileItem = { ...nextAssetItem, data }
+        break
+      case AssetDataTypeEnum.TEXT:
+        invariant(!!rawItem.encoding, `${title} missing encoding for text file: ${uri}`)
+        nextAssetItem = {
+          datatype,
+          mimetype,
+          absolutePath: filepath,
+          encoding: rawItem.encoding,
+          stat,
+        }
+        fileItem = { ...nextAssetItem, data }
+        break
+      case AssetDataTypeEnum.JSON:
+        nextAssetItem = {
+          datatype,
+          mimetype,
+          absolutePath: filepath,
+          encoding: undefined,
+          stat,
+        }
+        fileItem = { ...nextAssetItem, data }
+        break
+      default:
+        throw new TypeError(`${title} Unexpected datatype: ${datatype}`)
+    }
+    await this._dataStorage.save(rawItem)
+    this._assetFileItemMap.set(uri, nextAssetItem)
+
+    // Notify
+    this._monitorFileWritten.notify(fileItem)
   }
 }

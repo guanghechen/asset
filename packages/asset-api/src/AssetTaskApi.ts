@@ -5,9 +5,13 @@ import type {
   IAssetResolverApi,
   IAssetTargetStorage,
   IAssetTaskApi,
-  IBinaryLike,
+  IBinaryFileData,
+  IJsonFileData,
+  IRawBinaryFileItem,
+  IRawJsonFileItem,
+  IRawTextFileItem,
+  ITextFileData,
 } from '@guanghechen/asset-types'
-import invariant from '@guanghechen/invariant'
 import type { IReporter } from '@guanghechen/types'
 
 interface IProps {
@@ -16,11 +20,9 @@ interface IProps {
   reporter: IReporter
   targetStorage: IAssetTargetStorage
   dataMapUri: string
-  delayAfterContentChanged?: number
 }
 
 export class AssetTaskApi implements IAssetTaskApi {
-  public readonly delayAfterContentChanged: number
   protected readonly _api: IAssetResolverApi
   protected readonly _resolver: IAssetResolver
   protected readonly _reporter: IReporter
@@ -28,9 +30,6 @@ export class AssetTaskApi implements IAssetTaskApi {
   protected readonly _dataMapUri: string
 
   constructor(props: IProps) {
-    this.delayAfterContentChanged = Number.isNaN(props.delayAfterContentChanged)
-      ? 200
-      : Number(props.delayAfterContentChanged)
     this._api = props.api
     this._resolver = props.resolver
     this._reporter = props.reporter
@@ -45,17 +44,15 @@ export class AssetTaskApi implements IAssetTaskApi {
 
     for (const result of results) {
       const { asset, datatype, data, encoding } = result
-      tasks.push(
-        this._saveAsset({
-          uri: asset.uri,
-          mimetype: asset.mimetype,
-          datatype,
-          data,
-          encoding,
-        }),
-      )
+      const task: Promise<void> = this._saveAsset({
+        uri: asset.uri,
+        mimetype: asset.mimetype,
+        datatype,
+        data,
+        encoding,
+      })
+      tasks.push(task)
     }
-
     if (tasks.length > 0) tasks.push(this._saveAssetDataMap())
 
     await Promise.all(tasks)
@@ -68,7 +65,11 @@ export class AssetTaskApi implements IAssetTaskApi {
     for (const srcPath of srcPaths) {
       const asset = await _api.locateAsset(srcPath)
       tasks.push(_api.removeAsset(srcPath))
-      if (asset) tasks.push(this._removeAsset(asset.uri))
+      if (asset) {
+        this._reporter.verbose('[AssetTasApi.remove] uri({})', asset.uri)
+        const task: Promise<void> = this._targetStorage.removeFile(asset.uri)
+        tasks.push(task)
+      }
     }
 
     if (tasks.length > 0) tasks.push(this._saveAssetDataMap())
@@ -86,32 +87,57 @@ export class AssetTaskApi implements IAssetTaskApi {
     uri: string
     mimetype: string
     datatype: AssetDataTypeEnum
-    data: unknown | null
+    data: unknown
     encoding: BufferEncoding | undefined
   }): Promise<void> {
     if (params.data === null) return
 
     const { uri, mimetype, data, datatype, encoding } = params
-    this._reporter.verbose('[saveAsset] uri: {}', uri)
+    this._reporter.verbose('[AssetTasApi._saveAsset] uri: {}', uri)
 
     const { _targetStorage } = this
     switch (datatype) {
-      case AssetDataTypeEnum.BINARY:
-        await _targetStorage.writeBinaryFile(uri, mimetype, data as IBinaryLike)
-        break
-      case AssetDataTypeEnum.JSON: {
-        await _targetStorage.writeJsonFile(uri, mimetype, data)
+      case AssetDataTypeEnum.BINARY: {
+        const rawItem: IRawBinaryFileItem = {
+          datatype,
+          mimetype,
+          uri,
+          data: data as IBinaryFileData,
+        }
+        await _targetStorage.writeFile(rawItem)
         break
       }
-      case AssetDataTypeEnum.TEXT:
-        invariant(
-          !!encoding,
-          `[${this.constructor.name}.saveAsset] encoding is required for text type file`,
-        )
-        await _targetStorage.writeTextFile(uri, mimetype, data as string, encoding)
+      case AssetDataTypeEnum.JSON: {
+        const rawItem: IRawJsonFileItem = {
+          datatype,
+          mimetype,
+          uri,
+          data: data as IJsonFileData,
+        }
+        await _targetStorage.writeFile(rawItem)
         break
+      }
+      case AssetDataTypeEnum.TEXT: {
+        if (!encoding) {
+          this._reporter.error(
+            `[AssetTasApi._saveAsset] encoding is required for text type file`,
+            params,
+          )
+          throw new Error('[AssetTasApi] encoding is required for text type file')
+        }
+
+        const rawItem: IRawTextFileItem = {
+          datatype,
+          mimetype,
+          uri,
+          data: data as ITextFileData,
+          encoding,
+        }
+        await _targetStorage.writeFile(rawItem)
+        break
+      }
       default:
-        throw new Error(`[${this.constructor.name}.saveAsset] Unexpected datatype: ${datatype}`)
+        throw new Error(`[AssetTaskApi._saveAsset] Unexpected datatype: ${datatype}`)
     }
   }
 
@@ -124,10 +150,5 @@ export class AssetTaskApi implements IAssetTaskApi {
       data,
       encoding: undefined,
     })
-  }
-
-  protected async _removeAsset(uri: string): Promise<void> {
-    this._reporter.verbose('[removeAsset] uri({})', uri)
-    await this._targetStorage.removeFile(uri)
   }
 }

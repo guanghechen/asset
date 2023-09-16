@@ -1,14 +1,21 @@
 import type { IAsset, IAssetDataMap, IAssetManager } from '@guanghechen/asset-types'
+import type { IReporter } from '@guanghechen/types'
 
 const regex = /[\s\\/]+/g
 const normalize = (text: string): string => text.trim().replace(regex, '_').toLowerCase()
 
+export interface IAssetManagerProps {
+  readonly reporter: IReporter
+}
+
 export class AssetManager implements IAssetManager {
+  protected readonly _reporter: IReporter
   protected readonly _assetMap: Map<string, IAsset>
   protected readonly _categoryMap: Map<string, Set<string>>
   protected readonly _tagMap: Map<string, Set<string>>
 
-  constructor() {
+  constructor(props: IAssetManagerProps) {
+    this._reporter = props.reporter
     this._assetMap = new Map()
     this._categoryMap = new Map()
     this._tagMap = new Map()
@@ -47,7 +54,7 @@ export class AssetManager implements IAssetManager {
 
   public insert(asset: Readonly<IAsset>): void {
     if (this._assetMap.has(asset.guid)) {
-      console.error(`[AssetManager.insert] Duplicated asset: guid(${asset.guid})`)
+      this._reporter.error('[AssetManager.insert] Duplicated asset: guid({})', asset.guid)
       return
     }
 

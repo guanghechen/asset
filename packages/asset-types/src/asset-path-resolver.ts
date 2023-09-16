@@ -27,8 +27,14 @@ export interface IAssetPathResolver {
   isSafePath(filepath: string): boolean
 
   /**
-   * Get the relative path to the {rootDir}
+   * Get the relative path to the {rootDir}.
    * @param filepath absolute path or relative path to the {rootDir}
    */
   relative(filepath: string): string
+
+  /**
+   * Resolve path from uri.
+   * @param uri
+   */
+  resolveFromUri(uri: string): string
 }

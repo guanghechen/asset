@@ -1,9 +1,5 @@
 export interface IAssetTaskApi {
   /**
-   *
-   */
-  readonly delayAfterContentChanged: number
-  /**
    * Create assets on the given srcPaths.
    * @param srcPaths
    */

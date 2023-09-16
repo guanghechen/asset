@@ -40,12 +40,8 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-manager": "^1.0.0-alpha.7",
-    "@guanghechen/asset-resolver": "^1.0.0-alpha.7",
     "@guanghechen/asset-types": "^1.0.0-alpha.24",
-    "@guanghechen/asset-util": "^1.0.0-alpha.11",
     "@guanghechen/constant": "^1.0.0-alpha.4",
-    "@guanghechen/invariant": "^5.0.7",
     "@guanghechen/pipeline": "^1.0.0-alpha.8",
     "@guanghechen/scheduler": "^6.0.0-alpha.8",
     "@guanghechen/task": "^1.0.0-alpha.8",
