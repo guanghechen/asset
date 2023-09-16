@@ -1,3 +1,4 @@
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAssetCollectOptions,
   IAssetPathResolver,
@@ -5,12 +6,20 @@ import type {
   IAssetStat,
   IAssetWatchOptions,
   IAssetWatcher,
+  IBinaryFileData,
+  IBinarySourceItem,
+  IJsonFileData,
+  IJsonSourceItem,
+  IRawSourceItem,
+  ISourceItem,
+  ITextFileData,
+  ITextSourceItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import chokidar from 'chokidar'
 import fastGlob from 'fast-glob'
 import { existsSync } from 'node:fs'
-import { readFile, stat } from 'node:fs/promises'
+import { readFile, stat, unlink, writeFile } from 'node:fs/promises'
 
 export interface IFileAssetSourceStorageProps {
   pathResolver: IAssetPathResolver
@@ -35,10 +44,7 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     invariant(assertion, `[assertExistedFile] Not a file'. (${filepath})`)
   }
 
-  public async collectAssetSrcPaths(
-    patterns: string[],
-    options: IAssetCollectOptions,
-  ): Promise<string[]> {
+  public async collect(patterns: string[], options: IAssetCollectOptions): Promise<string[]> {
     const cwd = options.cwd || this.pathResolver.rootDir
     this.pathResolver.assertSafePath(cwd)
 
@@ -54,24 +60,78 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     return filepaths
   }
 
-  public async readBinaryFile(filepath: string): Promise<Buffer> {
-    const absolutePath: string = this.pathResolver.absolute(filepath)
-    return await readFile(absolutePath)
+  public async readFile(rawItem: IRawSourceItem): Promise<ISourceItem> {
+    const filepath: string = this.pathResolver.absolute(rawItem.filepath)
+    const stat = await this.statFile(filepath)
+    switch (rawItem.datatype) {
+      case AssetDataTypeEnum.BINARY: {
+        const data: IBinaryFileData = await readFile(filepath)
+        const item: IBinarySourceItem = {
+          datatype: AssetDataTypeEnum.BINARY,
+          filepath,
+          stat,
+          data,
+        }
+        return item
+      }
+      case AssetDataTypeEnum.TEXT: {
+        const data: ITextFileData = await readFile(filepath, rawItem.encoding)
+        const item: ITextSourceItem = {
+          datatype: AssetDataTypeEnum.TEXT,
+          filepath,
+          stat,
+          data,
+          encoding: rawItem.encoding,
+        }
+        return item
+      }
+      case AssetDataTypeEnum.JSON: {
+        const content: string = await readFile(filepath, 'utf8')
+        const data: IJsonFileData = JSON.parse(content)
+        const item: IJsonSourceItem = {
+          datatype: AssetDataTypeEnum.JSON,
+          filepath,
+          stat,
+          data,
+        }
+        return item
+      }
+      default:
+        throw new TypeError(
+          `[${this.constructor.name}.readFile] Invalid datatype: ${(rawItem as any).datatype}`,
+        )
+    }
   }
 
-  public async readTextFile(filepath: string, encoding: BufferEncoding): Promise<string> {
-    const absolutePath: string = this.pathResolver.absolute(filepath)
-    return await readFile(absolutePath, encoding)
-  }
-
-  public async readJsonFile(filepath: string): Promise<unknown> {
-    const absolutePath: string = this.pathResolver.absolute(filepath)
-    const content: string = await readFile(absolutePath, 'utf8')
-    return JSON.parse(content)
+  public async removeFile(filepath: string): Promise<void> {
+    await unlink(filepath)
   }
 
   public async statFile(filepath: string): Promise<IAssetStat> {
     return await stat(filepath)
+  }
+
+  public async updateFile(item: ISourceItem): Promise<void> {
+    const filepath: string = this.pathResolver.absolute(item.filepath)
+    switch (item.datatype) {
+      case AssetDataTypeEnum.BINARY: {
+        await writeFile(filepath, item.data)
+        break
+      }
+      case AssetDataTypeEnum.TEXT: {
+        await writeFile(filepath, item.data, item.encoding)
+        break
+      }
+      case AssetDataTypeEnum.JSON: {
+        const content: string = JSON.stringify(item.data)
+        await writeFile(filepath, content, 'utf8')
+        break
+      }
+      default:
+        throw new TypeError(
+          `[${this.constructor.name}.updateFile] Invalid datatype: ${(item as any).datatype}`,
+        )
+    }
   }
 
   public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {

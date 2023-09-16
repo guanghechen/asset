@@ -1,5 +1,7 @@
 export * from './asset'
 export * from './asset-file'
+export * from './asset-file-source'
+export * from './asset-file-target'
 export * from './asset-manager'
 export * from './asset-path-resolver'
 export * from './asset-resolver'

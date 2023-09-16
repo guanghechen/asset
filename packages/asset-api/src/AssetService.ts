@@ -67,7 +67,7 @@ export class AssetService implements IAssetService {
     }
 
     const { _scheduler, _sourceStorage } = this
-    const srcPaths: string[] = await _sourceStorage.collectAssetSrcPaths(acceptedPattern.slice(), {
+    const srcPaths: string[] = await _sourceStorage.collect(acceptedPattern.slice(), {
       absolute: true,
     })
     const code: number = await _scheduler.schedule({

@@ -60,15 +60,15 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
     await unlink(filepath)
   }
 
-  public async load(uri: string, assetItem: ITargetItemWithoutData): Promise<IFileData> {
+  public async load(uri: string, fileItem: ITargetItemWithoutData): Promise<IFileData> {
     const filepath: string = this.pathResolver.resolveFromUri(uri)
-    switch (assetItem.datatype) {
+    switch (fileItem.datatype) {
       case AssetDataTypeEnum.BINARY: {
         const content: IBinaryFileData = await readFile(filepath)
         return content
       }
       case AssetDataTypeEnum.TEXT: {
-        const content: ITextFileData = await readFile(filepath, assetItem.encoding)
+        const content: ITextFileData = await readFile(filepath, fileItem.encoding)
         return content
       }
       case AssetDataTypeEnum.JSON: {
@@ -77,7 +77,7 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
         return data
       }
       default:
-        throw new TypeError(`Unexpected datatype: ${(assetItem as any).datatype}`)
+        throw new TypeError(`Unexpected datatype: ${(fileItem as any).datatype}`)
     }
   }
 }

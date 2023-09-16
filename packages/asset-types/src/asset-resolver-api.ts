@@ -1,3 +1,4 @@
+import type { IBinaryFileData } from './asset-file'
 import type { IAssetResolverLocator } from './asset-resolver-locator'
 import type { IAssetUriResolver } from './asset-uri-resolver'
 import type { IAssetPluginLocateInput } from './plugin/locate'
@@ -17,5 +18,5 @@ export interface IAssetResolverApi extends IAssetResolverLocator, IAssetUriResol
    * Load content by source file srcPath.
    * @param srcPath
    */
-  loadContent(srcPath: string): Promise<Buffer | null>
+  loadContent(srcPath: string): Promise<IBinaryFileData | null>
 }

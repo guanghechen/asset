@@ -1,4 +1,5 @@
-import type { IAssetStat, IBinaryFileData } from './asset-file'
+import type { IAssetStat } from './asset-file'
+import type { IRawSourceItem, ISourceItem } from './asset-file-source'
 import type { IAssetPathResolver } from './asset-path-resolver'
 import type { IAssetWatcher } from './common'
 
@@ -21,27 +22,13 @@ export interface IAssetWatchOptions {
   shouldIgnore?: IAssetWatchShouldIgnore
 }
 
-export interface IAssetSourceDataStorage {
-  readonly pathResolver: IAssetPathResolver
-}
-
 export interface IAssetSourceStorage {
   readonly pathResolver: IAssetPathResolver
-
   assertExistedFile(srcPath: string): Promise<void | never>
-
-  collectAssetSrcPaths(
-    patterns: ReadonlyArray<string>,
-    options: IAssetCollectOptions,
-  ): Promise<string[]>
-
-  readBinaryFile(filepath: string): Promise<IBinaryFileData>
-
-  readTextFile(filepath: string, encoding: BufferEncoding): Promise<string>
-
-  readJsonFile(filepath: string): Promise<unknown>
-
+  collect(patterns: ReadonlyArray<string>, options: IAssetCollectOptions): Promise<string[]>
+  readFile(rawItem: IRawSourceItem): Promise<ISourceItem>
+  removeFile(filepath: string): Promise<void>
   statFile(filepath: string): Promise<IAssetStat>
-
+  updateFile(item: ISourceItem): Promise<void>
   watch(patterns: ReadonlyArray<string>, options: IAssetWatchOptions): IAssetWatcher
 }

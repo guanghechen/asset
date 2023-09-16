@@ -1,3 +1,4 @@
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAsset,
   IAssetDataMap,
@@ -7,6 +8,8 @@ import type {
   IAssetResolverLocator,
   IAssetSourceStorage,
   IAssetUriResolver,
+  IBinaryFileData,
+  ISourceItem,
 } from '@guanghechen/asset-types'
 import { calcFingerprint, normalizeUrlPath } from '@guanghechen/asset-util'
 import path from 'node:path'
@@ -72,7 +75,11 @@ export class AssetResolverApi implements IAssetResolverApi {
     const guid: string = uuid(`#path-${id}`, this.GUID_NAMESPACE)
 
     const stat = await _sourceStorage.statFile(srcPath)
-    const content: Buffer | null = await _sourceStorage.readBinaryFile(srcPath)
+    const sourceItem: ISourceItem | undefined = await _sourceStorage.readFile({
+      datatype: AssetDataTypeEnum.BINARY,
+      filepath: srcPath,
+    })
+    const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
     const hash: string = calcFingerprint(content)
     const filename: string = path.basename(srcPath)
     const src: string = normalizeUrlPath(_sourceStorage.pathResolver.relative(srcPath))
@@ -90,11 +97,15 @@ export class AssetResolverApi implements IAssetResolverApi {
     return this._sourceStorage.pathResolver.isSafePath(srcPath)
   }
 
-  public async loadContent(srcPath_: string): Promise<Buffer> {
+  public async loadContent(srcPath_: string): Promise<IBinaryFileData | null> {
     const srcPath: string = this._sourceStorage.pathResolver.absolute(srcPath_)
     this._sourceStorage.pathResolver.assertSafePath(srcPath)
     await this._sourceStorage.assertExistedFile(srcPath)
-    const content: Buffer = await this._sourceStorage.readBinaryFile(srcPath)
-    return content
+    const sourceItem: ISourceItem | undefined = await this._sourceStorage.readFile({
+      datatype: AssetDataTypeEnum.BINARY,
+      filepath: srcPath,
+    })
+    const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
+    return content ?? null
   }
 }
