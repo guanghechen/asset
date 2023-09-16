@@ -41,10 +41,10 @@
   },
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.24",
-    "@guanghechen/constant": "^1.0.0-alpha.4",
-    "@guanghechen/pipeline": "^1.0.0-alpha.8",
-    "@guanghechen/scheduler": "^6.0.0-alpha.8",
-    "@guanghechen/task": "^1.0.0-alpha.8",
-    "@guanghechen/types": "^1.0.0-alpha.5"
+    "@guanghechen/constant": "^1.0.0-alpha.5",
+    "@guanghechen/pipeline": "^1.0.0-alpha.9",
+    "@guanghechen/scheduler": "^6.0.0-alpha.9",
+    "@guanghechen/task": "^1.0.0-alpha.9",
+    "@guanghechen/types": "^1.0.0-alpha.6"
   }
 }

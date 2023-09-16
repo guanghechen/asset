@@ -43,10 +43,10 @@
     "@guanghechen/asset-manager": "^1.0.0-alpha.7",
     "@guanghechen/asset-types": "^1.0.0-alpha.24",
     "@guanghechen/asset-util": "^1.0.0-alpha.11",
-    "@guanghechen/types": "^1.0.0-alpha.5",
+    "@guanghechen/types": "^1.0.0-alpha.6",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.3"
+    "@types/uuid": "^9.0.4"
   }
 }
