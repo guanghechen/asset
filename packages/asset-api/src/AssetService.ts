@@ -61,27 +61,34 @@ export class AssetService implements IAssetService {
     scheduler.cleanup()
   }
 
-  public async build(acceptedPattern: ReadonlyArray<string>): Promise<void> {
-    if (this._status !== 'prepared') {
-      throw new Error(`AssetService is not running`)
-    }
+  public async buildByPaths(filepaths_: ReadonlyArray<string>): Promise<void> {
+    if (filepaths_.length <= 0) return
 
     const { _scheduler, _sourceStorage } = this
-    const srcPaths: string[] = await _sourceStorage.collect(acceptedPattern.slice(), {
-      absolute: true,
-    })
+    const filepaths: string[] = filepaths_.map(filepath =>
+      _sourceStorage.pathResolver.relative(filepath),
+    )
     const code: number = await _scheduler.schedule({
       type: AssetChangeEventEnum.MODIFIED,
-      filepaths: srcPaths,
+      filepaths,
     })
 
     this._reporter.verbose(
       `[AssetService] waiting finish:`,
       _sourceStorage.pathResolver.rootDir,
-      acceptedPattern,
+      filepaths,
     )
     await _scheduler.waitTaskTerminated(code)
     this._reporter.verbose(`[AssetService] finished:`, _sourceStorage.pathResolver.rootDir)
+  }
+
+  public async buildByPatterns(acceptedPattern: ReadonlyArray<string>): Promise<void> {
+    if (this._status !== 'prepared') throw new Error(`AssetService is not running`)
+
+    const srcPaths: string[] = await this._sourceStorage.collect(acceptedPattern.slice(), {
+      absolute: true,
+    })
+    await this.buildByPaths(srcPaths)
   }
 
   // In watching mode, use scheduler to schedule tasks.

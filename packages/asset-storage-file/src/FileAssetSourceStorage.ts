@@ -44,10 +44,14 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     invariant(assertion, `[assertExistedFile] Not a file'. (${filepath})`)
   }
 
-  public async collect(patterns: string[], options: IAssetCollectOptions): Promise<string[]> {
-    const cwd = options.cwd || this.pathResolver.rootDir
+  public async collect(
+    patterns_: Iterable<string>,
+    options: IAssetCollectOptions,
+  ): Promise<string[]> {
+    const cwd: string = options.cwd || this.pathResolver.rootDir
     this.pathResolver.assertSafePath(cwd)
 
+    const patterns: string[] = Array.from(patterns_)
     const filepaths: string[] = await fastGlob(patterns, {
       cwd,
       dot: true,

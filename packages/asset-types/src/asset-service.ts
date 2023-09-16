@@ -14,13 +14,19 @@ export interface IAssetService {
   close(): Promise<void>
 
   /**
-   * Need to call `this.start()` in advance.
-   * @param acceptedPattern
+   * Need to call `this.prepare()` in advance.
+   * @param filepaths
    */
-  build(acceptedPattern: ReadonlyArray<string>): Promise<void>
+  buildByPaths(filepaths: ReadonlyArray<string>): Promise<void>
 
   /**
-   * Need to call `this.start()` in advance.
+   * Need to call `this.prepare()` in advance.
+   * @param acceptedPattern
+   */
+  buildByPatterns(acceptedPattern: Iterable<string>): Promise<void>
+
+  /**
+   * Need to call `this.prepare()` in advance.
    * @param acceptedPattern
    * @param shouldIgnore
    */

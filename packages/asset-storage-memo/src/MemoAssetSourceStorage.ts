@@ -46,16 +46,18 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     invariant(existed, `[${this.constructor.name}.assertExistedFile] invalid filepath: ${filepath}`)
   }
 
-  public async collect(patterns: string[], options: IAssetCollectOptions): Promise<string[]> {
+  public async collect(
+    patterns_: Iterable<string>,
+    options: IAssetCollectOptions,
+  ): Promise<string[]> {
     const cwd: string = options.cwd || this.pathResolver.rootDir
     this.pathResolver.assertSafePath(cwd)
 
+    const patterns: string[] = Array.from(patterns_)
     const filepaths: string[] = []
     for (const item of this._cache.values()) {
       const filepath: string = this.pathResolver.relative(item.filepath)
-      if (micromatch.isMatch(filepath, patterns, { dot: true })) {
-        filepaths.push(filepath)
-      }
+      if (micromatch.isMatch(filepath, patterns, { dot: true })) filepaths.push(filepath)
     }
     return filepaths
   }
