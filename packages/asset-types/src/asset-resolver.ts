@@ -1,12 +1,12 @@
 import type { IAsset } from './asset'
 import type { IAssetResolverApi } from './asset-resolver-api'
-import type { AssetDataTypeEnum } from './enum'
 import type {
   IAssetLocatePlugin,
   IAssetParsePlugin,
   IAssetPlugin,
   IAssetPolishPlugin,
-} from './plugin/plugin'
+} from './asset-resolver-plugin/plugin'
+import type { AssetDataTypeEnum } from './enum'
 
 export type IAssetResolverPlugin = IAssetPlugin &
   Partial<IAssetLocatePlugin> &

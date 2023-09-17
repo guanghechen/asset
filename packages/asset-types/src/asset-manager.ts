@@ -6,20 +6,24 @@ export interface IAssetDataMap {
 
 export interface IAssetManager {
   /**
-   * Load maps from json data.
-   * @param json
-   * @param replace   If true, clear maps.
-   */
-  load(json: Readonly<IAssetDataMap>, replace: boolean): void
-  /**
    * Dump to asset data map.
    */
   dump(): IAssetDataMap
   /**
+   * Find asset by predicate function.
+   * @param predicate
+   */
+  find(predicate: (asset: Readonly<IAsset>) => boolean): IAsset | null
+  /**
+   * Check if the asset existed by guid.
+   * @param guid
+   */
+  has(guid: string): boolean
+  /**
    * Find asset by asset guid.
    * @param guid
    */
-  getByGuid(guid: string): IAsset | undefined
+  get(guid: string): IAsset | undefined
   /**
    * Find assets by tag.
    * @param tag
@@ -34,7 +38,13 @@ export interface IAssetManager {
    * Add new asset.
    * @param asset
    */
-  insert(asset: Readonly<IAsset>): void
+  insert(asset: Readonly<IAsset>): void | never
+  /**
+   * Load maps from json data.
+   * @param json
+   * @param replace   If true, clear maps.
+   */
+  load(json: Readonly<IAssetDataMap>, replace: boolean): void
   /**
    * Remove an asset.
    * @param guid

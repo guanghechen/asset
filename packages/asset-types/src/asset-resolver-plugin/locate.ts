@@ -3,9 +3,9 @@ import type { IBinaryFileData } from '../asset-file'
 export interface IAssetPluginLocateApi {
   /**
    * Load source content.
-   * @param pathRelativeToCurDir the path relative to the parent path of the current resource.
+   * @param srcPathRelativeToCurDir the path relative to the parent path of the current resource.
    */
-  loadContent(pathRelativeToCurDir: string): Promise<IBinaryFileData | null>
+  loadContent(srcPathRelativeToCurDir: string): Promise<IBinaryFileData | null>
   /**
    * Resolve asset slug.
    * @param slug

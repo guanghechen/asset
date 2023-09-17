@@ -1,33 +1,17 @@
 import type { IAsset, IAssetDataMap, IAssetManager } from '@guanghechen/asset-types'
-import type { IReporter } from '@guanghechen/types'
 
 const regex = /[\s\\/]+/g
 const normalize = (text: string): string => text.trim().replace(regex, '_').toLowerCase()
 
-export interface IAssetManagerProps {
-  readonly reporter: IReporter
-}
-
 export class AssetManager implements IAssetManager {
-  protected readonly _reporter: IReporter
   protected readonly _assetMap: Map<string, IAsset>
   protected readonly _categoryMap: Map<string, Set<string>>
   protected readonly _tagMap: Map<string, Set<string>>
 
-  constructor(props: IAssetManagerProps) {
-    this._reporter = props.reporter
+  constructor() {
     this._assetMap = new Map()
     this._categoryMap = new Map()
     this._tagMap = new Map()
-  }
-
-  public load(json: Readonly<IAssetDataMap>, replace: boolean): void {
-    if (replace) {
-      this._assetMap.clear()
-      this._categoryMap.clear()
-      this._tagMap.clear()
-    }
-    json.assets.forEach(asset => this.insert(asset))
   }
 
   public dump(): IAssetDataMap {
@@ -36,7 +20,18 @@ export class AssetManager implements IAssetManager {
     }
   }
 
-  public getByGuid(guid: string): IAsset | undefined {
+  public find(predicate: (asset: Readonly<IAsset>) => boolean): IAsset | null {
+    for (const asset of this._assetMap.values()) {
+      if (predicate(asset)) return asset
+    }
+    return null
+  }
+
+  public has(guid: string): boolean {
+    return this._assetMap.has(guid)
+  }
+
+  public get(guid: string): IAsset | undefined {
     return this._assetMap.get(guid)
   }
 
@@ -52,10 +47,9 @@ export class AssetManager implements IAssetManager {
     return this._getAssets(assetIds)
   }
 
-  public insert(asset: Readonly<IAsset>): void {
+  public insert(asset: Readonly<IAsset>): void | never {
     if (this._assetMap.has(asset.guid)) {
-      this._reporter.error('[AssetManager.insert] Duplicated asset: guid({})', asset.guid)
-      return
+      throw new Error(`[AssetManager.insert] Duplicated asset: guid({${asset.guid}})`)
     }
 
     const {
@@ -88,8 +82,17 @@ export class AssetManager implements IAssetManager {
     }
   }
 
+  public load(json: Readonly<IAssetDataMap>, replace: boolean): void {
+    if (replace) {
+      this._assetMap.clear()
+      this._categoryMap.clear()
+      this._tagMap.clear()
+    }
+    json.assets.forEach(asset => this.insert(asset))
+  }
+
   public remove(guid: string): void {
-    const asset = this.getByGuid(guid)
+    const asset = this.get(guid)
     if (asset) {
       const {
         _assetMap: assetMap,

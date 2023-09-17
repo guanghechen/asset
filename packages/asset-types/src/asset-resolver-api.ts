@@ -1,7 +1,7 @@
 import type { IBinaryFileData } from './asset-file'
 import type { IAssetResolverLocator } from './asset-resolver-locator'
+import type { IAssetPluginLocateInput } from './asset-resolver-plugin/locate'
 import type { IAssetUriResolver } from './asset-uri-resolver'
-import type { IAssetPluginLocateInput } from './plugin/locate'
 
 export interface IAssetResolverApi extends IAssetResolverLocator, IAssetUriResolver {
   /**

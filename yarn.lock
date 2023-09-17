@@ -509,7 +509,6 @@ __metadata:
   resolution: "@guanghechen/asset-manager@workspace:packages/asset-manager"
   dependencies:
     "@guanghechen/asset-types": ^1.0.0-alpha.24
-    "@guanghechen/types": ^1.0.0-alpha.6
   languageName: unknown
   linkType: soft
 
@@ -607,6 +606,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-util@workspace:packages/asset-util"
   dependencies:
+    "@guanghechen/asset-types": ^1.0.0-alpha.24
     "@types/mime": ^3.0.1
     mime: ^3.0.0
   languageName: unknown

@@ -5,19 +5,13 @@ import type {
   IAssetManager,
   IAssetResolverLocator,
 } from '@guanghechen/asset-types'
-import type { IReporter } from '@guanghechen/types'
-
-export interface IAssetResolverLocatorProps {
-  readonly reporter: IReporter
-}
 
 export class AssetResolverLocator implements IAssetResolverLocator {
   protected readonly _assetManager: IAssetManager
   protected readonly _srcPathMap: Map<string, IAsset | null> = new Map()
 
-  constructor(props: IAssetResolverLocatorProps) {
-    const { reporter } = props
-    this._assetManager = new AssetManager({ reporter })
+  constructor() {
+    this._assetManager = new AssetManager()
     this._srcPathMap = new Map()
   }
 
