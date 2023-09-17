@@ -1,12 +1,12 @@
 import type {
   IAssetCollectOptions,
   IAssetFileChangedCallback,
+  IAssetLoadOnDemand,
   IAssetPathResolver,
   IAssetSourceStorage,
   IAssetStat,
   IAssetWatchOptions,
   IAssetWatcher,
-  IBinaryFileData,
   ISourceItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
@@ -21,6 +21,7 @@ type IParametersOfOnRemove = [filepath: string]
 export interface IMemoAssetSourceStorageProps {
   pathResolver: IAssetPathResolver
   initialData?: Iterable<[string, ISourceItem]>
+  loadOnDemand?: IAssetLoadOnDemand
 }
 
 export class MemoAssetSourceStorage implements IAssetSourceStorage {
@@ -29,21 +30,32 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
   protected readonly _monitorAdd: IMonitor<IParametersOfOnAdd>
   protected readonly _monitorChange: IMonitor<IParametersOfOnChange>
   protected readonly _monitorRemove: IMonitor<IParametersOfOnRemove>
+  protected readonly _loadOnDemand: IAssetLoadOnDemand
 
   constructor(props: IMemoAssetSourceStorageProps) {
-    const { pathResolver, initialData } = props
+    const { pathResolver, initialData, loadOnDemand } = props
     this.pathResolver = pathResolver
     this._cache = new Map(initialData)
     this._monitorAdd = new Monitor<IParametersOfOnAdd>('onAdd')
     this._monitorChange = new Monitor<IParametersOfOnChange>('onChange')
     this._monitorRemove = new Monitor<IParametersOfOnRemove>('onRemove')
+    this._loadOnDemand = loadOnDemand ?? (async () => undefined)
   }
 
   public async assertExistedFile(srcPath: string): Promise<void> {
     const filepath: string = this.pathResolver.relative(srcPath)
     const identifier: string = this.pathResolver.identify(filepath)
     const existed: boolean = this._cache.has(identifier)
-    invariant(existed, `[${this.constructor.name}.assertExistedFile] invalid filepath: ${filepath}`)
+    if (existed) return
+
+    const loadResult = await this._loadOnDemand(filepath)
+    if (loadResult !== undefined) {
+      const item: ISourceItem = { filepath, stat: loadResult.stat, data: loadResult.data }
+      await this.updateFile(item)
+      return
+    }
+
+    throw new Error(`[${this.constructor.name}.assertExistedFile] invalid filepath: ${filepath}`)
   }
 
   public async collect(
@@ -65,7 +77,21 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
   public async readFile(srcPath: string): Promise<ISourceItem> {
     const filepath: string = this.pathResolver.relative(srcPath)
     const identifier: string = this.pathResolver.identify(filepath)
-    const item: ISourceItem | undefined = this._cache.get(identifier)
+    let item: ISourceItem | undefined = this._cache.get(identifier)
+
+    if (item === undefined) {
+      const loadResult = await this._loadOnDemand(filepath)
+      if (loadResult !== undefined) {
+        item = {
+          filepath,
+          stat: { birthtime: loadResult.stat.birthtime, mtime: loadResult.stat.mtime },
+          data: loadResult.data,
+        }
+        this._cache.set(identifier, item)
+        this._monitorAdd.notify(filepath)
+      }
+    }
+
     invariant(!!item, `[${this.constructor.name}.readFile] invalid filepath: ${filepath}`)
     return item
   }
@@ -87,29 +113,25 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     return item.stat
   }
 
-  public async updateFile(srcPath: string, data: IBinaryFileData): Promise<void> {
-    const filepath: string = this.pathResolver.relative(srcPath)
+  public async updateFile(item: ISourceItem): Promise<void> {
+    const filepath: string = this.pathResolver.relative(item.filepath)
     const identifier: string = this.pathResolver.identify(filepath)
     const existItem: ISourceItem | undefined = this._cache.get(identifier)
-    const mtime: Date = new Date()
+    const resolvedItem: ISourceItem = {
+      filepath,
+      stat: {
+        birthtime: existItem?.stat?.birthtime ?? item.stat.birthtime,
+        mtime: item.stat.mtime,
+      },
+      data: item.data,
+    }
 
     if (existItem) {
-      const item: ISourceItem = {
-        filepath,
-        stat: { birthtime: existItem.stat.birthtime, mtime },
-        data,
-      }
-      this._cache.set(identifier, item)
+      this._cache.set(identifier, resolvedItem)
       this._monitorChange.notify(filepath)
       return
     } else {
-      const item: ISourceItem = {
-        filepath,
-        stat: { birthtime: mtime, mtime },
-        data,
-      }
-
-      this._cache.set(identifier, { ...item })
+      this._cache.set(identifier, resolvedItem)
       this._monitorAdd.notify(filepath)
     }
   }

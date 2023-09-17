@@ -22,6 +22,10 @@ export interface IAssetWatchOptions {
   shouldIgnore?: IAssetWatchShouldIgnore
 }
 
+export type IAssetLoadOnDemand = (
+  filepath: string,
+) => Promise<Omit<ISourceItem, 'filepath'> | undefined>
+
 export interface IAssetSourceStorage {
   readonly pathResolver: IAssetPathResolver
   assertExistedFile(srcPath: string): Promise<void | never>
@@ -29,6 +33,6 @@ export interface IAssetSourceStorage {
   readFile(srcPath: string): Promise<ISourceItem>
   removeFile(srcPath: string): Promise<void>
   statFile(srcPath: string): Promise<IAssetStat>
-  updateFile(srcPath: string, data: IBinaryFileData): Promise<void>
+  updateFile(item: ISourceItem): Promise<void>
   watch(patterns: ReadonlyArray<string>, options: IAssetWatchOptions): IAssetWatcher
 }

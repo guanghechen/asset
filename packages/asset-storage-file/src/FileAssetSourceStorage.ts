@@ -76,9 +76,9 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     return await stat(filepath)
   }
 
-  public async updateFile(srcPath: string, data: IBinaryFileData): Promise<void> {
-    const filepath: string = this.pathResolver.absolute(srcPath)
-    await writeFile(filepath, data)
+  public async updateFile(item: ISourceItem): Promise<void> {
+    const filepath: string = this.pathResolver.absolute(item.filepath)
+    await writeFile(filepath, item.data)
   }
 
   public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
