@@ -36,7 +36,7 @@ export class AssetPathResolver implements IAssetPathResolver {
   }
 
   public identify(filepath: string): string {
-    const p: string = this.relative(filepath)
+    const p: string = this.absolute(filepath)
       .replace(/[/\\]+/g, '/')
       .replace(/[/]?$/, '/')
     return this.caseSensitive ? p : p.toLowerCase()
