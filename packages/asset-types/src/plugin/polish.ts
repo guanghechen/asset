@@ -1,4 +1,5 @@
 import type { IAssetMeta } from '../asset'
+import type { IBinaryFileData } from '../asset-file'
 import type { AssetDataTypeEnum } from '../enum'
 
 export interface IAssetPluginPolishApi {
@@ -6,7 +7,7 @@ export interface IAssetPluginPolishApi {
    * Load source content.
    * @param pathRelativeToCurDir the path relative to the parent path of the current resource.
    */
-  loadContent(pathRelativeToCurDir: string): Promise<Buffer | null>
+  loadContent(pathRelativeToCurDir: string): Promise<IBinaryFileData | null>
   /**
    * Resolve asset by srcPathId.
    * @param srcPathId

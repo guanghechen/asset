@@ -14,6 +14,7 @@ import type {
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
   IAssetResolverPlugin,
+  IBinaryFileData,
 } from '@guanghechen/asset-types'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
 import type { Resource, Root } from '@yozora/ast'
@@ -60,7 +61,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     next: IAssetPluginLocateNext,
   ): Promise<IAssetPluginLocateOutput | null> {
     if (this.resolvable(input.filename)) {
-      const rawSrcContent: Buffer | null = await api.loadContent(input.filename)
+      const rawSrcContent: IBinaryFileData | null = await api.loadContent(input.filename)
       if (rawSrcContent) {
         const rawContent = rawSrcContent.toString(this.encoding)
         const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
@@ -109,7 +110,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     next: IAssetPluginParseNext,
   ): Promise<IAssetPluginParseOutput | null> {
     if (input.type === MarkdownAssetType) {
-      const rawSrcContent: Buffer | null = await api.loadContent(input.filename)
+      const rawSrcContent: IBinaryFileData | null = await api.loadContent(input.filename)
       if (rawSrcContent) {
         const rawContent = rawSrcContent.toString(this.encoding)
         const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']

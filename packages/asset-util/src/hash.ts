@@ -1,3 +1,4 @@
+import type { IBinaryFileData } from '@guanghechen/asset-types'
 import crypto from 'node:crypto'
 
 /**
@@ -5,7 +6,7 @@ import crypto from 'node:crypto'
  *
  * @param content
  */
-export function calcFingerprint(content: string | Buffer | undefined): string {
+export function calcFingerprint(content: string | IBinaryFileData | undefined): string {
   if (content === undefined) return ''
 
   const sha1 = crypto.createHash('sha1')

@@ -9,6 +9,7 @@ import type {
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
   IAssetResolverPlugin,
+  IBinaryFileData,
 } from '@guanghechen/asset-types'
 import { mime, normalizePattern } from '@guanghechen/asset-util'
 import type { IFileAssetPolishOutput } from './types'
@@ -76,7 +77,7 @@ export class AssetResolverFile implements IAssetResolverPlugin {
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isFileAssetPolishInput(input)) {
-      const content: Buffer | null = await api.loadContent(input.filename)
+      const content: IBinaryFileData | null = await api.loadContent(input.filename)
       if (content !== null) {
         const result: IFileAssetPolishOutput = {
           datatype: AssetDataTypeEnum.BINARY,

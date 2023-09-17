@@ -8,6 +8,7 @@ import type {
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
   IAssetResolverPlugin,
+  IBinaryFileData,
 } from '@guanghechen/asset-types'
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import { mime, normalizePattern } from '@guanghechen/asset-util'
@@ -59,7 +60,7 @@ export class AssetResolverImage implements IAssetResolverPlugin {
           const prefix = 'https://localhost'
           const urlObj = new URL(`${prefix}${uri}`)
           if (!urlObj.searchParams.has('width') || !urlObj.searchParams.has('height')) {
-            const rawContent: Buffer | null = await api.loadContent(input.filename)
+            const rawContent: IBinaryFileData | null = await api.loadContent(input.filename)
             if (rawContent) {
               const result = sizeOf(rawContent)
               if (result.width && !urlObj.searchParams.has('width')) {
@@ -100,7 +101,7 @@ export class AssetResolverImage implements IAssetResolverPlugin {
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isImageAssetPolishInput(input)) {
-      const content: Buffer | null = await api.loadContent(input.filename)
+      const content: IBinaryFileData | null = await api.loadContent(input.filename)
       if (content !== null) {
         const result: IImageAssetPolishOutput = {
           datatype: AssetDataTypeEnum.BINARY,
