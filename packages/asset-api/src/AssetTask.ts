@@ -15,24 +15,27 @@ export class AssetTask extends AtomicTask {
   }
 
   public toJSON(): object {
-    const { _type, _filepaths } = this
-    return { type: _type, filepaths: _filepaths }
+    const type: AssetChangeEventEnum = this._type
+    const filepaths: string[] = this._filepaths
+    return { type, filepaths }
   }
 
   protected override async run(): Promise<void> {
-    const { _api, _type, _filepaths } = this
-    switch (_type) {
+    const api: IAssetTaskApi = this._api
+    const type: AssetChangeEventEnum = this._type
+    const filepaths: string[] = this._filepaths
+    switch (type) {
       case AssetChangeEventEnum.CREATED:
-        await _api.create(_filepaths)
+        await api.create(filepaths)
         break
       case AssetChangeEventEnum.REMOVED:
-        await _api.remove(_filepaths)
+        await api.remove(filepaths)
         break
       case AssetChangeEventEnum.MODIFIED:
-        await _api.update(_filepaths)
+        await api.update(filepaths)
         break
       default: {
-        const details = JSON.stringify({ type: _type, filepaths: _filepaths })
+        const details = JSON.stringify({ type, filepaths })
         throw new Error(`[AssetTask] handleTask: unknown task: ${details}`)
       }
     }

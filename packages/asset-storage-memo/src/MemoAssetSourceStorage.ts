@@ -14,9 +14,9 @@ import { Monitor } from '@guanghechen/monitor'
 import type { IMonitor } from '@guanghechen/monitor'
 import micromatch from 'micromatch'
 
-type IParametersOfOnAdd = [filepath: string]
-type IParametersOfOnChange = [filepath: string]
-type IParametersOfOnRemove = [filepath: string]
+type IParametersOfOnAdd = [filepath: string, pathResolver: IAssetPathResolver]
+type IParametersOfOnChange = [filepath: string, pathResolver: IAssetPathResolver]
+type IParametersOfOnRemove = [filepath: string, pathResolver: IAssetPathResolver]
 
 export interface IMemoAssetSourceStorageProps {
   pathResolver: IAssetPathResolver
@@ -48,7 +48,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     const existed: boolean = this._cache.has(identifier)
     if (existed) return
 
-    const loadResult = await this._loadOnDemand(filepath)
+    const loadResult = await this._loadOnDemand(filepath, this.pathResolver)
     if (loadResult !== undefined) {
       const item: ISourceItem = { filepath, stat: loadResult.stat, data: loadResult.data }
       await this.updateFile(item)
@@ -80,7 +80,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     let item: ISourceItem | undefined = this._cache.get(identifier)
 
     if (item === undefined) {
-      const loadResult = await this._loadOnDemand(filepath)
+      const loadResult = await this._loadOnDemand(filepath, this.pathResolver)
       if (loadResult !== undefined) {
         item = {
           filepath,
@@ -88,7 +88,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
           data: loadResult.data,
         }
         this._cache.set(identifier, item)
-        this._monitorAdd.notify(filepath)
+        this._monitorAdd.notify(filepath, this.pathResolver)
       }
     }
 
@@ -102,7 +102,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     const item: ISourceItem | undefined = this._cache.get(identifier)
     invariant(!!item, `[${this.constructor.name}.removeFile] invalid filepath: ${filepath}`)
     this._cache.delete(identifier)
-    this._monitorRemove.notify(filepath)
+    this._monitorRemove.notify(filepath, this.pathResolver)
   }
 
   public async statFile(srcPath: string): Promise<IAssetStat> {
@@ -128,23 +128,22 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
 
     if (existItem) {
       this._cache.set(identifier, resolvedItem)
-      this._monitorChange.notify(filepath)
+      this._monitorChange.notify(filepath, this.pathResolver)
       return
     } else {
       this._cache.set(identifier, resolvedItem)
-      this._monitorAdd.notify(filepath)
+      this._monitorAdd.notify(filepath, this.pathResolver)
     }
   }
 
   public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
     const { onAdd, onChange, onRemove, shouldIgnore = () => false } = options
-    const { pathResolver } = this
-
+    const pathResolver: IAssetPathResolver = this.pathResolver
     const wrapper = (fn: IAssetFileChangedCallback): ((filepath: string) => void) => {
-      return (filepath: string): void => {
-        const relativeFilepath: string = pathResolver.relative(filepath)
-        if (shouldIgnore(relativeFilepath, pathResolver)) return
-        if (micromatch.isMatch(relativeFilepath, patterns, { dot: true })) {
+      return (filepath_: string): void => {
+        const filepath: string = pathResolver.relative(filepath_)
+        if (shouldIgnore(filepath, pathResolver)) return
+        if (micromatch.isMatch(filepath, patterns, { dot: true })) {
           fn(filepath, pathResolver)
         }
       }

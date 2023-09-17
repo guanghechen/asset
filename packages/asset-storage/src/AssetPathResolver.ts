@@ -2,7 +2,7 @@ import type { IAssetPathResolver } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import path from 'node:path'
 
-const urlRegex: RegExp = /^\w+:\/\//
+const urlRegex = /^\w+:\/\//
 
 export interface IAssetPathResolverProps {
   rootDir: string
@@ -37,6 +37,7 @@ export class AssetPathResolver implements IAssetPathResolver {
 
   public identify(filepath: string): string {
     const p: string = this.absolute(filepath)
+      .replace(/^[^/\\]+/, '/')
       .replace(/[/\\]+/g, '/')
       .replace(/[/]?$/, '/')
     return this.caseSensitive ? p : p.toLowerCase()

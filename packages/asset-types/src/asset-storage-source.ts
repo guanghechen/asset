@@ -24,6 +24,7 @@ export interface IAssetWatchOptions {
 
 export type IAssetLoadOnDemand = (
   filepath: string,
+  pathResolver: IAssetPathResolver,
 ) => Promise<Omit<ISourceItem, 'filepath'> | undefined>
 
 export interface IAssetSourceStorage {

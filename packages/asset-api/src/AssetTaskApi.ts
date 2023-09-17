@@ -1,6 +1,8 @@
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
+  IAsset,
   IAssetDataMap,
+  IAssetResolvedData,
   IAssetResolver,
   IAssetResolverApi,
   IAssetTargetStorage,
@@ -23,14 +25,14 @@ interface IProps {
 }
 
 export class AssetTaskApi implements IAssetTaskApi {
-  protected readonly _api: IAssetResolverApi
+  protected readonly _resolverApi: IAssetResolverApi
   protected readonly _resolver: IAssetResolver
   protected readonly _reporter: IReporter
   protected readonly _targetStorage: IAssetTargetStorage
   protected readonly _dataMapUri: string
 
   constructor(props: IProps) {
-    this._api = props.api
+    this._resolverApi = props.api
     this._resolver = props.resolver
     this._reporter = props.reporter
     this._targetStorage = props.targetStorage
@@ -38,8 +40,9 @@ export class AssetTaskApi implements IAssetTaskApi {
   }
 
   public async create(srcPaths: string[]): Promise<void> {
-    const { _resolver, _api } = this
-    const results = await _resolver.resolve(srcPaths, _api)
+    const resolverApi: IAssetResolverApi = this._resolverApi
+    const resolver: IAssetResolver = this._resolver
+    const results: IAssetResolvedData[] = await resolver.resolve(srcPaths, resolverApi)
     const tasks: Array<Promise<void>> = []
 
     for (const result of results) {
@@ -59,27 +62,25 @@ export class AssetTaskApi implements IAssetTaskApi {
   }
 
   public async remove(srcPaths: string[]): Promise<void> {
-    const { _api } = this
+    const resolverApi: IAssetResolverApi = this._resolverApi
     const tasks: Array<Promise<void>> = []
 
     for (const srcPath of srcPaths) {
-      const asset = await _api.locateAsset(srcPath)
-      tasks.push(_api.removeAsset(srcPath))
+      const asset: IAsset | undefined = await resolverApi.locateAsset(srcPath)
+      tasks.push(resolverApi.removeAsset(srcPath))
       if (asset) {
         this._reporter.verbose('[AssetTasApi.remove] uri({})', asset.uri)
-        const task: Promise<void> = this._targetStorage.removeFile(asset.uri)
-        tasks.push(task)
+        tasks.push(this._targetStorage.removeFile(asset.uri))
       }
     }
-
     if (tasks.length > 0) tasks.push(this._saveAssetDataMap())
 
     await Promise.all(tasks)
   }
 
   public async update(srcPaths: string[]): Promise<void> {
-    const { _api } = this
-    await Promise.all(srcPaths.map(srcPath => _api.removeAsset(srcPath)))
+    const resolverApi: IAssetResolverApi = this._resolverApi
+    await Promise.all(srcPaths.map(srcPath => resolverApi.removeAsset(srcPath)))
     await this.create(srcPaths)
   }
 
@@ -95,7 +96,7 @@ export class AssetTaskApi implements IAssetTaskApi {
     const { uri, mimetype, data, datatype, encoding } = params
     this._reporter.verbose('[AssetTasApi._saveAsset] uri: {}', uri)
 
-    const { _targetStorage } = this
+    const targetStorage: IAssetTargetStorage = this._targetStorage
     switch (datatype) {
       case AssetDataTypeEnum.BINARY: {
         const rawItem: IRawBinaryTargetItem = {
@@ -104,7 +105,7 @@ export class AssetTaskApi implements IAssetTaskApi {
           uri,
           data: data as IBinaryFileData,
         }
-        await _targetStorage.writeFile(rawItem)
+        await targetStorage.writeFile(rawItem)
         break
       }
       case AssetDataTypeEnum.JSON: {
@@ -114,7 +115,7 @@ export class AssetTaskApi implements IAssetTaskApi {
           uri,
           data: data as IJsonFileData,
         }
-        await _targetStorage.writeFile(rawItem)
+        await targetStorage.writeFile(rawItem)
         break
       }
       case AssetDataTypeEnum.TEXT: {
@@ -133,7 +134,7 @@ export class AssetTaskApi implements IAssetTaskApi {
           data: data as ITextFileData,
           encoding,
         }
-        await _targetStorage.writeFile(rawItem)
+        await targetStorage.writeFile(rawItem)
         break
       }
       default:
@@ -142,7 +143,7 @@ export class AssetTaskApi implements IAssetTaskApi {
   }
 
   protected async _saveAssetDataMap(): Promise<void> {
-    const data: IAssetDataMap = await this._api.dumpAssetDataMap()
+    const data: IAssetDataMap = await this._resolverApi.dumpAssetDataMap()
     await this._saveAsset({
       uri: this._dataMapUri,
       mimetype: 'application/json',

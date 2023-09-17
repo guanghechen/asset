@@ -94,13 +94,10 @@ export class AssetManager implements IAssetManager {
   public remove(guid: string): void {
     const asset = this.get(guid)
     if (asset) {
-      const {
-        _assetMap: assetMap,
-        _categoryMap: categoryMap,
-        _tagMap: tagMap,
-        _normalizeTag: normalizeTag,
-        _normalizeCategory: normalizeCategory,
-      } = this
+      const assetMap: Map<string, IAsset> = this._assetMap
+      const categoryMap: Map<string, Set<string>> = this._categoryMap
+      const tagMap: Map<string, Set<string>> = this._tagMap
+      const { _normalizeTag: normalizeTag, _normalizeCategory: normalizeCategory } = this
       assetMap.delete(guid)
 
       for (const categoryPath of asset.categories) {

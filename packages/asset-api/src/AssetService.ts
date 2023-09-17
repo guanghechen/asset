@@ -1,5 +1,6 @@
 import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type {
+  IAssetPathResolver,
   IAssetService,
   IAssetServiceWatcher,
   IAssetSourceStorage,
@@ -39,21 +40,22 @@ export class AssetService implements IAssetService {
 
   public async prepare(): Promise<void> {
     if (this._status !== 'pending') return
-
     this._status = 'prepared'
-    const scheduler = this._scheduler
+
+    const scheduler: IAssetTaskScheduler = this._scheduler
     if (scheduler.terminated) return
+
     await scheduler.start()
   }
 
   public async close(): Promise<void> {
     if (this._status !== 'prepared') return
-
     this._status = 'closed'
-    const scheduler = this._scheduler
+
+    const scheduler: IAssetTaskScheduler = this._scheduler
     if (scheduler.terminated) return
 
-    const watchers = this._watchers.slice()
+    const watchers: IAssetServiceWatcher[] = this._watchers.slice()
     this._watchers.length = 0
     await Promise.all(watchers.map(watcher => watcher.unwatch()))
 
@@ -62,28 +64,33 @@ export class AssetService implements IAssetService {
   }
 
   public async buildByPaths(filepaths_: ReadonlyArray<string>): Promise<void> {
+    if (this._status !== 'prepared') {
+      throw new Error('[AssetService.buildByPaths] service is not running')
+    }
+
     if (filepaths_.length <= 0) return
 
-    const { _scheduler, _sourceStorage } = this
-    const filepaths: string[] = filepaths_.map(filepath =>
-      _sourceStorage.pathResolver.relative(filepath),
-    )
-    const code: number = await _scheduler.schedule({
+    const scheduler: IAssetTaskScheduler = this._scheduler
+    const pathResolver: IAssetPathResolver = this._sourceStorage.pathResolver
+    const filepaths: string[] = filepaths_.map(filepath => pathResolver.absolute(filepath))
+    const code: number = await scheduler.schedule({
       type: AssetChangeEventEnum.MODIFIED,
       filepaths,
     })
 
     this._reporter.verbose(
-      `[AssetService] waiting finish:`,
-      _sourceStorage.pathResolver.rootDir,
-      filepaths,
+      '[AssetService.buildByPaths] waiting finish:',
+      pathResolver.rootDir,
+      () => filepaths.map(filepath => pathResolver.relative(filepath)),
     )
-    await _scheduler.waitTaskTerminated(code)
-    this._reporter.verbose(`[AssetService] finished:`, _sourceStorage.pathResolver.rootDir)
+    await scheduler.waitTaskTerminated(code)
+    this._reporter.verbose(`[AssetService.buildByPaths] finished:`, pathResolver.rootDir)
   }
 
   public async buildByPatterns(acceptedPattern: ReadonlyArray<string>): Promise<void> {
-    if (this._status !== 'prepared') throw new Error(`AssetService is not running`)
+    if (this._status !== 'prepared') {
+      throw new Error('[AssetService.buildByPatterns] service is not running')
+    }
 
     const srcPaths: string[] = await this._sourceStorage.collect(acceptedPattern.slice(), {
       absolute: true,
@@ -100,19 +107,20 @@ export class AssetService implements IAssetService {
       throw new Error(`AssetService is not running`)
     }
 
-    const { _scheduler, _sourceStorage } = this
-    const watcher: IAssetWatcher = _sourceStorage.watch(acceptedPattern.slice(), {
+    const scheduler: IAssetTaskScheduler = this._scheduler
+    const pathResolver: IAssetPathResolver = this._sourceStorage.pathResolver
+    const watcher: IAssetWatcher = this._sourceStorage.watch(acceptedPattern.slice(), {
       onAdd: filepath => {
-        const srcPath: string = _sourceStorage.pathResolver.absolute(filepath)
-        void _scheduler.schedule({ type: AssetChangeEventEnum.CREATED, filepaths: [srcPath] })
+        const srcPath: string = pathResolver.absolute(filepath)
+        void scheduler.schedule({ type: AssetChangeEventEnum.CREATED, filepaths: [srcPath] })
       },
       onChange: filepath => {
-        const srcPath: string = _sourceStorage.pathResolver.absolute(filepath)
-        void _scheduler.schedule({ type: AssetChangeEventEnum.MODIFIED, filepaths: [srcPath] })
+        const srcPath: string = pathResolver.absolute(filepath)
+        void scheduler.schedule({ type: AssetChangeEventEnum.MODIFIED, filepaths: [srcPath] })
       },
       onRemove: filepath => {
-        const srcPath: string = _sourceStorage.pathResolver.absolute(filepath)
-        void _scheduler.schedule({ type: AssetChangeEventEnum.REMOVED, filepaths: [srcPath] })
+        const srcPath: string = pathResolver.absolute(filepath)
+        void scheduler.schedule({ type: AssetChangeEventEnum.REMOVED, filepaths: [srcPath] })
       },
       shouldIgnore,
     })
@@ -120,7 +128,7 @@ export class AssetService implements IAssetService {
     // delay 500ms
     await new Promise<void>(resolve => setTimeout(resolve, 500))
 
-    let unWatching = false
+    let unWatching: boolean = false
     const serviceWatcher: IAssetServiceWatcher = {
       unwatch: async (): Promise<void> => {
         if (unWatching) return
