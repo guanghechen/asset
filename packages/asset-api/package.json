@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-api",
-  "version": "1.0.0-alpha.27",
+  "version": "1.0.0-alpha.28",
   "description": "asset api",
   "author": {
     "name": "guanghechen",
@@ -40,7 +40,7 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.25",
+    "@guanghechen/asset-types": "^1.0.0-alpha.26",
     "@guanghechen/constant": "^1.0.0-alpha.5",
     "@guanghechen/pipeline": "^1.0.0-alpha.9",
     "@guanghechen/scheduler": "^6.0.0-alpha.9",

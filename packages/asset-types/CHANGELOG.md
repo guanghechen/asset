@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.26](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.25...@guanghechen/asset-types@1.0.0-alpha.26) (2023-09-17)
+
+
+### Performance Improvements
+
+* 🎨 remove AssetResolverLocator ([f97df76](https://github.com/guanghechen/asset/commit/f97df7656398ea385c8b858781241e7d022beb49))
+
+
+
+
+
 # [1.0.0-alpha.25](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.24...@guanghechen/asset-types@1.0.0-alpha.25) (2023-09-17)
 
 
