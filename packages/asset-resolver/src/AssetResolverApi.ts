@@ -1,4 +1,3 @@
-import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAsset,
   IAssetDataMap,
@@ -68,24 +67,23 @@ export class AssetResolverApi implements IAssetResolverApi {
 
   public async initAsset(srcPath: string): Promise<IAssetPluginLocateInput | null> {
     const { _sourceStorage } = this
-    _sourceStorage.pathResolver.assertSafePath(srcPath)
-    await _sourceStorage.assertExistedFile(srcPath)
+    const filepath: string = _sourceStorage.pathResolver.absolute(srcPath)
 
-    const id: string = _sourceStorage.pathResolver.identify(srcPath)
+    _sourceStorage.pathResolver.assertSafePath(filepath)
+    await _sourceStorage.assertExistedFile(filepath)
+
+    const id: string = _sourceStorage.pathResolver.identify(filepath)
     const guid: string = uuid(`#path-${id}`, this.GUID_NAMESPACE)
 
-    const stat = await _sourceStorage.statFile(srcPath)
-    const sourceItem: ISourceItem | undefined = await _sourceStorage.readFile({
-      datatype: AssetDataTypeEnum.BINARY,
-      filepath: srcPath,
-    })
+    const stat = await _sourceStorage.statFile(filepath)
+    const sourceItem: ISourceItem | undefined = await _sourceStorage.readFile({ filepath })
     const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
     const hash: string = calcFingerprint(content)
-    const filename: string = path.basename(srcPath)
-    const src: string = normalizeUrlPath(_sourceStorage.pathResolver.relative(srcPath))
+    const filename: string = path.basename(filepath)
+    const src: string = normalizeUrlPath(_sourceStorage.pathResolver.relative(filepath))
     const createdAt: string = new Date(stat.birthtime).toISOString()
     const updatedAt: string = new Date(stat.mtime).toISOString()
-    const extname: string | undefined = srcPath.match(extnameRegex)?.[1]
+    const extname: string | undefined = filepath.match(extnameRegex)?.[1]
     const title: string = filename
       .trim()
       .replace(/\s+/, ' ')
@@ -97,14 +95,11 @@ export class AssetResolverApi implements IAssetResolverApi {
     return this._sourceStorage.pathResolver.isSafePath(srcPath)
   }
 
-  public async loadContent(srcPath_: string): Promise<IBinaryFileData | null> {
-    const srcPath: string = this._sourceStorage.pathResolver.absolute(srcPath_)
-    this._sourceStorage.pathResolver.assertSafePath(srcPath)
-    await this._sourceStorage.assertExistedFile(srcPath)
-    const sourceItem: ISourceItem | undefined = await this._sourceStorage.readFile({
-      datatype: AssetDataTypeEnum.BINARY,
-      filepath: srcPath,
-    })
+  public async loadContent(srcPath: string): Promise<IBinaryFileData | null> {
+    const filepath: string = this._sourceStorage.pathResolver.absolute(srcPath)
+    this._sourceStorage.pathResolver.assertSafePath(filepath)
+    await this._sourceStorage.assertExistedFile(filepath)
+    const sourceItem: ISourceItem | undefined = await this._sourceStorage.readFile({ filepath })
     const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
     return content ?? null
   }

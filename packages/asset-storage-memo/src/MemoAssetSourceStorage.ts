@@ -66,10 +66,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     const filepath: string = this.pathResolver.relative(rawItem.filepath)
     const identifier: string = this.pathResolver.identify(filepath)
     const item: ISourceItem | undefined = this._cache.get(identifier)
-    invariant(
-      !!item && item.datatype === rawItem.datatype,
-      `[${this.constructor.name}.readFile] invalid filepath: ${filepath}`,
-    )
+    invariant(!!item, `[${this.constructor.name}.readFile] invalid filepath: ${filepath}`)
     return item
   }
 
@@ -95,10 +92,6 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     const existItem: ISourceItem | undefined = this._cache.get(identifier)
 
     if (existItem) {
-      invariant(
-        existItem.datatype === item.datatype,
-        `[${this.constructor.name}.updateFile] invalid filepath: ${filepath}`,
-      )
       this._cache.set(identifier, { ...item })
       this._monitorChange.notify(filepath)
       return
