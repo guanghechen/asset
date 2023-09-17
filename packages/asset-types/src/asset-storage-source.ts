@@ -1,4 +1,4 @@
-import type { IAssetStat, IBinaryFileData } from './asset-file'
+import type { IAssetStat } from './asset-file'
 import type { ISourceItem } from './asset-file-source'
 import type { IAssetPathResolver } from './asset-path-resolver'
 import type { IAssetWatcher } from './common'

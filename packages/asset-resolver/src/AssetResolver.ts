@@ -120,12 +120,8 @@ export class AssetResolver implements IAssetResolver {
     srcPath: string,
     api: IAssetResolverApi,
   ): Promise<ILocateStageData | null> {
-    const asset: IAsset | null | undefined = await api.locateAsset(srcPath)
-    if (asset !== undefined) {
-      if (asset === null) return null
-      return { asset, srcPath: srcPath }
-    }
-    await api.insertAsset(srcPath, null)
+    const asset: IAsset | undefined = await api.locateAsset(srcPath)
+    if (asset !== undefined) return { asset, srcPath: srcPath }
 
     const input: IAssetPluginLocateInput | null = await api.initAsset(srcPath)
     if (input === null) return null
@@ -166,7 +162,7 @@ export class AssetResolver implements IAssetResolver {
       categories,
       tags,
     }
-    await api.insertAsset(srcPath, resolvedAsset)
+    await api.insertAsset(resolvedAsset)
     return { asset: resolvedAsset, srcPath: srcPath }
   }
 

@@ -2,9 +2,9 @@ import type {
   IAsset,
   IAssetDataMap,
   IAssetLocation,
+  IAssetManager,
   IAssetPluginLocateInput,
   IAssetResolverApi,
-  IAssetResolverLocator,
   IAssetSourceStorage,
   IAssetUriResolver,
   IBinaryFileData,
@@ -17,7 +17,7 @@ import { v5 as uuid } from 'uuid'
 export interface IAssetResolverApiProps {
   GUID_NAMESPACE: string
   sourceStorage: IAssetSourceStorage
-  locator: IAssetResolverLocator
+  assetManager: IAssetManager
   uriResolver: IAssetUriResolver
 }
 
@@ -25,36 +25,35 @@ const extnameRegex = /\.([\w]+)$/
 
 export class AssetResolverApi implements IAssetResolverApi {
   public readonly GUID_NAMESPACE: string
+  protected readonly _manager: IAssetManager
   protected readonly _sourceStorage: IAssetSourceStorage
-  protected readonly _locator: IAssetResolverLocator
   protected readonly _uriResolver: IAssetUriResolver
 
   constructor(props: IAssetResolverApiProps) {
-    const { GUID_NAMESPACE, sourceStorage } = props
+    const { GUID_NAMESPACE, assetManager, sourceStorage } = props
 
     this.GUID_NAMESPACE = GUID_NAMESPACE
+    this._manager = assetManager
     this._sourceStorage = sourceStorage
-    this._locator = props.locator
     this._uriResolver = props.uriResolver
   }
 
-  public dumpAssetDataMap(): Promise<IAssetDataMap> {
-    return this._locator.dumpAssetDataMap()
+  public async dumpAssetDataMap(): Promise<IAssetDataMap> {
+    return this._manager.dump()
   }
 
-  public insertAsset(srcPath: string, asset: IAsset | null): Promise<void> {
-    const id: string = this._sourceStorage.pathResolver.identify(srcPath)
-    return this._locator.insertAsset(id, asset)
+  public async insertAsset(asset: IAsset): Promise<void> {
+    this._manager.insert(asset)
   }
 
-  public locateAsset(srcPath: string): Promise<IAsset | null | undefined> {
-    const id: string = this._sourceStorage.pathResolver.identify(srcPath)
-    return this._locator.locateAsset(id)
+  public async locateAsset(srcPath: string): Promise<IAsset | undefined> {
+    const guid: string = this.resolveGUID(srcPath)
+    return this._manager.get(guid)
   }
 
-  public removeAsset(srcPath: string): Promise<void> {
-    const id: string = this._sourceStorage.pathResolver.identify(srcPath)
-    return this._locator.removeAsset(id)
+  public async removeAsset(srcPath: string): Promise<void> {
+    const guid: string = this.resolveGUID(srcPath)
+    this._manager.remove(guid)
   }
 
   public async resolveSlug(slug: string | null | undefined): Promise<string | null> {
@@ -72,9 +71,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     _sourceStorage.pathResolver.assertSafePath(filepath)
     await _sourceStorage.assertExistedFile(filepath)
 
-    const id: string = _sourceStorage.pathResolver.identify(filepath)
-    const guid: string = uuid(`#path-${id}`, this.GUID_NAMESPACE)
-
+    const guid: string = this.resolveGUID(filepath)
     const stat = await _sourceStorage.statFile(filepath)
     const sourceItem: ISourceItem | undefined = await _sourceStorage.readFile(filepath)
     const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
@@ -102,5 +99,11 @@ export class AssetResolverApi implements IAssetResolverApi {
     const sourceItem: ISourceItem | undefined = await this._sourceStorage.readFile(filepath)
     const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
     return content ?? null
+  }
+
+  public resolveGUID(filepath: string): string {
+    const id: string = this._sourceStorage.pathResolver.identify(filepath)
+    const guid: string = uuid(`#path-${id}`, this.GUID_NAMESPACE)
+    return guid
   }
 }
