@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.8](https://github.com/guanghechen/asset/compare/@guanghechen/asset-manager@1.0.0-alpha.7...@guanghechen/asset-manager@1.0.0-alpha.8) (2023-09-17)
+
+
+### Performance Improvements
+
+* :art:  update AssetManager ([00e98b6](https://github.com/guanghechen/asset/commit/00e98b63d3e32869606c58d0c89140f0eabe6ec9))
+* :art: refactor AssetService and AssetStorage ([d7f75c2](https://github.com/guanghechen/asset/commit/d7f75c21411a3b61cfd0ee008b01876292ec591d))
+* ⬆️ upgrade dependencies ([40b978c](https://github.com/guanghechen/asset/commit/40b978c33285507b66b39be29924868b9bbf11b7))
+
+
+
+
+
 # [1.0.0-alpha.7](https://github.com/guanghechen/asset/compare/@guanghechen/asset-manager@1.0.0-alpha.6...@guanghechen/asset-manager@1.0.0-alpha.7) (2023-09-14)
 
 **Note:** Version bump only for package @guanghechen/asset-manager

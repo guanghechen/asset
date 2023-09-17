@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.26](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.25...@guanghechen/asset-storage@1.0.0-alpha.26) (2023-09-17)
+
+
+### Bug Fixes
+
+* use absolute path to generate identifier ([260ad32](https://github.com/guanghechen/asset/commit/260ad3291e20db779146ea84915cc786974ab75f))
+
+
+### Performance Improvements
+
+* :art: refactor AssetService and AssetStorage ([d7f75c2](https://github.com/guanghechen/asset/commit/d7f75c21411a3b61cfd0ee008b01876292ec591d))
+* 🎨 rename file item types ([bece0c9](https://github.com/guanghechen/asset/commit/bece0c9ca3516c38cbec04e21cdceddfff76a647))
+* ⬆️ upgrade dependencies ([40b978c](https://github.com/guanghechen/asset/commit/40b978c33285507b66b39be29924868b9bbf11b7))
+
+
+
+
+
 # [1.0.0-alpha.25](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.24...@guanghechen/asset-storage@1.0.0-alpha.25) (2023-09-14)
 
 

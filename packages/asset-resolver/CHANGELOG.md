@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.8](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.7...@guanghechen/asset-resolver@1.0.0-alpha.8) (2023-09-17)
+
+
+### Performance Improvements
+
+* :art:  update AssetManager ([00e98b6](https://github.com/guanghechen/asset/commit/00e98b63d3e32869606c58d0c89140f0eabe6ec9))
+* :art:  refactor asset source storage ([16f2a9f](https://github.com/guanghechen/asset/commit/16f2a9fce1667bc9735ac77e7ac520117d1efe7c))
+* :bug:  fix fs errors ([5edf2c4](https://github.com/guanghechen/asset/commit/5edf2c408c8a302033c931380431c296c79d90cd))
+* :art:  refactor asset source storage ([db95f45](https://github.com/guanghechen/asset/commit/db95f45a1b35d8d055145d0720291e99474a05e2))
+* :art: refactor AssetService and AssetStorage ([d7f75c2](https://github.com/guanghechen/asset/commit/d7f75c21411a3b61cfd0ee008b01876292ec591d))
+* ⬆️ upgrade dependencies ([40b978c](https://github.com/guanghechen/asset/commit/40b978c33285507b66b39be29924868b9bbf11b7))
+
+
+
+
+
 # [1.0.0-alpha.7](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.6...@guanghechen/asset-resolver@1.0.0-alpha.7) (2023-09-14)
 
 

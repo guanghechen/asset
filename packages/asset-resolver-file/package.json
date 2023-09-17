@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-resolver-file",
-  "version": "1.0.0-alpha.24",
+  "version": "1.0.0-alpha.25",
   "description": "file asset",
   "author": {
     "name": "guanghechen",
@@ -40,7 +40,7 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.24",
-    "@guanghechen/asset-util": "^1.0.0-alpha.11"
+    "@guanghechen/asset-types": "^1.0.0-alpha.25",
+    "@guanghechen/asset-util": "^1.0.0-alpha.12"
   }
 }

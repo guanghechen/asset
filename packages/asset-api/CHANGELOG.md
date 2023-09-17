@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.27](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.26...@guanghechen/asset-api@1.0.0-alpha.27) (2023-09-17)
+
+
+### Performance Improvements
+
+* :art:  refactor asset source storage ([db95f45](https://github.com/guanghechen/asset/commit/db95f45a1b35d8d055145d0720291e99474a05e2))
+* :art: refactor AssetService and AssetStorage ([d7f75c2](https://github.com/guanghechen/asset/commit/d7f75c21411a3b61cfd0ee008b01876292ec591d))
+* 🎨 support buildByPaths ([f60405e](https://github.com/guanghechen/asset/commit/f60405e8525cf7bec716d536a01e35f52fd88da5))
+* 🎨 rename file item types ([bece0c9](https://github.com/guanghechen/asset/commit/bece0c9ca3516c38cbec04e21cdceddfff76a647))
+* ⬆️ upgrade dependencies ([40b978c](https://github.com/guanghechen/asset/commit/40b978c33285507b66b39be29924868b9bbf11b7))
+
+
+
+
+
 # [1.0.0-alpha.26](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.25...@guanghechen/asset-api@1.0.0-alpha.26) (2023-09-14)
 
 

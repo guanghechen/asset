@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.25](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.24...@guanghechen/asset-types@1.0.0-alpha.25) (2023-09-17)
+
+
+### Features
+
+* ✨ support to load on demand ([2b41ebf](https://github.com/guanghechen/asset/commit/2b41ebf2d9f22ca60910d5fbf1b455e1146cafb2))
+
+
+### Performance Improvements
+
+* :art:  update AssetManager ([00e98b6](https://github.com/guanghechen/asset/commit/00e98b63d3e32869606c58d0c89140f0eabe6ec9))
+* :art:  refactor types ([36aee31](https://github.com/guanghechen/asset/commit/36aee318a7e377787072fa2a4deb9478f55da416))
+* :art:  refactor asset source storage ([16f2a9f](https://github.com/guanghechen/asset/commit/16f2a9fce1667bc9735ac77e7ac520117d1efe7c))
+* :bug:  fix fs errors ([5edf2c4](https://github.com/guanghechen/asset/commit/5edf2c408c8a302033c931380431c296c79d90cd))
+* :art:  refactor asset source storage ([db95f45](https://github.com/guanghechen/asset/commit/db95f45a1b35d8d055145d0720291e99474a05e2))
+* :art: refactor AssetService and AssetStorage ([d7f75c2](https://github.com/guanghechen/asset/commit/d7f75c21411a3b61cfd0ee008b01876292ec591d))
+* 🎨 support buildByPaths ([f60405e](https://github.com/guanghechen/asset/commit/f60405e8525cf7bec716d536a01e35f52fd88da5))
+* 🎨 rename file item types ([bece0c9](https://github.com/guanghechen/asset/commit/bece0c9ca3516c38cbec04e21cdceddfff76a647))
+
+
+
+
+
 # [1.0.0-alpha.24](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.23...@guanghechen/asset-types@1.0.0-alpha.24) (2023-09-14)
 
 

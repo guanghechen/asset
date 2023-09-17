@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.12](https://github.com/guanghechen/asset/compare/@guanghechen/asset-util@1.0.0-alpha.11...@guanghechen/asset-util@1.0.0-alpha.12) (2023-09-17)
+
+
+### Performance Improvements
+
+* :art:  refactor types ([36aee31](https://github.com/guanghechen/asset/commit/36aee318a7e377787072fa2a4deb9478f55da416))
+* :art:  refactor asset source storage ([db95f45](https://github.com/guanghechen/asset/commit/db95f45a1b35d8d055145d0720291e99474a05e2))
+
+
+
+
+
 # [1.0.0-alpha.11](https://github.com/guanghechen/asset/compare/@guanghechen/asset-util@1.0.0-alpha.10...@guanghechen/asset-util@1.0.0-alpha.11) (2023-09-06)
 
 
