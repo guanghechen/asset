@@ -6,7 +6,7 @@ import type {
   IAssetStat,
   IAssetWatchOptions,
   IAssetWatcher,
-  IRawSourceItem,
+  IBinaryFileData,
   ISourceItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
@@ -62,15 +62,16 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     return filepaths
   }
 
-  public async readFile(rawItem: IRawSourceItem): Promise<ISourceItem> {
-    const filepath: string = this.pathResolver.relative(rawItem.filepath)
+  public async readFile(srcPath: string): Promise<ISourceItem> {
+    const filepath: string = this.pathResolver.relative(srcPath)
     const identifier: string = this.pathResolver.identify(filepath)
     const item: ISourceItem | undefined = this._cache.get(identifier)
     invariant(!!item, `[${this.constructor.name}.readFile] invalid filepath: ${filepath}`)
     return item
   }
 
-  public async removeFile(filepath: string): Promise<void> {
+  public async removeFile(srcPath: string): Promise<void> {
+    const filepath: string = this.pathResolver.relative(srcPath)
     const identifier: string = this.pathResolver.identify(filepath)
     const item: ISourceItem | undefined = this._cache.get(identifier)
     invariant(!!item, `[${this.constructor.name}.removeFile] invalid filepath: ${filepath}`)
@@ -78,27 +79,39 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     this._monitorRemove.notify(filepath)
   }
 
-  public async statFile(filepath_: string): Promise<IAssetStat> {
-    const filepath: string = this.pathResolver.relative(filepath_)
+  public async statFile(srcPath: string): Promise<IAssetStat> {
+    const filepath: string = this.pathResolver.relative(srcPath)
     const identifier: string = this.pathResolver.identify(filepath)
     const item: ISourceItem | undefined = this._cache.get(identifier)
     invariant(!!item, `[${this.constructor.name}.statFile] invalid filepath: ${filepath}`)
     return item.stat
   }
 
-  public async updateFile(item: ISourceItem): Promise<void> {
-    const filepath: string = this.pathResolver.relative(item.filepath)
+  public async updateFile(srcPath: string, data: IBinaryFileData): Promise<void> {
+    const filepath: string = this.pathResolver.relative(srcPath)
     const identifier: string = this.pathResolver.identify(filepath)
     const existItem: ISourceItem | undefined = this._cache.get(identifier)
+    const mtime: Date = new Date()
 
     if (existItem) {
-      this._cache.set(identifier, { ...item })
+      const item: ISourceItem = {
+        filepath,
+        stat: { birthtime: existItem.stat.birthtime, mtime },
+        data,
+      }
+      this._cache.set(identifier, item)
       this._monitorChange.notify(filepath)
       return
-    }
+    } else {
+      const item: ISourceItem = {
+        filepath,
+        stat: { birthtime: mtime, mtime },
+        data,
+      }
 
-    this._cache.set(identifier, { ...item })
-    this._monitorAdd.notify(filepath)
+      this._cache.set(identifier, { ...item })
+      this._monitorAdd.notify(filepath)
+    }
   }
 
   public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {

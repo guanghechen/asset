@@ -76,7 +76,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     const guid: string = uuid(`#path-${id}`, this.GUID_NAMESPACE)
 
     const stat = await _sourceStorage.statFile(filepath)
-    const sourceItem: ISourceItem | undefined = await _sourceStorage.readFile({ filepath })
+    const sourceItem: ISourceItem | undefined = await _sourceStorage.readFile(filepath)
     const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
     const hash: string = calcFingerprint(content)
     const filename: string = path.basename(filepath)
@@ -99,7 +99,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     const filepath: string = this._sourceStorage.pathResolver.absolute(srcPath)
     this._sourceStorage.pathResolver.assertSafePath(filepath)
     await this._sourceStorage.assertExistedFile(filepath)
-    const sourceItem: ISourceItem | undefined = await this._sourceStorage.readFile({ filepath })
+    const sourceItem: ISourceItem | undefined = await this._sourceStorage.readFile(filepath)
     const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
     return content ?? null
   }

@@ -7,7 +7,6 @@ import type {
   IAssetWatcher,
   IBinaryFileData,
   IBinarySourceItem,
-  IRawSourceItem,
   ISourceItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
@@ -31,12 +30,12 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     this._watchOptions = watchOptions
   }
 
-  public async assertExistedFile(filepath: string): Promise<void | never> {
-    const absolutePath: string = this.pathResolver.absolute(filepath)
-    invariant(existsSync(absolutePath), `[assertExistedFile] Cannot find file. (${filepath})`)
+  public async assertExistedFile(srcPath: string): Promise<void | never> {
+    const filepath: string = this.pathResolver.absolute(srcPath)
+    invariant(existsSync(filepath), `[assertExistedFile] Cannot find file. (${srcPath})`)
 
-    const assertion: boolean = (await stat(absolutePath)).isFile()
-    invariant(assertion, `[assertExistedFile] Not a file'. (${filepath})`)
+    const assertion: boolean = (await stat(filepath)).isFile()
+    invariant(assertion, `[assertExistedFile] Not a file'. (${srcPath})`)
   }
 
   public async collect(
@@ -59,8 +58,8 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     return filepaths
   }
 
-  public async readFile(rawItem: IRawSourceItem): Promise<ISourceItem> {
-    const filepath: string = this.pathResolver.absolute(rawItem.filepath)
+  public async readFile(srcPath: string): Promise<ISourceItem> {
+    const filepath: string = this.pathResolver.absolute(srcPath)
     const stat = await this.statFile(filepath)
     const data: IBinaryFileData = await readFile(filepath)
     const item: IBinarySourceItem = { filepath, stat, data }
@@ -77,9 +76,9 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     return await stat(filepath)
   }
 
-  public async updateFile(item: ISourceItem): Promise<void> {
-    const filepath: string = this.pathResolver.absolute(item.filepath)
-    await writeFile(filepath, item.data)
+  public async updateFile(srcPath: string, data: IBinaryFileData): Promise<void> {
+    const filepath: string = this.pathResolver.absolute(srcPath)
+    await writeFile(filepath, data)
   }
 
   public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
