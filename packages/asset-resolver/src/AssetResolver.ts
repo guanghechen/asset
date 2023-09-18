@@ -54,9 +54,8 @@ export class AssetResolver implements IAssetResolver {
     this._polishPlugins = []
   }
 
-  public use(...plugins: Array<IAssetResolverPlugin | IAssetResolverPlugin[]>): this {
-    for (const plugin of plugins.flat()) {
-      if (!plugin.displayName) continue
+  public use(plugin: IAssetResolverPlugin): this {
+    if (plugin.displayName) {
       if (plugin.locate) this._locatePlugins.push(plugin as IAssetLocatePlugin)
       if (plugin.parse) this._parsePlugins.push(plugin as IAssetParsePlugin)
       if (plugin.polish) this._polishPlugins.push(plugin as IAssetPolishPlugin)
@@ -220,6 +219,7 @@ export class AssetResolver implements IAssetResolver {
     if (result === null) return null
     return {
       asset,
+      sourcetype: result.sourcetype,
       datatype: result.datatype,
       data: result.data,
       encoding: result.encoding,

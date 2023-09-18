@@ -18,6 +18,7 @@
     "pinst",
     "postpublish",
     "prebuild",
+    "sourcetype",
     "squashable",
     "ulist",
     "unist",

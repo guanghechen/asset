@@ -46,9 +46,10 @@ export class AssetTaskApi implements IAssetTaskApi {
     const tasks: Array<Promise<void>> = []
 
     for (const result of results) {
-      const { asset, datatype, data, encoding } = result
+      const { asset, sourcetype, datatype, data, encoding } = result
       const task: Promise<void> = this._saveAsset({
         uri: asset.uri,
+        sourcetype,
         mimetype: asset.mimetype,
         datatype,
         data,
@@ -86,6 +87,7 @@ export class AssetTaskApi implements IAssetTaskApi {
 
   protected async _saveAsset(params: {
     uri: string
+    sourcetype: string
     mimetype: string
     datatype: AssetDataTypeEnum
     data: unknown
@@ -93,16 +95,17 @@ export class AssetTaskApi implements IAssetTaskApi {
   }): Promise<void> {
     if (params.data === null) return
 
-    const { uri, mimetype, data, datatype, encoding } = params
+    const { uri, sourcetype, mimetype, datatype, data, encoding } = params
     this._reporter.verbose('[AssetTasApi._saveAsset] uri: {}', uri)
 
     const targetStorage: IAssetTargetStorage = this._targetStorage
     switch (datatype) {
       case AssetDataTypeEnum.BINARY: {
         const rawItem: IRawBinaryTargetItem = {
-          datatype,
-          mimetype,
           uri,
+          sourcetype,
+          mimetype,
+          datatype,
           data: data as IBinaryFileData,
         }
         await targetStorage.writeFile(rawItem)
@@ -110,9 +113,10 @@ export class AssetTaskApi implements IAssetTaskApi {
       }
       case AssetDataTypeEnum.JSON: {
         const rawItem: IRawJsonTargetItem = {
+          uri,
+          sourcetype,
           datatype,
           mimetype,
-          uri,
           data: data as IJsonFileData,
         }
         await targetStorage.writeFile(rawItem)
@@ -128,9 +132,10 @@ export class AssetTaskApi implements IAssetTaskApi {
         }
 
         const rawItem: IRawTextTargetItem = {
-          datatype,
-          mimetype,
           uri,
+          sourcetype,
+          mimetype,
+          datatype,
           data: data as ITextFileData,
           encoding,
         }
@@ -146,6 +151,7 @@ export class AssetTaskApi implements IAssetTaskApi {
     const data: IAssetDataMap = await this._resolverApi.dumpAssetDataMap()
     await this._saveAsset({
       uri: this._dataMapUri,
+      sourcetype: 'asset-map',
       mimetype: 'application/json',
       datatype: AssetDataTypeEnum.JSON,
       data,

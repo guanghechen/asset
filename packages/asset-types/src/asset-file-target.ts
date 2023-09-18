@@ -4,6 +4,7 @@ import type { AssetDataTypeEnum } from './enum'
 export interface IRawBinaryTargetItem {
   datatype: AssetDataTypeEnum.BINARY
   mimetype: string
+  sourcetype: string // markdown / file / image
   uri: string
   data: IBinaryFileData
 }
@@ -11,6 +12,7 @@ export interface IRawBinaryTargetItem {
 export interface IRawTextTargetItem {
   datatype: AssetDataTypeEnum.TEXT
   mimetype: string
+  sourcetype: string // markdown / file / image
   uri: string
   data: ITextFileData
   encoding: BufferEncoding
@@ -19,6 +21,7 @@ export interface IRawTextTargetItem {
 export interface IRawJsonTargetItem {
   datatype: AssetDataTypeEnum.JSON
   mimetype: string
+  sourcetype: string // markdown / file / image
   uri: string
   data: IJsonFileData
 }
@@ -26,6 +29,7 @@ export interface IRawJsonTargetItem {
 export interface IBinaryTargetItem {
   datatype: AssetDataTypeEnum.BINARY
   mimetype: string
+  sourcetype: string // markdown / file / image
   absolutePath: string
   data: IBinaryFileData
   encoding: undefined
@@ -35,6 +39,7 @@ export interface IBinaryTargetItem {
 export interface ITextTargetItem {
   datatype: AssetDataTypeEnum.TEXT
   mimetype: string
+  sourcetype: string // markdown / file / image
   absolutePath: string
   data: ITextFileData
   encoding: BufferEncoding
@@ -44,6 +49,7 @@ export interface ITextTargetItem {
 export interface IJsonTargetItem {
   datatype: AssetDataTypeEnum.JSON
   mimetype: string
+  sourcetype: string // markdown / file / image
   absolutePath: string
   data: IJsonFileData
   encoding: undefined

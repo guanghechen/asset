@@ -84,7 +84,7 @@ export class AssetTargetStorage implements IAssetTargetStorage {
 
   public async writeFile(rawItem: IRawTargetItem): Promise<void> {
     const title: string = `[${this.constructor.name}.writeFile]`
-    const { datatype, mimetype, uri, data } = rawItem
+    const { sourcetype, mimetype, datatype, uri, data } = rawItem
     const fileItem = this._fileItemMap.get(uri)
 
     invariant(!fileItem || fileItem.datatype === datatype, `${title} invalid uri(${uri})`)
@@ -99,8 +99,9 @@ export class AssetTargetStorage implements IAssetTargetStorage {
     switch (datatype) {
       case AssetDataTypeEnum.BINARY:
         nextAssetItem = {
-          datatype,
+          sourcetype,
           mimetype,
+          datatype,
           absolutePath: filepath,
           encoding: undefined,
           stat,
@@ -110,8 +111,9 @@ export class AssetTargetStorage implements IAssetTargetStorage {
       case AssetDataTypeEnum.TEXT:
         invariant(!!rawItem.encoding, `${title} missing encoding for text file: ${uri}`)
         nextAssetItem = {
-          datatype,
+          sourcetype,
           mimetype,
+          datatype,
           absolutePath: filepath,
           encoding: rawItem.encoding,
           stat,
@@ -120,8 +122,9 @@ export class AssetTargetStorage implements IAssetTargetStorage {
         break
       case AssetDataTypeEnum.JSON:
         nextAssetItem = {
-          datatype,
+          sourcetype,
           mimetype,
+          datatype,
           absolutePath: filepath,
           encoding: undefined,
           stat,

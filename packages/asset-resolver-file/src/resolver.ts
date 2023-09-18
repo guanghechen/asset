@@ -80,6 +80,7 @@ export class AssetResolverFile implements IAssetResolverPlugin {
       const content: IBinaryFileData | null = await api.loadContent(input.filename)
       if (content !== null) {
         const result: IFileAssetPolishOutput = {
+          sourcetype: FileAssetType,
           datatype: AssetDataTypeEnum.BINARY,
           data: content,
         }

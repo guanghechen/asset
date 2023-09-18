@@ -51,6 +51,10 @@ export interface IAssetPluginPolishInput<D = unknown> {
 
 export interface IAssetPluginPolishOutput<D = unknown> {
   /**
+   * Asset source type.
+   */
+  sourcetype: string
+  /**
    * Asset data type.
    */
   datatype: AssetDataTypeEnum

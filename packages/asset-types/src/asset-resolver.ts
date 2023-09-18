@@ -15,6 +15,7 @@ export type IAssetResolverPlugin = IAssetPlugin &
 
 export interface IAssetResolvedData {
   asset: IAsset
+  sourcetype: string
   datatype: AssetDataTypeEnum
   data: unknown
   encoding: BufferEncoding | undefined
@@ -22,10 +23,10 @@ export interface IAssetResolvedData {
 
 export interface IAssetResolver {
   /**
-   * Use asset plugins.
-   * @param plugins
+   * Use asset resolver plugin.
+   * @param plugin
    */
-  use(...plugins: Array<IAssetResolverPlugin | IAssetResolverPlugin[]>): this
+  use(plugin: IAssetResolverPlugin): this
   /**
    * Resolve assets in the specified srcPaths.
    * @param srcPaths
