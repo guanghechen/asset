@@ -1,6 +1,8 @@
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
+  IAssetLocatePlugin,
   IAssetMeta,
+  IAssetParsePlugin,
   IAssetPluginLocateApi,
   IAssetPluginLocateInput,
   IAssetPluginLocateNext,
@@ -13,18 +15,26 @@ import type {
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
+  IAssetPolishPlugin,
   IAssetResolverPlugin,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
-import type { Resource, Root } from '@yozora/ast'
-import { shallowMutateAstInPreorderAsync } from '@yozora/ast-util'
+import { ParagraphType } from '@yozora/ast'
+import type { Definition, FootnoteDefinition, Paragraph, Resource, Root } from '@yozora/ast'
+import { collectInlineNodes, collectTexts, shallowMutateAstInPreorderAsync } from '@yozora/ast-util'
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
-import type { IMarkdownPolishedData, IMarkdownResolvedData, IParser } from './types'
+import type {
+  IMarkdownPolishedData,
+  IMarkdownResolvedData,
+  IMarkdownResolverPlugin,
+  IMarkdownResolverPluginContext,
+  IParser,
+} from './types'
 import { MarkdownAssetType, isMarkdownAssetPolishInput } from './types'
 
-export interface IAssetResolverMarkdownProps {
+interface IProps {
   /**
    * Markdown parser.
    */
@@ -39,19 +49,65 @@ export interface IAssetResolverMarkdownProps {
    * @default filename => /\.md$/.test(filename)
    */
   resolvable?(filename: string): boolean
+  /**
+   * Get preset definitions.
+   */
+  getPresetDefinitions?: () => Definition[] | undefined
+  /**
+   * Get preset footnote definitions.
+   */
+  getPresetFootnoteDefinitions?: () => FootnoteDefinition[] | undefined
 }
 
 export class AssetResolverMarkdown implements IAssetResolverPlugin {
   public readonly displayName: string = '@guanghechen/asset-resolver-markdown'
+  protected readonly ctx: IMarkdownResolverPluginContext
   protected readonly encoding: BufferEncoding
-  protected readonly parser: IParser
-  protected readonly frontmatterRegex: RegExp = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
-  protected readonly resolvable: (filename: string) => boolean
+  protected readonly frontmatterRegex: RegExp
+  private readonly _locatePlugins: IAssetLocatePlugin[]
+  private readonly _parsePlugins: IAssetParsePlugin[]
+  private readonly _polishPlugins: IAssetPolishPlugin[]
 
-  constructor(props: IAssetResolverMarkdownProps) {
-    this.parser = props.parser
-    this.encoding = props.encoding ?? 'utf8'
-    this.resolvable = props.resolvable ?? (filename => /\.md$/.test(filename))
+  constructor(props: IProps) {
+    const parser: IParser = props.parser
+    const encoding: BufferEncoding = props.encoding ?? 'utf8'
+
+    const getPresetDefinitions: IMarkdownResolverPluginContext['getPresetDefinitions'] =
+      props.getPresetDefinitions ?? (() => undefined)
+    const getPresetFootnoteDefinitions: IMarkdownResolverPluginContext['getPresetFootnoteDefinitions'] =
+      props.getPresetFootnoteDefinitions ?? (() => undefined)
+    const parseMarkdown: IMarkdownResolverPluginContext['parseMarkdown'] = content => {
+      return parser.parse(content, {
+        shouldReservePosition: false,
+        presetDefinitions: getPresetDefinitions() ?? [],
+        presetFootnoteDefinitions: getPresetFootnoteDefinitions() ?? [],
+      })
+    }
+    const resolvable: IMarkdownResolverPluginContext['resolvable'] =
+      props.resolvable ?? (filename => /\.md$/.test(filename))
+    const ctx: IMarkdownResolverPluginContext = {
+      getPresetDefinitions,
+      getPresetFootnoteDefinitions,
+      parseMarkdown,
+      resolvable,
+    }
+
+    this.ctx = ctx
+    this.encoding = encoding
+    this.frontmatterRegex = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
+    this._locatePlugins = []
+    this._parsePlugins = []
+    this._polishPlugins = []
+  }
+
+  public use(markdownResolverPlugin: IMarkdownResolverPlugin): this {
+    const plugin: IAssetResolverPlugin = markdownResolverPlugin(this.ctx)
+    if (plugin.displayName) {
+      if (plugin.locate) this._locatePlugins.push(plugin as IAssetLocatePlugin)
+      if (plugin.parse) this._parsePlugins.push(plugin as IAssetParsePlugin)
+      if (plugin.polish) this._polishPlugins.push(plugin as IAssetPolishPlugin)
+    }
+    return this
   }
 
   public async locate(
@@ -60,7 +116,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     api: Readonly<IAssetPluginLocateApi>,
     next: IAssetPluginLocateNext,
   ): Promise<IAssetPluginLocateOutput | null> {
-    if (this.resolvable(input.filename)) {
+    if (this.ctx.resolvable(input.filename)) {
       const rawSrcContent: IBinaryFileData | null = await api.loadContent(input.filename)
       if (rawSrcContent) {
         const rawContent = rawSrcContent.toString(this.encoding)
@@ -76,7 +132,10 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
           frontmatter.updatedAt != null
             ? dayjs(frontmatter.updatedAt).toISOString()
             : input.updatedAt
-        const title: string = frontmatter.title || input.title
+        const title: string = frontmatter.title
+          ? collectTexts(this.ctx.parseMarkdown(frontmatter.title).children).join(' ') ||
+            input.title
+          : input.title
         const type: string = MarkdownAssetType
         const mimetype: string = 'application/json'
         const uri: string | null = await api.resolveUri(type, mimetype)
@@ -97,7 +156,14 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
             : [],
           tags: isArrayOfT(frontmatter.tags, isString) ? frontmatter.tags : [],
         }
-        return next(result)
+
+        const reducer: IAssetPluginLocateNext =
+          this._locatePlugins.reduceRight<IAssetPluginLocateNext>(
+            (internalNext, middleware) => embryo =>
+              middleware.locate(input, embryo, api, internalNext),
+            next,
+          )
+        return reducer(result)
       }
     }
     return next(embryo)
@@ -117,14 +183,23 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
         const frontmatter: Record<string, any> = match[1]
           ? (yaml.load(match[1]) as Record<string, any>)
           : {}
-        const ast: Root = this.parser.parse(rawContent.slice(match[0].length))
+        const titleAst: Root = this.ctx.parseMarkdown(frontmatter.title || input.title)
+        const title: Paragraph =
+          titleAst.children.length === 1 && titleAst.children[0].type === ParagraphType
+            ? (titleAst.children[0] as Paragraph)
+            : { type: ParagraphType, children: collectInlineNodes(titleAst) }
+        const ast: Root = this.ctx.parseMarkdown(rawContent.slice(match[0].length))
         const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
-          data: {
-            ast,
-            frontmatter,
-          },
+          data: { title, ast, frontmatter },
         }
-        return next(result)
+
+        const reducer: IAssetPluginParseNext =
+          this._parsePlugins.reduceRight<IAssetPluginParseNext>(
+            (internalNext, middleware) => embryo =>
+              middleware.parse(input, embryo, api, internalNext),
+            next,
+          )
+        return reducer(result)
       }
     }
     return next(embryo)
@@ -149,16 +224,21 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
         return node
       })
 
-      const { frontmatter } = input.data
+      const { frontmatter, title } = input.data
       const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
+        sourcetype: MarkdownAssetType,
         datatype: AssetDataTypeEnum.JSON,
-        data: {
-          ast,
-          frontmatter,
-        },
+        data: { title, ast, frontmatter },
         encoding: 'utf8',
       }
-      return next(result)
+
+      const reducer: IAssetPluginPolishNext =
+        this._polishPlugins.reduceRight<IAssetPluginPolishNext>(
+          (internalNext, middleware) => embryo =>
+            middleware.polish(input, embryo, api, internalNext),
+          next,
+        )
+      return reducer(result)
     }
     return next(embryo)
   }

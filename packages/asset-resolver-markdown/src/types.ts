@@ -4,8 +4,16 @@ import type {
   IAssetPluginParseOutput,
   IAssetPluginPolishInput,
   IAssetPluginPolishOutput,
+  IAssetResolverPlugin,
 } from '@guanghechen/asset-types'
-import type { Definition, EcmaImport, FootnoteDefinition, Root } from '@yozora/ast'
+import type {
+  Association,
+  Definition,
+  EcmaImport,
+  FootnoteDefinition,
+  Paragraph,
+  Root,
+} from '@yozora/ast'
 import type { IHeadingToc } from '@yozora/ast-util'
 import type { IAplayerOptions } from './types.aplayer'
 
@@ -16,7 +24,25 @@ export interface IParser {
    * @param startIndex  start index of content
    * @param endIndex    end index of contents
    */
-  parse(contents: Iterable<string> | string): Root
+  parse(
+    contents: Iterable<string> | string,
+    options: {
+      /**
+       * Whether it is necessary to reserve the position in the Node produced.
+       */
+      readonly shouldReservePosition?: boolean
+
+      /**
+       * Preset definition meta data list.
+       */
+      readonly presetDefinitions?: Association[]
+
+      /**
+       * Preset footnote definition meta data list.
+       */
+      readonly presetFootnoteDefinitions?: Association[]
+    },
+  ): Root
 }
 
 export interface IPreviewImageItem {
@@ -33,6 +59,15 @@ export interface IPreviewImageItem {
 export const MarkdownAssetType = 'markdown'
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export type MarkdownAssetType = typeof MarkdownAssetType
+
+export interface IMarkdownResolverPluginContext {
+  getPresetDefinitions: () => Definition[] | undefined
+  getPresetFootnoteDefinitions: () => FootnoteDefinition[] | undefined
+  parseMarkdown: (content: string) => Root
+  resolvable: (filename: string) => boolean
+}
+
+export type IMarkdownResolverPlugin = (ctx: IMarkdownResolverPluginContext) => IAssetResolverPlugin
 
 export interface IMarkdownFrontmatter {
   /**
@@ -55,6 +90,10 @@ export interface IMarkdownFrontmatter {
 
 export interface IMarkdownResolvedData {
   /**
+   * Markdown title.
+   */
+  title: Paragraph
+  /**
    * Markdown ast.
    */
   ast: Root
@@ -65,6 +104,10 @@ export interface IMarkdownResolvedData {
 }
 
 export interface IMarkdownPolishedData {
+  /**
+   * Markdown title.
+   */
+  title: Paragraph
   /**
    * Markdown ast.
    */
