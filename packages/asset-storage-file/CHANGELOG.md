@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.29](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-file@1.0.0-alpha.28...@guanghechen/asset-storage-file@1.0.0-alpha.29) (2023-09-18)
+
+**Note:** Version bump only for package @guanghechen/asset-storage-file
+
+
+
+
+
 # [1.0.0-alpha.28](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-file@1.0.0-alpha.27...@guanghechen/asset-storage-file@1.0.0-alpha.28) (2023-09-17)
 
 **Note:** Version bump only for package @guanghechen/asset-storage-file

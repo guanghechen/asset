@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.28](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.27...@guanghechen/asset-types@1.0.0-alpha.28) (2023-09-18)
+
+
+### Performance Improvements
+
+* 🎨 add sourcetype to ITargetItem ([78d5063](https://github.com/guanghechen/asset/commit/78d5063cd824eee957196bcd5d9aeb2f6fee5232))
+
+
+
+
+
 # [1.0.0-alpha.27](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.26...@guanghechen/asset-types@1.0.0-alpha.27) (2023-09-17)
 
 
