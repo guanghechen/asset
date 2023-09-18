@@ -44,9 +44,9 @@
     "@guanghechen/asset-util": "^1.0.0-alpha.14",
     "@guanghechen/helper-is": "^5.0.7",
     "@guanghechen/parse-lineno": "^2.3.7",
-    "@yozora/ast": "^2.2.0",
-    "@yozora/ast-util": "^2.2.0",
-    "@yozora/character": "^2.2.0",
+    "@yozora/ast": "^2.3.0",
+    "@yozora/ast-util": "^2.3.0",
+    "@yozora/character": "^2.3.0",
     "dayjs": "^1.11.9",
     "js-yaml": "^4.1.0"
   },
