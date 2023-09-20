@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.12...@guanghechen/asset-resolver@1.0.0-alpha.13) (2023-09-20)
+
+**Note:** Version bump only for package @guanghechen/asset-resolver
+
+
+
+
+
 # [1.0.0-alpha.12](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.11...@guanghechen/asset-resolver@1.0.0-alpha.12) (2023-09-20)
 
 

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.32](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-memo@1.0.0-alpha.31...@guanghechen/asset-storage-memo@1.0.0-alpha.32) (2023-09-20)
+
+
+### Performance Improvements
+
+* 🎨 add MemoAssetSourceDataStorage ([7edbf21](https://github.com/guanghechen/asset/commit/7edbf21ab1e877ef070423212619ecbe56a1062a))
+
+
+
+
+
 # [1.0.0-alpha.31](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-memo@1.0.0-alpha.30...@guanghechen/asset-storage-memo@1.0.0-alpha.31) (2023-09-20)
 
 **Note:** Version bump only for package @guanghechen/asset-storage-memo
