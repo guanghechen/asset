@@ -1,11 +1,11 @@
-import type { IAssetLocation } from './asset'
+import type { IAssetLocation, IAssetMeta } from './asset'
 
 export interface IAssetUriResolver {
   /**
    * Resolve page slug.
-   * @param slug
+   * @param asset
    */
-  resolveSlug(slug: string | null | undefined): Promise<string | null>
+  resolveSlug(asset: Readonly<IAssetMeta>): Promise<string | null>
   /**
    * Resolve asset uri.
    * @param asset

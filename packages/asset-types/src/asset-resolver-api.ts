@@ -40,4 +40,9 @@ export interface IAssetResolverApi extends IAssetUriResolver {
    * @param srcPath
    */
   removeAsset(srcPath: string): Promise<void>
+  /**
+   * Resolve asset guid.
+   * @param srcPath
+   */
+  resolveGUID(srcPath: string): Promise<string>
 }

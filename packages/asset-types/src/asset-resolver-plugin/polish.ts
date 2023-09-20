@@ -32,9 +32,9 @@ export interface IAssetPluginPolish {
 
 export interface IAssetPluginPolishInput<D = unknown> {
   /**
-   * Asset type.
+   * Asset source content type.
    */
-  type: string
+  sourcetype: string
   /**
    * Asset tittle.
    */

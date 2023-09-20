@@ -16,4 +16,4 @@ export type IImageAssetPolishOutput = IAssetPluginPolishOutput<IImageAssetPolish
 
 export const isImageAssetPolishInput = (
   input: Readonly<IAssetPluginPolishInput> | null,
-): input is Readonly<IImageAssetPolishInput> => input?.type === ImageAssetType
+): input is Readonly<IImageAssetPolishInput> => input?.sourcetype === ImageAssetType

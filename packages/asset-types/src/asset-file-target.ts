@@ -30,7 +30,7 @@ export interface IBinaryTargetItem {
   datatype: AssetDataTypeEnum.BINARY
   mimetype: string
   sourcetype: string // markdown / file / image
-  absolutePath: string
+  uri: string
   data: IBinaryFileData
   encoding: undefined
   stat: IAssetStat
@@ -40,7 +40,7 @@ export interface ITextTargetItem {
   datatype: AssetDataTypeEnum.TEXT
   mimetype: string
   sourcetype: string // markdown / file / image
-  absolutePath: string
+  uri: string
   data: ITextFileData
   encoding: BufferEncoding
   stat: IAssetStat
@@ -50,7 +50,7 @@ export interface IJsonTargetItem {
   datatype: AssetDataTypeEnum.JSON
   mimetype: string
   sourcetype: string // markdown / file / image
-  absolutePath: string
+  uri: string
   data: IJsonFileData
   encoding: undefined
   stat: IAssetStat

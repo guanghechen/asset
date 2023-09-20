@@ -1,4 +1,4 @@
-import type { IAssetLocation, IAssetUriResolver } from '@guanghechen/asset-types'
+import type { IAssetLocation, IAssetMeta, IAssetUriResolver } from '@guanghechen/asset-types'
 import { mime, normalizeUrlPath } from '@guanghechen/asset-util'
 
 interface IAssetUriResolverProps {
@@ -7,24 +7,24 @@ interface IAssetUriResolverProps {
    * @param assetType
    * @param mimeType
    */
-  resolveUriPrefix(assetType: string, mimeType: string): Promise<string>
+  resolveUriPrefix(asset: Readonly<IAssetLocation>): Promise<string>
 }
 
 export class AssetUriResolver implements IAssetUriResolver {
-  protected readonly _resolveUriPrefix: (assetType: string, mimeType: string) => Promise<string>
+  protected readonly _resolveUriPrefix: (asset: Readonly<IAssetLocation>) => Promise<string>
 
   constructor(props: IAssetUriResolverProps) {
     this._resolveUriPrefix = props.resolveUriPrefix
   }
 
-  public async resolveSlug(slug: string | null | undefined): Promise<string | null> {
-    return slug ?? null
+  public async resolveSlug(asset: Readonly<IAssetMeta>): Promise<string | null> {
+    return asset.slug ?? null
   }
 
   public async resolveUri(asset: Readonly<IAssetLocation>): Promise<string> {
-    const { guid, type, mimetype } = asset
+    const { guid, mimetype } = asset
     const extname: string | undefined = mime.getExtension(mimetype) ?? asset.extname
-    const uriPrefix: string = await this._resolveUriPrefix(type, mimetype)
+    const uriPrefix: string = await this._resolveUriPrefix(asset)
     const uri: string = `/${uriPrefix}/${guid}`
     return normalizeUrlPath(extname ? `${uri}.${extname}` : uri)
   }

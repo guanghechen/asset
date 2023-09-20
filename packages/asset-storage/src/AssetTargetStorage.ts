@@ -89,7 +89,6 @@ export class AssetTargetStorage implements IAssetTargetStorage {
 
     invariant(!fileItem || fileItem.datatype === datatype, `${title} invalid uri(${uri})`)
 
-    const filepath: string = this._dataStorage.pathResolver.resolveFromUri(uri)
     const mtime: Date = new Date()
     const birthtime: Date = fileItem?.stat?.birthtime ?? mtime
     const stat: IAssetStat = { birthtime, mtime }
@@ -99,10 +98,10 @@ export class AssetTargetStorage implements IAssetTargetStorage {
     switch (datatype) {
       case AssetDataTypeEnum.BINARY:
         nextAssetItem = {
-          sourcetype,
-          mimetype,
           datatype,
-          absolutePath: filepath,
+          mimetype,
+          sourcetype,
+          uri,
           encoding: undefined,
           stat,
         }
@@ -111,10 +110,10 @@ export class AssetTargetStorage implements IAssetTargetStorage {
       case AssetDataTypeEnum.TEXT:
         invariant(!!rawItem.encoding, `${title} missing encoding for text file: ${uri}`)
         nextAssetItem = {
-          sourcetype,
-          mimetype,
           datatype,
-          absolutePath: filepath,
+          mimetype,
+          sourcetype,
+          uri,
           encoding: rawItem.encoding,
           stat,
         }
@@ -122,10 +121,10 @@ export class AssetTargetStorage implements IAssetTargetStorage {
         break
       case AssetDataTypeEnum.JSON:
         nextAssetItem = {
-          sourcetype,
-          mimetype,
           datatype,
-          absolutePath: filepath,
+          mimetype,
+          sourcetype,
+          uri,
           encoding: undefined,
           stat,
         }

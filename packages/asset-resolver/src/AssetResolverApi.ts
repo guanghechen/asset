@@ -3,6 +3,7 @@ import type {
   IAssetDataMap,
   IAssetLocation,
   IAssetManager,
+  IAssetMeta,
   IAssetPluginLocateInput,
   IAssetResolverApi,
   IAssetSourceStorage,
@@ -47,17 +48,17 @@ export class AssetResolverApi implements IAssetResolverApi {
   }
 
   public async locateAsset(srcPath: string): Promise<IAsset | undefined> {
-    const guid: string = this.resolveGUID(srcPath)
+    const guid: string = await this.resolveGUID(srcPath)
     return this._manager.get(guid)
   }
 
   public async removeAsset(srcPath: string): Promise<void> {
-    const guid: string = this.resolveGUID(srcPath)
+    const guid: string = await this.resolveGUID(srcPath)
     this._manager.remove(guid)
   }
 
-  public async resolveSlug(slug: string | null | undefined): Promise<string | null> {
-    return this._uriResolver.resolveSlug(slug)
+  public async resolveSlug(asset: Readonly<IAssetMeta>): Promise<string | null> {
+    return this._uriResolver.resolveSlug(asset)
   }
 
   public async resolveUri(asset: Readonly<IAssetLocation>): Promise<string> {
@@ -71,7 +72,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     _sourceStorage.pathResolver.assertSafePath(filepath)
     await _sourceStorage.assertExistedFile(filepath)
 
-    const guid: string = this.resolveGUID(filepath)
+    const guid: string = await this.resolveGUID(filepath)
     const stat = await _sourceStorage.statFile(filepath)
     const sourceItem: ISourceItem | undefined = await _sourceStorage.readFile(filepath)
     const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
@@ -101,8 +102,8 @@ export class AssetResolverApi implements IAssetResolverApi {
     return content ?? null
   }
 
-  public resolveGUID(filepath: string): string {
-    const id: string = this._sourceStorage.pathResolver.identify(filepath)
+  public async resolveGUID(srcPath: string): Promise<string> {
+    const id: string = this._sourceStorage.pathResolver.identify(srcPath)
     const guid: string = uuid(`#path-${id}`, this.GUID_NAMESPACE)
     return guid
   }

@@ -1,3 +1,4 @@
+import type { IAssetMeta } from '../asset'
 import type { IBinaryFileData } from '../asset-file'
 
 export interface IAssetPluginLocateApi {
@@ -8,15 +9,15 @@ export interface IAssetPluginLocateApi {
   loadContent(srcPathRelativeToCurDir: string): Promise<IBinaryFileData | null>
   /**
    * Resolve asset slug.
-   * @param slug
+   * @param meta
    */
-  resolveSlug(slug: string | null | undefined): Promise<string | null>
+  resolveSlug(meta: Readonly<IAssetMeta>): Promise<string | null>
   /**
    * Resolve asset uri.
-   * @param type
+   * @param sourcetype
    * @param mimetype
    */
-  resolveUri(type: string, mimetype: string): Promise<string | null>
+  resolveUri(sourcetype: string, mimetype: string): Promise<string>
 }
 
 export interface IAssetPluginLocateNext {
@@ -71,9 +72,9 @@ export interface IAssetPluginLocateInput {
 
 export interface IAssetPluginLocateOutput {
   /**
-   * Asset content type.
+   * Asset source content type.
    */
-  type: string
+  sourcetype: string
   /**
    * Asset MIME type.
    */

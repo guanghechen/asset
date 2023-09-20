@@ -50,11 +50,11 @@ export class AssetResolverFile implements IAssetResolverPlugin {
     next: IAssetPluginLocateNext,
   ): Promise<IAssetPluginLocateOutput | null> {
     if (!embryo && this.resolvable(input.src)) {
-      const type: string = FileAssetType
+      const sourcetype: string = FileAssetType
       const mimetype: string = mime.getType(input.filename) ?? 'unknown'
-      const uri: string | null = await api.resolveUri(type, mimetype)
+      const uri: string | null = await api.resolveUri(sourcetype, mimetype)
       const result: IAssetPluginLocateOutput = {
-        type,
+        sourcetype,
         mimetype,
         title: input.title,
         description: null,

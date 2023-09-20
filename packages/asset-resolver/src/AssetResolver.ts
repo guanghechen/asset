@@ -1,6 +1,7 @@
 import type {
   IAsset,
   IAssetLocatePlugin,
+  IAssetMeta,
   IAssetParsePlugin,
   IAssetPluginLocateApi,
   IAssetPluginLocateInput,
@@ -131,8 +132,8 @@ export class AssetResolver implements IAssetResolver {
         if (!api.isRelativePath(relativePath)) return null
         return api.loadContent(`${srcPath}/../${relativePath}`)
       },
-      resolveSlug: slug => api.resolveSlug(slug),
-      resolveUri: (type, mimetype) => api.resolveUri({ guid, type, mimetype, extname }),
+      resolveSlug: (meta: Readonly<IAssetMeta>) => api.resolveSlug(meta),
+      resolveUri: (sourcetype, mimetype) => api.resolveUri({ guid, sourcetype, mimetype, extname }),
     }
 
     const reducer: IAssetPluginLocateNext = this._locatePlugins.reduceRight<IAssetPluginLocateNext>(
@@ -143,13 +144,23 @@ export class AssetResolver implements IAssetResolver {
     const result: IAssetPluginLocateOutput | null = await reducer(null)
     if (result === null) return null
 
-    const { type, mimetype, title, description, slug, createdAt, updatedAt, categories, tags } =
-      result
-    const uri: string = result.uri ?? (await api.resolveUri({ guid, type, mimetype, extname }))
+    const {
+      sourcetype,
+      mimetype,
+      title,
+      description,
+      slug,
+      createdAt,
+      updatedAt,
+      categories,
+      tags,
+    } = result
+    const uri: string =
+      result.uri ?? (await api.resolveUri({ guid, sourcetype, mimetype, extname }))
     const resolvedAsset: IAsset = {
       guid,
       hash,
-      type,
+      sourcetype,
       mimetype,
       extname,
       title,
@@ -171,13 +182,17 @@ export class AssetResolver implements IAssetResolver {
   ): Promise<IParseStageData | null> {
     const { asset, srcPath } = locateStageData
     const filename: string = path.basename(srcPath)
-    const input: IAssetPluginParseInput = { type: asset.type, title: asset.title, filename }
+    const input: IAssetPluginParseInput = {
+      sourcetype: asset.sourcetype,
+      title: asset.title,
+      filename,
+    }
     const pluginApi: IAssetPluginParseApi = {
       loadContent: async relativePath => {
         if (!api.isRelativePath(relativePath)) return null
         return api.loadContent(`${srcPath}/../${relativePath}`)
       },
-      resolveSlug: slug => api.resolveSlug(slug),
+      resolveSlug: (meta: Readonly<IAssetMeta>) => api.resolveSlug(meta),
     }
     const reducer: IAssetPluginParseNext = this._parsePlugins.reduceRight<IAssetPluginParseNext>(
       (next, middleware) => embryo => middleware.parse(input, embryo, pluginApi, next),
@@ -193,7 +208,12 @@ export class AssetResolver implements IAssetResolver {
     api: IAssetResolverApi,
   ): Promise<IPolishStageData | null> {
     const { srcPath, asset, filename, data } = parseStageData
-    const input: IAssetPluginPolishInput = { type: asset.type, title: asset.title, filename, data }
+    const input: IAssetPluginPolishInput = {
+      sourcetype: asset.sourcetype,
+      title: asset.title,
+      filename,
+      data,
+    }
     const pluginApi: IAssetPluginPolishApi = {
       loadContent: async relativePath => {
         if (!api.isRelativePath(relativePath)) return null

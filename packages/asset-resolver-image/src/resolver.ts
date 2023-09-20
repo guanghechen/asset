@@ -51,9 +51,9 @@ export class AssetResolverImage implements IAssetResolverPlugin {
     next: IAssetPluginLocateNext,
   ): Promise<IAssetPluginLocateOutput | null> {
     if (!embryo && this.accepted(input.src) && !this.rejected(input.src)) {
-      const type: string = ImageAssetType
+      const sourcetype: string = ImageAssetType
       const mimetype: string = mime.getType(input.filename) ?? 'unknown'
-      let uri: string | null = await api.resolveUri(type, mimetype)
+      let uri: string | null = await api.resolveUri(sourcetype, mimetype)
 
       if (uri?.startsWith('/')) {
         try {
@@ -78,7 +78,7 @@ export class AssetResolverImage implements IAssetResolverPlugin {
       }
 
       const result: IAssetPluginLocateOutput = {
-        type,
+        sourcetype,
         mimetype,
         title: input.title,
         description: null,

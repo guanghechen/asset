@@ -1,3 +1,4 @@
+import type { IAssetMeta } from '../asset'
 import type { IBinaryFileData } from '../asset-file'
 
 export interface IAssetPluginParseApi {
@@ -8,9 +9,9 @@ export interface IAssetPluginParseApi {
   loadContent(srcPathRelativeToCurDir: string): Promise<IBinaryFileData | null>
   /**
    * Resolve asset slug.
-   * @param slug
+   * @param meta
    */
-  resolveSlug(slug: string | null | undefined): Promise<string | null>
+  resolveSlug(meta: Readonly<IAssetMeta>): Promise<string | null>
 }
 
 export interface IAssetPluginParseNext {
@@ -30,9 +31,9 @@ export interface IAssetPluginParse {
 
 export interface IAssetPluginParseInput {
   /**
-   * Asset type.
+   * Asset source content type.
    */
-  type: string
+  sourcetype: string
   /**
    * Asset tittle.
    */

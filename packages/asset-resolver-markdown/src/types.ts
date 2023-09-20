@@ -152,23 +152,23 @@ export interface IMarkdownPolishedData {
 
 export const isMarkdownAssetLocateOutput = (
   embryo: Readonly<IAssetPluginLocateOutput> | null,
-): embryo is IAssetPluginLocateOutput => embryo?.type === MarkdownAssetType
+): embryo is IAssetPluginLocateOutput => embryo?.sourcetype === MarkdownAssetType
 
 export type IMarkdownAssetParseOutput = IAssetPluginParseOutput<IMarkdownResolvedData>
 export const isMarkdownAssetParseOutput = (
   input: Readonly<IAssetPluginParseInput>,
   embryo: Readonly<IAssetPluginParseOutput> | null,
 ): embryo is Readonly<IMarkdownAssetParseOutput> =>
-  input?.type === MarkdownAssetType && embryo !== null
+  input?.sourcetype === MarkdownAssetType && embryo !== null
 
 export type IMarkdownAssetPolishInput = IAssetPluginPolishInput<IMarkdownPolishedData>
 export const isMarkdownAssetPolishInput = (
   input: Readonly<IAssetPluginPolishInput> | null,
-): input is Readonly<IMarkdownAssetPolishInput> => input?.type === MarkdownAssetType
+): input is Readonly<IMarkdownAssetPolishInput> => input?.sourcetype === MarkdownAssetType
 
 export type IMarkdownAssetPolishOutput = IAssetPluginPolishOutput<IMarkdownPolishedData>
 export const isMarkdownPolishOutput = (
   input: Readonly<IAssetPluginPolishInput> | null,
   embryo: Readonly<IAssetPluginPolishOutput> | null,
 ): embryo is Readonly<IMarkdownAssetPolishOutput> =>
-  input?.type === MarkdownAssetType && embryo !== null
+  input?.sourcetype === MarkdownAssetType && embryo !== null

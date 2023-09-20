@@ -136,14 +136,16 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
           ? collectTexts(this.ctx.parseMarkdown(frontmatter.title).children).join(' ') ||
             input.title
           : input.title
-        const type: string = MarkdownAssetType
+        const sourcetype: string = MarkdownAssetType
         const mimetype: string = 'application/json'
-        const uri: string | null = await api.resolveUri(type, mimetype)
-        const slug: string | null = await api.resolveSlug(
-          typeof frontmatter.slug === 'string' ? frontmatter.slug : undefined,
-        )
+        const uri: string | null = await api.resolveUri(sourcetype, mimetype)
+        const slug: string | null = await api.resolveSlug({
+          uri,
+          slug: typeof frontmatter.slug === 'string' ? frontmatter.slug : null,
+          title,
+        })
         const result: IAssetPluginLocateOutput = {
-          type,
+          sourcetype,
           mimetype,
           title,
           description: frontmatter.description || title,
@@ -175,7 +177,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     api: Readonly<IAssetPluginParseApi>,
     next: IAssetPluginParseNext,
   ): Promise<IAssetPluginParseOutput | null> {
-    if (input.type === MarkdownAssetType) {
+    if (input.sourcetype === MarkdownAssetType) {
       const rawSrcContent: IBinaryFileData | null = await api.loadContent(input.filename)
       if (rawSrcContent) {
         const rawContent = rawSrcContent.toString(this.encoding)

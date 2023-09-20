@@ -19,9 +19,9 @@ export interface IAssetLocation {
    */
   guid: string
   /**
-   * Asset content type.
+   * Asset source content type.
    */
-  type: string
+  sourcetype: string
   /**
    * Asset MIME type.
    */
