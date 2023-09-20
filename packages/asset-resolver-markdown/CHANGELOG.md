@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.32](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.31...@guanghechen/asset-resolver-markdown@1.0.0-alpha.32) (2023-09-20)
+
+
+### Performance Improvements
+
+* 🎨 rename asset.type to asset.sourcetype & refactor AssetResolverApi ([03ceba9](https://github.com/guanghechen/asset/commit/03ceba9a303ea458cb4cb7660d5a2bd2288e393d))
+
+
+
+
+
 # [1.0.0-alpha.31](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.30...@guanghechen/asset-resolver-markdown@1.0.0-alpha.31) (2023-09-18)
 
 
