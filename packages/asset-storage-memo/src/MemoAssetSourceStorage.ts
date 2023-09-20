@@ -1,12 +1,12 @@
 import type {
   IAssetCollectOptions,
   IAssetFileChangedCallback,
-  IAssetLoadOnDemand,
   IAssetPathResolver,
   IAssetSourceStorage,
   IAssetStat,
   IAssetWatchOptions,
   IAssetWatcher,
+  IMemoAssetSourceDataStorage,
   ISourceItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
@@ -19,36 +19,30 @@ type IParametersOfOnChange = [filepath: string, pathResolver: IAssetPathResolver
 type IParametersOfOnRemove = [filepath: string, pathResolver: IAssetPathResolver]
 
 export interface IMemoAssetSourceStorageProps {
-  pathResolver: IAssetPathResolver
-  initialData?: Iterable<[string, ISourceItem]>
-  loadOnDemand?: IAssetLoadOnDemand
+  dataStore: IMemoAssetSourceDataStorage
 }
 
 export class MemoAssetSourceStorage implements IAssetSourceStorage {
   public readonly pathResolver: IAssetPathResolver
-  protected readonly _cache: Map<string, ISourceItem>
+  protected readonly _dataStore: IMemoAssetSourceDataStorage
   protected readonly _monitorAdd: IMonitor<IParametersOfOnAdd>
   protected readonly _monitorChange: IMonitor<IParametersOfOnChange>
   protected readonly _monitorRemove: IMonitor<IParametersOfOnRemove>
-  protected readonly _loadOnDemand: IAssetLoadOnDemand
 
-  constructor(props: IMemoAssetSourceStorageProps) {
-    const { pathResolver, initialData, loadOnDemand } = props
-    this.pathResolver = pathResolver
-    this._cache = new Map(initialData)
+  constructor(dataStore: IMemoAssetSourceDataStorage) {
+    this.pathResolver = dataStore.pathResolver
+    this._dataStore = dataStore
     this._monitorAdd = new Monitor<IParametersOfOnAdd>('onAdd')
     this._monitorChange = new Monitor<IParametersOfOnChange>('onChange')
     this._monitorRemove = new Monitor<IParametersOfOnRemove>('onRemove')
-    this._loadOnDemand = loadOnDemand ?? (async () => undefined)
   }
 
   public async assertExistedFile(srcPath: string): Promise<void> {
-    const filepath: string = this.pathResolver.relative(srcPath)
-    const identifier: string = this.pathResolver.identify(filepath)
-    const existed: boolean = this._cache.has(identifier)
+    const filepath: string = this._dataStore.pathResolver.relative(srcPath)
+    const existed: boolean = this._dataStore.has(filepath)
     if (existed) return
 
-    const loadResult = await this._loadOnDemand(filepath, this.pathResolver)
+    const loadResult = await this._dataStore.loadOnDemand(filepath)
     if (loadResult !== undefined) {
       const item: ISourceItem = { filepath, stat: loadResult.stat, data: loadResult.data }
       await this.updateFile(item)
@@ -67,7 +61,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
 
     const patterns: string[] = Array.from(patterns_)
     const filepaths: string[] = []
-    for (const item of this._cache.values()) {
+    for (const item of this._dataStore.values()) {
       const filepath: string = this.pathResolver.relative(item.filepath)
       if (micromatch.isMatch(filepath, patterns, { dot: true })) filepaths.push(filepath)
     }
@@ -76,18 +70,16 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
 
   public async readFile(srcPath: string): Promise<ISourceItem> {
     const filepath: string = this.pathResolver.relative(srcPath)
-    const identifier: string = this.pathResolver.identify(filepath)
-    let item: ISourceItem | undefined = this._cache.get(identifier)
-
+    let item: ISourceItem | undefined = this._dataStore.get(filepath)
     if (item === undefined) {
-      const loadResult = await this._loadOnDemand(filepath, this.pathResolver)
+      const loadResult = await this._dataStore.loadOnDemand(filepath)
       if (loadResult !== undefined) {
         item = {
           filepath,
           stat: { birthtime: loadResult.stat.birthtime, mtime: loadResult.stat.mtime },
           data: loadResult.data,
         }
-        this._cache.set(identifier, item)
+        this._dataStore.set(filepath, item)
         this._monitorAdd.notify(filepath, this.pathResolver)
       }
     }
@@ -98,25 +90,22 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
 
   public async removeFile(srcPath: string): Promise<void> {
     const filepath: string = this.pathResolver.relative(srcPath)
-    const identifier: string = this.pathResolver.identify(filepath)
-    const item: ISourceItem | undefined = this._cache.get(identifier)
+    const item: ISourceItem | undefined = this._dataStore.get(filepath)
     invariant(!!item, `[${this.constructor.name}.removeFile] invalid filepath: ${filepath}`)
-    this._cache.delete(identifier)
+    this._dataStore.delete(filepath)
     this._monitorRemove.notify(filepath, this.pathResolver)
   }
 
   public async statFile(srcPath: string): Promise<IAssetStat> {
     const filepath: string = this.pathResolver.relative(srcPath)
-    const identifier: string = this.pathResolver.identify(filepath)
-    const item: ISourceItem | undefined = this._cache.get(identifier)
+    const item: ISourceItem | undefined = this._dataStore.get(filepath)
     invariant(!!item, `[${this.constructor.name}.statFile] invalid filepath: ${filepath}`)
     return item.stat
   }
 
   public async updateFile(item: ISourceItem): Promise<void> {
     const filepath: string = this.pathResolver.relative(item.filepath)
-    const identifier: string = this.pathResolver.identify(filepath)
-    const existItem: ISourceItem | undefined = this._cache.get(identifier)
+    const existItem: ISourceItem | undefined = this._dataStore.get(filepath)
     const resolvedItem: ISourceItem = {
       filepath,
       stat: {
@@ -127,11 +116,11 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     }
 
     if (existItem) {
-      this._cache.set(identifier, resolvedItem)
+      this._dataStore.set(filepath, resolvedItem)
       this._monitorChange.notify(filepath, this.pathResolver)
       return
     } else {
-      this._cache.set(identifier, resolvedItem)
+      this._dataStore.set(filepath, resolvedItem)
       this._monitorAdd.notify(filepath, this.pathResolver)
     }
   }

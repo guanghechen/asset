@@ -22,10 +22,15 @@ export interface IAssetWatchOptions {
   shouldIgnore?: IAssetWatchShouldIgnore
 }
 
-export type IAssetLoadOnDemand = (
-  filepath: string,
-  pathResolver: IAssetPathResolver,
-) => Promise<Omit<ISourceItem, 'filepath'> | undefined>
+export interface IMemoAssetSourceDataStorage {
+  readonly pathResolver: IAssetPathResolver
+  has(srcPath: string): boolean
+  get(srcPath: string): ISourceItem | undefined
+  set(srcPath: string, item: ISourceItem): void
+  delete(srcPath: string): void
+  values(): Iterable<ISourceItem>
+  loadOnDemand(srcPath: string): Promise<ISourceItem | undefined>
+}
 
 export interface IAssetSourceStorage {
   readonly pathResolver: IAssetPathResolver
