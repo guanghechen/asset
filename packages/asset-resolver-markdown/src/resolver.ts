@@ -217,7 +217,8 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
       const ast: Root = await shallowMutateAstInPreorderAsync(input.data.ast, null, async node => {
         const n = node as unknown as Resource
         if (n.url && /^\./.test(n.url)) {
-          const asset: IAssetMeta | null = await api.resolveAssetMeta(n.url)
+          const refPath: string = decodeURIComponent(n.url)
+          const asset: IAssetMeta | null = await api.resolveAssetMeta(refPath)
           if (asset) {
             const url: string = asset.slug || asset.uri
             return n.url === url ? node : { ...node, url }

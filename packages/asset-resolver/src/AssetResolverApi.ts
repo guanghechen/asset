@@ -4,6 +4,7 @@ import type {
   IAssetLocation,
   IAssetManager,
   IAssetMeta,
+  IAssetPathResolver,
   IAssetPluginLocateInput,
   IAssetResolverApi,
   IAssetSourceStorage,
@@ -89,8 +90,12 @@ export class AssetResolverApi implements IAssetResolverApi {
     return { guid, hash, src, extname, createdAt, updatedAt, title, filename }
   }
 
-  public isRelativePath(srcPath: string): boolean {
-    return this._sourceStorage.pathResolver.isSafePath(srcPath)
+  public resolveRefPath(curDir: string, refPath: string): string | null {
+    const pathResolver: IAssetPathResolver = this._sourceStorage.pathResolver
+    const filepath: string = pathResolver.isAbsolute(refPath)
+      ? refPath
+      : pathResolver.absolute(refPath, curDir)
+    return pathResolver.isSafePath(filepath) ? filepath : null
   }
 
   public async loadContent(srcPath: string): Promise<IBinaryFileData | null> {

@@ -78,10 +78,8 @@ export class AssetService implements IAssetService {
       filepaths,
     })
 
-    this._reporter.verbose(
-      '[AssetService.buildByPaths] waiting finish:',
-      pathResolver.rootDir,
-      () => filepaths.map(filepath => pathResolver.relative(filepath)),
+    this._reporter.debug('[AssetService.buildByPaths] waiting finish:', pathResolver.rootDir, () =>
+      filepaths.map(filepath => pathResolver.relative(filepath)),
     )
     await scheduler.waitTaskTerminated(code)
     this._reporter.verbose(`[AssetService.buildByPaths] finished:`, pathResolver.rootDir)

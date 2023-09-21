@@ -25,8 +25,8 @@ export class AssetPathResolver implements IAssetPathResolver {
     )
   }
 
-  public absolute(filepath: string): string {
-    const absoluteFilepath = this._absolute(this.rootDir, filepath)
+  public absolute(filepath: string, basedir?: string): string {
+    const absoluteFilepath = this._absolute(basedir ?? this.rootDir, filepath)
     const relativeFilepath = this._relative(this.rootDir, absoluteFilepath)
     invariant(
       this._isSafePath(relativeFilepath),
@@ -41,6 +41,12 @@ export class AssetPathResolver implements IAssetPathResolver {
       .replace(/[/\\]+/g, '/')
       .replace(/[/]?$/, '/')
     return this.caseSensitive ? p : p.toLowerCase()
+  }
+
+  public isAbsolute(filepath: string): boolean {
+    if (path.isAbsolute(filepath)) return true
+    if (urlRegex.test(filepath)) return true
+    return false
   }
 
   public isSafePath(filepath: string): boolean {
@@ -64,8 +70,10 @@ export class AssetPathResolver implements IAssetPathResolver {
   }
 
   protected _absolute(cwd: string, filepath: string): string {
-    if (urlRegex.test(filepath)) return filepath
-    return path.resolve(cwd, path.normalize(filepath))
+    if (this.isAbsolute(filepath)) return filepath
+    const absoluteFilepath: string = path.resolve(cwd, path.normalize(filepath))
+    const normalizedFilepath: string = path.normalize(absoluteFilepath)
+    return normalizedFilepath
   }
 
   protected _relative(cwd: string, absoluteFilepath: string): string {

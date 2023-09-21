@@ -11,8 +11,9 @@ export interface IAssetPathResolver {
   /**
    * Get the absolute path.
    * @param filepath absolute path or relative path to the {rootDir}
+   * @param basedir
    */
-  absolute(filepath: string): string
+  absolute(filepath: string, basedir?: string): string
 
   /**
    * Generate a unique id for the filepath.
@@ -21,7 +22,13 @@ export interface IAssetPathResolver {
   identify(srcPath: string): string
 
   /**
-   * Check if the filepath is relative path.
+   * Check if the given filepath is an absolute path.
+   * @param filepath
+   */
+  isAbsolute(filepath: string): boolean
+
+  /**
+   * Check if the filepath is under the rootDir.
    * @param filepath
    */
   isSafePath(filepath: string): boolean

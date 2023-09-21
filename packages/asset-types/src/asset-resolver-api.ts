@@ -21,10 +21,12 @@ export interface IAssetResolverApi extends IAssetUriResolver {
    */
   insertAsset(asset: IAsset): Promise<void>
   /**
-   *
+   * Resolve the refPath to an absolute filepath as long as the result is under the source storage
+   * root dir, otherwise, a null will be returned..
+   * @param curDir
    * @param srcPath
    */
-  isRelativePath(srcPath: string): boolean
+  resolveRefPath(curDir: string, refPath: string): string | null
   /**
    * Load content by source file srcPath.
    * @param srcPath

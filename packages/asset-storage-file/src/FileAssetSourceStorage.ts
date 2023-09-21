@@ -35,7 +35,7 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     invariant(existsSync(filepath), `[assertExistedFile] Cannot find file. (${srcPath})`)
 
     const assertion: boolean = (await stat(filepath)).isFile()
-    invariant(assertion, `[assertExistedFile] Not a file'. (${srcPath})`)
+    invariant(assertion, `[assertExistedFile] Not a file. (${srcPath})`)
   }
 
   public async collect(

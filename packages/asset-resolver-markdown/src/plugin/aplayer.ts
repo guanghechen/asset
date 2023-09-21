@@ -33,9 +33,12 @@ export function markdownPluginAplayer(): IMarkdownResolverPlugin {
             const audios: IAPlayerAudioItem[] = []
 
             if (rawAplayer.audio) {
-              const resolveUri = async (_url: string | undefined): Promise<string | undefined> => {
-                const asset: IAssetMeta | null = _url ? await api.resolveAssetMeta(_url) : null
-                return asset ? asset.slug || asset.uri : _url
+              const resolveUri = async (url: string | undefined): Promise<string | undefined> => {
+                const refPath: string | null = url ? decodeURIComponent(url) : null
+                const asset: IAssetMeta | null = refPath
+                  ? await api.resolveAssetMeta(refPath)
+                  : null
+                return asset ? asset.slug || asset.uri : url
               }
 
               const rawAudios = Array.isArray(rawAplayer.audio)
