@@ -491,7 +491,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/asset-api@workspace:packages/asset-api":
+"@guanghechen/asset-api@^1.0.0-alpha.33, @guanghechen/asset-api@workspace:packages/asset-api":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-api@workspace:packages/asset-api"
   dependencies:
@@ -504,6 +504,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@guanghechen/asset-generator@workspace:packages/asset-generator":
+  version: 0.0.0-use.local
+  resolution: "@guanghechen/asset-generator@workspace:packages/asset-generator"
+  dependencies:
+    "@guanghechen/asset-api": ^1.0.0-alpha.33
+    "@guanghechen/asset-manager": ^1.0.0-alpha.14
+    "@guanghechen/asset-resolver": ^1.0.0-alpha.14
+    "@guanghechen/asset-resolver-file": ^1.0.0-alpha.31
+    "@guanghechen/asset-resolver-image": ^1.0.0-alpha.31
+    "@guanghechen/asset-resolver-markdown": ^1.0.0-alpha.34
+    "@guanghechen/asset-types": ^1.0.0-alpha.31
+    "@guanghechen/types": ^1.0.0-alpha.6
+    "@yozora/ast": ^2.3.0
+  languageName: unknown
+  linkType: soft
+
 "@guanghechen/asset-manager@^1.0.0-alpha.14, @guanghechen/asset-manager@workspace:packages/asset-manager":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-manager@workspace:packages/asset-manager"
@@ -512,7 +528,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-resolver-file@workspace:packages/asset-resolver-file":
+"@guanghechen/asset-resolver-file@^1.0.0-alpha.31, @guanghechen/asset-resolver-file@workspace:packages/asset-resolver-file":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-file@workspace:packages/asset-resolver-file"
   dependencies:
@@ -521,7 +537,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-resolver-image@workspace:packages/asset-resolver-image":
+"@guanghechen/asset-resolver-image@^1.0.0-alpha.31, @guanghechen/asset-resolver-image@workspace:packages/asset-resolver-image":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-image@workspace:packages/asset-resolver-image"
   dependencies:
@@ -531,7 +547,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-resolver-markdown@workspace:packages/asset-resolver-markdown":
+"@guanghechen/asset-resolver-markdown@^1.0.0-alpha.34, @guanghechen/asset-resolver-markdown@workspace:packages/asset-resolver-markdown":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-markdown@workspace:packages/asset-resolver-markdown"
   dependencies:
@@ -548,7 +564,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-resolver@workspace:packages/asset-resolver":
+"@guanghechen/asset-resolver@^1.0.0-alpha.14, @guanghechen/asset-resolver@workspace:packages/asset-resolver":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver@workspace:packages/asset-resolver"
   dependencies:

@@ -1,0 +1,53 @@
+{
+  "name": "@guanghechen/asset-generator",
+  "version": "1.0.0-alpha.0",
+  "description": "file asset",
+  "author": {
+    "name": "guanghechen",
+    "url": "https://github.com/guanghechen/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-generator@1.0.0-alpha.0",
+    "directory": "packages/asset-generator"
+  },
+  "homepage": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-generator@1.0.0-alpha.0/packages/asset-generator#readme",
+  "type": "module",
+  "main": "./lib/cjs/index.cjs",
+  "module": "./lib/esm/index.mjs",
+  "exports": {
+    "import": "./lib/esm/index.mjs",
+    "require": "./lib/cjs/index.cjs",
+    "types": "./lib/types/index.d.ts"
+  },
+  "types": "./lib/types/index.d.ts",
+  "source": "./src/index.ts",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 16.15.1"
+  },
+  "files": [
+    "lib/",
+    "!lib/**/*.js.map",
+    "!lib/**/*.d.ts.map",
+    "package.json",
+    "CHANGELOG.md",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rimraf lib/ && cross-env NODE_ENV=production rollup -c ../../rollup.config.mjs",
+    "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
+  },
+  "dependencies": {
+    "@guanghechen/asset-api": "^1.0.0-alpha.33",
+    "@guanghechen/asset-manager": "^1.0.0-alpha.14",
+    "@guanghechen/asset-resolver": "^1.0.0-alpha.14",
+    "@guanghechen/asset-resolver-file": "^1.0.0-alpha.31",
+    "@guanghechen/asset-resolver-image": "^1.0.0-alpha.31",
+    "@guanghechen/asset-resolver-markdown": "^1.0.0-alpha.34",
+    "@guanghechen/asset-types": "^1.0.0-alpha.31",
+    "@guanghechen/types": "^1.0.0-alpha.6",
+    "@yozora/ast": "^2.3.0"
+  }
+}
