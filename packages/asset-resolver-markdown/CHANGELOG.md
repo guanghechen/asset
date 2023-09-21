@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.35](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.34...@guanghechen/asset-resolver-markdown@1.0.0-alpha.35) (2023-09-21)
+
+
+### Performance Improvements
+
+* refactor asset ([a51a3f9](https://github.com/guanghechen/asset/commit/a51a3f958535491311f7aa4a9b473807bb0960c0))
+
+
+
+
+
 # [1.0.0-alpha.34](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.33...@guanghechen/asset-resolver-markdown@1.0.0-alpha.34) (2023-09-21)
 
 
