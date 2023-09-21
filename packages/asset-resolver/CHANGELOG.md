@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.14](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.13...@guanghechen/asset-resolver@1.0.0-alpha.14) (2023-09-21)
+
+
+### Performance Improvements
+
+* :art: refactor AssetResolver ([c86c03a](https://github.com/guanghechen/asset/commit/c86c03ab65ae28dd9917ddc92f31efdd7e5488e1))
+
+
+
+
+
 # [1.0.0-alpha.13](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.12...@guanghechen/asset-resolver@1.0.0-alpha.13) (2023-09-20)
 
 **Note:** Version bump only for package @guanghechen/asset-resolver
