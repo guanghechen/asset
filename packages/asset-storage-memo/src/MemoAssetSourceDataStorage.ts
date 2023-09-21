@@ -43,7 +43,7 @@ export class MemoAssetSourceDataStorage implements IMemoAssetSourceDataStorage {
     return this._cache.values()
   }
 
-  public async loadOnDemand(srcPath: string): Promise<ISourceItem | undefined> {
+  public async loadOnDemand(srcPath_: string): Promise<ISourceItem | undefined> {
     return undefined
   }
 }

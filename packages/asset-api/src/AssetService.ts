@@ -1,5 +1,6 @@
 import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type {
+  IAsset,
   IAssetPathResolver,
   IAssetService,
   IAssetServiceWatcher,
@@ -94,6 +95,10 @@ export class AssetService implements IAssetService {
       absolute: true,
     })
     await this.buildByPaths(srcPaths)
+  }
+
+  public async locate(srcPath: string): Promise<IAsset | null> {
+    return this._api.locate(srcPath)
   }
 
   // In watching mode, use scheduler to schedule tasks.

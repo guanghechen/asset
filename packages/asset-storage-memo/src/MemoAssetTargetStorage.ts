@@ -22,11 +22,11 @@ export class MemoAssetTargetDataStore implements IAssetTargetDataStorage {
     return this._dataCache.get(uri)
   }
 
-  public async save(rawItem: IRawTargetItem): Promise<void> {
-    this._dataCache.set(rawItem.uri, rawItem.data)
-  }
-
   public async remove(uri: string): Promise<void> {
     this._dataCache.delete(uri)
+  }
+
+  public async save(rawItem: IRawTargetItem): Promise<void> {
+    this._dataCache.set(rawItem.uri, rawItem.data)
   }
 }

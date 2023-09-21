@@ -1,3 +1,4 @@
+import type { IAsset } from './asset'
 import type { IAssetWatchShouldIgnore } from './asset-storage-source'
 import type { IAssetServiceWatcher } from './common'
 
@@ -24,6 +25,12 @@ export interface IAssetService {
    * @param acceptedPattern
    */
   buildByPatterns(acceptedPattern: Iterable<string>): Promise<void>
+
+  /**
+   * Locate the asset by the given filepath.
+   * @param srcPath
+   */
+  locate(srcPath: string): Promise<IAsset | null>
 
   /**
    * Need to call `this.prepare()` in advance.

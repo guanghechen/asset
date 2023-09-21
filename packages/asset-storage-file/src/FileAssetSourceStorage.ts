@@ -15,7 +15,7 @@ import fastGlob from 'fast-glob'
 import { existsSync } from 'node:fs'
 import { readFile, stat, unlink, writeFile } from 'node:fs/promises'
 
-export interface IFileAssetSourceStorageProps {
+interface IProps {
   pathResolver: IAssetPathResolver
   watchOptions?: Partial<chokidar.WatchOptions>
 }
@@ -24,7 +24,7 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
   public readonly pathResolver: IAssetPathResolver
   protected readonly _watchOptions: Partial<chokidar.WatchOptions>
 
-  constructor(props: IFileAssetSourceStorageProps) {
+  constructor(props: IProps) {
     const { pathResolver, watchOptions = {} } = props
     this.pathResolver = pathResolver
     this._watchOptions = watchOptions

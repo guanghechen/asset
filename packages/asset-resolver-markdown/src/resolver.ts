@@ -229,7 +229,6 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
 
       const { frontmatter, title } = input.data
       const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
-        sourcetype: MarkdownAssetType,
         datatype: AssetDataTypeEnum.JSON,
         data: { title, ast, frontmatter },
         encoding: 'utf8',

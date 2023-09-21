@@ -17,26 +17,31 @@ import type {
 import type { IReporter } from '@guanghechen/types'
 
 interface IProps {
-  api: IAssetResolverApi
   resolver: IAssetResolver
+  resolverApi: IAssetResolverApi
   reporter: IReporter
   targetStorage: IAssetTargetStorage
   dataMapUri: string
 }
 
 export class AssetTaskApi implements IAssetTaskApi {
-  protected readonly _resolverApi: IAssetResolverApi
   protected readonly _resolver: IAssetResolver
+  protected readonly _resolverApi: IAssetResolverApi
   protected readonly _reporter: IReporter
   protected readonly _targetStorage: IAssetTargetStorage
   protected readonly _dataMapUri: string
 
   constructor(props: IProps) {
-    this._resolverApi = props.api
+    this._resolverApi = props.resolverApi
     this._resolver = props.resolver
     this._reporter = props.reporter
     this._targetStorage = props.targetStorage
     this._dataMapUri = props.dataMapUri
+  }
+
+  public async locate(srcPath: string): Promise<IAsset | null> {
+    const asset: IAsset | null = await this._resolver.locate(srcPath, this._resolverApi)
+    return asset
   }
 
   public async create(srcPaths: string[]): Promise<void> {
@@ -46,10 +51,10 @@ export class AssetTaskApi implements IAssetTaskApi {
     const tasks: Array<Promise<void>> = []
 
     for (const result of results) {
-      const { asset, sourcetype, datatype, data, encoding } = result
+      const { asset, datatype, data, encoding } = result
       const task: Promise<void> = this._saveAsset({
         uri: asset.uri,
-        sourcetype,
+        sourcetype: asset.sourcetype,
         mimetype: asset.mimetype,
         datatype,
         data,

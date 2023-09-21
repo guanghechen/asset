@@ -1,4 +1,11 @@
+import type { IAsset } from './asset'
+
 export interface IAssetTaskApi {
+  /**
+   * Locate the asset by the given filepath.
+   * @param srcPath
+   */
+  locate(srcPath: string): Promise<IAsset | null>
   /**
    * Create assets on the given srcPaths.
    * @param srcPaths

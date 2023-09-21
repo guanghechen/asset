@@ -15,5 +15,5 @@ export type IFileAssetPolishOutputData = IBinaryFileData
 export type IFileAssetPolishOutput = IAssetPluginPolishOutput<IFileAssetPolishOutputData>
 
 export const isFileAssetPolishInput = (
-  input: Readonly<IAssetPluginPolishInput> | null,
-): input is Readonly<IFileAssetPolishInput> => input?.sourcetype === FileAssetType
+  input: Readonly<IAssetPluginPolishInput>,
+): input is Readonly<IFileAssetPolishInput> => input.sourcetype === FileAssetType

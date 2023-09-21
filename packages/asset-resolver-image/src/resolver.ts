@@ -104,7 +104,6 @@ export class AssetResolverImage implements IAssetResolverPlugin {
       const content: IBinaryFileData | null = await api.loadContent(input.filename)
       if (content !== null) {
         const result: IImageAssetPolishOutput = {
-          sourcetype: ImageAssetType,
           datatype: AssetDataTypeEnum.BINARY,
           data: content,
         }

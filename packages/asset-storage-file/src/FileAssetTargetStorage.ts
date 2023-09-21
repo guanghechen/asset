@@ -28,6 +28,33 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
     this._prettier = prettier
   }
 
+  public async load(uri: string, fileItem: ITargetItemWithoutData): Promise<IFileData> {
+    const { datatype, encoding } = fileItem
+    const filepath: string = this.pathResolver.resolveFromUri(uri)
+    switch (datatype) {
+      case AssetDataTypeEnum.BINARY: {
+        const content: IBinaryFileData = await readFile(filepath)
+        return content
+      }
+      case AssetDataTypeEnum.TEXT: {
+        const content: ITextFileData = await readFile(filepath, encoding)
+        return content
+      }
+      case AssetDataTypeEnum.JSON: {
+        const content: string = await readFile(filepath, 'utf8')
+        const data: IJsonFileData = JSON.parse(content)
+        return data
+      }
+      default:
+        throw new TypeError(`Unexpected datatype: ${datatype}`)
+    }
+  }
+
+  public async remove(uri: string): Promise<void> {
+    const filepath: string = this.pathResolver.resolveFromUri(uri)
+    await unlink(filepath)
+  }
+
   public async save(rawItem: IRawTargetItem): Promise<void> {
     const { datatype, uri, data } = rawItem
     const filepath: string = this.pathResolver.resolveFromUri(uri)
@@ -52,32 +79,6 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
       }
       default:
         throw new TypeError(`Unexpected datatype: ${datatype}`)
-    }
-  }
-
-  public async remove(uri: string): Promise<void> {
-    const filepath: string = this.pathResolver.resolveFromUri(uri)
-    await unlink(filepath)
-  }
-
-  public async load(uri: string, fileItem: ITargetItemWithoutData): Promise<IFileData> {
-    const filepath: string = this.pathResolver.resolveFromUri(uri)
-    switch (fileItem.datatype) {
-      case AssetDataTypeEnum.BINARY: {
-        const content: IBinaryFileData = await readFile(filepath)
-        return content
-      }
-      case AssetDataTypeEnum.TEXT: {
-        const content: ITextFileData = await readFile(filepath, fileItem.encoding)
-        return content
-      }
-      case AssetDataTypeEnum.JSON: {
-        const content: string = await readFile(filepath, 'utf8')
-        const data: IJsonFileData = JSON.parse(content)
-        return data
-      }
-      default:
-        throw new TypeError(`Unexpected datatype: ${(fileItem as any).datatype}`)
     }
   }
 }

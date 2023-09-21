@@ -77,7 +77,7 @@ export class AssetTargetStorage implements IAssetTargetStorage {
     const fileItem: ITargetItemWithoutData | undefined = this._fileItemMap.get(uri)
     if (fileItem === undefined) return undefined
 
-    const data: IFileData = this._dataStorage.load(uri, fileItem)
+    const data: IFileData | undefined = await this._dataStorage.load(uri, fileItem)
     const item: ITargetItem = { ...fileItem, data: data as any }
     return item
   }

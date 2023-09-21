@@ -163,12 +163,12 @@ export const isMarkdownAssetParseOutput = (
 
 export type IMarkdownAssetPolishInput = IAssetPluginPolishInput<IMarkdownPolishedData>
 export const isMarkdownAssetPolishInput = (
-  input: Readonly<IAssetPluginPolishInput> | null,
-): input is Readonly<IMarkdownAssetPolishInput> => input?.sourcetype === MarkdownAssetType
+  input: Readonly<IAssetPluginPolishInput>,
+): input is Readonly<IMarkdownAssetPolishInput> => input.sourcetype === MarkdownAssetType
 
 export type IMarkdownAssetPolishOutput = IAssetPluginPolishOutput<IMarkdownPolishedData>
 export const isMarkdownPolishOutput = (
-  input: Readonly<IAssetPluginPolishInput> | null,
+  input: Readonly<IAssetPluginPolishInput>,
   embryo: Readonly<IAssetPluginPolishOutput> | null,
 ): embryo is Readonly<IMarkdownAssetPolishOutput> =>
-  input?.sourcetype === MarkdownAssetType && embryo !== null
+  input.sourcetype === MarkdownAssetType && embryo !== null

@@ -13,9 +13,9 @@ export type IParametersOfOnFileRemoved = Parameters<IAssetTargetStorageMonitor['
 
 export interface IAssetTargetDataStorage {
   readonly pathResolver: IAssetPathResolver
-  save(rawItem: IRawTargetItem): Promise<void>
-  remove(uri: string): Promise<void>
   load(uri: string, fileItem: ITargetItemWithoutData): Promise<IFileData | undefined>
+  remove(uri: string): Promise<void>
+  save(rawItem: IRawTargetItem): Promise<void>
 }
 
 export interface IAssetTargetStorage {

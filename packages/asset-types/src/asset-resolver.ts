@@ -15,7 +15,6 @@ export type IAssetResolverPlugin = IAssetPlugin &
 
 export interface IAssetResolvedData {
   asset: IAsset
-  sourcetype: string
   datatype: AssetDataTypeEnum
   data: unknown
   encoding: BufferEncoding | undefined
@@ -33,4 +32,10 @@ export interface IAssetResolver {
    * @param api
    */
   resolve(srcPaths: string[], api: IAssetResolverApi): Promise<IAssetResolvedData[]>
+  /**
+   * Locate asset by srcPath.
+   * @param srcPath
+   * @param api
+   */
+  locate(srcPath: string, api: IAssetResolverApi): Promise<IAsset | null>
 }
