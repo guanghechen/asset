@@ -1,3 +1,4 @@
+import { resolveUriFromTargetItem } from '@guanghechen/asset-storage'
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAsset,
@@ -9,10 +10,7 @@ import type {
   IAssetTaskApi,
   IBinaryFileData,
   IJsonFileData,
-  IRawBinaryTargetItem,
-  IRawJsonTargetItem,
-  IRawTextTargetItem,
-  ITextFileData,
+  ITargetItem,
 } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/types'
 
@@ -51,16 +49,39 @@ export class AssetTaskApi implements IAssetTaskApi {
     const tasks: Array<Promise<void>> = []
 
     for (const result of results) {
-      const { asset, datatype, data, encoding } = result
-      const task: Promise<void> = this._saveAsset({
-        uri: asset.uri,
-        sourcetype: asset.sourcetype,
-        mimetype: asset.mimetype,
-        datatype,
-        data,
-        encoding,
-      })
-      tasks.push(task)
+      const { asset, data, datatype } = result
+      switch (datatype) {
+        case AssetDataTypeEnum.BINARY: {
+          const item: ITargetItem = {
+            datatype: AssetDataTypeEnum.BINARY,
+            asset,
+            data: data as IBinaryFileData,
+          }
+          tasks.push(this._saveAsset(item))
+          break
+        }
+        case AssetDataTypeEnum.TEXT: {
+          const item: ITargetItem = {
+            datatype: AssetDataTypeEnum.TEXT,
+            asset,
+            data: data as string,
+            encoding: result.encoding as BufferEncoding,
+          }
+          tasks.push(this._saveAsset(item))
+          break
+        }
+        case AssetDataTypeEnum.JSON: {
+          const item: ITargetItem = {
+            datatype: AssetDataTypeEnum.JSON,
+            asset,
+            data: data as IJsonFileData,
+          }
+          tasks.push(this._saveAsset(item))
+          break
+        }
+        default:
+          throw new TypeError(`[AssetTaskApi.create] Unexpected datatype: ${datatype}`)
+      }
     }
     if (tasks.length > 0) tasks.push(this._saveAssetDataMap())
 
@@ -90,77 +111,43 @@ export class AssetTaskApi implements IAssetTaskApi {
     await this.create(srcPaths)
   }
 
-  protected async _saveAsset(params: {
-    uri: string
-    sourcetype: string
-    mimetype: string
-    datatype: AssetDataTypeEnum
-    data: unknown
-    encoding: BufferEncoding | undefined
-  }): Promise<void> {
-    if (params.data === null) return
+  protected async _saveAsset(item: ITargetItem): Promise<void> {
+    if (item.data === null) return
 
-    const { uri, sourcetype, mimetype, datatype, data, encoding } = params
+    const uri: string = resolveUriFromTargetItem(item)
     this._reporter.verbose('[AssetTasApi._saveAsset] uri: {}', uri)
 
-    const targetStorage: IAssetTargetStorage = this._targetStorage
+    // validation
+    const { datatype } = item
     switch (datatype) {
-      case AssetDataTypeEnum.BINARY: {
-        const rawItem: IRawBinaryTargetItem = {
-          uri,
-          sourcetype,
-          mimetype,
-          datatype,
-          data: data as IBinaryFileData,
-        }
-        await targetStorage.writeFile(rawItem)
+      case AssetDataTypeEnum.BINARY:
+      case AssetDataTypeEnum.JSON:
+      case AssetDataTypeEnum.ASSET_MAP:
         break
-      }
-      case AssetDataTypeEnum.JSON: {
-        const rawItem: IRawJsonTargetItem = {
-          uri,
-          sourcetype,
-          datatype,
-          mimetype,
-          data: data as IJsonFileData,
-        }
-        await targetStorage.writeFile(rawItem)
-        break
-      }
       case AssetDataTypeEnum.TEXT: {
-        if (!encoding) {
+        if (!item.encoding) {
           this._reporter.error(
             `[AssetTasApi._saveAsset] encoding is required for text type file`,
-            params,
+            item,
           )
           throw new Error('[AssetTasApi] encoding is required for text type file')
         }
-
-        const rawItem: IRawTextTargetItem = {
-          uri,
-          sourcetype,
-          mimetype,
-          datatype,
-          data: data as ITextFileData,
-          encoding,
-        }
-        await targetStorage.writeFile(rawItem)
         break
       }
       default:
         throw new Error(`[AssetTaskApi._saveAsset] Unexpected datatype: ${datatype}`)
     }
+
+    // save
+    await this._targetStorage.writeFile(item)
   }
 
   protected async _saveAssetDataMap(): Promise<void> {
     const data: IAssetDataMap = await this._resolverApi.dumpAssetDataMap()
     await this._saveAsset({
+      datatype: AssetDataTypeEnum.ASSET_MAP,
       uri: this._dataMapUri,
-      sourcetype: 'asset-map',
-      mimetype: 'application/json',
-      datatype: AssetDataTypeEnum.JSON,
       data,
-      encoding: undefined,
     })
   }
 }

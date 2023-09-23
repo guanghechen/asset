@@ -11,6 +11,10 @@ export enum AssetDataTypeEnum {
    * JSON Object.
    */
   JSON = 'json',
+  /**
+   * Asset map
+   */
+  ASSET_MAP = 'asset-map',
 }
 
 export enum AssetChangeEventEnum {

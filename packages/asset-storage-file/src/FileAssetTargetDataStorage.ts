@@ -1,3 +1,4 @@
+import { resolveUriFromTargetItem } from '@guanghechen/asset-storage'
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAssetPathResolver,
@@ -5,7 +6,7 @@ import type {
   IBinaryFileData,
   IFileData,
   IJsonFileData,
-  IRawTargetItem,
+  ITargetItem,
   ITargetItemWithoutData,
   ITextFileData,
 } from '@guanghechen/asset-types'
@@ -29,18 +30,23 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
   }
 
   public async load(uri: string, fileItem: ITargetItemWithoutData): Promise<IFileData> {
-    const { datatype, encoding } = fileItem
     const filepath: string = this.pathResolver.resolveFromUri(uri)
+    const { datatype } = fileItem
     switch (datatype) {
       case AssetDataTypeEnum.BINARY: {
         const content: IBinaryFileData = await readFile(filepath)
         return content
       }
       case AssetDataTypeEnum.TEXT: {
-        const content: ITextFileData = await readFile(filepath, encoding)
+        const content: ITextFileData = await readFile(filepath, fileItem.encoding)
         return content
       }
       case AssetDataTypeEnum.JSON: {
+        const content: string = await readFile(filepath, 'utf8')
+        const data: IJsonFileData = JSON.parse(content)
+        return data
+      }
+      case AssetDataTypeEnum.ASSET_MAP: {
         const content: string = await readFile(filepath, 'utf8')
         const data: IJsonFileData = JSON.parse(content)
         return data
@@ -55,19 +61,20 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
     await unlink(filepath)
   }
 
-  public async save(rawItem: IRawTargetItem): Promise<void> {
-    const { datatype, uri, data } = rawItem
+  public async save(item: ITargetItem): Promise<void> {
+    const uri: string = resolveUriFromTargetItem(item)
     const filepath: string = this.pathResolver.resolveFromUri(uri)
     const dirpath: string = path.dirname(filepath)
     if (!existsSync(dirpath)) mkdirSync(dirpath, { recursive: true })
 
+    const { datatype, data } = item
     switch (datatype) {
       case AssetDataTypeEnum.BINARY: {
         await writeFile(filepath, data)
         break
       }
       case AssetDataTypeEnum.TEXT: {
-        await writeFile(filepath, data, rawItem.encoding)
+        await writeFile(filepath, data, item.encoding)
         break
       }
       case AssetDataTypeEnum.JSON: {
@@ -77,8 +84,15 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
         await writeFile(filepath, content, 'utf8')
         break
       }
+      case AssetDataTypeEnum.ASSET_MAP: {
+        const content: string = this._prettier
+          ? JSON.stringify(data, null, 2)
+          : JSON.stringify(data)
+        await writeFile(filepath, content, 'utf8')
+        break
+      }
       default:
-        throw new TypeError(`Unexpected datatype: ${datatype}`)
+        throw new TypeError(`[FileAssetTargetDataStorage.save] Unexpected datatype: ${datatype}`)
     }
   }
 }

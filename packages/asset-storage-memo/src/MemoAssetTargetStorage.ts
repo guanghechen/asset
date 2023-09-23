@@ -1,8 +1,9 @@
+import { resolveUriFromTargetItem } from '@guanghechen/asset-storage'
 import type {
   IAssetPathResolver,
   IAssetTargetDataStorage,
   IFileData,
-  IRawTargetItem,
+  ITargetItem,
 } from '@guanghechen/asset-types'
 
 interface IProps {
@@ -26,7 +27,8 @@ export class MemoAssetTargetDataStore implements IAssetTargetDataStorage {
     this._dataCache.delete(uri)
   }
 
-  public async save(rawItem: IRawTargetItem): Promise<void> {
-    this._dataCache.set(rawItem.uri, rawItem.data)
+  public async save(item: ITargetItem): Promise<void> {
+    const uri: string = resolveUriFromTargetItem(item)
+    this._dataCache.set(uri, item.data)
   }
 }

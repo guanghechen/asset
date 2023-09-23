@@ -1,2 +1,2 @@
 export * from './FileAssetSourceStorage'
-export * from './FileAssetTargetStorage'
+export * from './FileAssetTargetDataStorage'

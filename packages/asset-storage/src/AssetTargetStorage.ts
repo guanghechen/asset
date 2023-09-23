@@ -1,19 +1,21 @@
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
-  IAssetStat,
+  IAsset,
+  IAssetMapTargetItem,
+  IAssetMapTargetItemWithoutData,
   IAssetTargetDataStorage,
   IAssetTargetStorage,
   IAssetTargetStorageMonitor,
   IFileData,
   IParametersOfOnFileRemoved,
   IParametersOfOnFileWritten,
-  IRawTargetItem,
   ITargetItem,
   ITargetItemWithoutData,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import { Monitor } from '@guanghechen/monitor'
 import type { IMonitor, IMonitorUnsubscribe } from '@guanghechen/monitor'
+import { resolveUriFromTargetItem } from './util'
 
 const noop = (..._args: any[]): void => {}
 
@@ -82,61 +84,43 @@ export class AssetTargetStorage implements IAssetTargetStorage {
     return item
   }
 
-  public async writeFile(rawItem: IRawTargetItem): Promise<void> {
-    const title: string = `[${this.constructor.name}.writeFile]`
-    const { sourcetype, mimetype, datatype, uri, data } = rawItem
+  public async writeFile(rawItem: ITargetItem): Promise<void> {
+    const __title__: string = `[${this.constructor.name}.writeFile]`
+    const uri: string = resolveUriFromTargetItem(rawItem)
     const fileItem = this._fileItemMap.get(uri)
 
-    invariant(!fileItem || fileItem.datatype === datatype, `${title} invalid uri(${uri})`)
+    invariant(
+      !fileItem || fileItem.datatype === rawItem.datatype,
+      `${__title__} invalid uri(${uri})`,
+    )
 
-    const mtime: Date = new Date()
-    const birthtime: Date = fileItem?.stat?.birthtime ?? mtime
-    const stat: IAssetStat = { birthtime, mtime }
-
-    let nextAssetItem: ITargetItemWithoutData
-    let item: ITargetItem
+    const { datatype } = rawItem
     switch (datatype) {
       case AssetDataTypeEnum.BINARY:
-        nextAssetItem = {
-          datatype,
-          mimetype,
-          sourcetype,
-          uri,
-          encoding: undefined,
-          stat,
-        }
-        item = { ...nextAssetItem, data }
-        break
       case AssetDataTypeEnum.TEXT:
-        invariant(!!rawItem.encoding, `${title} missing encoding for text file: ${uri}`)
-        nextAssetItem = {
-          datatype,
-          mimetype,
-          sourcetype,
-          uri,
-          encoding: rawItem.encoding,
-          stat,
-        }
-        item = { ...nextAssetItem, data }
+      case AssetDataTypeEnum.JSON: {
+        const { data, ...rawFileItem } = rawItem
+        const asset: IAsset = { ...rawItem.asset }
+        const itemWithoutData: ITargetItemWithoutData = { ...rawFileItem, asset }
+        const item: ITargetItem = { ...itemWithoutData, data } as unknown as ITargetItem
+        await this._dataStorage.save(item)
+        this._fileItemMap.set(uri, itemWithoutData)
+        this._monitorFileWritten.notify(item)
         break
-      case AssetDataTypeEnum.JSON:
-        nextAssetItem = {
-          datatype,
-          mimetype,
-          sourcetype,
-          uri,
-          encoding: undefined,
-          stat,
+      }
+      case AssetDataTypeEnum.ASSET_MAP: {
+        const itemWithoutData: IAssetMapTargetItemWithoutData = {
+          datatype: AssetDataTypeEnum.ASSET_MAP,
+          uri: rawItem.uri,
         }
-        item = { ...nextAssetItem, data }
+        const item: IAssetMapTargetItem = { ...itemWithoutData, data: rawItem.data }
+        await this._dataStorage.save(item)
+        this._fileItemMap.set(uri, itemWithoutData)
+        this._monitorFileWritten.notify(item)
         break
+      }
       default:
-        throw new TypeError(`${title} Unexpected datatype: ${datatype}`)
+        throw new TypeError(`${__title__} invalid datatype(${datatype})`)
     }
-    await this._dataStorage.save(rawItem)
-    this._fileItemMap.set(uri, nextAssetItem)
-
-    // Notify
-    this._monitorFileWritten.notify(item)
   }
 }
