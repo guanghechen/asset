@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.36](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.34...@guanghechen/asset-types@1.0.0-alpha.36) (2023-09-25)
+
+
+### Performance Improvements
+
+* 🔧 bump to trigger force publish ([32e2b43](https://github.com/guanghechen/asset/commit/32e2b43aff377e741120933d1949f693b8cdbbec))
+
+
+
+
+
 # [1.0.0-alpha.34](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.33...@guanghechen/asset-types@1.0.0-alpha.34) (2023-09-25)
 
 
