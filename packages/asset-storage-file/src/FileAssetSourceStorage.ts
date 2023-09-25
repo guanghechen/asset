@@ -1,3 +1,4 @@
+import { AssetSourceStorage } from '@guanghechen/asset-storage'
 import type {
   IAssetCollectOptions,
   IAssetPathResolver,
@@ -6,7 +7,8 @@ import type {
   IAssetWatchOptions,
   IAssetWatcher,
   IBinaryFileData,
-  IBinarySourceItem,
+  IEncodingDetector,
+  IRawSourceItem,
   ISourceItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
@@ -17,20 +19,21 @@ import { readFile, stat, unlink, writeFile } from 'node:fs/promises'
 
 interface IProps {
   pathResolver: IAssetPathResolver
+  encodingDetector: IEncodingDetector
   watchOptions?: Partial<chokidar.WatchOptions>
 }
 
-export class FileAssetSourceStorage implements IAssetSourceStorage {
-  public readonly pathResolver: IAssetPathResolver
+export class FileAssetSourceStorage extends AssetSourceStorage implements IAssetSourceStorage {
   protected readonly _watchOptions: Partial<chokidar.WatchOptions>
 
   constructor(props: IProps) {
-    const { pathResolver, watchOptions = {} } = props
-    this.pathResolver = pathResolver
+    const { pathResolver, encodingDetector, watchOptions = {} } = props
+
+    super({ pathResolver, encodingDetector })
     this._watchOptions = watchOptions
   }
 
-  public async assertExistedFile(srcPath: string): Promise<void | never> {
+  public override async assertExistedFile(srcPath: string): Promise<void | never> {
     const filepath: string = this.pathResolver.absolute(srcPath)
     invariant(existsSync(filepath), `[assertExistedFile] Cannot find file. (${srcPath})`)
 
@@ -38,7 +41,7 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     invariant(assertion, `[assertExistedFile] Not a file. (${srcPath})`)
   }
 
-  public async collect(
+  public override async collect(
     patterns_: Iterable<string>,
     options: IAssetCollectOptions,
   ): Promise<string[]> {
@@ -58,30 +61,28 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     return filepaths
   }
 
-  public async readFile(srcPath: string): Promise<ISourceItem> {
+  public override async readFile(srcPath: string): Promise<IBinaryFileData> {
     const filepath: string = this.pathResolver.absolute(srcPath)
-    const stat = await this.statFile(filepath)
     const data: IBinaryFileData = await readFile(filepath)
-    const item: IBinarySourceItem = { filepath, stat, data }
-    return item
+    return data
   }
 
-  public async removeFile(srcPath: string): Promise<void> {
+  public override async removeFile(srcPath: string): Promise<void> {
     const filepath: string = this.pathResolver.absolute(srcPath)
     await unlink(filepath)
   }
 
-  public async statFile(srcPath: string): Promise<IAssetStat> {
+  public override async statFile(srcPath: string): Promise<IAssetStat> {
     const filepath: string = this.pathResolver.absolute(srcPath)
     return await stat(filepath)
   }
 
-  public async updateFile(item: ISourceItem): Promise<void> {
-    const filepath: string = this.pathResolver.absolute(item.filepath)
-    await writeFile(filepath, item.data)
+  public override async updateFile(srcPath: string, data: IBinaryFileData): Promise<void> {
+    const filepath: string = this.pathResolver.absolute(srcPath)
+    await writeFile(filepath, data)
   }
 
-  public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
+  public override watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
     const { onAdd, onChange, onRemove, shouldIgnore = () => false } = options
     const { pathResolver, _watchOptions } = this
 

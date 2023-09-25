@@ -1,5 +1,5 @@
-import type { IAssetStat } from './asset-file'
-import type { ISourceItem } from './asset-file-source'
+import type { IAssetStat, IBinaryFileData } from './asset-file'
+import type { IRawSourceItem, ISourceItem } from './asset-file-source'
 import type { IAssetPathResolver } from './asset-path-resolver'
 import type { IAssetWatcher } from './common'
 
@@ -29,16 +29,17 @@ export interface IMemoAssetSourceDataStorage {
   set(srcPath: string, item: ISourceItem): void
   delete(srcPath: string): void
   values(): Iterable<ISourceItem>
-  loadOnDemand(srcPath: string): Promise<ISourceItem | undefined>
+  loadOnDemand(srcPath: string): Promise<IRawSourceItem | undefined>
 }
 
 export interface IAssetSourceStorage {
   readonly pathResolver: IAssetPathResolver
   assertExistedFile(srcPath: string): Promise<void | never>
   collect(patterns: ReadonlyArray<string>, options: IAssetCollectOptions): Promise<string[]>
-  readFile(srcPath: string): Promise<ISourceItem>
+  detectEncoding(srcPath: string): Promise<BufferEncoding | undefined>
+  readFile(srcPath: string): Promise<IBinaryFileData>
   removeFile(srcPath: string): Promise<void>
   statFile(srcPath: string): Promise<IAssetStat>
-  updateFile(item: ISourceItem): Promise<void>
+  updateFile(srcPath: string, data: IBinaryFileData): Promise<void>
   watch(patterns: ReadonlyArray<string>, options: IAssetWatchOptions): IAssetWatcher
 }

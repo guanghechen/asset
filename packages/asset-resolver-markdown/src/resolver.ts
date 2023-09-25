@@ -40,11 +40,6 @@ interface IProps {
    */
   parser: IParser
   /**
-   * Encoding of markdown files.
-   * @default 'utf8'
-   */
-  encoding?: BufferEncoding
-  /**
    * Check if the given file is in markdown format.
    * @default filename => /\.md$/.test(filename)
    */
@@ -62,7 +57,6 @@ interface IProps {
 export class AssetResolverMarkdown implements IAssetResolverPlugin {
   public readonly displayName: string = '@guanghechen/asset-resolver-markdown'
   protected readonly ctx: IMarkdownResolverPluginContext
-  protected readonly encoding: BufferEncoding
   protected readonly frontmatterRegex: RegExp
   private readonly _locatePlugins: IAssetLocatePlugin[]
   private readonly _parsePlugins: IAssetParsePlugin[]
@@ -70,8 +64,6 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
 
   constructor(props: IProps) {
     const parser: IParser = props.parser
-    const encoding: BufferEncoding = props.encoding ?? 'utf8'
-
     const getPresetDefinitions: IMarkdownResolverPluginContext['getPresetDefinitions'] =
       props.getPresetDefinitions ?? (() => undefined)
     const getPresetFootnoteDefinitions: IMarkdownResolverPluginContext['getPresetFootnoteDefinitions'] =
@@ -93,7 +85,6 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     }
 
     this.ctx = ctx
-    this.encoding = encoding
     this.frontmatterRegex = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
     this._locatePlugins = []
     this._parsePlugins = []
@@ -119,7 +110,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     if (this.ctx.resolvable(input.filename)) {
       const rawSrcContent: IBinaryFileData | null = await api.loadContent(input.filename)
       if (rawSrcContent) {
-        const rawContent = rawSrcContent.toString(this.encoding)
+        const rawContent = rawSrcContent.toString(input.encoding)
         const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
         const frontmatter: Record<string, any> = match[1]
           ? (yaml.load(match[1]) as Record<string, any>)
@@ -180,7 +171,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     if (input.sourcetype === MarkdownAssetType) {
       const rawSrcContent: IBinaryFileData | null = await api.loadContent(input.filename)
       if (rawSrcContent) {
-        const rawContent = rawSrcContent.toString(this.encoding)
+        const rawContent = rawSrcContent.toString(input.encoding)
         const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
         const frontmatter: Record<string, any> = match[1]
           ? (yaml.load(match[1]) as Record<string, any>)
@@ -231,7 +222,6 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
       const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {
         datatype: AssetDataTypeEnum.JSON,
         data: { title, ast, frontmatter },
-        encoding: 'utf8',
       }
 
       const reducer: IAssetPluginPolishNext =

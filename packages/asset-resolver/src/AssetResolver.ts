@@ -1,6 +1,7 @@
 import type {
   IAsset,
   IAssetLocatePlugin,
+  IAssetLocatedData,
   IAssetMeta,
   IAssetParsePlugin,
   IAssetPluginLocateApi,
@@ -27,6 +28,8 @@ import path from 'node:path'
 interface ILocateStageData {
   asset: IAsset
   srcPath: string
+  filename: string
+  encoding: BufferEncoding | undefined
 }
 
 interface IParseStageData {
@@ -34,6 +37,7 @@ interface IParseStageData {
   srcPath: string
   filename: string
   data: unknown
+  encoding: BufferEncoding | undefined
 }
 
 type IPolishStageData = IAssetResolvedData
@@ -76,8 +80,10 @@ export class AssetResolver implements IAssetResolver {
         inputs.map(srcPath =>
           this.locate(srcPath, api)
             .then(result => {
-              if (result !== null) outputs.push({ srcPath, asset: result })
-              else {
+              if (result !== null) {
+                const filename: string = path.basename(srcPath)
+                outputs.push({ srcPath, asset: result, filename, encoding: result.encoding })
+              } else {
                 reporter.warn(
                   '[AssetResolver.resolve] locate stage got null, srcPath: {}.',
                   srcPath,
@@ -173,9 +179,12 @@ export class AssetResolver implements IAssetResolver {
     return polishOutputs
   }
 
-  public async locate(srcPath: string, api: IAssetResolverApi): Promise<IAsset | null> {
+  public async locate(srcPath: string, api: IAssetResolverApi): Promise<IAssetLocatedData | null> {
     const asset: IAsset | undefined = await api.locateAsset(srcPath)
-    if (asset !== undefined) return asset
+    if (asset !== undefined) {
+      const encoding: BufferEncoding | undefined = await api.detectEncoding(srcPath)
+      return { ...asset, encoding }
+    }
 
     const input: IAssetPluginLocateInput | null = await api.initAsset(srcPath)
     if (input === null) return null
@@ -229,19 +238,20 @@ export class AssetResolver implements IAssetResolver {
       tags,
     }
     await api.insertAsset(resolvedAsset)
-    return resolvedAsset
+    return { ...resolvedAsset, encoding: input.encoding }
   }
 
   protected async _parse(
     locateStageData: ILocateStageData,
     api: IAssetResolverApi,
   ): Promise<IParseStageData | null> {
-    const { asset, srcPath } = locateStageData
-    const filename: string = path.basename(srcPath)
+    const { asset, srcPath, filename, encoding } = locateStageData
     const input: IAssetPluginParseInput = {
       sourcetype: asset.sourcetype,
       title: asset.title,
       filename,
+      extname: asset.extname,
+      encoding,
     }
 
     const curDir: string = path.dirname(srcPath)
@@ -258,7 +268,13 @@ export class AssetResolver implements IAssetResolver {
     )
 
     const result: IAssetPluginParseOutput | null = await reducer(null)
-    return { asset, srcPath: srcPath, filename, data: result?.data ?? null }
+    return {
+      asset,
+      srcPath,
+      filename,
+      data: result?.data ?? null,
+      encoding: input.encoding,
+    }
   }
 
   protected async _polish(
@@ -301,7 +317,7 @@ export class AssetResolver implements IAssetResolver {
       asset,
       datatype: result.datatype,
       data: result.data,
-      encoding: result.encoding,
+      encoding: parseStageData.encoding,
     }
   }
 }

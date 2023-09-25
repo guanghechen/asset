@@ -1,3 +1,4 @@
+import { AssetSourceStorage } from '@guanghechen/asset-storage'
 import type {
   IAssetCollectOptions,
   IAssetFileChangedCallback,
@@ -6,6 +7,8 @@ import type {
   IAssetStat,
   IAssetWatchOptions,
   IAssetWatcher,
+  IBinaryFileData,
+  IEncodingDetector,
   IMemoAssetSourceDataStorage,
   ISourceItem,
 } from '@guanghechen/asset-types'
@@ -18,41 +21,53 @@ type IParametersOfOnAdd = [filepath: string, pathResolver: IAssetPathResolver]
 type IParametersOfOnChange = [filepath: string, pathResolver: IAssetPathResolver]
 type IParametersOfOnRemove = [filepath: string, pathResolver: IAssetPathResolver]
 
-export interface IMemoAssetSourceStorageProps {
+interface IProps {
   dataStore: IMemoAssetSourceDataStorage
+  encodingDetector: IEncodingDetector
 }
 
-export class MemoAssetSourceStorage implements IAssetSourceStorage {
-  public readonly pathResolver: IAssetPathResolver
+export class MemoAssetSourceStorage extends AssetSourceStorage implements IAssetSourceStorage {
   protected readonly _dataStore: IMemoAssetSourceDataStorage
   protected readonly _monitorAdd: IMonitor<IParametersOfOnAdd>
   protected readonly _monitorChange: IMonitor<IParametersOfOnChange>
   protected readonly _monitorRemove: IMonitor<IParametersOfOnRemove>
 
-  constructor(dataStore: IMemoAssetSourceDataStorage) {
-    this.pathResolver = dataStore.pathResolver
+  constructor(props: IProps) {
+    const { dataStore, encodingDetector } = props
+
+    super({ pathResolver: dataStore.pathResolver, encodingDetector })
     this._dataStore = dataStore
     this._monitorAdd = new Monitor<IParametersOfOnAdd>('onAdd')
     this._monitorChange = new Monitor<IParametersOfOnChange>('onChange')
     this._monitorRemove = new Monitor<IParametersOfOnRemove>('onRemove')
   }
 
-  public async assertExistedFile(srcPath: string): Promise<void> {
+  public override async assertExistedFile(srcPath: string): Promise<void> {
     const filepath: string = this._dataStore.pathResolver.relative(srcPath)
     const existed: boolean = this._dataStore.has(filepath)
     if (existed) return
 
     const loadResult = await this._dataStore.loadOnDemand(filepath)
     if (loadResult !== undefined) {
-      const item: ISourceItem = { filepath, stat: loadResult.stat, data: loadResult.data }
-      await this.updateFile(item)
+      const encoding: BufferEncoding | undefined = await this._encodingDetector.detect(
+        srcPath,
+        async () => loadResult.data,
+      )
+      const item: ISourceItem = {
+        filepath,
+        stat: loadResult.stat,
+        data: loadResult.data,
+        encoding,
+      }
+      this._dataStore.set(filepath, item)
+      this._monitorAdd.notify(filepath, this.pathResolver)
       return
     }
 
     throw new Error(`[${this.constructor.name}.assertExistedFile] invalid filepath: ${filepath}`)
   }
 
-  public async collect(
+  public override async collect(
     patterns_: Iterable<string>,
     options: IAssetCollectOptions,
   ): Promise<string[]> {
@@ -68,16 +83,21 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     return filepaths
   }
 
-  public async readFile(srcPath: string): Promise<ISourceItem> {
+  public override async readFile(srcPath: string): Promise<IBinaryFileData> {
     const filepath: string = this.pathResolver.relative(srcPath)
     let item: ISourceItem | undefined = this._dataStore.get(filepath)
     if (item === undefined) {
       const loadResult = await this._dataStore.loadOnDemand(filepath)
       if (loadResult !== undefined) {
+        const encoding: BufferEncoding | undefined = await this._encodingDetector.detect(
+          srcPath,
+          async () => loadResult.data,
+        )
         item = {
           filepath,
           stat: { birthtime: loadResult.stat.birthtime, mtime: loadResult.stat.mtime },
           data: loadResult.data,
+          encoding,
         }
         this._dataStore.set(filepath, item)
         this._monitorAdd.notify(filepath, this.pathResolver)
@@ -85,10 +105,10 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     }
 
     invariant(!!item, `[${this.constructor.name}.readFile] invalid filepath: ${filepath}`)
-    return item
+    return item.data
   }
 
-  public async removeFile(srcPath: string): Promise<void> {
+  public override async removeFile(srcPath: string): Promise<void> {
     const filepath: string = this.pathResolver.relative(srcPath)
     const item: ISourceItem | undefined = this._dataStore.get(filepath)
     invariant(!!item, `[${this.constructor.name}.removeFile] invalid filepath: ${filepath}`)
@@ -96,23 +116,28 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     this._monitorRemove.notify(filepath, this.pathResolver)
   }
 
-  public async statFile(srcPath: string): Promise<IAssetStat> {
+  public override async statFile(srcPath: string): Promise<IAssetStat> {
     const filepath: string = this.pathResolver.relative(srcPath)
     const item: ISourceItem | undefined = this._dataStore.get(filepath)
     invariant(!!item, `[${this.constructor.name}.statFile] invalid filepath: ${filepath}`)
     return item.stat
   }
 
-  public async updateFile(item: ISourceItem): Promise<void> {
-    const filepath: string = this.pathResolver.relative(item.filepath)
+  public override async updateFile(srcPath: string, data: IBinaryFileData): Promise<void> {
+    const filepath: string = this.pathResolver.relative(srcPath)
     const existItem: ISourceItem | undefined = this._dataStore.get(filepath)
+    const encoding: BufferEncoding | undefined = await this._encodingDetector.detect(
+      srcPath,
+      async () => data,
+    )
+
+    const mtime: Date = new Date()
+    const birthtime = existItem?.stat.birthtime ?? mtime
     const resolvedItem: ISourceItem = {
       filepath,
-      stat: {
-        birthtime: existItem?.stat?.birthtime ?? item.stat.birthtime,
-        mtime: item.stat.mtime,
-      },
-      data: item.data,
+      stat: { birthtime, mtime },
+      data,
+      encoding,
     }
 
     if (existItem) {
@@ -125,7 +150,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     }
   }
 
-  public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
+  public override watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
     const { onAdd, onChange, onRemove, shouldIgnore = () => false } = options
     const pathResolver: IAssetPathResolver = this.pathResolver
     const wrapper = (fn: IAssetFileChangedCallback): ((filepath: string) => void) => {

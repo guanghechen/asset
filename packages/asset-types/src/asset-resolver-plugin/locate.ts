@@ -49,10 +49,6 @@ export interface IAssetPluginLocateInput {
    */
   src: string
   /**
-   * File extension (without dot).
-   */
-  extname: string | undefined
-  /**
    * The created date of the asset (ISOString).
    */
   createdAt: string
@@ -68,6 +64,14 @@ export interface IAssetPluginLocateInput {
    * The source file name which can be used to locate this asset by `api.loadContent(filename)`.
    */
   filename: string
+  /**
+   * File extension (without dot).
+   */
+  extname: string | undefined
+  /**
+   * Source file encoding.
+   */
+  encoding: BufferEncoding | undefined
 }
 
 export interface IAssetPluginLocateOutput {

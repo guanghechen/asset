@@ -6,6 +6,11 @@ import type { IAssetUriResolver } from './asset-uri-resolver'
 
 export interface IAssetResolverApi extends IAssetUriResolver {
   /**
+   * Detect file encoding.
+   * @param srcPath
+   */
+  detectEncoding(srcPath: string): Promise<BufferEncoding | undefined>
+  /**
    * Dump asset data map.
    */
   dumpAssetDataMap(): Promise<IAssetDataMap>
@@ -42,9 +47,4 @@ export interface IAssetResolverApi extends IAssetUriResolver {
    * @param srcPath
    */
   removeAsset(srcPath: string): Promise<void>
-  /**
-   * Resolve asset guid.
-   * @param srcPath
-   */
-  resolveGUID(srcPath: string): Promise<string>
 }

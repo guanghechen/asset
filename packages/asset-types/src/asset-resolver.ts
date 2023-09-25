@@ -13,6 +13,13 @@ export type IAssetResolverPlugin = IAssetPlugin &
   Partial<IAssetParsePlugin> &
   Partial<IAssetPolishPlugin>
 
+export interface IAssetLocatedData extends IAsset {
+  /**
+   * Source file encoding.
+   */
+  encoding: BufferEncoding | undefined
+}
+
 export interface IAssetResolvedData {
   asset: IAsset
   datatype: AssetDataTypeEnum
@@ -37,5 +44,5 @@ export interface IAssetResolver {
    * @param srcPath
    * @param api
    */
-  locate(srcPath: string, api: IAssetResolverApi): Promise<IAsset | null>
+  locate(srcPath: string, api: IAssetResolverApi): Promise<IAssetLocatedData | null>
 }

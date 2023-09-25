@@ -89,6 +89,7 @@ export class AssetTaskApi implements IAssetTaskApi {
   }
 
   public async remove(srcPaths: string[]): Promise<void> {
+    const reporter: IReporter = this._reporter
     const resolverApi: IAssetResolverApi = this._resolverApi
     const tasks: Array<Promise<void>> = []
 
@@ -96,7 +97,7 @@ export class AssetTaskApi implements IAssetTaskApi {
       const asset: IAsset | undefined = await resolverApi.locateAsset(srcPath)
       tasks.push(resolverApi.removeAsset(srcPath))
       if (asset) {
-        this._reporter.verbose('[AssetTasApi.remove] uri({})', asset.uri)
+        reporter.verbose('[AssetTasApi.remove] uri({})', asset.uri)
         tasks.push(this._targetStorage.removeFile(asset.uri))
       }
     }
@@ -114,8 +115,9 @@ export class AssetTaskApi implements IAssetTaskApi {
   protected async _saveAsset(item: ITargetItem): Promise<void> {
     if (item.data === null) return
 
+    const reporter: IReporter = this._reporter
     const uri: string = resolveUriFromTargetItem(item)
-    this._reporter.verbose('[AssetTasApi._saveAsset] uri: {}', uri)
+    reporter.verbose('[AssetTasApi._saveAsset] uri: {}', uri)
 
     // validation
     const { datatype } = item
@@ -126,11 +128,8 @@ export class AssetTaskApi implements IAssetTaskApi {
         break
       case AssetDataTypeEnum.TEXT: {
         if (!item.encoding) {
-          this._reporter.error(
-            `[AssetTasApi._saveAsset] encoding is required for text type file`,
-            item,
-          )
-          throw new Error('[AssetTasApi] encoding is required for text type file')
+          reporter.error('[AssetTasApi._saveAsset] encoding is required for text type file', item)
+          throw new Error('[AssetTasApi._saveAsset] encoding is required for text type file')
         }
         break
       }

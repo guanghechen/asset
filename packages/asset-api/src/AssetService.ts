@@ -71,6 +71,7 @@ export class AssetService implements IAssetService {
 
     if (filepaths_.length <= 0) return
 
+    const reporter: IReporter = this._reporter
     const scheduler: IAssetTaskScheduler = this._scheduler
     const pathResolver: IAssetPathResolver = this._sourceStorage.pathResolver
     const filepaths: string[] = filepaths_.map(filepath => pathResolver.absolute(filepath))
@@ -79,11 +80,13 @@ export class AssetService implements IAssetService {
       filepaths,
     })
 
-    this._reporter.debug('[AssetService.buildByPaths] waiting finish:', pathResolver.rootDir, () =>
-      filepaths.map(filepath => pathResolver.relative(filepath)),
+    reporter.debug(
+      '[AssetService.buildByPaths] waiting finish. rootDir({}), filepaths:',
+      pathResolver.rootDir,
+      () => filepaths.map(filepath => pathResolver.relative(filepath)),
     )
     await scheduler.waitTaskTerminated(code)
-    this._reporter.verbose(`[AssetService.buildByPaths] finished:`, pathResolver.rootDir)
+    reporter.debug('[AssetService.buildByPaths] finished. rootDir({}).', pathResolver.rootDir)
   }
 
   public async buildByPatterns(acceptedPattern: ReadonlyArray<string>): Promise<void> {

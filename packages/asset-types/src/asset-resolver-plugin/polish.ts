@@ -58,8 +58,4 @@ export interface IAssetPluginPolishOutput<D = unknown> {
    * Asset data.
    */
   data: D
-  /**
-   * Which charset should the output data take.
-   */
-  encoding?: BufferEncoding
 }

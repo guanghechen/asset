@@ -26,7 +26,7 @@ export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskSch
             reporter.warn('[AssetTaskScheduler] {}', type, error)
             break
           default:
-            reporter.error('[AssetTaskScheduler] {} unexpected level: ', type, level, error)
+            reporter.error('[AssetTaskScheduler] {} unexpected level {}.', type, level, error)
             break
         }
       },

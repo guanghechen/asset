@@ -10,7 +10,6 @@ import type {
   IAssetSourceStorage,
   IAssetUriResolver,
   IBinaryFileData,
-  ISourceItem,
 } from '@guanghechen/asset-types'
 import { calcFingerprint, normalizeUrlPath } from '@guanghechen/asset-util'
 import path from 'node:path'
@@ -32,12 +31,17 @@ export class AssetResolverApi implements IAssetResolverApi {
   protected readonly _uriResolver: IAssetUriResolver
 
   constructor(props: IAssetResolverApiProps) {
-    const { GUID_NAMESPACE, assetManager, sourceStorage } = props
+    const { GUID_NAMESPACE, assetManager, sourceStorage, uriResolver } = props
 
     this.GUID_NAMESPACE = GUID_NAMESPACE
     this._manager = assetManager
     this._sourceStorage = sourceStorage
-    this._uriResolver = props.uriResolver
+    this._uriResolver = uriResolver
+  }
+
+  public async detectEncoding(srcPath: string): Promise<BufferEncoding | undefined> {
+    const encoding: BufferEncoding | undefined = await this._sourceStorage.detectEncoding(srcPath)
+    return encoding
   }
 
   public async dumpAssetDataMap(): Promise<IAssetDataMap> {
@@ -49,12 +53,12 @@ export class AssetResolverApi implements IAssetResolverApi {
   }
 
   public async locateAsset(srcPath: string): Promise<IAsset | undefined> {
-    const guid: string = await this.resolveGUID(srcPath)
+    const guid: string = await this._resolveGUID(srcPath)
     return this._manager.get(guid)
   }
 
   public async removeAsset(srcPath: string): Promise<void> {
-    const guid: string = await this.resolveGUID(srcPath)
+    const guid: string = await this._resolveGUID(srcPath)
     this._manager.remove(guid)
   }
 
@@ -73,21 +77,21 @@ export class AssetResolverApi implements IAssetResolverApi {
     _sourceStorage.pathResolver.assertSafePath(filepath)
     await _sourceStorage.assertExistedFile(filepath)
 
-    const guid: string = await this.resolveGUID(filepath)
+    const guid: string = await this._resolveGUID(filepath)
     const stat = await _sourceStorage.statFile(filepath)
-    const sourceItem: ISourceItem | undefined = await _sourceStorage.readFile(filepath)
-    const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
+    const content: IBinaryFileData | undefined = await _sourceStorage.readFile(filepath)
     const hash: string = calcFingerprint(content)
-    const filename: string = path.basename(filepath)
     const src: string = normalizeUrlPath(_sourceStorage.pathResolver.relative(filepath))
     const createdAt: string = new Date(stat.birthtime).toISOString()
     const updatedAt: string = new Date(stat.mtime).toISOString()
+    const filename: string = path.basename(filepath)
     const extname: string | undefined = filepath.match(extnameRegex)?.[1]
     const title: string = filename
       .trim()
       .replace(/\s+/, ' ')
       .replace(/\.[^.]+$/, '')
-    return { guid, hash, src, extname, createdAt, updatedAt, title, filename }
+    const encoding: BufferEncoding | undefined = await this._sourceStorage.detectEncoding(filepath)
+    return { guid, hash, src, createdAt, updatedAt, title, filename, extname, encoding }
   }
 
   public resolveRefPath(curDir: string, refPath: string): string | null {
@@ -102,12 +106,11 @@ export class AssetResolverApi implements IAssetResolverApi {
     const filepath: string = this._sourceStorage.pathResolver.absolute(srcPath)
     this._sourceStorage.pathResolver.assertSafePath(filepath)
     await this._sourceStorage.assertExistedFile(filepath)
-    const sourceItem: ISourceItem | undefined = await this._sourceStorage.readFile(filepath)
-    const content: IBinaryFileData | undefined = sourceItem?.data as IBinaryFileData | undefined
+    const content: IBinaryFileData | undefined = await this._sourceStorage.readFile(filepath)
     return content ?? null
   }
 
-  public async resolveGUID(srcPath: string): Promise<string> {
+  protected async _resolveGUID(srcPath: string): Promise<string> {
     const id: string = this._sourceStorage.pathResolver.identify(srcPath)
     const guid: string = uuid(`#path-${id}`, this.GUID_NAMESPACE)
     return guid
