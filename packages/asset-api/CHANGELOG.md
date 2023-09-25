@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.36](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.35...@guanghechen/asset-api@1.0.0-alpha.36) (2023-09-25)
+
+
+### Performance Improvements
+
+* 🎨 lift encoding to AssetSourceStorage level ([899ad9f](https://github.com/guanghechen/asset/commit/899ad9f1fbb1510696592d8782844993f3b46305))
+
+
+
+
+
 # [1.0.0-alpha.35](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.34...@guanghechen/asset-api@1.0.0-alpha.35) (2023-09-23)
 
 

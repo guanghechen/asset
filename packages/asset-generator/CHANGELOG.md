@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.3](https://github.com/guanghechen/asset/compare/@guanghechen/asset-generator@1.0.0-alpha.2...@guanghechen/asset-generator@1.0.0-alpha.3) (2023-09-25)
+
+**Note:** Version bump only for package @guanghechen/asset-generator
+
+
+
+
+
 # [1.0.0-alpha.2](https://github.com/guanghechen/asset/compare/@guanghechen/asset-generator@1.0.0-alpha.1...@guanghechen/asset-generator@1.0.0-alpha.2) (2023-09-23)
 
 **Note:** Version bump only for package @guanghechen/asset-generator

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.17](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.16...@guanghechen/asset-resolver@1.0.0-alpha.17) (2023-09-25)
+
+
+### Performance Improvements
+
+* 🎨 lift encoding to AssetSourceStorage level ([899ad9f](https://github.com/guanghechen/asset/commit/899ad9f1fbb1510696592d8782844993f3b46305))
+
+
+
+
+
 # [1.0.0-alpha.16](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.15...@guanghechen/asset-resolver@1.0.0-alpha.16) (2023-09-23)
 
 **Note:** Version bump only for package @guanghechen/asset-resolver
