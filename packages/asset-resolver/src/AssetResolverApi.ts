@@ -11,7 +11,7 @@ import type {
   IAssetUriResolver,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
-import { calcFingerprint, normalizeUrlPath } from '@guanghechen/asset-util'
+import { calcFingerprint, isAbsolutePath, normalizeUrlPath } from '@guanghechen/asset-util'
 import path from 'node:path'
 import { v5 as uuid } from 'uuid'
 
@@ -96,7 +96,7 @@ export class AssetResolverApi implements IAssetResolverApi {
 
   public resolveRefPath(curDir: string, refPath: string): string | null {
     const pathResolver: IAssetPathResolver = this._sourceStorage.pathResolver
-    const filepath: string = pathResolver.isAbsolute(refPath)
+    const filepath: string = isAbsolutePath(refPath)
       ? refPath
       : pathResolver.absolute(refPath, curDir)
     return pathResolver.isSafePath(filepath) ? filepath : null

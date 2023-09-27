@@ -22,12 +22,6 @@ export interface IAssetPathResolver {
   identify(srcPath: string): string
 
   /**
-   * Check if the given filepath is an absolute path.
-   * @param filepath
-   */
-  isAbsolute(filepath: string): boolean
-
-  /**
    * Check if the filepath is under the rootDir.
    * @param filepath
    */

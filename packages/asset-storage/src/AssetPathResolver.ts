@@ -1,8 +1,7 @@
 import type { IAssetPathResolver } from '@guanghechen/asset-types'
+import { isAbsolutePath } from '@guanghechen/asset-util'
 import invariant from '@guanghechen/invariant'
 import path from 'node:path'
-
-const urlRegex = /^\w+:\/\//
 
 export interface IAssetPathResolverProps {
   rootDir: string
@@ -43,12 +42,6 @@ export class AssetPathResolver implements IAssetPathResolver {
     return this.caseSensitive ? p : p.toLowerCase()
   }
 
-  public isAbsolute(filepath: string): boolean {
-    if (path.isAbsolute(filepath)) return true
-    if (urlRegex.test(filepath)) return true
-    return false
-  }
-
   public isSafePath(filepath: string): boolean {
     const absoluteFilepath: string = this._absolute(this.rootDir, filepath)
     const relativeFilepath: string = this._relative(this.rootDir, absoluteFilepath)
@@ -70,7 +63,7 @@ export class AssetPathResolver implements IAssetPathResolver {
   }
 
   protected _absolute(cwd: string, filepath: string): string {
-    if (this.isAbsolute(filepath)) return filepath
+    if (isAbsolutePath(filepath)) return filepath
     const absoluteFilepath: string = path.resolve(cwd, path.normalize(filepath))
     const normalizedFilepath: string = path.normalize(absoluteFilepath)
     return normalizedFilepath
