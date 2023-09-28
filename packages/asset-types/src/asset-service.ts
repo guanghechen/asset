@@ -4,6 +4,7 @@ import type { IAssetWatchShouldIgnore } from './asset-storage-source'
 import type { IAssetServiceWatcher } from './common'
 
 export interface IAssetService {
+  readonly dataMapUri: string
   readonly pathResolver: IAssetPathResolver
 
   /**

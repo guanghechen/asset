@@ -28,6 +28,7 @@ interface IProps {
 }
 
 export class AssetService implements IAssetService {
+  public readonly dataMapUri: string
   public readonly pathResolver: IAssetPathResolver
   protected readonly _taskApi: IAssetTaskApi
   protected readonly _resolverApi: IAssetResolverApi
@@ -57,6 +58,7 @@ export class AssetService implements IAssetService {
     const scheduler: IAssetTaskScheduler = new AssetTaskScheduler(taskApi, reporter)
 
     this.pathResolver = pathResolver
+    this.dataMapUri = dataMapUri
     this._taskApi = taskApi
     this._resolverApi = resolverApi
     this._reporter = reporter
