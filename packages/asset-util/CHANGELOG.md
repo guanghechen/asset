@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.23](https://github.com/guanghechen/asset/compare/@guanghechen/asset-util@1.0.0-alpha.22...@guanghechen/asset-util@1.0.0-alpha.23) (2023-09-28)
+
+
+### Performance Improvements
+
+* :art:  refactor AssetPathResolver and asset storage ([326ac11](https://github.com/guanghechen/asset/commit/326ac1126cef6fdc4b5074fae8356d9d664efd98))
+* 🎨 move isAbsolute to a separate util ([6f13687](https://github.com/guanghechen/asset/commit/6f1368727687ba8cc52df76f150e6496fc4cec4a))
+
+
+
+
+
 # [1.0.0-alpha.22](https://github.com/guanghechen/asset/compare/@guanghechen/asset-util@1.0.0-alpha.21...@guanghechen/asset-util@1.0.0-alpha.22) (2023-09-25)
 
 **Note:** Version bump only for package @guanghechen/asset-util

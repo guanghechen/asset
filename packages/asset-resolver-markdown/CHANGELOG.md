@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.39](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.38...@guanghechen/asset-resolver-markdown@1.0.0-alpha.39) (2023-09-28)
+
+
+### Performance Improvements
+
+* :art:  refactor AssetPathResolver and asset storage ([326ac11](https://github.com/guanghechen/asset/commit/326ac1126cef6fdc4b5074fae8356d9d664efd98))
+
+
+
+
+
 # [1.0.0-alpha.38](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.37...@guanghechen/asset-resolver-markdown@1.0.0-alpha.38) (2023-09-25)
 
 **Note:** Version bump only for package @guanghechen/asset-resolver-markdown

@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-util",
-  "version": "1.0.0-alpha.22",
+  "version": "1.0.0-alpha.23",
   "description": "Asset parser core.",
   "author": {
     "name": "guanghechen",
@@ -40,7 +40,7 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.36",
+    "@guanghechen/asset-types": "^1.0.0-alpha.37",
     "mime": "^3.0.0"
   },
   "devDependencies": {
