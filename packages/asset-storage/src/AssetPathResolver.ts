@@ -1,81 +1,103 @@
 import type { IAssetPathResolver } from '@guanghechen/asset-types'
-import { isAbsolutePath } from '@guanghechen/asset-util'
-import invariant from '@guanghechen/invariant'
 import path from 'node:path'
+import { PathResolver } from './PathResolver'
 
 export interface IAssetPathResolverProps {
-  rootDir: string
+  /**
+   * If the filepath is case sensitive.
+   */
   caseSensitive: boolean
+  /**
+   * Absolute path of the root directory of the project.
+   */
+  srcRoots: string[]
 }
 
-export class AssetPathResolver implements IAssetPathResolver {
-  public readonly rootDir: string
-  public readonly caseSensitive: boolean
+export class AssetPathResolver extends PathResolver implements IAssetPathResolver {
+  protected readonly _caseSensitive: boolean
+  protected readonly _srcRoots: string[]
 
   constructor(props: IAssetPathResolverProps) {
-    this.rootDir = props.rootDir
-    this.caseSensitive = props.caseSensitive
+    super()
+
+    const srcRoots: string[] = this._validateSrcRoots(props.srcRoots)
+    this._caseSensitive = props.caseSensitive
+    this._srcRoots = srcRoots
   }
 
-  public assertSafePath(filepath: string): void | never {
-    invariant(
-      this.isSafePath(filepath),
-      `[assertSafePath] !!!unsafe filepath. rootDir: ${this.rootDir}, filepath: ${filepath}`,
-    )
+  public get caseSensitive(): boolean {
+    return this._caseSensitive
   }
 
-  public absolute(filepath: string, basedir?: string): string {
-    const absoluteFilepath = this._absolute(basedir ?? this.rootDir, filepath)
-    const relativeFilepath = this._relative(this.rootDir, absoluteFilepath)
-    invariant(
-      this._isSafePath(relativeFilepath),
-      `[assertSafePath] !!!unsafe filepath. rootDir: ${this.rootDir}, filepath: ${filepath}`,
-    )
-    return absoluteFilepath
+  public get srcRoots(): string[] {
+    return this._srcRoots.slice()
   }
 
-  public identify(filepath: string): string {
-    const p: string = this.absolute(filepath)
+  public assertSafeAbsolutePath(absoluteFilepath: string, caller?: string): string | never {
+    const srcRoot: string | null = this.findSrcRoot(absoluteFilepath)
+    if (srcRoot === null) {
+      const title: string = caller ?? 'AssetPathResolver.assertFindSrcRoot'
+      throw new Error(`[${title}] cannot find srcRoot. absoluteFilepath: ${absoluteFilepath}`)
+    }
+    return srcRoot
+  }
+
+  public findSrcRoot(absoluteFilepath: string): string | null {
+    this.assertAbsolutePath(absoluteFilepath, 'AssetPathResolver.findSrcRoot')
+    for (const srcRoot of this._srcRoots) {
+      if (this.isRelativePath(srcRoot, absoluteFilepath)) return srcRoot
+    }
+    return null
+  }
+
+  public isSafeAbsolutePath(filepath: string): boolean {
+    if (!this.isAbsolutePath(filepath)) return false
+    for (const srcRoot of this._srcRoots) {
+      if (this.isRelativePath(srcRoot, filepath)) return true
+    }
+    return false
+  }
+
+  public identify(absoluteFilepath: string): string {
+    this.assertSafeAbsolutePath(absoluteFilepath)
+    const p: string = absoluteFilepath
       .replace(/^[^/\\]+/, '/')
       .replace(/[/\\]+/g, '/')
       .replace(/[/]?$/, '/')
-    return this.caseSensitive ? p : p.toLowerCase()
+    return this._caseSensitive ? p : p.toLowerCase()
   }
 
-  public isSafePath(filepath: string): boolean {
-    const absoluteFilepath: string = this._absolute(this.rootDir, filepath)
-    const relativeFilepath: string = this._relative(this.rootDir, absoluteFilepath)
-    return this._isSafePath(relativeFilepath)
-  }
+  protected _validateSrcRoots(srcRoots_: string[]): string[] | never {
+    const srcRoots: string[] = srcRoots_
+      .slice()
+      .map(p => path.normalize(p))
+      .sort()
 
-  public relative(filepath: string): string {
-    const absoluteFilepath = this._absolute(this.rootDir, filepath)
-    const relativeFilepath = this._relative(this.rootDir, absoluteFilepath)
-    invariant(
-      this._isSafePath(relativeFilepath),
-      `[assertSafePath] !!!unsafe filepath. rootDir: ${this.rootDir}, filepath: ${filepath}`,
-    )
-    return relativeFilepath
-  }
+    // 1. all of srcRoots should be absolute paths.
+    for (const srcRoot of srcRoots) {
+      if (!this.isAbsolutePath(srcRoot)) {
+        throw new Error(
+          `[AssetPathResolver] invalid, srcRoot should be an absolute path: ${srcRoot}`,
+        )
+      }
+    }
 
-  public resolveFromUri(uri: string): string {
-    return this.absolute(uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, ''))
-  }
+    // 2. all srcRoot should be overlapped.
+    for (let i = 0; i < srcRoots.length; ++i) {
+      const srcRoot0: string = srcRoots[i]
+      for (let j = i + 1; j < srcRoots.length; ++j) {
+        const srcRoot1: string = srcRoots[j]
+        const relative0: string = this._relative(srcRoot0, srcRoot1)
+        const relative1: string = this._relative(srcRoot1, srcRoot0)
 
-  protected _absolute(cwd: string, filepath: string): string {
-    if (isAbsolutePath(filepath)) return filepath
-    const absoluteFilepath: string = path.resolve(cwd, path.normalize(filepath))
-    const normalizedFilepath: string = path.normalize(absoluteFilepath)
-    return normalizedFilepath
-  }
+        if (!relative0.startsWith('..') || !relative1.startsWith('..')) {
+          throw new Error(
+            `[AssetPathResolver] invalid, srcRoots should not be overlapped: ${srcRoot0} (${i}) === ${srcRoot1} (${j})`,
+          )
+        }
+      }
+    }
 
-  protected _relative(cwd: string, absoluteFilepath: string): string {
-    const relativeFilepath: string = path.relative(cwd, absoluteFilepath)
-    const normalizedFilepath: string = path.normalize(relativeFilepath)
-    return normalizedFilepath
-  }
-
-  protected _isSafePath(relativeFilepath: string): boolean {
-    return !relativeFilepath.startsWith('..')
+    return srcRoots
   }
 }

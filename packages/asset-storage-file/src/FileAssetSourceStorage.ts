@@ -1,4 +1,3 @@
-import { AssetSourceStorage } from '@guanghechen/asset-storage'
 import type {
   IAssetCollectOptions,
   IAssetPathResolver,
@@ -8,8 +7,6 @@ import type {
   IAssetWatcher,
   IBinaryFileData,
   IEncodingDetector,
-  IRawSourceItem,
-  ISourceItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import chokidar from 'chokidar'
@@ -23,93 +20,94 @@ interface IProps {
   watchOptions?: Partial<chokidar.WatchOptions>
 }
 
-export class FileAssetSourceStorage extends AssetSourceStorage implements IAssetSourceStorage {
+export class FileAssetSourceStorage implements IAssetSourceStorage {
+  protected readonly _pathResolver: IAssetPathResolver
+  protected readonly _encodingDetector: IEncodingDetector
   protected readonly _watchOptions: Partial<chokidar.WatchOptions>
 
   constructor(props: IProps) {
     const { pathResolver, encodingDetector, watchOptions = {} } = props
 
-    super({ pathResolver, encodingDetector })
+    this._pathResolver = pathResolver
+    this._encodingDetector = encodingDetector
     this._watchOptions = watchOptions
   }
 
-  public override async assertExistedFile(srcPath: string): Promise<void | never> {
-    const filepath: string = this.pathResolver.absolute(srcPath)
-    invariant(existsSync(filepath), `[assertExistedFile] Cannot find file. (${srcPath})`)
+  public async assertExistedFile(absoluteSrcPath: string): Promise<void | never> {
+    this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
 
-    const assertion: boolean = (await stat(filepath)).isFile()
-    invariant(assertion, `[assertExistedFile] Not a file. (${srcPath})`)
+    invariant(
+      existsSync(absoluteSrcPath),
+      `[assertExistedFile] Cannot find file. (${absoluteSrcPath})`,
+    )
+
+    const assertion: boolean = (await stat(absoluteSrcPath)).isFile()
+    invariant(assertion, `[assertExistedFile] Not a file. (${absoluteSrcPath})`)
   }
 
-  public override async collect(
-    patterns_: Iterable<string>,
-    options: IAssetCollectOptions,
-  ): Promise<string[]> {
-    const cwd: string = options.cwd || this.pathResolver.rootDir
-    this.pathResolver.assertSafePath(cwd)
-
-    const patterns: string[] = Array.from(patterns_)
-    const filepaths: string[] = await fastGlob(patterns, {
-      cwd,
-      dot: true,
-      absolute: options.absolute ?? false,
-      onlyDirectories: false,
-      onlyFiles: true,
-      throwErrorOnBrokenSymbolicLink: true,
-      unique: true,
-    })
-    return filepaths
+  public async detectEncoding(absoluteSrcPath: string): Promise<BufferEncoding | undefined> {
+    this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
+    const loadData = (): Promise<IBinaryFileData> => this.readFile(absoluteSrcPath)
+    const encoding = await this._encodingDetector.detect(absoluteSrcPath, loadData)
+    return encoding
   }
 
-  public override async readFile(srcPath: string): Promise<IBinaryFileData> {
-    const filepath: string = this.pathResolver.absolute(srcPath)
-    const data: IBinaryFileData = await readFile(filepath)
+  public async readFile(absoluteSrcPath: string): Promise<IBinaryFileData> {
+    this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
+    const data: IBinaryFileData = await readFile(absoluteSrcPath)
     return data
   }
 
-  public override async removeFile(srcPath: string): Promise<void> {
-    const filepath: string = this.pathResolver.absolute(srcPath)
-    await unlink(filepath)
+  public async removeFile(absoluteSrcPath: string): Promise<void> {
+    this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
+    await unlink(absoluteSrcPath)
   }
 
-  public override async statFile(srcPath: string): Promise<IAssetStat> {
-    const filepath: string = this.pathResolver.absolute(srcPath)
-    return await stat(filepath)
+  public async statFile(absoluteSrcPath: string): Promise<IAssetStat> {
+    this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
+    const result: IAssetStat = await stat(absoluteSrcPath)
+    return result
   }
 
-  public override async updateFile(srcPath: string, data: IBinaryFileData): Promise<void> {
-    const filepath: string = this.pathResolver.absolute(srcPath)
-    await writeFile(filepath, data)
+  public async updateFile(absoluteSrcPath: string, data: IBinaryFileData): Promise<void> {
+    this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
+    await writeFile(absoluteSrcPath, data)
   }
 
-  public override watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
-    const { onAdd, onChange, onRemove, shouldIgnore = () => false } = options
-    const { pathResolver, _watchOptions } = this
+  public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
+    const { cwd, onAdd, onChange, onRemove, shouldIgnore = () => false } = options
+    const pathResolver: IAssetPathResolver = this._pathResolver
+
+    // Ensure the cwd is a safe absolute filepath.
+    pathResolver.assertSafeAbsolutePath(cwd)
 
     const watcher = chokidar.watch(patterns, {
       persistent: true,
-      ..._watchOptions,
-      cwd: pathResolver.rootDir,
+      ...this._watchOptions,
+      cwd,
     })
 
     if (onAdd) {
       watcher.on('add', filepath => {
-        if (shouldIgnore(filepath, pathResolver)) return
-        onAdd(filepath, pathResolver)
+        const absoluteSrcPath: string = pathResolver.absolute(cwd, filepath)
+        if (shouldIgnore(absoluteSrcPath, pathResolver)) return
+        onAdd(absoluteSrcPath, pathResolver)
       })
     }
 
     if (onChange) {
       watcher.on('change', filepath => {
-        if (shouldIgnore(filepath, pathResolver)) return
-        onChange(filepath, pathResolver)
+        const absoluteSrcPath: string = pathResolver.absolute(cwd, filepath)
+        if (shouldIgnore(absoluteSrcPath, pathResolver)) return
+        onChange(absoluteSrcPath, pathResolver)
       })
     }
 
     if (onRemove) {
       watcher.on('unlink', filepath => {
-        if (shouldIgnore(filepath, pathResolver)) return
-        onRemove(filepath, pathResolver)
+        const absoluteSrcPath: string = pathResolver.absolute(cwd, filepath)
+        if (shouldIgnore(absoluteSrcPath, pathResolver)) return
+        onRemove(absoluteSrcPath, pathResolver)
       })
     }
 
@@ -122,5 +120,28 @@ export class FileAssetSourceStorage extends AssetSourceStorage implements IAsset
         await watcher.close()
       },
     }
+  }
+
+  public async collect(
+    patterns_: Iterable<string>,
+    options: IAssetCollectOptions,
+  ): Promise<string[]> {
+    const cwd: string = options.cwd
+    const pathResolver: IAssetPathResolver = this._pathResolver
+
+    // Ensure the cwd is a safe absolute filepath.
+    pathResolver.assertSafeAbsolutePath(cwd)
+
+    const patterns: string[] = Array.from(patterns_)
+    const filepaths: string[] = await fastGlob(patterns, {
+      cwd,
+      dot: true,
+      absolute: true,
+      onlyDirectories: false,
+      onlyFiles: true,
+      throwErrorOnBrokenSymbolicLink: true,
+      unique: true,
+    })
+    return filepaths
   }
 }

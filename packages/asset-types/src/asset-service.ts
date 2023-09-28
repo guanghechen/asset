@@ -1,8 +1,11 @@
 import type { IAsset } from './asset'
+import type { IAssetPathResolver } from './asset-path-resolver'
 import type { IAssetWatchShouldIgnore } from './asset-storage-source'
 import type { IAssetServiceWatcher } from './common'
 
 export interface IAssetService {
+  readonly pathResolver: IAssetPathResolver
+
   /**
    * Prepare the asset service.
    */
@@ -16,21 +19,33 @@ export interface IAssetService {
 
   /**
    * Need to call `this.prepare()` in advance.
-   * @param filepaths
+   * @param absoluteSrcPaths
    */
-  buildByPaths(filepaths: ReadonlyArray<string>): Promise<void>
+  buildByPaths(absoluteSrcPaths: ReadonlyArray<string>): Promise<void>
 
   /**
    * Need to call `this.prepare()` in advance.
    * @param acceptedPattern
    */
-  buildByPatterns(acceptedPattern: Iterable<string>): Promise<void>
+  buildByPatterns(cwd: string, acceptedPattern: Iterable<string>): Promise<void>
+
+  /**
+   * Find asset by predicate function.
+   * @param predicate
+   */
+  findAsset(predicate: (asset: Readonly<IAsset>) => boolean): Promise<IAsset | null>
+
+  /**
+   * Find the absolute source path by the given uri.
+   * @param uri
+   */
+  findSrcPathByUri(uri: string): Promise<string | null>
 
   /**
    * Locate the asset by the given filepath.
-   * @param srcPath
+   * @param absoluteSrcPath
    */
-  locate(srcPath: string): Promise<IAsset | null>
+  locateAsset(absoluteSrcPath: string): Promise<IAsset | null>
 
   /**
    * Need to call `this.prepare()` in advance.
@@ -38,6 +53,7 @@ export interface IAssetService {
    * @param shouldIgnore
    */
   watch(
+    cwd: string,
     acceptedPattern: ReadonlyArray<string>,
     shouldIgnore?: IAssetWatchShouldIgnore,
   ): Promise<IAssetServiceWatcher>

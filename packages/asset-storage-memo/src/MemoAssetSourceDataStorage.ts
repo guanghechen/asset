@@ -10,32 +10,32 @@ export interface IMemoAssetSourceStorageDataProps {
 }
 
 export class MemoAssetSourceDataStorage implements IMemoAssetSourceDataStorage {
-  public readonly pathResolver: IAssetPathResolver
+  protected readonly _pathResolver: IAssetPathResolver
   protected readonly _cache: Map<string, ISourceItem>
 
   constructor(props: IMemoAssetSourceStorageDataProps) {
-    const { pathResolver, initialData } = props
-    this.pathResolver = pathResolver
-    this._cache = new Map(initialData)
+    const { initialData, pathResolver } = props
+    this._pathResolver = pathResolver
+    this._cache = new Map<string, ISourceItem>(initialData)
   }
 
-  public has(srcPath: string): boolean {
-    const identifier: string = this.pathResolver.identify(srcPath)
+  public has(absoluteSrcPath: string): boolean {
+    const identifier: string = this._pathResolver.identify(absoluteSrcPath)
     return this._cache.has(identifier)
   }
 
-  public get(srcPath: string): ISourceItem | undefined {
-    const identifier: string = this.pathResolver.identify(srcPath)
+  public get(absoluteSrcPath: string): ISourceItem | undefined {
+    const identifier: string = this._pathResolver.identify(absoluteSrcPath)
     return this._cache.get(identifier)
   }
 
-  public set(srcPath: string, item: ISourceItem): void {
-    const identifier: string = this.pathResolver.identify(srcPath)
+  public set(absoluteSrcPath: string, item: ISourceItem): void {
+    const identifier: string = this._pathResolver.identify(absoluteSrcPath)
     this._cache.set(identifier, item)
   }
 
-  public delete(srcPath: string): void {
-    const identifier: string = this.pathResolver.identify(srcPath)
+  public delete(absoluteSrcPath: string): void {
+    const identifier: string = this._pathResolver.identify(absoluteSrcPath)
     this._cache.delete(identifier)
   }
 
@@ -43,7 +43,7 @@ export class MemoAssetSourceDataStorage implements IMemoAssetSourceDataStorage {
     return this._cache.values()
   }
 
-  public async loadOnDemand(srcPath_: string): Promise<ISourceItem | undefined> {
+  public async loadOnDemand(absoluteFilepath_: string): Promise<ISourceItem | undefined> {
     return undefined
   }
 }

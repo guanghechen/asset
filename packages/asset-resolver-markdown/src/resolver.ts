@@ -91,12 +91,14 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     this._polishPlugins = []
   }
 
-  public use(markdownResolverPlugin: IMarkdownResolverPlugin): this {
-    const plugin: IAssetResolverPlugin = markdownResolverPlugin(this.ctx)
-    if (plugin.displayName) {
-      if (plugin.locate) this._locatePlugins.push(plugin as IAssetLocatePlugin)
-      if (plugin.parse) this._parsePlugins.push(plugin as IAssetParsePlugin)
-      if (plugin.polish) this._polishPlugins.push(plugin as IAssetPolishPlugin)
+  public use(...markdownResolverPlugins: IMarkdownResolverPlugin[]): this {
+    for (const markdownResolverPlugin of markdownResolverPlugins) {
+      const plugin: IAssetResolverPlugin = markdownResolverPlugin(this.ctx)
+      if (plugin.displayName) {
+        if (plugin.locate) this._locatePlugins.push(plugin as IAssetLocatePlugin)
+        if (plugin.parse) this._parsePlugins.push(plugin as IAssetParsePlugin)
+        if (plugin.polish) this._polishPlugins.push(plugin as IAssetPolishPlugin)
+      }
     }
     return this
   }

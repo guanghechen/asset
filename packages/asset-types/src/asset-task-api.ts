@@ -3,22 +3,22 @@ import type { IAsset } from './asset'
 export interface IAssetTaskApi {
   /**
    * Locate the asset by the given filepath.
-   * @param srcPath
+   * @param absoluteSrcPath
    */
-  locate(srcPath: string): Promise<IAsset | null>
+  locate(absoluteSrcPath: string): Promise<IAsset | null>
   /**
    * Create assets on the given srcPaths.
-   * @param srcPaths
+   * @param absoluteSrcPaths
    */
-  create(srcPaths: string[]): Promise<void>
+  create(absoluteSrcPaths: ReadonlyArray<string>): Promise<void>
   /**
    * Mark the assets on the srcPaths invalid and remove them from assetManager.
-   * @param srcPaths
+   * @param absoluteSrcPaths
    */
-  remove(srcPaths: string[]): Promise<void>
+  remove(absoluteSrcPaths: ReadonlyArray<string>): Promise<void>
   /**
    * Update the assets on the srcPaths.
-   * @param srcPaths
+   * @param absoluteSrcPaths
    */
-  update(srcPaths: string[]): Promise<void>
+  update(absoluteSrcPaths: ReadonlyArray<string>): Promise<void>
 }

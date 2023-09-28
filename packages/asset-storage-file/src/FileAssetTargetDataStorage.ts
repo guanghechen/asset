@@ -1,11 +1,10 @@
-import { resolveUriFromTargetItem } from '@guanghechen/asset-storage'
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
-  IAssetPathResolver,
   IAssetTargetDataStorage,
   IBinaryFileData,
   IFileData,
   IJsonFileData,
+  IPathResolver,
   ITargetItem,
   ITargetItemWithoutData,
   ITextFileData,
@@ -15,22 +14,25 @@ import { readFile, unlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 interface IProps {
-  pathResolver: IAssetPathResolver
+  rootDir: string
+  pathResolver: IPathResolver
   prettier?: boolean
 }
 
 export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
-  public readonly pathResolver: IAssetPathResolver
+  public readonly rootDir: string
+  public readonly pathResolver: IPathResolver
   protected readonly _prettier: boolean
 
   constructor(props: IProps) {
-    const { pathResolver, prettier = true } = props
+    const { rootDir, pathResolver, prettier = true } = props
+    this.rootDir = rootDir
     this.pathResolver = pathResolver
     this._prettier = prettier
   }
 
   public async load(uri: string, fileItem: ITargetItemWithoutData): Promise<IFileData> {
-    const filepath: string = this.pathResolver.resolveFromUri(uri)
+    const filepath: string = this._resolvePathFromUri(uri)
     const { datatype } = fileItem
     switch (datatype) {
       case AssetDataTypeEnum.BINARY: {
@@ -57,13 +59,12 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
   }
 
   public async remove(uri: string): Promise<void> {
-    const filepath: string = this.pathResolver.resolveFromUri(uri)
+    const filepath: string = this._resolvePathFromUri(uri)
     await unlink(filepath)
   }
 
-  public async save(item: ITargetItem): Promise<void> {
-    const uri: string = resolveUriFromTargetItem(item)
-    const filepath: string = this.pathResolver.resolveFromUri(uri)
+  public async save(uri: string, item: ITargetItem): Promise<void> {
+    const filepath: string = this._resolvePathFromUri(uri)
     const dirpath: string = path.dirname(filepath)
     if (!existsSync(dirpath)) mkdirSync(dirpath, { recursive: true })
 
@@ -94,5 +95,10 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
       default:
         throw new TypeError(`[FileAssetTargetDataStorage.save] Unexpected datatype: ${datatype}`)
     }
+  }
+
+  public _resolvePathFromUri(uri: string): string {
+    const p: string = uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, '')
+    return this.pathResolver.absolute(this.rootDir, p)
   }
 }

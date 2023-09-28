@@ -4,18 +4,21 @@ import type { IAssetPathResolver } from './asset-path-resolver'
 import type { IAssetWatcher } from './common'
 
 export interface IAssetCollectOptions {
-  cwd?: string // filepath under the storage rootDir
-  absolute?: boolean
+  readonly cwd: string // filepath under the storage rootDir
 }
 
 export type IAssetWatchShouldIgnore = (
-  filepath: string,
+  absoluteSrcPath: string,
   pathResolver: IAssetPathResolver,
 ) => boolean
 
-export type IAssetFileChangedCallback = (filepath: string, pathResolver: IAssetPathResolver) => void
+export type IAssetFileChangedCallback = (
+  absoluteSrcPath: string,
+  pathResolver: IAssetPathResolver,
+) => void
 
 export interface IAssetWatchOptions {
+  readonly cwd: string // filepath under the storage rootDir
   onAdd?: IAssetFileChangedCallback
   onChange?: IAssetFileChangedCallback
   onRemove?: IAssetFileChangedCallback
@@ -23,23 +26,21 @@ export interface IAssetWatchOptions {
 }
 
 export interface IMemoAssetSourceDataStorage {
-  readonly pathResolver: IAssetPathResolver
-  has(srcPath: string): boolean
-  get(srcPath: string): ISourceItem | undefined
-  set(srcPath: string, item: ISourceItem): void
-  delete(srcPath: string): void
+  has(absoluteSrcPath: string): boolean
+  get(absoluteSrcPath: string): ISourceItem | undefined
+  set(absoluteSrcPath: string, item: ISourceItem): void
+  delete(absoluteSrcPath: string): void
   values(): Iterable<ISourceItem>
-  loadOnDemand(srcPath: string): Promise<IRawSourceItem | undefined>
+  loadOnDemand(absoluteSrcPath: string): Promise<IRawSourceItem | undefined>
 }
 
 export interface IAssetSourceStorage {
-  readonly pathResolver: IAssetPathResolver
-  assertExistedFile(srcPath: string): Promise<void | never>
-  collect(patterns: ReadonlyArray<string>, options: IAssetCollectOptions): Promise<string[]>
-  detectEncoding(srcPath: string): Promise<BufferEncoding | undefined>
-  readFile(srcPath: string): Promise<IBinaryFileData>
-  removeFile(srcPath: string): Promise<void>
-  statFile(srcPath: string): Promise<IAssetStat>
-  updateFile(srcPath: string, data: IBinaryFileData): Promise<void>
+  assertExistedFile(absoluteSrcPath: string): Promise<void | never>
+  detectEncoding(absoluteSrcPath: string): Promise<BufferEncoding | undefined>
+  readFile(absoluteSrcPath: string): Promise<IBinaryFileData>
+  removeFile(absoluteSrcPath: string): Promise<void>
+  statFile(absoluteSrcPath: string): Promise<IAssetStat>
+  updateFile(absoluteSrcPath: string, data: IBinaryFileData): Promise<void>
   watch(patterns: ReadonlyArray<string>, options: IAssetWatchOptions): IAssetWatcher
+  collect(patterns: ReadonlyArray<string>, options: IAssetCollectOptions): Promise<string[]>
 }

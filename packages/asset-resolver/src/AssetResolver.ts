@@ -27,14 +27,14 @@ import path from 'node:path'
 
 interface ILocateStageData {
   asset: IAsset
-  srcPath: string
+  absoluteSrcPath: string
   filename: string
   encoding: BufferEncoding | undefined
 }
 
 interface IParseStageData {
   asset: IAsset
-  srcPath: string
+  absoluteSrcPath: string
   filename: string
   data: unknown
   encoding: BufferEncoding | undefined
@@ -68,37 +68,45 @@ export class AssetResolver implements IAssetResolver {
     return this
   }
 
-  public async resolve(srcPaths: string[], api: IAssetResolverApi): Promise<IAssetResolvedData[]> {
+  public async resolve(
+    absoluteSrcPaths: ReadonlyArray<string>,
+    api: IAssetResolverApi,
+  ): Promise<IAssetResolvedData[]> {
     const reporter: IReporter = this._reporter
 
     // locate stage
-    const locate = async (inputs: string[]): Promise<ILocateStageData[]> => {
+    const locate = async (inputs: ReadonlyArray<string>): Promise<ILocateStageData[]> => {
       const errors: unknown[] = []
       const outputs: ILocateStageData[] = []
 
       await Promise.all(
-        inputs.map(srcPath =>
-          this.locate(srcPath, api)
+        inputs.map((absoluteSrcPath: string): Promise<void> => {
+          return this.locate(absoluteSrcPath, api)
             .then(result => {
               if (result !== null) {
-                const filename: string = path.basename(srcPath)
-                outputs.push({ srcPath, asset: result, filename, encoding: result.encoding })
+                const filename: string = path.basename(absoluteSrcPath)
+                outputs.push({
+                  absoluteSrcPath,
+                  asset: result,
+                  filename,
+                  encoding: result.encoding,
+                })
               } else {
                 reporter.warn(
-                  '[AssetResolver.resolve] locate stage got null, srcPath: {}.',
-                  srcPath,
+                  '[AssetResolver.resolve] locate stage got null, absoluteSrcPath: {}.',
+                  absoluteSrcPath,
                 )
               }
             })
             .catch(error => {
               reporter.error(
-                '[AssetResolver.resolve] locate stage failed, srcPath: {}.\nerror:',
-                srcPath,
+                '[AssetResolver.resolve] locate stage failed, absoluteSrcPath: {}.\nerror:',
+                absoluteSrcPath,
                 error,
               )
               errors.push(error)
-            }),
-        ),
+            })
+        }),
       )
 
       // rethrow error
@@ -119,15 +127,15 @@ export class AssetResolver implements IAssetResolver {
               if (result !== null) outputs.push(result)
               else {
                 reporter.warn(
-                  '[AssetResolver.resolve] parse stage got null, srcPath: {}.',
-                  stageData.srcPath,
+                  '[AssetResolver.resolve] parse stage got null, absoluteSrcPath: {}.',
+                  stageData.absoluteSrcPath,
                 )
               }
             })
             .catch(error => {
               reporter.error(
-                '[AssetResolver.resolve] parse stage failed, srcPath: {}.\nerror:',
-                stageData.srcPath,
+                '[AssetResolver.resolve] parse stage failed, absoluteSrcPath: {}.\nerror:',
+                stageData.absoluteSrcPath,
                 error,
               )
               errors.push(error)
@@ -152,15 +160,15 @@ export class AssetResolver implements IAssetResolver {
               if (result !== null) outputs.push(result)
               else {
                 reporter.warn(
-                  '[AssetResolver.resolve] polish stage got null, srcPath: {}.',
-                  stageData.srcPath,
+                  '[AssetResolver.resolve] polish stage got null, absoluteSrcPath: {}.',
+                  stageData.absoluteSrcPath,
                 )
               }
             })
             .catch(error => {
               reporter.error(
-                '[AssetResolver.resolve] polish stage failed, srcPath: {}.\nerror:',
-                stageData.srcPath,
+                '[AssetResolver.resolve] polish stage failed, absoluteSrcPath: {}.\nerror:',
+                stageData.absoluteSrcPath,
                 error,
               )
               errors.push(error)
@@ -173,32 +181,38 @@ export class AssetResolver implements IAssetResolver {
       return outputs
     }
 
-    const locateOutputs: ILocateStageData[] = await locate(srcPaths)
+    const locateOutputs: ILocateStageData[] = await locate(absoluteSrcPaths)
     const parseOutputs: IParseStageData[] = await parse(locateOutputs)
     const polishOutputs: IPolishStageData[] = await polish(parseOutputs)
     return polishOutputs
   }
 
-  public async locate(srcPath: string, api: IAssetResolverApi): Promise<IAssetLocatedData | null> {
-    const asset: IAsset | undefined = await api.locateAsset(srcPath)
-    if (asset !== undefined) {
-      const encoding: BufferEncoding | undefined = await api.detectEncoding(srcPath)
+  public async locate(
+    absoluteSrcPath: string,
+    api: IAssetResolverApi,
+  ): Promise<IAssetLocatedData | null> {
+    if (!api.pathResolver.isSafeAbsolutePath(absoluteSrcPath)) return null
+
+    const asset: IAsset | null = await api.locator.locateAsset(absoluteSrcPath)
+    if (asset !== null) {
+      const encoding: BufferEncoding | undefined = await api.detectEncoding(absoluteSrcPath)
       return { ...asset, encoding }
     }
 
-    const input: IAssetPluginLocateInput | null = await api.initAsset(srcPath)
+    const input: IAssetPluginLocateInput | null = await api.initAsset(absoluteSrcPath)
     if (input === null) return null
 
     const { guid, hash, extname } = input
 
-    const curDir: string = path.dirname(srcPath)
+    const curDir: string = path.dirname(absoluteSrcPath)
     const pluginApi: IAssetPluginLocateApi = {
       loadContent: async relativePath => {
         const refPath: string | null = api.resolveRefPath(curDir, relativePath)
         return refPath === null ? null : api.loadContent(refPath)
       },
-      resolveSlug: (meta: Readonly<IAssetMeta>) => api.resolveSlug(meta),
-      resolveUri: (sourcetype, mimetype) => api.resolveUri({ guid, sourcetype, mimetype, extname }),
+      resolveSlug: (meta: Readonly<IAssetMeta>) => api.uriResolver.resolveSlug(meta),
+      resolveUri: (sourcetype, mimetype) =>
+        api.uriResolver.resolveUri({ guid, sourcetype, mimetype, extname }),
     }
 
     const reducer: IAssetPluginLocateNext = this._locatePlugins.reduceRight<IAssetPluginLocateNext>(
@@ -221,7 +235,7 @@ export class AssetResolver implements IAssetResolver {
       tags,
     } = result
     const uri: string =
-      result.uri ?? (await api.resolveUri({ guid, sourcetype, mimetype, extname }))
+      result.uri ?? (await api.uriResolver.resolveUri({ guid, sourcetype, mimetype, extname }))
     const resolvedAsset: IAsset = {
       guid,
       hash,
@@ -237,7 +251,7 @@ export class AssetResolver implements IAssetResolver {
       categories,
       tags,
     }
-    await api.insertAsset(resolvedAsset)
+    await api.locator.insertAsset(absoluteSrcPath, resolvedAsset)
     return { ...resolvedAsset, encoding: input.encoding }
   }
 
@@ -245,7 +259,7 @@ export class AssetResolver implements IAssetResolver {
     locateStageData: ILocateStageData,
     api: IAssetResolverApi,
   ): Promise<IParseStageData | null> {
-    const { asset, srcPath, filename, encoding } = locateStageData
+    const { asset, absoluteSrcPath, filename, encoding } = locateStageData
     const input: IAssetPluginParseInput = {
       sourcetype: asset.sourcetype,
       title: asset.title,
@@ -254,13 +268,13 @@ export class AssetResolver implements IAssetResolver {
       encoding,
     }
 
-    const curDir: string = path.dirname(srcPath)
+    const curDir: string = path.dirname(absoluteSrcPath)
     const pluginApi: IAssetPluginParseApi = {
       loadContent: async relativePath => {
         const refPath: string | null = api.resolveRefPath(curDir, relativePath)
         return refPath === null ? null : api.loadContent(refPath)
       },
-      resolveSlug: (meta: Readonly<IAssetMeta>) => api.resolveSlug(meta),
+      resolveSlug: (meta: Readonly<IAssetMeta>) => api.uriResolver.resolveSlug(meta),
     }
     const reducer: IAssetPluginParseNext = this._parsePlugins.reduceRight<IAssetPluginParseNext>(
       (next, middleware) => embryo => middleware.parse(input, embryo, pluginApi, next),
@@ -270,7 +284,7 @@ export class AssetResolver implements IAssetResolver {
     const result: IAssetPluginParseOutput | null = await reducer(null)
     return {
       asset,
-      srcPath,
+      absoluteSrcPath,
       filename,
       data: result?.data ?? null,
       encoding: input.encoding,
@@ -281,7 +295,7 @@ export class AssetResolver implements IAssetResolver {
     parseStageData: IParseStageData,
     api: IAssetResolverApi,
   ): Promise<IPolishStageData | null> {
-    const { srcPath, asset, filename, data } = parseStageData
+    const { absoluteSrcPath, asset, filename, data } = parseStageData
     const input: IAssetPluginPolishInput = {
       sourcetype: asset.sourcetype,
       title: asset.title,
@@ -289,7 +303,7 @@ export class AssetResolver implements IAssetResolver {
       data,
     }
 
-    const curDir: string = path.dirname(srcPath)
+    const curDir: string = path.dirname(absoluteSrcPath)
     const pluginApi: IAssetPluginPolishApi = {
       loadContent: async relativePath => {
         const refPath: string | null = api.resolveRefPath(curDir, relativePath)

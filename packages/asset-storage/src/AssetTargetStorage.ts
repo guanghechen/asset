@@ -15,7 +15,6 @@ import type {
 import invariant from '@guanghechen/invariant'
 import { Monitor } from '@guanghechen/monitor'
 import type { IMonitor, IMonitorUnsubscribe } from '@guanghechen/monitor'
-import { resolveUriFromTargetItem } from './util'
 
 const noop = (..._args: any[]): void => {}
 
@@ -84,9 +83,14 @@ export class AssetTargetStorage implements IAssetTargetStorage {
     return item
   }
 
+  public resolveUriFromTargetItem(item: ITargetItem): string {
+    if (item.datatype === AssetDataTypeEnum.ASSET_MAP) return item.uri
+    return item.asset.uri
+  }
+
   public async writeFile(rawItem: ITargetItem): Promise<void> {
     const __title__: string = `[${this.constructor.name}.writeFile]`
-    const uri: string = resolveUriFromTargetItem(rawItem)
+    const uri: string = this.resolveUriFromTargetItem(rawItem)
     const fileItem = this._fileItemMap.get(uri)
 
     invariant(
@@ -103,7 +107,7 @@ export class AssetTargetStorage implements IAssetTargetStorage {
         const asset: IAsset = { ...rawItem.asset }
         const itemWithoutData: ITargetItemWithoutData = { ...rawFileItem, asset }
         const item: ITargetItem = { ...itemWithoutData, data } as unknown as ITargetItem
-        await this._dataStorage.save(item)
+        await this._dataStorage.save(uri, item)
         this._fileItemMap.set(uri, itemWithoutData)
         this._monitorFileWritten.notify(item)
         break
@@ -114,7 +118,7 @@ export class AssetTargetStorage implements IAssetTargetStorage {
           uri: rawItem.uri,
         }
         const item: IAssetMapTargetItem = { ...itemWithoutData, data: rawItem.data }
-        await this._dataStorage.save(item)
+        await this._dataStorage.save(uri, item)
         this._fileItemMap.set(uri, itemWithoutData)
         this._monitorFileWritten.notify(item)
         break

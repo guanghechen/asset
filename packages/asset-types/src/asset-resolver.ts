@@ -35,14 +35,17 @@ export interface IAssetResolver {
   use(plugin: IAssetResolverPlugin): this
   /**
    * Resolve assets in the specified srcPaths.
-   * @param srcPaths
+   * @param absoluteSrcPaths
    * @param api
    */
-  resolve(srcPaths: string[], api: IAssetResolverApi): Promise<IAssetResolvedData[]>
+  resolve(
+    absoluteSrcPaths: ReadonlyArray<string>,
+    api: IAssetResolverApi,
+  ): Promise<IAssetResolvedData[]>
   /**
    * Locate asset by srcPath.
-   * @param srcPath
+   * @param absoluteSrcPath
    * @param api
    */
-  locate(srcPath: string, api: IAssetResolverApi): Promise<IAssetLocatedData | null>
+  locate(absoluteSrcPath: string, api: IAssetResolverApi): Promise<IAssetLocatedData | null>
 }

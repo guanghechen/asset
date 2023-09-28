@@ -15,37 +15,74 @@ import {
   markdownPluginTimeToRead,
   markdownPluginToc,
 } from '@guanghechen/asset-resolver-markdown'
-import type { IParser } from '@guanghechen/asset-resolver-markdown'
+import type { IMarkdownResolverPlugin, IParser } from '@guanghechen/asset-resolver-markdown'
 import type { IAssetResolver } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/types'
 import type { Definition, FootnoteDefinition } from '@yozora/ast'
 import path from 'node:path'
 
-export function createAsstResolver(
-  slugPrefix: string,
-  reporter: IReporter,
-  parser: IParser,
-  getPresetDefinitions?: () => Definition[] | undefined,
-  getPresetFootnoteDefinitions?: () => FootnoteDefinition[] | undefined,
-): IAssetResolver {
+export interface IAssetResolverFlights {
+  markdownSlug: boolean
+  markdownCode: boolean
+  markdownStripSpace: boolean
+  markdownAplayer: boolean
+  markdownDefinition: boolean
+  markdownFootnote: boolean
+  markdownEcmaImport: boolean
+  markdownImages: boolean
+  markdownToc: boolean
+  markdownExcerpt: boolean
+  markdownTimeToRead: boolean
+}
+
+export interface ICreateAssetResolverParams {
+  slugPrefix: string
+  reporter: IReporter
+  parser: IParser
+  flights: IAssetResolverFlights
+  customizedMarkdownPlugins?: IMarkdownResolverPlugin[]
+  getPresetDefinitions?: () => Definition[] | undefined
+  getPresetFootnoteDefinitions?: () => FootnoteDefinition[] | undefined
+}
+
+export function createAsstResolver(params: ICreateAssetResolverParams): IAssetResolver {
+  const {
+    slugPrefix,
+    reporter,
+    parser,
+    flights,
+    customizedMarkdownPlugins,
+    getPresetDefinitions,
+    getPresetFootnoteDefinitions,
+  } = params
   const resolver: IAssetResolver = new AssetResolver({ reporter })
     .use(
       new AssetResolverMarkdown({
         parser,
         getPresetDefinitions,
         getPresetFootnoteDefinitions,
-      })
-        .use(markdownPluginSlug({ slugPrefix }))
-        .use(markdownPluginCode())
-        .use(markdownPluginStripSpace())
-        .use(markdownPluginAplayer())
-        .use(markdownPluginDefinition({ removeDefinitionNodes: true }))
-        .use(markdownPluginFootnote({ removeFootnoteDefinitionNodes: true }))
-        .use(markdownPluginEcmaImport())
-        .use(markdownPluginImages())
-        .use(markdownPluginToc())
-        .use(markdownPluginExcerpt({ pruneLength: 140 }))
-        .use(markdownPluginTimeToRead({ wordsPerMinute: 140 })),
+      }).use(
+        ...[
+          flights.markdownSlug ? markdownPluginSlug({ slugPrefix }) : undefined,
+          flights.markdownCode ? markdownPluginCode() : undefined,
+          flights.markdownStripSpace ? markdownPluginStripSpace() : undefined,
+          flights.markdownAplayer ? markdownPluginAplayer() : undefined,
+          flights.markdownDefinition
+            ? markdownPluginDefinition({ removeDefinitionNodes: true })
+            : undefined,
+          flights.markdownFootnote
+            ? markdownPluginFootnote({ removeFootnoteDefinitionNodes: true })
+            : undefined,
+          flights.markdownEcmaImport ? markdownPluginEcmaImport() : undefined,
+          flights.markdownImages ? markdownPluginImages() : undefined,
+          flights.markdownToc ? markdownPluginToc() : undefined,
+          flights.markdownExcerpt ? markdownPluginExcerpt({ pruneLength: 140 }) : undefined,
+          flights.markdownTimeToRead
+            ? markdownPluginTimeToRead({ wordsPerMinute: 140 })
+            : undefined,
+          ...(customizedMarkdownPlugins ?? []),
+        ].filter((x): x is IMarkdownResolverPlugin => x !== undefined),
+      ),
     )
     .use(
       new AssetResolverImage({

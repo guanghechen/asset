@@ -6,6 +6,7 @@ export interface IAssetUriResolver {
    * @param asset
    */
   resolveSlug(asset: Readonly<IAssetMeta>): Promise<string | null>
+
   /**
    * Resolve asset uri.
    * @param asset

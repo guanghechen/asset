@@ -2,25 +2,35 @@ import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type {
   IAsset,
   IAssetPathResolver,
+  IAssetResolver,
+  IAssetResolverApi,
   IAssetService,
   IAssetServiceWatcher,
   IAssetSourceStorage,
+  IAssetTargetStorage,
   IAssetTaskApi,
   IAssetWatchShouldIgnore,
   IAssetWatcher,
 } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/types'
+import { AssetTaskApi } from './AssetTaskApi'
 import { AssetTaskScheduler } from './AssetTaskScheduler'
 import type { IAssetTaskScheduler } from './types'
 
 interface IProps {
-  api: IAssetTaskApi
   reporter: IReporter
+  resolver: IAssetResolver
+  resolverApi: IAssetResolverApi
+  pathResolver: IAssetPathResolver
   sourceStorage: IAssetSourceStorage
+  targetStorage: IAssetTargetStorage
+  dataMapUri: string
 }
 
 export class AssetService implements IAssetService {
-  protected readonly _api: IAssetTaskApi
+  public readonly pathResolver: IAssetPathResolver
+  protected readonly _taskApi: IAssetTaskApi
+  protected readonly _resolverApi: IAssetResolverApi
   protected readonly _reporter: IReporter
   protected readonly _sourceStorage: IAssetSourceStorage
   protected readonly _scheduler: IAssetTaskScheduler
@@ -28,10 +38,27 @@ export class AssetService implements IAssetService {
   protected _status: 'pending' | 'prepared' | 'closed'
 
   constructor(props: IProps) {
-    const { api, reporter, sourceStorage } = props
-    const scheduler: IAssetTaskScheduler = new AssetTaskScheduler(api, reporter)
+    const {
+      reporter,
+      resolver,
+      resolverApi,
+      pathResolver,
+      sourceStorage,
+      targetStorage,
+      dataMapUri,
+    } = props
+    const taskApi = new AssetTaskApi({
+      resolverApi,
+      resolver,
+      reporter,
+      targetStorage,
+      dataMapUri,
+    })
+    const scheduler: IAssetTaskScheduler = new AssetTaskScheduler(taskApi, reporter)
 
-    this._api = api
+    this.pathResolver = pathResolver
+    this._taskApi = taskApi
+    this._resolverApi = resolverApi
     this._reporter = reporter
     this._sourceStorage = sourceStorage
     this._scheduler = scheduler
@@ -64,48 +91,61 @@ export class AssetService implements IAssetService {
     scheduler.cleanup()
   }
 
-  public async buildByPaths(filepaths_: ReadonlyArray<string>): Promise<void> {
+  public async buildByPaths(absoluteSrcPaths: ReadonlyArray<string>): Promise<void> {
     if (this._status !== 'prepared') {
       throw new Error('[AssetService.buildByPaths] service is not running')
     }
 
-    if (filepaths_.length <= 0) return
+    if (absoluteSrcPaths.length <= 0) return
 
     const reporter: IReporter = this._reporter
     const scheduler: IAssetTaskScheduler = this._scheduler
-    const pathResolver: IAssetPathResolver = this._sourceStorage.pathResolver
-    const filepaths: string[] = filepaths_.map(filepath => pathResolver.absolute(filepath))
-    const code: number = await scheduler.schedule({
-      type: AssetChangeEventEnum.MODIFIED,
-      filepaths,
-    })
+    const pathResolver: IAssetPathResolver = this.pathResolver
 
-    reporter.debug(
-      '[AssetService.buildByPaths] waiting finish. rootDir({}), filepaths:',
-      pathResolver.rootDir,
-      () => filepaths.map(filepath => pathResolver.relative(filepath)),
-    )
-    await scheduler.waitTaskTerminated(code)
-    reporter.debug('[AssetService.buildByPaths] finished. rootDir({}).', pathResolver.rootDir)
-  }
-
-  public async buildByPatterns(acceptedPattern: ReadonlyArray<string>): Promise<void> {
-    if (this._status !== 'prepared') {
-      throw new Error('[AssetService.buildByPatterns] service is not running')
+    for (const absoluteSrcPath of absoluteSrcPaths) {
+      pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
     }
 
-    const srcPaths: string[] = await this._sourceStorage.collect(acceptedPattern.slice(), {
-      absolute: true,
+    const code: number = await scheduler.schedule({
+      type: AssetChangeEventEnum.MODIFIED,
+      absoluteSrcPaths: absoluteSrcPaths,
     })
-    await this.buildByPaths(srcPaths)
+
+    reporter.debug('[AssetService.buildByPaths] building. absoluteSrcPaths:', absoluteSrcPaths)
+    await scheduler.waitTaskTerminated(code)
+    reporter.debug('[AssetService.buildByPaths] finished. absoluteSrcPaths:', absoluteSrcPaths)
   }
 
-  public async locate(srcPath: string): Promise<IAsset | null> {
-    return this._api.locate(srcPath)
+  public async buildByPatterns(cwd: string, acceptedPattern: ReadonlyArray<string>): Promise<void> {
+    if (this._status !== 'prepared') {
+      throw new Error(`[AssetService.buildByPatterns] service is ${this._status}.`)
+    }
+
+    const pathResolver: IAssetPathResolver = this.pathResolver
+    const sourceStorage: IAssetSourceStorage = this._sourceStorage
+
+    // Ensure the cwd is a safe absolute filepath.
+    pathResolver.assertSafeAbsolutePath(cwd)
+
+    const absoluteSrcPaths: string[] = await sourceStorage.collect(acceptedPattern.slice(), { cwd })
+    await this.buildByPaths(absoluteSrcPaths)
+  }
+
+  public async findAsset(predicate: (asset: Readonly<IAsset>) => boolean): Promise<IAsset | null> {
+    return this._resolverApi.locator.findAsset(predicate)
+  }
+
+  public async locateAsset(absoluteSrcPath: string): Promise<IAsset | null> {
+    return this._taskApi.locate(absoluteSrcPath)
+  }
+
+  public async findSrcPathByUri(uri: string): Promise<string | null> {
+    return this._resolverApi.locator.findSrcPathByUri(uri)
   }
 
   // In watching mode, use scheduler to schedule tasks.
   public async watch(
+    cwd: string,
     acceptedPattern: ReadonlyArray<string>,
     shouldIgnore?: IAssetWatchShouldIgnore,
   ): Promise<IAssetServiceWatcher> {
@@ -113,20 +153,28 @@ export class AssetService implements IAssetService {
       throw new Error(`AssetService is not running`)
     }
 
+    const pathResolver: IAssetPathResolver = this.pathResolver
+
+    // Ensure the cwd is a safe absolute filepath.
+    pathResolver.assertSafeAbsolutePath(cwd)
+
     const scheduler: IAssetTaskScheduler = this._scheduler
-    const pathResolver: IAssetPathResolver = this._sourceStorage.pathResolver
     const watcher: IAssetWatcher = this._sourceStorage.watch(acceptedPattern.slice(), {
+      cwd,
       onAdd: filepath => {
-        const srcPath: string = pathResolver.absolute(filepath)
-        void scheduler.schedule({ type: AssetChangeEventEnum.CREATED, filepaths: [srcPath] })
+        const srcPath: string = pathResolver.absolute(cwd, filepath)
+        void scheduler.schedule({ type: AssetChangeEventEnum.CREATED, absoluteSrcPaths: [srcPath] })
       },
       onChange: filepath => {
-        const srcPath: string = pathResolver.absolute(filepath)
-        void scheduler.schedule({ type: AssetChangeEventEnum.MODIFIED, filepaths: [srcPath] })
+        const srcPath: string = pathResolver.absolute(cwd, filepath)
+        void scheduler.schedule({
+          type: AssetChangeEventEnum.MODIFIED,
+          absoluteSrcPaths: [srcPath],
+        })
       },
       onRemove: filepath => {
-        const srcPath: string = pathResolver.absolute(filepath)
-        void scheduler.schedule({ type: AssetChangeEventEnum.REMOVED, filepaths: [srcPath] })
+        const srcPath: string = pathResolver.absolute(cwd, filepath)
+        void scheduler.schedule({ type: AssetChangeEventEnum.REMOVED, absoluteSrcPaths: [srcPath] })
       },
       shouldIgnore,
     })

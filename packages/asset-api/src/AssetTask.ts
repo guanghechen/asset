@@ -5,37 +5,40 @@ import { AtomicTask } from '@guanghechen/task'
 export class AssetTask extends AtomicTask {
   protected readonly _api: IAssetTaskApi
   protected readonly _type: AssetChangeEventEnum
-  protected readonly _filepaths: string[]
+  protected readonly _absoluteSrcPaths: string[]
 
-  constructor(api: IAssetTaskApi, type: AssetChangeEventEnum, filepaths: string[]) {
+  constructor(
+    api: IAssetTaskApi,
+    type: AssetChangeEventEnum,
+    absoluteSrcPaths: ReadonlyArray<string>,
+  ) {
     super(type)
     this._api = api
     this._type = type
-    this._filepaths = filepaths
+    this._absoluteSrcPaths = absoluteSrcPaths.slice()
   }
 
   public toJSON(): object {
     const type: AssetChangeEventEnum = this._type
-    const filepaths: string[] = this._filepaths
-    return { type, filepaths }
+    const absoluteSrcPaths: string[] = this._absoluteSrcPaths.slice()
+    return { type, absoluteSrcPaths }
   }
 
   protected override async run(): Promise<void> {
     const api: IAssetTaskApi = this._api
     const type: AssetChangeEventEnum = this._type
-    const filepaths: string[] = this._filepaths
     switch (type) {
       case AssetChangeEventEnum.CREATED:
-        await api.create(filepaths)
+        await api.create(this._absoluteSrcPaths)
         break
       case AssetChangeEventEnum.REMOVED:
-        await api.remove(filepaths)
+        await api.remove(this._absoluteSrcPaths)
         break
       case AssetChangeEventEnum.MODIFIED:
-        await api.update(filepaths)
+        await api.update(this._absoluteSrcPaths)
         break
       default: {
-        const details = JSON.stringify({ type, filepaths })
+        const details = JSON.stringify({ type, absoluteSrcPaths: this._absoluteSrcPaths })
         throw new Error(`[AssetTask] handleTask: unknown task: ${details}`)
       }
     }

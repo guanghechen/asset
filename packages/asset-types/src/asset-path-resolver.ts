@@ -1,41 +1,31 @@
-export interface IAssetPathResolver {
-  readonly rootDir: string
+import type { IPathResolver } from './path-resolver'
+
+export interface IAssetPathResolver extends IPathResolver {
   readonly caseSensitive: boolean
+  readonly srcRoots: string[]
 
   /**
-   * Ensure the filepath is under the {rootDir} folder.
-   * @param filepath absolute path or relative path to the {rootDir}
+   * Ensure there is a srcRoot of the given filepath and return it.
+   * @param absoluteFilepath
+   * @param caller
    */
-  assertSafePath(filepath: string): void | never
+  assertSafeAbsolutePath(absoluteFilepath: string, caller?: string): string | never
 
   /**
-   * Get the absolute path.
-   * @param filepath absolute path or relative path to the {rootDir}
-   * @param basedir
+   * Find a matched srcRoot of the given filepath.
+   * @param absoluteFilepath
    */
-  absolute(filepath: string, basedir?: string): string
+  findSrcRoot(absoluteFilepath: string): string | null
 
   /**
-   * Generate a unique id for the filepath.
+   * Check if the given filepath is an safe absolute path.
    * @param filepath
    */
-  identify(srcPath: string): string
+  isSafeAbsolutePath(filepath: string): boolean
 
   /**
-   * Check if the filepath is under the rootDir.
-   * @param filepath
+   * Make a unique id from the absoluteFilepath.
+   * @param absoluteFilepath
    */
-  isSafePath(filepath: string): boolean
-
-  /**
-   * Get the relative path to the {rootDir}.
-   * @param filepath absolute path or relative path to the {rootDir}
-   */
-  relative(filepath: string): string
-
-  /**
-   * Resolve path from uri.
-   * @param uri
-   */
-  resolveFromUri(uri: string): string
+  identify(absoluteFilepath: string): string
 }

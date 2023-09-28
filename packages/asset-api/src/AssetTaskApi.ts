@@ -1,4 +1,3 @@
-import { resolveUriFromTargetItem } from '@guanghechen/asset-storage'
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAsset,
@@ -37,15 +36,17 @@ export class AssetTaskApi implements IAssetTaskApi {
     this._dataMapUri = props.dataMapUri
   }
 
-  public async locate(srcPath: string): Promise<IAsset | null> {
-    const asset: IAsset | null = await this._resolver.locate(srcPath, this._resolverApi)
+  public async locate(absoluteSrcPath: string): Promise<IAsset | null> {
+    const resolverApi: IAssetResolverApi = this._resolverApi
+    const resolver: IAssetResolver = this._resolver
+    const asset: IAsset | null = await resolver.locate(absoluteSrcPath, resolverApi)
     return asset
   }
 
-  public async create(srcPaths: string[]): Promise<void> {
+  public async create(absoluteSrcPaths: ReadonlyArray<string>): Promise<void> {
     const resolverApi: IAssetResolverApi = this._resolverApi
     const resolver: IAssetResolver = this._resolver
-    const results: IAssetResolvedData[] = await resolver.resolve(srcPaths, resolverApi)
+    const results: IAssetResolvedData[] = await resolver.resolve(absoluteSrcPaths, resolverApi)
     const tasks: Array<Promise<void>> = []
 
     for (const result of results) {
@@ -88,14 +89,14 @@ export class AssetTaskApi implements IAssetTaskApi {
     await Promise.all(tasks)
   }
 
-  public async remove(srcPaths: string[]): Promise<void> {
+  public async remove(absoluteSrcPaths: ReadonlyArray<string>): Promise<void> {
     const reporter: IReporter = this._reporter
     const resolverApi: IAssetResolverApi = this._resolverApi
     const tasks: Array<Promise<void>> = []
 
-    for (const srcPath of srcPaths) {
-      const asset: IAsset | undefined = await resolverApi.locateAsset(srcPath)
-      tasks.push(resolverApi.removeAsset(srcPath))
+    for (const absoluteSrcPath of absoluteSrcPaths) {
+      const asset: IAsset | null = await resolverApi.locator.locateAsset(absoluteSrcPath)
+      tasks.push(resolverApi.locator.removeAsset(absoluteSrcPath))
       if (asset) {
         reporter.verbose('[AssetTasApi.remove] uri({})', asset.uri)
         tasks.push(this._targetStorage.removeFile(asset.uri))
@@ -106,17 +107,17 @@ export class AssetTaskApi implements IAssetTaskApi {
     await Promise.all(tasks)
   }
 
-  public async update(srcPaths: string[]): Promise<void> {
+  public async update(absoluteSrcPath: ReadonlyArray<string>): Promise<void> {
     const resolverApi: IAssetResolverApi = this._resolverApi
-    await Promise.all(srcPaths.map(srcPath => resolverApi.removeAsset(srcPath)))
-    await this.create(srcPaths)
+    await Promise.all(absoluteSrcPath.map(srcPath => resolverApi.locator.removeAsset(srcPath)))
+    await this.create(absoluteSrcPath)
   }
 
   protected async _saveAsset(item: ITargetItem): Promise<void> {
     if (item.data === null) return
 
     const reporter: IReporter = this._reporter
-    const uri: string = resolveUriFromTargetItem(item)
+    const uri: string = this._targetStorage.resolveUriFromTargetItem(item)
     reporter.verbose('[AssetTasApi._saveAsset] uri: {}', uri)
 
     // validation
@@ -142,7 +143,7 @@ export class AssetTaskApi implements IAssetTaskApi {
   }
 
   protected async _saveAssetDataMap(): Promise<void> {
-    const data: IAssetDataMap = await this._resolverApi.dumpAssetDataMap()
+    const data: IAssetDataMap = await this._resolverApi.locator.dumpAssetDataMap()
     await this._saveAsset({
       datatype: AssetDataTypeEnum.ASSET_MAP,
       uri: this._dataMapUri,
