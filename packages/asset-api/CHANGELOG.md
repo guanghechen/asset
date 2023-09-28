@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.39](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.38...@guanghechen/asset-api@1.0.0-alpha.39) (2023-09-28)
+
+
+### Performance Improvements
+
+* 🎨 expose dataMapUri in AssetService ([0700943](https://github.com/guanghechen/asset/commit/0700943f6095e7d97220bde99de99538d63579fa))
+
+
+
+
+
 # [1.0.0-alpha.38](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.37...@guanghechen/asset-api@1.0.0-alpha.38) (2023-09-28)
 
 

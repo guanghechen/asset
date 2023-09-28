@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.40](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.39...@guanghechen/asset-resolver-markdown@1.0.0-alpha.40) (2023-09-28)
+
+**Note:** Version bump only for package @guanghechen/asset-resolver-markdown
+
+
+
+
+
 # [1.0.0-alpha.39](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.38...@guanghechen/asset-resolver-markdown@1.0.0-alpha.39) (2023-09-28)
 
 
