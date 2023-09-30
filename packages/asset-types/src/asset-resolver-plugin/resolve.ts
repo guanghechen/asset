@@ -21,18 +21,7 @@ export interface IAssetPluginResolveApi {
 }
 
 export interface IAssetPluginResolveNext {
-  (
-    embryo: Readonly<IAssetPluginResolveOutput> | null,
-  ): IAssetPluginResolveOutput | null | Promise<IAssetPluginResolveOutput | null>
-}
-
-export interface IAssetPluginResolve {
-  (
-    input: Readonly<IAssetPluginResolveInput>,
-    embryo: Readonly<IAssetPluginResolveOutput> | null,
-    api: Readonly<IAssetPluginResolveApi>,
-    next: IAssetPluginResolveNext,
-  ): IAssetPluginResolveOutput | null | Promise<IAssetPluginResolveOutput | null>
+  (embryo: Readonly<IAssetPluginResolveOutput> | null): Promise<IAssetPluginResolveOutput | null>
 }
 
 export interface IAssetPluginResolveInput {

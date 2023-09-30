@@ -223,7 +223,7 @@ export class AssetResolver implements IAssetResolver {
     const reducer: IAssetPluginResolveNext =
       this._resolvePlugins.reduceRight<IAssetPluginResolveNext>(
         (next, middleware) => embryo => middleware.resolve(input, embryo, pluginApi, next),
-        embryo => embryo,
+        async embryo => embryo,
       )
 
     const result: IAssetPluginResolveOutput | null = await reducer(null)
@@ -284,7 +284,7 @@ export class AssetResolver implements IAssetResolver {
     }
     const reducer: IAssetPluginParseNext = this._parsePlugins.reduceRight<IAssetPluginParseNext>(
       (next, middleware) => embryo => middleware.parse(input, embryo, pluginApi, next),
-      embryo => embryo,
+      async embryo => embryo,
     )
 
     const result: IAssetPluginParseOutput | null = await reducer(null)
@@ -328,7 +328,7 @@ export class AssetResolver implements IAssetResolver {
     }
     const reducer: IAssetPluginPolishNext = this._polishPlugins.reduceRight<IAssetPluginPolishNext>(
       (next, middleware) => embryo => middleware.polish(input, embryo, pluginApi, next),
-      embryo => embryo,
+      async embryo => embryo,
     )
 
     const result: IAssetPluginPolishOutput | null = await reducer(null)

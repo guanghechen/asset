@@ -2,9 +2,7 @@
 export interface IAssetPluginLocateApi {}
 
 export interface IAssetPluginLocateNext {
-  (
-    embryo: Readonly<IAssetPluginLocateOutput> | null,
-  ): IAssetPluginLocateOutput | null | Promise<IAssetPluginLocateOutput | null>
+  (embryo: Readonly<IAssetPluginLocateOutput> | null): Promise<IAssetPluginLocateOutput | null>
 }
 
 export interface IAssetPluginLocateInput {

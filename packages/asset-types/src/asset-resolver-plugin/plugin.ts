@@ -36,7 +36,7 @@ export interface IAssetLocatePlugin extends IAssetPlugin {
     embryo: Readonly<IAssetPluginLocateOutput> | null,
     api: Readonly<IAssetPluginLocateApi>,
     next: IAssetPluginLocateNext,
-  ): IAssetPluginLocateOutput | null | Promise<IAssetPluginLocateOutput | null>
+  ): Promise<IAssetPluginLocateOutput | null>
 }
 
 /**
@@ -48,7 +48,7 @@ export interface IAssetResolvePlugin extends IAssetPlugin {
     embryo: Readonly<IAssetPluginResolveOutput> | null,
     api: Readonly<IAssetPluginResolveApi>,
     next: IAssetPluginResolveNext,
-  ): IAssetPluginResolveOutput | null | Promise<IAssetPluginResolveOutput | null>
+  ): Promise<IAssetPluginResolveOutput | null>
 }
 
 /**
@@ -60,7 +60,7 @@ export interface IAssetParsePlugin extends IAssetPlugin {
     embryo: Readonly<IAssetPluginParseOutput> | null,
     api: Readonly<IAssetPluginParseApi>,
     next: IAssetPluginParseNext,
-  ): IAssetPluginParseOutput | null | Promise<IAssetPluginParseOutput | null>
+  ): Promise<IAssetPluginParseOutput | null>
 }
 
 /**
@@ -72,5 +72,5 @@ export interface IAssetPolishPlugin extends IAssetPlugin {
     embryo: Readonly<IAssetPluginPolishOutput> | null,
     api: Readonly<IAssetPluginPolishApi>,
     next: IAssetPluginPolishNext,
-  ): IAssetPluginPolishOutput | null | Promise<IAssetPluginPolishOutput | null>
+  ): Promise<IAssetPluginPolishOutput | null>
 }
