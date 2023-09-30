@@ -1,6 +1,5 @@
 import type {
   IAsset,
-  IAssetLocatedData,
   IAssetMeta,
   IAssetParsePlugin,
   IAssetPluginParseApi,
@@ -18,6 +17,7 @@ import type {
   IAssetPolishPlugin,
   IAssetProcessedData,
   IAssetResolvePlugin,
+  IAssetResolvedData,
   IAssetResolver,
   IAssetResolverApi,
   IAssetResolverPlugin,
@@ -25,7 +25,7 @@ import type {
 import type { IReporter } from '@guanghechen/types'
 import path from 'node:path'
 
-interface ILocateStageData {
+interface IResolveStageData {
   asset: IAsset
   absoluteSrcPath: string
   filename: string
@@ -74,33 +74,33 @@ export class AssetResolver implements IAssetResolver {
   ): Promise<IAssetProcessedData[]> {
     const reporter: IReporter = this._reporter
 
-    // locate stage
-    const locate = async (inputs: ReadonlyArray<string>): Promise<ILocateStageData[]> => {
+    // resolve stage
+    const resolve = async (inputs: ReadonlyArray<string>): Promise<IResolveStageData[]> => {
       const errors: unknown[] = []
-      const outputs: ILocateStageData[] = []
+      const outputs: IResolveStageData[] = []
 
       await Promise.all(
         inputs.map((absoluteSrcPath: string): Promise<void> => {
-          return this.locate(absoluteSrcPath, api)
+          return this._resolve(absoluteSrcPath, api)
             .then(result => {
               if (result !== null) {
                 const filename: string = path.basename(absoluteSrcPath)
                 outputs.push({
                   absoluteSrcPath,
-                  asset: result,
+                  asset: result.asset,
                   filename,
                   encoding: result.encoding,
                 })
               } else {
                 reporter.warn(
-                  '[AssetResolver.process] [locate] got null, absoluteSrcPath: {}.',
+                  '[AssetResolver.process] [resolve] got null, absoluteSrcPath: {}.',
                   absoluteSrcPath,
                 )
               }
             })
             .catch(error => {
               reporter.error(
-                '[AssetResolver.process] [locate] failed, absoluteSrcPath: {}.\nerror:',
+                '[AssetResolver.process] [resolve] failed, absoluteSrcPath: {}.\nerror:',
                 absoluteSrcPath,
                 error,
               )
@@ -116,7 +116,7 @@ export class AssetResolver implements IAssetResolver {
     }
 
     // parse stage
-    const parse = async (inputs: ILocateStageData[]): Promise<IParseStageData[]> => {
+    const parse = async (inputs: IResolveStageData[]): Promise<IParseStageData[]> => {
       const errors: unknown[] = []
       const outputs: IParseStageData[] = []
 
@@ -181,22 +181,27 @@ export class AssetResolver implements IAssetResolver {
       return outputs
     }
 
-    const locateOutputs: ILocateStageData[] = await locate(absoluteSrcPaths)
-    const parseOutputs: IParseStageData[] = await parse(locateOutputs)
+    const resolveOutputs: IResolveStageData[] = await resolve(absoluteSrcPaths)
+    const parseOutputs: IParseStageData[] = await parse(resolveOutputs)
     const polishOutputs: IPolishStageData[] = await polish(parseOutputs)
     return polishOutputs
   }
 
-  public async locate(
+  public async locate(absoluteSrcPath: string, api: IAssetResolverApi): Promise<IAsset | null> {
+    const resolvedData: IAssetResolvedData | null = await this._resolve(absoluteSrcPath, api)
+    return resolvedData?.asset ?? null
+  }
+
+  protected async _resolve(
     absoluteSrcPath: string,
     api: IAssetResolverApi,
-  ): Promise<IAssetLocatedData | null> {
+  ): Promise<IAssetResolvedData | null> {
     if (!api.pathResolver.isSafeAbsolutePath(absoluteSrcPath)) return null
 
     const asset: IAsset | null = await api.locator.locateAsset(absoluteSrcPath)
     if (asset !== null) {
       const encoding: BufferEncoding | undefined = await api.detectEncoding(absoluteSrcPath)
-      return { ...asset, encoding }
+      return { asset, encoding }
     }
 
     const input: IAssetPluginResolveInput | null = await api.initAsset(absoluteSrcPath)
@@ -253,14 +258,14 @@ export class AssetResolver implements IAssetResolver {
       tags,
     }
     await api.locator.insertAsset(absoluteSrcPath, resolvedAsset)
-    return { ...resolvedAsset, encoding: input.encoding }
+    return { asset: resolvedAsset, encoding: input.encoding }
   }
 
   protected async _parse(
-    locateStageData: ILocateStageData,
+    resolveStageData: IResolveStageData,
     api: IAssetResolverApi,
   ): Promise<IParseStageData | null> {
-    const { asset, absoluteSrcPath, filename, encoding } = locateStageData
+    const { asset, absoluteSrcPath, filename, encoding } = resolveStageData
     const input: IAssetPluginParseInput = {
       sourcetype: asset.sourcetype,
       title: asset.title,
@@ -314,10 +319,10 @@ export class AssetResolver implements IAssetResolver {
         const refPath: string | null = api.resolveRefPath(curDir, relativePath)
         if (refPath === null) return null
 
-        const refAsset: IAsset | null = await this.locate(refPath, api)
+        const refAsset: IAssetResolvedData | null = await this._resolve(refPath, api)
         if (refAsset === null) return null
 
-        const { uri, slug, title } = refAsset
+        const { uri, slug, title } = refAsset.asset
         return { uri, slug, title }
       },
     }

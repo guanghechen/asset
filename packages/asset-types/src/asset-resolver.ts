@@ -13,7 +13,8 @@ export type IAssetResolverPlugin = IAssetPlugin &
   Partial<IAssetParsePlugin> &
   Partial<IAssetPolishPlugin>
 
-export interface IAssetLocatedData extends IAsset {
+export interface IAssetResolvedData {
+  asset: IAsset
   /**
    * Source file encoding.
    */
@@ -49,5 +50,5 @@ export interface IAssetResolver {
    * @param absoluteSrcPath
    * @param api
    */
-  locate(absoluteSrcPath: string, api: IAssetResolverApi): Promise<IAssetLocatedData | null>
+  locate(absoluteSrcPath: string, api: IAssetResolverApi): Promise<IAsset | null>
 }

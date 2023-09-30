@@ -7,7 +7,7 @@ import type {
 } from '@guanghechen/asset-types'
 import { normalizeUrlPath } from '@guanghechen/asset-util'
 import type { IMarkdownResolverPlugin } from '../types'
-import { isMarkdownAssetLocateOutput } from '../types'
+import { isMarkdownAssetResolveOutput } from '../types'
 
 type IResolveSlug = (slug: string | null, src: string) => Promise<string | null>
 
@@ -40,7 +40,7 @@ export function markdownPluginSlug(params: IParams = {}): IMarkdownResolverPlugi
         _api: Readonly<IAssetPluginResolveApi>,
         next: IAssetPluginResolveNext,
       ): Promise<IAssetPluginResolveOutput | null> {
-        if (isMarkdownAssetLocateOutput(embryo)) {
+        if (isMarkdownAssetResolveOutput(embryo)) {
           let slug: string | null = await resolveSlug(embryo.slug, input.src)
           if (slug) slug = normalizeUrlPath(slug)
           if (slug !== embryo.slug) {

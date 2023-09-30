@@ -150,7 +150,7 @@ export interface IMarkdownPolishedData {
   toc?: IHeadingToc
 }
 
-export const isMarkdownAssetLocateOutput = (
+export const isMarkdownAssetResolveOutput = (
   embryo: Readonly<IAssetPluginResolveOutput> | null,
 ): embryo is IAssetPluginResolveOutput => embryo?.sourcetype === MarkdownAssetType
 

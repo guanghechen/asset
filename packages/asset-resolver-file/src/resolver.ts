@@ -43,7 +43,7 @@ export class AssetResolverFile implements IAssetResolverPlugin {
     this.resolvable = (filename: string): boolean => accepted(filename) && !rejected(filename)
   }
 
-  public async locate(
+  public async resolve(
     input: Readonly<IAssetPluginResolveInput>,
     embryo: Readonly<IAssetPluginResolveOutput> | null,
     api: Readonly<IAssetPluginResolveApi>,

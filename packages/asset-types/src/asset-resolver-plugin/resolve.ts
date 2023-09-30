@@ -61,7 +61,7 @@ export interface IAssetPluginResolveInput {
    */
   title: string
   /**
-   * The source file name which can be used to locate this asset by `api.loadContent(filename)`.
+   * The source file name.
    */
   filename: string
   /**

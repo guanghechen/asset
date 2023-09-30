@@ -103,7 +103,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     return this
   }
 
-  public async locate(
+  public async resolve(
     input: Readonly<IAssetPluginResolveInput>,
     embryo: Readonly<IAssetPluginResolveOutput> | null,
     api: Readonly<IAssetPluginResolveApi>,

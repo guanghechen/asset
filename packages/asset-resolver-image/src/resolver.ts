@@ -44,7 +44,7 @@ export class AssetResolverImage implements IAssetResolverPlugin {
     this.rejected = normalizePattern(props.rejected) ?? (() => false)
   }
 
-  public async locate(
+  public async resolve(
     input: Readonly<IAssetPluginResolveInput>,
     embryo: Readonly<IAssetPluginResolveOutput> | null,
     api: Readonly<IAssetPluginResolveApi>,
