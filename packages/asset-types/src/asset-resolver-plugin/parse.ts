@@ -20,15 +20,6 @@ export interface IAssetPluginParseNext {
   ): IAssetPluginParseOutput | null | Promise<IAssetPluginParseOutput | null>
 }
 
-export interface IAssetPluginParse {
-  (
-    input: Readonly<IAssetPluginParseInput>,
-    embryo: Readonly<IAssetPluginParseOutput> | null,
-    api: Readonly<IAssetPluginParseApi>,
-    next: IAssetPluginParseNext,
-  ): IAssetPluginParseOutput | null | Promise<IAssetPluginParseOutput | null>
-}
-
 export interface IAssetPluginParseInput {
   /**
    * Asset source content type.

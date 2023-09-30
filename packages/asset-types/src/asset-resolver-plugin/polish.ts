@@ -21,15 +21,6 @@ export interface IAssetPluginPolishNext {
   ): IAssetPluginPolishOutput | null | Promise<IAssetPluginPolishOutput | null>
 }
 
-export interface IAssetPluginPolish {
-  (
-    input: Readonly<IAssetPluginPolishInput>,
-    embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api: Readonly<IAssetPluginPolishApi>,
-    next: IAssetPluginPolishNext,
-  ): IAssetPluginPolishOutput | null | Promise<IAssetPluginPolishOutput | null>
-}
-
 export interface IAssetPluginPolishInput<D = unknown> {
   /**
    * Asset source content type.
