@@ -4,6 +4,7 @@ export * from './asset-resolver-plugin/plugin'
 export * from './asset-resolver-plugin/polish'
 
 export * from './asset'
+export * from './asset-cipher'
 export * from './asset-file'
 export * from './asset-file-source'
 export * from './asset-file-target'

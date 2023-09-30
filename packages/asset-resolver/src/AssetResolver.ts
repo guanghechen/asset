@@ -17,7 +17,7 @@ import type {
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
   IAssetPolishPlugin,
-  IAssetResolvedData,
+  IAssetProcessedData,
   IAssetResolver,
   IAssetResolverApi,
   IAssetResolverPlugin,
@@ -40,7 +40,7 @@ interface IParseStageData {
   encoding: BufferEncoding | undefined
 }
 
-type IPolishStageData = IAssetResolvedData
+type IPolishStageData = IAssetProcessedData
 
 export interface IAssetResolverProps {
   reporter: IReporter
@@ -68,10 +68,10 @@ export class AssetResolver implements IAssetResolver {
     return this
   }
 
-  public async resolve(
+  public async process(
     absoluteSrcPaths: ReadonlyArray<string>,
     api: IAssetResolverApi,
-  ): Promise<IAssetResolvedData[]> {
+  ): Promise<IAssetProcessedData[]> {
     const reporter: IReporter = this._reporter
 
     // locate stage
@@ -93,14 +93,14 @@ export class AssetResolver implements IAssetResolver {
                 })
               } else {
                 reporter.warn(
-                  '[AssetResolver.resolve] locate stage got null, absoluteSrcPath: {}.',
+                  '[AssetResolver.process] [locate] got null, absoluteSrcPath: {}.',
                   absoluteSrcPath,
                 )
               }
             })
             .catch(error => {
               reporter.error(
-                '[AssetResolver.resolve] locate stage failed, absoluteSrcPath: {}.\nerror:',
+                '[AssetResolver.process] [locate] failed, absoluteSrcPath: {}.\nerror:',
                 absoluteSrcPath,
                 error,
               )
@@ -127,14 +127,14 @@ export class AssetResolver implements IAssetResolver {
               if (result !== null) outputs.push(result)
               else {
                 reporter.warn(
-                  '[AssetResolver.resolve] parse stage got null, absoluteSrcPath: {}.',
+                  '[AssetResolver.process] [parse] got null, absoluteSrcPath: {}.',
                   stageData.absoluteSrcPath,
                 )
               }
             })
             .catch(error => {
               reporter.error(
-                '[AssetResolver.resolve] parse stage failed, absoluteSrcPath: {}.\nerror:',
+                '[AssetResolver.process] [parse] failed, absoluteSrcPath: {}.\nerror:',
                 stageData.absoluteSrcPath,
                 error,
               )
@@ -160,14 +160,14 @@ export class AssetResolver implements IAssetResolver {
               if (result !== null) outputs.push(result)
               else {
                 reporter.warn(
-                  '[AssetResolver.resolve] polish stage got null, absoluteSrcPath: {}.',
+                  '[AssetResolver.process] [polish] got null, absoluteSrcPath: {}.',
                   stageData.absoluteSrcPath,
                 )
               }
             })
             .catch(error => {
               reporter.error(
-                '[AssetResolver.resolve] polish stage failed, absoluteSrcPath: {}.\nerror:',
+                '[AssetResolver.process] [polish] failed, absoluteSrcPath: {}.\nerror:',
                 stageData.absoluteSrcPath,
                 error,
               )

@@ -20,7 +20,7 @@ export interface IAssetLocatedData extends IAsset {
   encoding: BufferEncoding | undefined
 }
 
-export interface IAssetResolvedData {
+export interface IAssetProcessedData {
   asset: IAsset
   datatype: AssetDataTypeEnum
   data: unknown
@@ -33,15 +33,17 @@ export interface IAssetResolver {
    * @param plugin
    */
   use(plugin: IAssetResolverPlugin): this
+
   /**
-   * Resolve assets in the specified srcPaths.
+   * Resolve assets and process them.
    * @param absoluteSrcPaths
    * @param api
    */
-  resolve(
+  process(
     absoluteSrcPaths: ReadonlyArray<string>,
     api: IAssetResolverApi,
-  ): Promise<IAssetResolvedData[]>
+  ): Promise<IAssetProcessedData[]>
+
   /**
    * Locate asset by srcPath.
    * @param absoluteSrcPath

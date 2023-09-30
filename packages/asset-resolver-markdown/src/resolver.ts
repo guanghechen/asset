@@ -26,8 +26,8 @@ import { collectInlineNodes, collectTexts, shallowMutateAstInPreorderAsync } fro
 import dayjs from 'dayjs'
 import yaml from 'js-yaml'
 import type {
+  IMarkdownParsedData,
   IMarkdownPolishedData,
-  IMarkdownResolvedData,
   IMarkdownResolverPlugin,
   IMarkdownResolverPluginContext,
   IParser,
@@ -184,7 +184,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
             ? (titleAst.children[0] as Paragraph)
             : { type: ParagraphType, children: collectInlineNodes(titleAst) }
         const ast: Root = this.ctx.parseMarkdown(rawContent.slice(match[0].length))
-        const result: IAssetPluginParseOutput<IMarkdownResolvedData> = {
+        const result: IAssetPluginParseOutput<IMarkdownParsedData> = {
           data: { title, ast, frontmatter },
         }
 

@@ -88,7 +88,7 @@ export interface IMarkdownFrontmatter {
   [key: string]: unknown
 }
 
-export interface IMarkdownResolvedData {
+export interface IMarkdownParsedData {
   /**
    * Markdown title.
    */
@@ -154,7 +154,7 @@ export const isMarkdownAssetLocateOutput = (
   embryo: Readonly<IAssetPluginLocateOutput> | null,
 ): embryo is IAssetPluginLocateOutput => embryo?.sourcetype === MarkdownAssetType
 
-export type IMarkdownAssetParseOutput = IAssetPluginParseOutput<IMarkdownResolvedData>
+export type IMarkdownAssetParseOutput = IAssetPluginParseOutput<IMarkdownParsedData>
 export const isMarkdownAssetParseOutput = (
   input: Readonly<IAssetPluginParseInput>,
   embryo: Readonly<IAssetPluginParseOutput> | null,

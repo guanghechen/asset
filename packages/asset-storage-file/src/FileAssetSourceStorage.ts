@@ -1,5 +1,6 @@
 import type {
   IAssetCollectOptions,
+  IAssetDecipher,
   IAssetPathResolver,
   IAssetSourceStorage,
   IAssetStat,
@@ -17,19 +18,26 @@ import { readFile, stat, unlink, writeFile } from 'node:fs/promises'
 interface IProps {
   pathResolver: IAssetPathResolver
   encodingDetector: IEncodingDetector
+  decipher?: IAssetDecipher
   watchOptions?: Partial<chokidar.WatchOptions>
 }
 
+const defaultDecipher: IAssetDecipher = {
+  decode: async data => data,
+}
+
 export class FileAssetSourceStorage implements IAssetSourceStorage {
+  protected readonly _decipher: IAssetDecipher
   protected readonly _pathResolver: IAssetPathResolver
   protected readonly _encodingDetector: IEncodingDetector
   protected readonly _watchOptions: Partial<chokidar.WatchOptions>
 
   constructor(props: IProps) {
-    const { pathResolver, encodingDetector, watchOptions = {} } = props
+    const { pathResolver, encodingDetector, decipher, watchOptions = {} } = props
 
     this._pathResolver = pathResolver
     this._encodingDetector = encodingDetector
+    this._decipher = decipher ?? defaultDecipher
     this._watchOptions = watchOptions
   }
 
@@ -54,7 +62,8 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
 
   public async readFile(absoluteSrcPath: string): Promise<IBinaryFileData> {
     this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
-    const data: IBinaryFileData = await readFile(absoluteSrcPath)
+    const encodedData: IBinaryFileData = await readFile(absoluteSrcPath)
+    const data: IBinaryFileData = await this._decipher.decode(encodedData)
     return data
   }
 

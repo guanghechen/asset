@@ -2,7 +2,7 @@ import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAsset,
   IAssetDataMap,
-  IAssetResolvedData,
+  IAssetProcessedData,
   IAssetResolver,
   IAssetResolverApi,
   IAssetTargetStorage,
@@ -46,7 +46,7 @@ export class AssetTaskApi implements IAssetTaskApi {
   public async create(absoluteSrcPaths: ReadonlyArray<string>): Promise<void> {
     const resolverApi: IAssetResolverApi = this._resolverApi
     const resolver: IAssetResolver = this._resolver
-    const results: IAssetResolvedData[] = await resolver.resolve(absoluteSrcPaths, resolverApi)
+    const results: IAssetProcessedData[] = await resolver.process(absoluteSrcPaths, resolverApi)
     const tasks: Array<Promise<void>> = []
 
     for (const result of results) {
