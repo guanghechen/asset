@@ -1,6 +1,6 @@
-import type { IAssetPluginLocate } from './locate'
 import type { IAssetPluginParse } from './parse'
 import type { IAssetPluginPolish } from './polish'
+import type { IAssetPluginResolve } from './resolve'
 
 export interface IAssetPlugin {
   /**
@@ -12,8 +12,8 @@ export interface IAssetPlugin {
 /**
  * Hooks for resolve asset meta data, like slug, title and etc.
  */
-export interface IAssetLocatePlugin extends IAssetPlugin {
-  locate: IAssetPluginLocate
+export interface IAssetResolvePlugin extends IAssetPlugin {
+  resolve: IAssetPluginResolve
 }
 
 /**

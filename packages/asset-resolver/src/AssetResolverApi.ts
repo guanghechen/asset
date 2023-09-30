@@ -1,7 +1,7 @@
 import type {
   IAssetLocator,
   IAssetPathResolver,
-  IAssetPluginLocateInput,
+  IAssetPluginResolveInput,
   IAssetResolverApi,
   IAssetSourceStorage,
   IAssetUriResolver,
@@ -38,7 +38,7 @@ export class AssetResolverApi implements IAssetResolverApi {
     return await this._sourceStorage.detectEncoding(absoluteSrcPath)
   }
 
-  public async initAsset(absoluteSrcPath: string): Promise<IAssetPluginLocateInput | null> {
+  public async initAsset(absoluteSrcPath: string): Promise<IAssetPluginResolveInput | null> {
     const pathResolver: IAssetPathResolver = this.pathResolver
     const sourceStorage: IAssetSourceStorage = this._sourceStorage
 

@@ -1,13 +1,13 @@
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
-  IAssetPluginLocateApi,
-  IAssetPluginLocateInput,
-  IAssetPluginLocateNext,
-  IAssetPluginLocateOutput,
   IAssetPluginPolishApi,
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
+  IAssetPluginResolveApi,
+  IAssetPluginResolveInput,
+  IAssetPluginResolveNext,
+  IAssetPluginResolveOutput,
   IAssetResolverPlugin,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
@@ -44,16 +44,16 @@ export class AssetResolverFile implements IAssetResolverPlugin {
   }
 
   public async locate(
-    input: Readonly<IAssetPluginLocateInput>,
-    embryo: Readonly<IAssetPluginLocateOutput> | null,
-    api: Readonly<IAssetPluginLocateApi>,
-    next: IAssetPluginLocateNext,
-  ): Promise<IAssetPluginLocateOutput | null> {
+    input: Readonly<IAssetPluginResolveInput>,
+    embryo: Readonly<IAssetPluginResolveOutput> | null,
+    api: Readonly<IAssetPluginResolveApi>,
+    next: IAssetPluginResolveNext,
+  ): Promise<IAssetPluginResolveOutput | null> {
     if (!embryo && this.resolvable(input.src)) {
       const sourcetype: string = FileAssetType
       const mimetype: string = mime.getType(input.filename) ?? 'unknown'
       const uri: string | null = await api.resolveUri(sourcetype, mimetype)
-      const result: IAssetPluginLocateOutput = {
+      const result: IAssetPluginResolveOutput = {
         sourcetype,
         mimetype,
         title: input.title,

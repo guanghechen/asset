@@ -1,7 +1,7 @@
-export * from './asset-resolver-plugin/locate'
 export * from './asset-resolver-plugin/parse'
 export * from './asset-resolver-plugin/plugin'
 export * from './asset-resolver-plugin/polish'
+export * from './asset-resolver-plugin/resolve'
 
 export * from './asset'
 export * from './asset-cipher'

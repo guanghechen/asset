@@ -1,8 +1,8 @@
 import type {
-  IAssetPluginLocateApi,
-  IAssetPluginLocateInput,
-  IAssetPluginLocateNext,
-  IAssetPluginLocateOutput,
+  IAssetPluginResolveApi,
+  IAssetPluginResolveInput,
+  IAssetPluginResolveNext,
+  IAssetPluginResolveOutput,
   IAssetResolverPlugin,
 } from '@guanghechen/asset-types'
 import { normalizeUrlPath } from '@guanghechen/asset-util'
@@ -34,17 +34,17 @@ export function markdownPluginSlug(params: IParams = {}): IMarkdownResolverPlugi
       get displayName(): string {
         return '@guanghechen/asset-resolver-markdown/slug'
       },
-      async locate(
-        input: Readonly<IAssetPluginLocateInput>,
-        embryo: Readonly<IAssetPluginLocateOutput> | null,
-        _api: Readonly<IAssetPluginLocateApi>,
-        next: IAssetPluginLocateNext,
-      ): Promise<IAssetPluginLocateOutput | null> {
+      async resolve(
+        input: Readonly<IAssetPluginResolveInput>,
+        embryo: Readonly<IAssetPluginResolveOutput> | null,
+        _api: Readonly<IAssetPluginResolveApi>,
+        next: IAssetPluginResolveNext,
+      ): Promise<IAssetPluginResolveOutput | null> {
         if (isMarkdownAssetLocateOutput(embryo)) {
           let slug: string | null = await resolveSlug(embryo.slug, input.src)
           if (slug) slug = normalizeUrlPath(slug)
           if (slug !== embryo.slug) {
-            const result: IAssetPluginLocateOutput = { ...embryo, slug }
+            const result: IAssetPluginResolveOutput = { ...embryo, slug }
             return next(result)
           }
         }

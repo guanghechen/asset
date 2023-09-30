@@ -1,12 +1,7 @@
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
-  IAssetLocatePlugin,
   IAssetMeta,
   IAssetParsePlugin,
-  IAssetPluginLocateApi,
-  IAssetPluginLocateInput,
-  IAssetPluginLocateNext,
-  IAssetPluginLocateOutput,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
@@ -15,7 +10,12 @@ import type {
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
+  IAssetPluginResolveApi,
+  IAssetPluginResolveInput,
+  IAssetPluginResolveNext,
+  IAssetPluginResolveOutput,
   IAssetPolishPlugin,
+  IAssetResolvePlugin,
   IAssetResolverPlugin,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
@@ -58,7 +58,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
   public readonly displayName: string = '@guanghechen/asset-resolver-markdown'
   protected readonly ctx: IMarkdownResolverPluginContext
   protected readonly frontmatterRegex: RegExp
-  private readonly _locatePlugins: IAssetLocatePlugin[]
+  private readonly _resolvePlugins: IAssetResolvePlugin[]
   private readonly _parsePlugins: IAssetParsePlugin[]
   private readonly _polishPlugins: IAssetPolishPlugin[]
 
@@ -86,7 +86,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
 
     this.ctx = ctx
     this.frontmatterRegex = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
-    this._locatePlugins = []
+    this._resolvePlugins = []
     this._parsePlugins = []
     this._polishPlugins = []
   }
@@ -95,7 +95,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     for (const markdownResolverPlugin of markdownResolverPlugins) {
       const plugin: IAssetResolverPlugin = markdownResolverPlugin(this.ctx)
       if (plugin.displayName) {
-        if (plugin.locate) this._locatePlugins.push(plugin as IAssetLocatePlugin)
+        if (plugin.resolve) this._resolvePlugins.push(plugin as IAssetResolvePlugin)
         if (plugin.parse) this._parsePlugins.push(plugin as IAssetParsePlugin)
         if (plugin.polish) this._polishPlugins.push(plugin as IAssetPolishPlugin)
       }
@@ -104,11 +104,11 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
   }
 
   public async locate(
-    input: Readonly<IAssetPluginLocateInput>,
-    embryo: Readonly<IAssetPluginLocateOutput> | null,
-    api: Readonly<IAssetPluginLocateApi>,
-    next: IAssetPluginLocateNext,
-  ): Promise<IAssetPluginLocateOutput | null> {
+    input: Readonly<IAssetPluginResolveInput>,
+    embryo: Readonly<IAssetPluginResolveOutput> | null,
+    api: Readonly<IAssetPluginResolveApi>,
+    next: IAssetPluginResolveNext,
+  ): Promise<IAssetPluginResolveOutput | null> {
     if (this.ctx.resolvable(input.filename)) {
       const rawSrcContent: IBinaryFileData | null = await api.loadContent(input.filename)
       if (rawSrcContent) {
@@ -137,7 +137,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
           slug: typeof frontmatter.slug === 'string' ? frontmatter.slug : null,
           title,
         })
-        const result: IAssetPluginLocateOutput = {
+        const result: IAssetPluginResolveOutput = {
           sourcetype,
           mimetype,
           title,
@@ -152,10 +152,10 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
           tags: isArrayOfT(frontmatter.tags, isString) ? frontmatter.tags : [],
         }
 
-        const reducer: IAssetPluginLocateNext =
-          this._locatePlugins.reduceRight<IAssetPluginLocateNext>(
+        const reducer: IAssetPluginResolveNext =
+          this._resolvePlugins.reduceRight<IAssetPluginResolveNext>(
             (internalNext, middleware) => embryo =>
-              middleware.locate(input, embryo, api, internalNext),
+              middleware.resolve(input, embryo, api, internalNext),
             next,
           )
         return reducer(result)

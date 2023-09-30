@@ -1,7 +1,7 @@
 import type { IAssetMeta } from '../asset'
 import type { IBinaryFileData } from '../asset-file'
 
-export interface IAssetPluginLocateApi {
+export interface IAssetPluginResolveApi {
   /**
    * Load source content.
    * @param srcPathRelativeToCurDir the path relative to the parent path of the current resource.
@@ -20,22 +20,22 @@ export interface IAssetPluginLocateApi {
   resolveUri(sourcetype: string, mimetype: string): Promise<string>
 }
 
-export interface IAssetPluginLocateNext {
+export interface IAssetPluginResolveNext {
   (
-    embryo: Readonly<IAssetPluginLocateOutput> | null,
-  ): IAssetPluginLocateOutput | null | Promise<IAssetPluginLocateOutput | null>
+    embryo: Readonly<IAssetPluginResolveOutput> | null,
+  ): IAssetPluginResolveOutput | null | Promise<IAssetPluginResolveOutput | null>
 }
 
-export interface IAssetPluginLocate {
+export interface IAssetPluginResolve {
   (
-    input: Readonly<IAssetPluginLocateInput>,
-    embryo: Readonly<IAssetPluginLocateOutput> | null,
-    api: Readonly<IAssetPluginLocateApi>,
-    next: IAssetPluginLocateNext,
-  ): IAssetPluginLocateOutput | null | Promise<IAssetPluginLocateOutput | null>
+    input: Readonly<IAssetPluginResolveInput>,
+    embryo: Readonly<IAssetPluginResolveOutput> | null,
+    api: Readonly<IAssetPluginResolveApi>,
+    next: IAssetPluginResolveNext,
+  ): IAssetPluginResolveOutput | null | Promise<IAssetPluginResolveOutput | null>
 }
 
-export interface IAssetPluginLocateInput {
+export interface IAssetPluginResolveInput {
   /**
    * Asset global unique identifier.
    */
@@ -74,7 +74,7 @@ export interface IAssetPluginLocateInput {
   encoding: BufferEncoding | undefined
 }
 
-export interface IAssetPluginLocateOutput {
+export interface IAssetPluginResolveOutput {
   /**
    * Asset source content type.
    */

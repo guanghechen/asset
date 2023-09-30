@@ -1,9 +1,9 @@
 import type {
-  IAssetPluginLocateOutput,
   IAssetPluginParseInput,
   IAssetPluginParseOutput,
   IAssetPluginPolishInput,
   IAssetPluginPolishOutput,
+  IAssetPluginResolveOutput,
   IAssetResolverPlugin,
 } from '@guanghechen/asset-types'
 import type {
@@ -151,8 +151,8 @@ export interface IMarkdownPolishedData {
 }
 
 export const isMarkdownAssetLocateOutput = (
-  embryo: Readonly<IAssetPluginLocateOutput> | null,
-): embryo is IAssetPluginLocateOutput => embryo?.sourcetype === MarkdownAssetType
+  embryo: Readonly<IAssetPluginResolveOutput> | null,
+): embryo is IAssetPluginResolveOutput => embryo?.sourcetype === MarkdownAssetType
 
 export type IMarkdownAssetParseOutput = IAssetPluginParseOutput<IMarkdownParsedData>
 export const isMarkdownAssetParseOutput = (

@@ -1,13 +1,8 @@
 import type {
   IAsset,
-  IAssetLocatePlugin,
   IAssetLocatedData,
   IAssetMeta,
   IAssetParsePlugin,
-  IAssetPluginLocateApi,
-  IAssetPluginLocateInput,
-  IAssetPluginLocateNext,
-  IAssetPluginLocateOutput,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
@@ -16,8 +11,13 @@ import type {
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
+  IAssetPluginResolveApi,
+  IAssetPluginResolveInput,
+  IAssetPluginResolveNext,
+  IAssetPluginResolveOutput,
   IAssetPolishPlugin,
   IAssetProcessedData,
+  IAssetResolvePlugin,
   IAssetResolver,
   IAssetResolverApi,
   IAssetResolverPlugin,
@@ -48,20 +48,20 @@ export interface IAssetResolverProps {
 
 export class AssetResolver implements IAssetResolver {
   protected readonly _reporter: IReporter
-  private readonly _locatePlugins: IAssetLocatePlugin[]
+  private readonly _resolvePlugins: IAssetResolvePlugin[]
   private readonly _parsePlugins: IAssetParsePlugin[]
   private readonly _polishPlugins: IAssetPolishPlugin[]
 
   constructor(props: IAssetResolverProps) {
     this._reporter = props.reporter
-    this._locatePlugins = []
+    this._resolvePlugins = []
     this._parsePlugins = []
     this._polishPlugins = []
   }
 
   public use(plugin: IAssetResolverPlugin): this {
     if (plugin.displayName) {
-      if (plugin.locate) this._locatePlugins.push(plugin as IAssetLocatePlugin)
+      if (plugin.resolve) this._resolvePlugins.push(plugin as IAssetResolvePlugin)
       if (plugin.parse) this._parsePlugins.push(plugin as IAssetParsePlugin)
       if (plugin.polish) this._polishPlugins.push(plugin as IAssetPolishPlugin)
     }
@@ -199,13 +199,13 @@ export class AssetResolver implements IAssetResolver {
       return { ...asset, encoding }
     }
 
-    const input: IAssetPluginLocateInput | null = await api.initAsset(absoluteSrcPath)
+    const input: IAssetPluginResolveInput | null = await api.initAsset(absoluteSrcPath)
     if (input === null) return null
 
     const { guid, hash, extname } = input
 
     const curDir: string = path.dirname(absoluteSrcPath)
-    const pluginApi: IAssetPluginLocateApi = {
+    const pluginApi: IAssetPluginResolveApi = {
       loadContent: async relativePath => {
         const refPath: string | null = api.resolveRefPath(curDir, relativePath)
         return refPath === null ? null : api.loadContent(refPath)
@@ -215,12 +215,13 @@ export class AssetResolver implements IAssetResolver {
         api.uriResolver.resolveUri({ guid, sourcetype, mimetype, extname }),
     }
 
-    const reducer: IAssetPluginLocateNext = this._locatePlugins.reduceRight<IAssetPluginLocateNext>(
-      (next, middleware) => embryo => middleware.locate(input, embryo, pluginApi, next),
-      embryo => embryo,
-    )
+    const reducer: IAssetPluginResolveNext =
+      this._resolvePlugins.reduceRight<IAssetPluginResolveNext>(
+        (next, middleware) => embryo => middleware.resolve(input, embryo, pluginApi, next),
+        embryo => embryo,
+      )
 
-    const result: IAssetPluginLocateOutput | null = await reducer(null)
+    const result: IAssetPluginResolveOutput | null = await reducer(null)
     if (result === null) return null
 
     const {

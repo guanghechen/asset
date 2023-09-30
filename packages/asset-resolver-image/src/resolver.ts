@@ -1,12 +1,12 @@
 import type {
-  IAssetPluginLocateApi,
-  IAssetPluginLocateInput,
-  IAssetPluginLocateNext,
-  IAssetPluginLocateOutput,
   IAssetPluginPolishApi,
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
+  IAssetPluginResolveApi,
+  IAssetPluginResolveInput,
+  IAssetPluginResolveNext,
+  IAssetPluginResolveOutput,
   IAssetResolverPlugin,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
@@ -45,11 +45,11 @@ export class AssetResolverImage implements IAssetResolverPlugin {
   }
 
   public async locate(
-    input: Readonly<IAssetPluginLocateInput>,
-    embryo: Readonly<IAssetPluginLocateOutput> | null,
-    api: Readonly<IAssetPluginLocateApi>,
-    next: IAssetPluginLocateNext,
-  ): Promise<IAssetPluginLocateOutput | null> {
+    input: Readonly<IAssetPluginResolveInput>,
+    embryo: Readonly<IAssetPluginResolveOutput> | null,
+    api: Readonly<IAssetPluginResolveApi>,
+    next: IAssetPluginResolveNext,
+  ): Promise<IAssetPluginResolveOutput | null> {
     if (!embryo && this.accepted(input.src) && !this.rejected(input.src)) {
       const sourcetype: string = ImageAssetType
       const mimetype: string = mime.getType(input.filename) ?? 'unknown'
@@ -77,7 +77,7 @@ export class AssetResolverImage implements IAssetResolverPlugin {
         }
       }
 
-      const result: IAssetPluginLocateOutput = {
+      const result: IAssetPluginResolveOutput = {
         sourcetype,
         mimetype,
         title: input.title,

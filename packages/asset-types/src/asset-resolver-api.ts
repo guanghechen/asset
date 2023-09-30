@@ -1,7 +1,7 @@
 import type { IBinaryFileData } from './asset-file'
 import type { IAssetLocator } from './asset-locator'
 import type { IAssetPathResolver } from './asset-path-resolver'
-import type { IAssetPluginLocateInput } from './asset-resolver-plugin/locate'
+import type { IAssetPluginResolveInput } from './asset-resolver-plugin/resolve'
 import type { IAssetUriResolver } from './asset-uri-resolver'
 
 export interface IAssetResolverApi {
@@ -19,7 +19,7 @@ export interface IAssetResolverApi {
    * Create an initial asset.
    * @param absoluteSrcPath
    */
-  initAsset(absoluteSrcPath: string): Promise<IAssetPluginLocateInput | null>
+  initAsset(absoluteSrcPath: string): Promise<IAssetPluginResolveInput | null>
 
   /**
    * Load content by source file srcPath.
