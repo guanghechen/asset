@@ -36,10 +36,10 @@ export interface IAssetResolverFlights {
 }
 
 export interface ICreateAssetResolverParams {
-  slugPrefix: string
-  reporter: IReporter
-  parser: IParser
   flights: IAssetResolverFlights
+  parser: IParser
+  reporter: IReporter
+  slugPrefix: string
   customizedMarkdownPlugins?: IMarkdownResolverPlugin[]
   getPresetDefinitions?: () => Definition[] | undefined
   getPresetFootnoteDefinitions?: () => FootnoteDefinition[] | undefined
@@ -47,11 +47,11 @@ export interface ICreateAssetResolverParams {
 
 export function createAsstResolver(params: ICreateAssetResolverParams): IAssetResolver {
   const {
-    slugPrefix,
-    reporter,
-    parser,
-    flights,
     customizedMarkdownPlugins,
+    flights,
+    parser,
+    reporter,
+    slugPrefix,
     getPresetDefinitions,
     getPresetFootnoteDefinitions,
   } = params

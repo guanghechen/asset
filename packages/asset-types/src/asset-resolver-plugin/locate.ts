@@ -1,20 +1,12 @@
 import type { IBinaryFileData } from '../asset-file'
 import type { IAssetLocator } from '../asset-locator'
 import type { IAssetPathResolver } from '../asset-path-resolver'
-import type { IAssetSourceStorage } from '../asset-storage-source'
 import type { IAssetUriResolver } from '../asset-uri-resolver'
 
 export interface IAssetPluginLocateApi {
   readonly locator: IAssetLocator
   readonly pathResolver: IAssetPathResolver
-  readonly sourceStorage: IAssetSourceStorage
   readonly uriResolver: IAssetUriResolver
-  /**
-   * Detect content encoding.
-   * @param src
-   * @param data
-   */
-  detectEncoding(src: string, data: IBinaryFileData): Promise<BufferEncoding | undefined>
   /**
    * Extract src path from url.
    * @param url
@@ -30,7 +22,7 @@ export interface IAssetPluginLocateInput {
   /**
    * Relative src path.
    */
-  relativePath: string
+  absoluteSrcPath: string
   /**
    * Asset global unique identifier.
    */
@@ -39,6 +31,14 @@ export interface IAssetPluginLocateInput {
    * The fingerprint of the asset content.
    */
   hash: string
+  /**
+   * Relative src path. (*nix style).
+   */
+  src: string
+  /**
+   * Asset title.
+   */
+  title: string
   /**
    * Asset content.
    */
@@ -54,6 +54,10 @@ export interface IAssetPluginLocateInput {
 }
 
 export interface IAssetPluginLocateOutput {
+  /**
+   * The fingerprint of the asset content.
+   */
+  hash: string
   /**
    * Relative src path. (*nix style).
    */

@@ -24,47 +24,48 @@ export async function locate(
   const srcRoot: string | null = api.pathResolver.findSrcRoot(absoluteSrcPath)
   if (srcRoot === null) return null
 
-  const content0: IBinaryFileData | undefined = await api.sourceStorage.readFile(absoluteSrcPath)
   const guid: string = await api.locator.resolveGUID(absoluteSrcPath)
-  const hash: string = calcFingerprint(content0)
-  const stat: IAssetStat = await api.sourceStorage.statFile(absoluteSrcPath)
   const relativePath: string = api.pathResolver.relative(srcRoot, absoluteSrcPath)
+  const src: string = normalizeUrlPath(relativePath)
+  const filename: string = path.basename(relativePath)
+  const title: string = filename
+    .trim()
+    .replace(/\s+/, ' ')
+    .replace(/\.[^.]+$/, '')
+  const content: IBinaryFileData | undefined = await api.sourceStorage.readFile(absoluteSrcPath)
+  const hash: string = calcFingerprint(content)
+  const stat: IAssetStat = await api.sourceStorage.statFile(absoluteSrcPath)
+  const createdAt: string = new Date(stat.birthtime).toISOString()
+  const updatedAt: string = new Date(stat.mtime).toISOString()
 
   const input: IAssetPluginLocateInput = {
-    relativePath,
+    absoluteSrcPath,
     guid,
     hash,
-    content: content0,
-    createdAt: new Date(stat.birthtime).toISOString(),
-    updatedAt: new Date(stat.mtime).toISOString(),
+    src,
+    title,
+    content,
+    createdAt,
+    updatedAt,
   }
   const pluginApi: IAssetPluginLocateApi = {
     locator: api.locator,
     pathResolver: api.pathResolver,
-    sourceStorage: api.sourceStorage,
     uriResolver: api.uriResolver,
-    detectEncoding: (src, data) => api.encodingDetector.detect(src, data),
     parseSrcPathFromUrl: url => api.pathResolver.parseFromUrl(url),
   }
-  const fallback: IAssetPluginLocateNext = async embryo => {
+  const defaultPlugin: IAssetPluginLocateNext = async embryo => {
     if (embryo === null) {
-      const src: string = normalizeUrlPath(relativePath)
-      const filename: string = path.basename(relativePath)
-      const title: string = filename
-        .trim()
-        .replace(/\s+/, ' ')
-        .replace(/\.[^.]+$/, '')
-      const encoding: BufferEncoding | undefined = await api.encodingDetector.detect(
-        src,
-        input.content,
-      )
+      const { hash, src, title, content, createdAt, updatedAt } = input
+      const encoding: BufferEncoding | undefined = await api.encodingDetector.detect(src, content)
       const output: IAssetPluginLocateOutput = {
+        hash,
         src,
         title,
+        content,
         encoding,
-        content: input.content,
-        createdAt: input.createdAt,
-        updatedAt: input.updatedAt,
+        createdAt,
+        updatedAt,
       }
       return output
     }
@@ -72,26 +73,24 @@ export async function locate(
   }
   const reducer: IAssetPluginLocateNext = plugins.reduceRight<IAssetPluginLocateNext>(
     (next, middleware) => embryo => middleware.locate(input, embryo, pluginApi, next),
-    fallback,
+    defaultPlugin,
   )
 
   const output: IAssetPluginLocateOutput | null = await reducer(null)
   if (output === null) return null
 
-  const { src, title, content, encoding, createdAt, updatedAt } = output
   const extname: string | undefined = src.match(extnameRegex)?.[1]
-
   const result: IAssetPluginLocateResult = {
     absoluteSrcPath,
     guid,
-    hash,
-    src,
-    title,
+    hash: output.hash,
+    src: output.src,
+    title: output.title,
     extname,
-    content,
-    encoding,
-    createdAt,
-    updatedAt,
+    content: output.content,
+    encoding: output.encoding,
+    createdAt: output.createdAt,
+    updatedAt: output.updatedAt,
   }
   return result
 }
