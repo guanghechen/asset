@@ -64,148 +64,83 @@ export class AssetResolver implements IAssetResolver {
   ): Promise<IAssetProcessedData[]> {
     const reporter: IReporter = this._reporter
 
-    // locate stage
-    const locate = async (inputs: ReadonlyArray<string>): Promise<IAssetPluginLocateResult[]> => {
+    const stage = async <
+      T1 extends
+        | IAssetPluginLocateArgs
+        | IAssetPluginLocateResult
+        | IAssetPluginResolveResult
+        | IAssetPluginParseResult,
+      T2 extends
+        | IAssetPluginLocateResult
+        | IAssetPluginResolveResult
+        | IAssetPluginParseResult
+        | IAssetPluginPolishResult,
+    >(
+      stageName: 'locate' | 'resolve' | 'parse' | 'polish',
+      lastStageResults: T1[],
+      fn: (lastStageResult: T1) => Promise<T2 | null>,
+    ): Promise<T2[]> => {
       const errors: unknown[] = []
-      const results: IAssetPluginLocateResult[] = []
+      const results: T2[] = []
 
       await Promise.all(
-        inputs.map((absoluteSrcPath: string): Promise<void> => {
-          return this._locate(absoluteSrcPath, api)
+        lastStageResults.map(lastStageResult =>
+          fn(lastStageResult)
             .then(result => {
               if (result !== null) results.push(result)
               else {
                 reporter.warn(
-                  '[AssetResolver.process] [locate] got null, absoluteSrcPath: {}.',
-                  absoluteSrcPath,
+                  '[AssetResolver.process] [{}] got null, absoluteSrcPath: {}.',
+                  stageName,
+                  lastStageResult.absoluteSrcPath,
                 )
               }
             })
             .catch(error => {
               reporter.error(
-                '[AssetResolver.process] [locate] failed, absoluteSrcPath: {}.\nerror:',
-                absoluteSrcPath,
+                '[AssetResolver.process] [{}] failed, absoluteSrcPath: {}.\nerror:',
+                stageName,
+                lastStageResult.absoluteSrcPath,
                 error,
               )
               errors.push(error)
-            })
-        }),
+            }),
+        ),
       )
 
       // rethrow error
       if (errors.length > 0) throw errors
       return results
     }
+
+    const locateArgs: IAssetPluginLocateArgs[] = absoluteSrcPaths.map(absoluteSrcPath => ({
+      absoluteSrcPath,
+    }))
+
+    // locate stage
+    const locateResults: IAssetPluginLocateResult[] = await stage<
+      IAssetPluginLocateArgs,
+      IAssetPluginLocateResult
+    >('locate', locateArgs, input => this._locate(input, api))
 
     // resolve stage
-    const resolve = async (
-      inputs: IAssetPluginLocateResult[],
-    ): Promise<IAssetPluginResolveResult[]> => {
-      const errors: unknown[] = []
-      const results: IAssetPluginResolveResult[] = []
-
-      await Promise.all(
-        inputs.map(lastStageResult => {
-          return this._resolve(lastStageResult, api)
-            .then(result => {
-              if (result !== null) results.push(result)
-              else {
-                reporter.warn(
-                  '[AssetResolver.process] [resolve] got null, absoluteSrcPath: {}.',
-                  lastStageResult.absoluteSrcPath,
-                )
-              }
-            })
-            .catch(error => {
-              reporter.error(
-                '[AssetResolver.process] [resolve] failed, absoluteSrcPath: {}.\nerror:',
-                lastStageResult.absoluteSrcPath,
-                error,
-              )
-              errors.push(error)
-            })
-        }),
-      )
-
-      // rethrow error
-      if (errors.length > 0) throw errors
-      return results
-    }
+    const resolveResults: IAssetPluginResolveResult[] = await stage<
+      IAssetPluginLocateResult,
+      IAssetPluginResolveResult
+    >('resolve', locateResults, input => this._resolve(input, api))
 
     // parse stage
-    const parse = async (
-      inputs: IAssetPluginResolveResult[],
-    ): Promise<IAssetPluginParseResult[]> => {
-      const errors: unknown[] = []
-      const results: IAssetPluginParseResult[] = []
-
-      await Promise.all(
-        inputs.map(lastStageResult =>
-          this._parse(lastStageResult, api)
-            .then(result => {
-              if (result !== null) results.push(result)
-              else {
-                reporter.warn(
-                  '[AssetResolver.process] [parse] got null, absoluteSrcPath: {}.',
-                  lastStageResult.absoluteSrcPath,
-                )
-              }
-            })
-            .catch(error => {
-              reporter.error(
-                '[AssetResolver.process] [parse] failed, absoluteSrcPath: {}.\nerror:',
-                lastStageResult.absoluteSrcPath,
-                error,
-              )
-              errors.push(error)
-            }),
-        ),
-      )
-
-      // rethrow error
-      if (errors.length > 0) throw errors
-      return results
-    }
+    const parseResults: IAssetPluginParseResult[] = await stage<
+      IAssetPluginResolveResult,
+      IAssetPluginParseResult
+    >('parse', resolveResults, input => this._parse(input, api))
 
     // polish stage
-    const polish = async (
-      inputs: IAssetPluginParseResult[],
-    ): Promise<IAssetPluginPolishResult[]> => {
-      const errors: unknown[] = []
-      const results: IAssetPluginPolishResult[] = []
+    const polishResults: IAssetPluginPolishResult[] = await stage<
+      IAssetPluginParseResult,
+      IAssetPluginPolishResult
+    >('polish', parseResults, input => this._polish(input, api))
 
-      await Promise.all(
-        inputs.map(lastStageResult =>
-          this._polish(lastStageResult, api)
-            .then(result => {
-              if (result !== null) results.push(result)
-              else {
-                reporter.warn(
-                  '[AssetResolver.process] [polish] got null, absoluteSrcPath: {}.',
-                  lastStageResult.absoluteSrcPath,
-                )
-              }
-            })
-            .catch(error => {
-              reporter.error(
-                '[AssetResolver.process] [polish] failed, absoluteSrcPath: {}.\nerror:',
-                lastStageResult.absoluteSrcPath,
-                error,
-              )
-              errors.push(error)
-            }),
-        ),
-      )
-
-      // rethrow error
-      if (errors.length > 0) throw errors
-      return results
-    }
-
-    const locateResults: IAssetPluginLocateResult[] = await locate(absoluteSrcPaths)
-    const resolveResults: IAssetPluginResolveResult[] = await resolve(locateResults)
-    const parseResults: IAssetPluginParseResult[] = await parse(resolveResults)
-    const polishResults: IAssetPluginPolishResult[] = await polish(parseResults)
     const results: IAssetProcessedData[] = polishResults.map(polishResult => ({
       asset: polishResult.asset,
       datatype: polishResult.datatype,
@@ -216,7 +151,8 @@ export class AssetResolver implements IAssetResolver {
   }
 
   public async resolve(absoluteSrcPath: string, api: IAssetResolverApi): Promise<IAsset | null> {
-    const locateResult = await this._locate(absoluteSrcPath, api)
+    const args: IAssetPluginLocateArgs = { absoluteSrcPath }
+    const locateResult = await this._locate(args, api)
     if (locateResult === null) return null
 
     const asset: IAsset | null = await api.locator.findAssetByGuid(locateResult.guid)
@@ -230,10 +166,9 @@ export class AssetResolver implements IAssetResolver {
   }
 
   protected async _locate(
-    absoluteSrcPath: string,
+    args: IAssetPluginLocateArgs,
     api: IAssetResolverApi,
   ): Promise<IAssetPluginLocateResult | null> {
-    const args: IAssetPluginLocateArgs = { absoluteSrcPath }
     const plugins: IAssetLocatePlugin[] = this._locatePlugins
     const result: IAssetPluginLocateResult | null = await locate(args, plugins, api)
     return result
@@ -284,7 +219,8 @@ export class AssetResolver implements IAssetResolver {
     api.pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
     await api.sourceStorage.assertExistedFile(absoluteSrcPath)
 
-    const result: IAssetPluginLocateResult | null = await this._locate(absoluteSrcPath, api)
+    const args: IAssetPluginLocateArgs = { absoluteSrcPath }
+    const result: IAssetPluginLocateResult | null = await this._locate(args, api)
     if (result === null) return null
     return result.content
   }
