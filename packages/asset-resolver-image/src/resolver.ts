@@ -77,12 +77,12 @@ export class AssetResolverImage implements IAssetPlugin, IAssetResolverPlugin, I
       }
 
       const result: IAssetPluginResolveOutput = {
-        sourcetype,
         mimetype,
-        description: null,
+        sourcetype,
         slug: null,
         uri,
         title: input.title,
+        description: null,
         createdAt: input.createdAt,
         updatedAt: input.updatedAt,
         categories: [],

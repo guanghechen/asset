@@ -55,12 +55,12 @@ export class AssetResolverFile implements IAssetPlugin, IAssetResolvePlugin, IAs
       const mimetype: string = mime.getType(input.src) ?? 'unknown'
       const uri: string | null = await api.resolveUri(sourcetype, mimetype)
       const result: IAssetPluginResolveOutput = {
-        sourcetype,
         mimetype,
-        description: null,
+        sourcetype,
         slug: null,
         uri,
         title: input.title,
+        description: null,
         createdAt: input.createdAt,
         updatedAt: input.updatedAt,
         categories: [],

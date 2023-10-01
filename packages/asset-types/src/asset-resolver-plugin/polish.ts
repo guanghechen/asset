@@ -25,10 +25,6 @@ export interface IAssetPluginPolishInput<D = unknown> {
    */
   sourcetype: string
   /**
-   * Asset tittle.
-   */
-  title: string
-  /**
    * Asset content.
    */
   content: IBinaryFileData

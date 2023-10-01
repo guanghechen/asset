@@ -132,12 +132,12 @@ export class AssetResolverMarkdown
         slug: typeof frontmatter.slug === 'string' ? frontmatter.slug : null,
       })
       const result: IAssetPluginResolveOutput = {
-        sourcetype,
         mimetype,
-        title,
-        description: frontmatter.description || title,
+        sourcetype,
         slug,
         uri,
+        title,
+        description: frontmatter.description || title,
         createdAt,
         updatedAt,
         categories: isTwoDimensionArrayOfT(frontmatter.categories, isString)

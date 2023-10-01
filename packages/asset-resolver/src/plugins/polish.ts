@@ -22,7 +22,6 @@ export async function polish(
   const { absoluteSrcPath, asset, content, encoding, data } = lastStageResult
   const input: IAssetPluginPolishInput = {
     sourcetype: asset.sourcetype,
-    title: asset.title,
     content,
     data,
   }
