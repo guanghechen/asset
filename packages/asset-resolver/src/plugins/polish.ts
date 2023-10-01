@@ -50,9 +50,9 @@ export async function polish(
 
   const result: IAssetPluginPolishResult = {
     asset,
+    encoding,
     datatype: output.datatype,
     data: output.data,
-    encoding,
   }
   return result
 }
@@ -73,7 +73,7 @@ export interface IAssetPluginPolishArgs {
 
 export interface IAssetPluginPolishResult {
   asset: IAsset
+  encoding: BufferEncoding | undefined
   datatype: AssetDataTypeEnum
   data: unknown
-  encoding: BufferEncoding | undefined
 }

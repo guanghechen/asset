@@ -45,8 +45,8 @@ export async function parse(
 
   // Don't return null even the output is null cause the plugin could have following stage plugins.
   const result: IAssetPluginParseResult = {
-    asset,
     absoluteSrcPath,
+    asset,
     content,
     encoding,
     data: output?.data ?? null,
@@ -64,8 +64,8 @@ export interface IAssetPluginParseArgs {
 }
 
 export interface IAssetPluginParseResult {
-  asset: IAsset
   absoluteSrcPath: string
+  asset: IAsset
   content: IBinaryFileData
   encoding: BufferEncoding | undefined
   data: unknown | null

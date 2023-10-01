@@ -1,9 +1,7 @@
-import { AssetManager } from '@guanghechen/asset-manager'
 import type {
   IAsset,
   IAssetDataMap,
   IAssetLocator,
-  IAssetManager,
   IAssetPathResolver,
 } from '@guanghechen/asset-types'
 import { v5 as uuid } from 'uuid'
@@ -16,26 +14,40 @@ export interface IAssetLocatorProps {
 export class AssetLocator implements IAssetLocator {
   protected readonly _GUID_NAMESPACE: string
   protected readonly _pathResolver: IAssetPathResolver
-  protected readonly _assetManager: IAssetManager
+  protected readonly _assetMap: Map<string, IAsset> // map asset.guid to asset
   protected readonly _uri2src: Map<string, string> // map asset.uri to src
 
   constructor(props: IAssetLocatorProps) {
     const { GUID_NAMESPACE, pathResolver } = props
-    const assetManager: IAssetManager = new AssetManager()
+    const assetMap: Map<string, IAsset> = new Map<string, IAsset>()
     const uri2src: Map<string, string> = new Map<string, string>()
 
     this._GUID_NAMESPACE = GUID_NAMESPACE
     this._pathResolver = pathResolver
-    this._assetManager = assetManager
+    this._assetMap = assetMap
     this._uri2src = uri2src
   }
 
   public async dumpAssetDataMap(): Promise<IAssetDataMap> {
-    return this._assetManager.dump()
+    return {
+      assets: Array.from(this._assetMap.values()).sort((x, y) => x.uri.localeCompare(y.uri)),
+    }
   }
 
   public async findAsset(predicate: (asset: Readonly<IAsset>) => boolean): Promise<IAsset | null> {
-    return this._assetManager.find(predicate)
+    for (const asset of this._assetMap.values()) {
+      if (predicate(asset)) return asset
+    }
+    return null
+  }
+
+  public async findAssetBySrcPath(absoluteSrcPath: string): Promise<IAsset | null> {
+    const pathResolver: IAssetPathResolver = this._pathResolver
+    const srcRoot: string | null = pathResolver.findSrcRoot(absoluteSrcPath)
+    if (srcRoot === null) return null
+
+    const guid: string = await this.resolveGUID(absoluteSrcPath)
+    return this._assetMap.get(guid) ?? null
   }
 
   public async findSrcPathByUri(uri: string): Promise<string | null> {
@@ -44,27 +56,17 @@ export class AssetLocator implements IAssetLocator {
 
   public async insertAsset(absoluteSrcPath: string, asset: IAsset): Promise<void> {
     this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
-    this._assetManager.insert(asset)
+    this._assetMap.set(asset.guid, asset)
     this._uri2src.set(asset.uri, absoluteSrcPath)
   }
 
-  public async locateAsset(absoluteSrcPath: string): Promise<IAsset | null> {
-    const pathResolver: IAssetPathResolver = this._pathResolver
-    const srcRoot: string | null = pathResolver.findSrcRoot(absoluteSrcPath)
-    if (srcRoot === null) return null
-
-    const guid: string = await this.resolveGUID(absoluteSrcPath)
-    return this._assetManager.get(guid) ?? null
-  }
-
   public async removeAsset(absoluteSrcPath: string): Promise<void> {
-    const pathResolver: IAssetPathResolver = this._pathResolver
-    pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
-
+    this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
     const guid: string = await this.resolveGUID(absoluteSrcPath)
-    const asset: IAsset | undefined = this._assetManager.get(guid)
+    const asset: IAsset | undefined = this._assetMap.get(guid)
     if (asset === undefined) return
-    this._assetManager.remove(guid)
+
+    this._assetMap.delete(asset.guid)
     this._uri2src.delete(asset.uri)
   }
 

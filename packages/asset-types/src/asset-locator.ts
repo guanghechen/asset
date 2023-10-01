@@ -1,5 +1,8 @@
 import type { IAsset } from './asset'
-import type { IAssetDataMap } from './asset-manager'
+
+export interface IAssetDataMap {
+  assets: IAsset[]
+}
 
 export interface IAssetLocator {
   /**
@@ -14,6 +17,12 @@ export interface IAssetLocator {
   findAsset(predicate: (asset: Readonly<IAsset>) => boolean): Promise<IAsset | null>
 
   /**
+   * Find the asset by source path.
+   * @param absoluteSrcPath
+   */
+  findAssetBySrcPath(absoluteSrcPath: string): Promise<IAsset | null>
+
+  /**
    * Find the absolute source path by the given uri.
    * @param uri
    */
@@ -25,12 +34,6 @@ export interface IAssetLocator {
    * @param asset
    */
   insertAsset(absoluteSrcPath: string, asset: IAsset): Promise<void>
-
-  /**
-   * Try to locate an resolving asset.
-   * @param absoluteSrcPath
-   */
-  locateAsset(absoluteSrcPath: string): Promise<IAsset | null>
 
   /**
    * Remove asset from locator.

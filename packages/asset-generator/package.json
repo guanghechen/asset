@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "@guanghechen/asset-api": "^1.0.0-alpha.39",
-    "@guanghechen/asset-manager": "^1.0.0-alpha.20",
     "@guanghechen/asset-resolver": "^1.0.0-alpha.20",
     "@guanghechen/asset-resolver-file": "^1.0.0-alpha.37",
     "@guanghechen/asset-resolver-image": "^1.0.0-alpha.37",
