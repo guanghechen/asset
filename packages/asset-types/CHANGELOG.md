@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.39](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.38...@guanghechen/asset-types@1.0.0-alpha.39) (2023-10-01)
+
+
+### Performance Improvements
+
+* :art:  refactor asset locate plugin ([62d6fe1](https://github.com/guanghechen/asset/commit/62d6fe12c01c182216a599c3743978a1e65b17d6))
+* :art:  refactor asset resolver api ([edf3063](https://github.com/guanghechen/asset/commit/edf3063491b29ea4f3e22da59be61f5c5c4753af))
+* :art:  refactor asset resolver plugins ([be1a9d9](https://github.com/guanghechen/asset/commit/be1a9d9e67161424251397adc7f0b8001b7747fc))
+* :art:  refactor types ([b68d63c](https://github.com/guanghechen/asset/commit/b68d63c8f0d27f830c5dc782563209ee448386ff))
+* :art:  refactor types ([dbda719](https://github.com/guanghechen/asset/commit/dbda7199a8d31dd16fc908fce53a52d1be9e4f05))
+* :fire:  remove @guanghechen/asset-manager ([a5ed6c6](https://github.com/guanghechen/asset/commit/a5ed6c67be6007c2fec1b1ba6fbea82a022d6e29))
+* :art:  refactor asset resolver ([04f5ae4](https://github.com/guanghechen/asset/commit/04f5ae4ce5fdcb0386619896ebf5cb1fcdfb8042))
+* :art:  refactor types ([1e65cbe](https://github.com/guanghechen/asset/commit/1e65cbe12aec8c6b8f7ba9eeedcfeb13a4e583cb))
+* :art:  refactor types ([93d39e5](https://github.com/guanghechen/asset/commit/93d39e52a90f20154a9c423b94978c49bd0c1df1))
+* 🎨 rename .resolve to .process ([730c24a](https://github.com/guanghechen/asset/commit/730c24a105024818f4307705c394854721def35a))
+* 🎨 cache resolve asset result ([4e81ca4](https://github.com/guanghechen/asset/commit/4e81ca46d8975119b30df3c88c02f1e624570f6d))
+* 🎨 make code tidy ([6cb309c](https://github.com/guanghechen/asset/commit/6cb309c64a365a5930f19249aab1b202d17c3f06))
+* 🎨 rename .locate to .resolve ([d09b440](https://github.com/guanghechen/asset/commit/d09b44070bd0e9a907faf6a8dc741a887a9a1042))
+* 🎨 rename locate to resolve ([9608510](https://github.com/guanghechen/asset/commit/960851018037365e1122377f43fd8c468f460214))
+
+
+
+
+
 # [1.0.0-alpha.38](https://github.com/guanghechen/asset/compare/@guanghechen/asset-types@1.0.0-alpha.37...@guanghechen/asset-types@1.0.0-alpha.38) (2023-09-28)
 
 

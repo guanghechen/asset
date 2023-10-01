@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.39](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.38...@guanghechen/asset-storage@1.0.0-alpha.39) (2023-10-01)
+
+
+### Performance Improvements
+
+* :art:  refactor asset resolver plugins ([be1a9d9](https://github.com/guanghechen/asset/commit/be1a9d9e67161424251397adc7f0b8001b7747fc))
+
+
+
+
+
 # [1.0.0-alpha.38](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage@1.0.0-alpha.37...@guanghechen/asset-storage@1.0.0-alpha.38) (2023-09-28)
 
 **Note:** Version bump only for package @guanghechen/asset-storage

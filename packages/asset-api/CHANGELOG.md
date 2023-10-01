@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.40](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.39...@guanghechen/asset-api@1.0.0-alpha.40) (2023-10-01)
+
+
+### Performance Improvements
+
+* :art:  refactor asset resolver ([04f5ae4](https://github.com/guanghechen/asset/commit/04f5ae4ce5fdcb0386619896ebf5cb1fcdfb8042))
+* 🎨 rename .resolve to .process ([730c24a](https://github.com/guanghechen/asset/commit/730c24a105024818f4307705c394854721def35a))
+* 🎨 cache resolve asset result ([4e81ca4](https://github.com/guanghechen/asset/commit/4e81ca46d8975119b30df3c88c02f1e624570f6d))
+
+
+
+
+
 # [1.0.0-alpha.39](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.38...@guanghechen/asset-api@1.0.0-alpha.39) (2023-09-28)
 
 

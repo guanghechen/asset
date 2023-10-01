@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.7](https://github.com/guanghechen/asset/compare/@guanghechen/asset-generator@1.0.0-alpha.6...@guanghechen/asset-generator@1.0.0-alpha.7) (2023-10-01)
+
+
+### Performance Improvements
+
+* :art:  refactor asset locate plugin ([62d6fe1](https://github.com/guanghechen/asset/commit/62d6fe12c01c182216a599c3743978a1e65b17d6))
+* :fire:  remove @guanghechen/asset-manager ([a5ed6c6](https://github.com/guanghechen/asset/commit/a5ed6c67be6007c2fec1b1ba6fbea82a022d6e29))
+* :art:  refactor asset resolver ([04f5ae4](https://github.com/guanghechen/asset/commit/04f5ae4ce5fdcb0386619896ebf5cb1fcdfb8042))
+* 🎨 make code tidy ([6cb309c](https://github.com/guanghechen/asset/commit/6cb309c64a365a5930f19249aab1b202d17c3f06))
+
+
+
+
+
 # [1.0.0-alpha.6](https://github.com/guanghechen/asset/compare/@guanghechen/asset-generator@1.0.0-alpha.5...@guanghechen/asset-generator@1.0.0-alpha.6) (2023-09-28)
 
 **Note:** Version bump only for package @guanghechen/asset-generator

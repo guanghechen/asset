@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.40](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-memo@1.0.0-alpha.39...@guanghechen/asset-storage-memo@1.0.0-alpha.40) (2023-10-01)
+
+
+### Performance Improvements
+
+* :art:  refactor asset resolver plugins ([be1a9d9](https://github.com/guanghechen/asset/commit/be1a9d9e67161424251397adc7f0b8001b7747fc))
+* :art:  refactor asset resolver ([04f5ae4](https://github.com/guanghechen/asset/commit/04f5ae4ce5fdcb0386619896ebf5cb1fcdfb8042))
+* ⬆️ upgrade dependencies ([aaa3871](https://github.com/guanghechen/asset/commit/aaa38719180926058eee65f29984718176f4f43d))
+
+
+
+
+
 # [1.0.0-alpha.39](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-memo@1.0.0-alpha.38...@guanghechen/asset-storage-memo@1.0.0-alpha.39) (2023-09-28)
 
 **Note:** Version bump only for package @guanghechen/asset-storage-memo

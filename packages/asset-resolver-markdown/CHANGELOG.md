@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.41](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.40...@guanghechen/asset-resolver-markdown@1.0.0-alpha.41) (2023-10-01)
+
+
+### Performance Improvements
+
+* :art:  refactor asset resolver plugins ([be1a9d9](https://github.com/guanghechen/asset/commit/be1a9d9e67161424251397adc7f0b8001b7747fc))
+* :art:  refactor types ([b68d63c](https://github.com/guanghechen/asset/commit/b68d63c8f0d27f830c5dc782563209ee448386ff))
+* :art:  refactor types ([dbda719](https://github.com/guanghechen/asset/commit/dbda7199a8d31dd16fc908fce53a52d1be9e4f05))
+* :art:  refactor asset resolver ([04f5ae4](https://github.com/guanghechen/asset/commit/04f5ae4ce5fdcb0386619896ebf5cb1fcdfb8042))
+* 🎨 rename .resolve to .process ([730c24a](https://github.com/guanghechen/asset/commit/730c24a105024818f4307705c394854721def35a))
+* 🎨 rename .locate to .resolve ([d09b440](https://github.com/guanghechen/asset/commit/d09b44070bd0e9a907faf6a8dc741a887a9a1042))
+* 🎨 rename locate to resolve ([9608510](https://github.com/guanghechen/asset/commit/960851018037365e1122377f43fd8c468f460214))
+* ⬆️ upgrade dependencies ([aaa3871](https://github.com/guanghechen/asset/commit/aaa38719180926058eee65f29984718176f4f43d))
+
+
+
+
+
 # [1.0.0-alpha.40](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.39...@guanghechen/asset-resolver-markdown@1.0.0-alpha.40) (2023-09-28)
 
 **Note:** Version bump only for package @guanghechen/asset-resolver-markdown
