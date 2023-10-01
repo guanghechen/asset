@@ -22,6 +22,12 @@ export interface IPathResolver {
   absolute(basedir: string, filepath: string): string
 
   /**
+   * Extract src path from url.
+   * @param url
+   */
+  parseFromUrl(url: string): string | null
+
+  /**
    * Get the relative path to the {basedir}.
    * @param basedir the base directory.
    * @param filepath absolute path or relative path to the {basedir}.

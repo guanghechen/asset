@@ -4,9 +4,19 @@ import type { IBinaryFileData } from '../asset-file'
 export interface IAssetPluginResolveApi {
   /**
    * Load source content.
+   * @param absoluteSrcPath
+   */
+  loadContent(absoluteSrcPath: string): Promise<IBinaryFileData | null>
+  /**
+   * Extract src path from url.
+   * @param url
+   */
+  parseSrcPathFromUrl(url: string): string | null
+  /**
+   * Resolve src path.
    * @param srcPathRelativeToCurDir the path relative to the parent path of the current resource.
    */
-  loadContent(srcPathRelativeToCurDir: string): Promise<IBinaryFileData | null>
+  resolveRefPath(srcPathRelativeToCurDir: string): Promise<string | null>
   /**
    * Resolve asset slug.
    * @param meta

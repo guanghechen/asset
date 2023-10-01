@@ -63,6 +63,16 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     )
   }
 
+  public async existFile(absoluteSrcPath: string): Promise<boolean> {
+    const srcRoot: string | null = this._pathResolver.findSrcRoot(absoluteSrcPath)
+    if (srcRoot === null) return false
+    if (this._dataStore.has(absoluteSrcPath)) return true
+
+    const loadResult = await this._dataStore.loadOnDemand(absoluteSrcPath)
+    if (loadResult === undefined) return false
+    return true
+  }
+
   public async readFile(absoluteSrcPath: string): Promise<IBinaryFileData> {
     const srcRoot: string = this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
 

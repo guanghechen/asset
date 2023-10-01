@@ -29,16 +29,9 @@ export async function parse(
 
   const curDir: string = path.dirname(absoluteSrcPath)
   const pluginApi: IAssetPluginParseApi = {
-    loadContent: async relativePath => {
-      const refPath: string | null = api.resolveRefPath(curDir, relativePath)
-      if (refPath === null) return null
-      return loadContent(refPath)
-    },
-    resolveAsset: async relativePath => {
-      const refPath: string | null = api.resolveRefPath(curDir, relativePath)
-      if (refPath === null) return null
-      return resolveAsset(refPath)
-    },
+    loadContent,
+    resolveAsset,
+    resolveRefPath: relativePath => api.resolveRefPath(curDir, relativePath),
     resolveSlug: meta => api.uriResolver.resolveSlug(meta),
   }
   const reducer: IAssetPluginParseNext = plugins.reduceRight<IAssetPluginParseNext>(

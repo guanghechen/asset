@@ -10,7 +10,6 @@ import type {
   IAssetPluginResolveOutput,
   IAssetPolishPlugin,
   IAssetResolverPlugin,
-  IBinaryFileData,
 } from '@guanghechen/asset-types'
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import { mime, normalizePattern } from '@guanghechen/asset-util'

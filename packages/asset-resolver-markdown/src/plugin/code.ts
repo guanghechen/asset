@@ -65,7 +65,10 @@ export function markdownPluginCode(params: IParams = {}): IMarkdownResolverPlugi
               if (sourcefileMatch == null) return o
 
               const relativeSrcPath: string = sourcefileMatch[1]
-              const rawContent = await api.loadContent(relativeSrcPath)
+              const refPath: string | null = await api.resolveRefPath(relativeSrcPath)
+              if (refPath === null) return o
+
+              const rawContent = await api.loadContent(refPath)
               if (rawContent === null) return o
 
               const content = rawContent.toString(srcEncoding)

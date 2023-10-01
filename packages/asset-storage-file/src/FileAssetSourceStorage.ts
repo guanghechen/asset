@@ -12,7 +12,7 @@ import invariant from '@guanghechen/invariant'
 import chokidar from 'chokidar'
 import fastGlob from 'fast-glob'
 import { existsSync } from 'node:fs'
-import { readFile, stat, unlink, writeFile } from 'node:fs/promises'
+import { readFile, stat as statFile, unlink, writeFile } from 'node:fs/promises'
 
 interface IProps {
   pathResolver: IAssetPathResolver
@@ -45,8 +45,16 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
       `[assertExistedFile] Cannot find file. (${absoluteSrcPath})`,
     )
 
-    const assertion: boolean = (await stat(absoluteSrcPath)).isFile()
+    const assertion: boolean = (await statFile(absoluteSrcPath)).isFile()
     invariant(assertion, `[assertExistedFile] Not a file. (${absoluteSrcPath})`)
+  }
+
+  public async existFile(absoluteSrcPath: string): Promise<boolean> {
+    const srcRoot: string | null = this._pathResolver.findSrcRoot(absoluteSrcPath)
+    if (srcRoot === null) return false
+    if (!existsSync(absoluteSrcPath)) return false
+    const stat = await statFile(absoluteSrcPath)
+    return stat.isFile()
   }
 
   public async readFile(absoluteSrcPath: string): Promise<IBinaryFileData> {
@@ -63,7 +71,7 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
 
   public async statFile(absoluteSrcPath: string): Promise<IAssetStat> {
     this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
-    const result: IAssetStat = await stat(absoluteSrcPath)
+    const result: IAssetStat = await statFile(absoluteSrcPath)
     return result
   }
 

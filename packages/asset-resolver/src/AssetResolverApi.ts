@@ -37,19 +37,19 @@ export class AssetResolverApi implements IAssetResolverApi {
     src: string,
     data: IBinaryFileData,
   ): Promise<BufferEncoding | undefined> {
-    return await this._encodingDetector.detect(src, data)
-  }
-
-  public resolveRefPath(curDir: string, refPath: string): string | null {
-    const pathResolver: IAssetPathResolver = this.pathResolver
-    const filepath: string = pathResolver.isAbsolutePath(refPath)
-      ? refPath
-      : pathResolver.absolute(curDir, refPath)
-    const srcRoot: string | null = pathResolver.findSrcRoot(curDir)
-    return srcRoot === null ? null : filepath
+    return this._encodingDetector.detect(src, data)
   }
 
   public resolveGUID(absoluteSrcPath: string): Promise<string> {
     return this.locator.resolveGUID(absoluteSrcPath)
+  }
+
+  public async resolveRefPath(curDir: string, refPath: string): Promise<string | null> {
+    const absoluteSrcPath: string = this.pathResolver.absolute(curDir, refPath)
+    const srcRoot: string | null = this.pathResolver.findSrcRoot(absoluteSrcPath)
+    if (srcRoot === null) return null
+
+    const exists: boolean = await this.sourceStorage.existFile(absoluteSrcPath)
+    return exists ? absoluteSrcPath : null
   }
 }

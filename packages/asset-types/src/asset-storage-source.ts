@@ -36,6 +36,7 @@ export interface IMemoAssetSourceDataStorage {
 
 export interface IAssetSourceStorage {
   assertExistedFile(absoluteSrcPath: string): Promise<void | never>
+  existFile(absoluteSrcPath: string): Promise<boolean>
   readFile(absoluteSrcPath: string): Promise<IBinaryFileData>
   removeFile(absoluteSrcPath: string): Promise<void>
   statFile(absoluteSrcPath: string): Promise<IAssetStat>

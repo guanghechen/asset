@@ -27,16 +27,10 @@ export async function polish(
 
   const curDir: string = path.dirname(absoluteSrcPath)
   const pluginApi: IAssetPluginPolishApi = {
-    loadContent: async relativePath => {
-      const refPath: string | null = api.resolveRefPath(curDir, relativePath)
-      if (refPath === null) return null
-      return loadContent(refPath)
-    },
-    resolveAsset: async relativePath => {
-      const refPath: string | null = api.resolveRefPath(curDir, relativePath)
-      if (refPath === null) return null
-      return resolveAsset(refPath)
-    },
+    loadContent,
+    parseSrcPathFromUrl: url => api.pathResolver.parseFromUrl(url),
+    resolveAsset,
+    resolveRefPath: relativePath => api.resolveRefPath(curDir, relativePath),
   }
   const reducer: IAssetPluginPolishNext = plugins.reduceRight<IAssetPluginPolishNext>(
     (next, middleware) => embryo => middleware.polish(input, embryo, pluginApi, next),

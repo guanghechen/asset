@@ -4,14 +4,19 @@ import type { IBinaryFileData } from '../asset-file'
 export interface IAssetPluginParseApi {
   /**
    * Load source content.
-   * @param srcPathRelativeToCurDir the path relative to the parent path of the current resource.
+   * @param absoluteSrcPath
    */
-  loadContent(srcPathRelativeToCurDir: string): Promise<IBinaryFileData | null>
+  loadContent(absoluteSrcPath: string): Promise<IBinaryFileData | null>
   /**
    * Resolve asset by absoluteSrcPath.
-   * @param srcPathRelativeToCurDir
+   * @param absoluteSrcPath
    */
-  resolveAsset(srcPathRelativeToCurDir: string): Promise<Readonly<IAsset> | null>
+  resolveAsset(absoluteSrcPath: string): Promise<Readonly<IAsset> | null>
+  /**
+   * Resolve src path.
+   * @param srcPathRelativeToCurDir the path relative to the parent path of the current resource.
+   */
+  resolveRefPath(srcPathRelativeToCurDir: string): Promise<string | null>
   /**
    * Resolve asset slug.
    * @param meta

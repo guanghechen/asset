@@ -1,7 +1,6 @@
 import type {
   IAsset,
   IAssetLocatePlugin,
-  IAssetMeta,
   IAssetParsePlugin,
   IAssetPolishPlugin,
   IAssetProcessedData,

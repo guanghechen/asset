@@ -18,16 +18,16 @@ export interface IAssetResolverApi {
   detectEncoding(src: string, data: IBinaryFileData): Promise<BufferEncoding | undefined>
 
   /**
+   * Resolve the guid by absolute source path.
+   * @param absoluteSrcPath
+   */
+  resolveGUID(absoluteSrcPath: string): Promise<string>
+
+  /**
    * Resolve the refPath to an absolute filepath as long as the result is under the source storage
    * root dir, otherwise, a null will be returned..
    * @param curDir
    * @param srcPath
    */
-  resolveRefPath(curDir: string, refPath: string): string | null
-
-  /**
-   * Resolve the guid by absolute source path.
-   * @param absoluteSrcPath
-   */
-  resolveGUID(absoluteSrcPath: string): Promise<string>
+  resolveRefPath(curDir: string, refPath: string): Promise<string | null>
 }

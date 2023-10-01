@@ -197,13 +197,18 @@ export class AssetResolverMarkdown
     if (isMarkdownAssetPolishInput(input) && input.data) {
       const ast: Root = await shallowMutateAstInPreorderAsync(input.data.ast, null, async node => {
         const n = node as unknown as Resource
-        if (n.url && /^\./.test(n.url)) {
-          const refPath: string = decodeURIComponent(n.url)
-          const asset: IAsset | null = await api.resolveAsset(refPath)
-          if (asset) {
-            const url: string = asset.slug || asset.uri
-            return n.url === url ? node : { ...node, url }
-          }
+        if (n.url === undefined) return node
+
+        const p: string | null = api.parseSrcPathFromUrl(n.url)
+        if (!p) return node
+
+        const refPath: string | null = await api.resolveRefPath(p)
+        if (refPath === null) return node
+
+        const asset: IAsset | null = await api.resolveAsset(refPath)
+        if (asset) {
+          const url: string = asset.slug || asset.uri
+          return n.url === url ? node : { ...node, url }
         }
         return node
       })

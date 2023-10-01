@@ -34,7 +34,14 @@ export function markdownPluginAplayer(): IMarkdownResolverPlugin {
 
             if (rawAplayer.audio) {
               const resolveUri = async (url: string | undefined): Promise<string | undefined> => {
-                const refPath: string | null = url ? decodeURIComponent(url) : null
+                if (url === undefined) return undefined
+
+                const p: string | null = api.parseSrcPathFromUrl(url)
+                if (!p) return url
+
+                const refPath: string | null = await api.resolveRefPath(p)
+                if (refPath === null) return url
+
                 const asset: IAsset | null = refPath ? await api.resolveAsset(refPath) : null
                 return asset ? asset.slug || asset.uri : url
               }

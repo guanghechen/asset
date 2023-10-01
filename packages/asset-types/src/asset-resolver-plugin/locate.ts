@@ -11,6 +11,11 @@ export interface IAssetPluginLocateApi {
    * @param data
    */
   detectEncoding(src: string, data: IBinaryFileData): Promise<BufferEncoding | undefined>
+  /**
+   * Extract src path from url.
+   * @param url
+   */
+  parseSrcPathFromUrl(url: string): string | null
 }
 
 export interface IAssetPluginLocateNext {

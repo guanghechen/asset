@@ -74,13 +74,7 @@ export class AssetPathResolver extends PathResolver implements IAssetPathResolve
       .sort()
 
     // 1. all of srcRoots should be absolute paths.
-    for (const srcRoot of srcRoots) {
-      if (!this.isAbsolutePath(srcRoot)) {
-        throw new Error(
-          `[AssetPathResolver] invalid, srcRoot should be an absolute path: ${srcRoot}`,
-        )
-      }
-    }
+    for (const srcRoot of srcRoots) this.assertAbsolutePath(srcRoot, 'AssetPathResolver')
 
     // 2. all srcRoot should be overlapped.
     for (let i = 0; i < srcRoots.length; ++i) {

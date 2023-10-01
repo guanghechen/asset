@@ -42,6 +42,7 @@ export async function locate(
     pathResolver: api.pathResolver,
     sourceStorage: api.sourceStorage,
     detectEncoding: (src, data) => api.detectEncoding(src, data),
+    parseSrcPathFromUrl: url => api.pathResolver.parseFromUrl(url),
   }
   const fallback: IAssetPluginLocateNext = async embryo => {
     if (embryo === null) {

@@ -32,7 +32,7 @@ export function markdownPluginStripSpace(params: IParams = {}): IMarkdownResolve
       async parse(
         input: Readonly<IAssetPluginParseInput>,
         embryo: Readonly<IAssetPluginParseOutput> | null,
-        api_: Readonly<IAssetPluginParseApi>,
+        _api: Readonly<IAssetPluginParseApi>,
         next: IAssetPluginParseNext,
       ): Promise<IAssetPluginParseOutput | null> {
         if (isMarkdownAssetParseOutput(input, embryo) && embryo.data) {

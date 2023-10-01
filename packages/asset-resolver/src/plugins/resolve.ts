@@ -35,11 +35,9 @@ export async function resolve(
 
   const curDir: string = path.dirname(absoluteSrcPath)
   const pluginApi: IAssetPluginResolveApi = {
-    loadContent: async relativePath => {
-      const refPath: string | null = api.resolveRefPath(curDir, relativePath)
-      if (refPath === null) return null
-      return loadContent(refPath)
-    },
+    loadContent,
+    parseSrcPathFromUrl: url => api.pathResolver.parseFromUrl(url),
+    resolveRefPath: relativePath => api.resolveRefPath(curDir, relativePath),
     resolveSlug: meta => api.uriResolver.resolveSlug(meta),
     resolveUri: (sourcetype, mimetype) =>
       api.uriResolver.resolveUri({ guid, hash, sourcetype, mimetype, extname }),
