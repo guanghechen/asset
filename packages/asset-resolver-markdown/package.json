@@ -47,7 +47,7 @@
     "@yozora/ast": "^2.3.0",
     "@yozora/ast-util": "^2.3.0",
     "@yozora/character": "^2.3.0",
-    "dayjs": "^1.11.9",
+    "dayjs": "^1.11.10",
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
