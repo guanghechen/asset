@@ -1,4 +1,4 @@
-import type { IAssetMeta } from '../asset'
+import type { IAsset, IAssetMeta } from '../asset'
 import type { IBinaryFileData } from '../asset-file'
 
 export interface IAssetPluginParseApi {
@@ -7,6 +7,11 @@ export interface IAssetPluginParseApi {
    * @param srcPathRelativeToCurDir the path relative to the parent path of the current resource.
    */
   loadContent(srcPathRelativeToCurDir: string): Promise<IBinaryFileData | null>
+  /**
+   * Resolve asset by absoluteSrcPath.
+   * @param srcPathRelativeToCurDir
+   */
+  resolveAsset(srcPathRelativeToCurDir: string): Promise<Readonly<IAsset> | null>
   /**
    * Resolve asset slug.
    * @param meta

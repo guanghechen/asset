@@ -16,7 +16,7 @@ export async function parse(
   plugins: ReadonlyArray<IAssetParsePlugin>,
   api: IAssetResolverApi,
 ): Promise<IAssetPluginParseResult | null> {
-  const { lastStageResult, loadContent } = args
+  const { lastStageResult, loadContent, resolveAsset } = args
   const { absoluteSrcPath, src, asset, content, encoding } = lastStageResult
   const input: IAssetPluginParseInput = {
     sourcetype: asset.sourcetype,
@@ -33,6 +33,11 @@ export async function parse(
       const refPath: string | null = api.resolveRefPath(curDir, relativePath)
       if (refPath === null) return null
       return loadContent(refPath)
+    },
+    resolveAsset: async relativePath => {
+      const refPath: string | null = api.resolveRefPath(curDir, relativePath)
+      if (refPath === null) return null
+      return resolveAsset(refPath)
     },
     resolveSlug: meta => api.uriResolver.resolveSlug(meta),
   }
@@ -61,6 +66,11 @@ export interface IAssetPluginParseArgs {
    * @param absoluteSrcPath
    */
   loadContent: (absoluteSrcPath: string) => Promise<IBinaryFileData | null>
+  /**
+   * Resolve asset by absoluteSrcPath.
+   * @param absoluteSrcPath
+   */
+  resolveAsset(absoluteSrcPath: string): Promise<Readonly<IAsset> | null>
 }
 
 export interface IAssetPluginParseResult {

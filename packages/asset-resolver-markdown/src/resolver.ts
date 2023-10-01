@@ -1,6 +1,6 @@
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
-  IAssetMeta,
+  IAsset,
   IAssetParsePlugin,
   IAssetPlugin,
   IAssetPluginParseApi,
@@ -199,7 +199,7 @@ export class AssetResolverMarkdown
         const n = node as unknown as Resource
         if (n.url && /^\./.test(n.url)) {
           const refPath: string = decodeURIComponent(n.url)
-          const asset: IAssetMeta | null = await api.resolveAssetMeta(refPath)
+          const asset: IAsset | null = await api.resolveAsset(refPath)
           if (asset) {
             const url: string = asset.slug || asset.uri
             return n.url === url ? node : { ...node, url }

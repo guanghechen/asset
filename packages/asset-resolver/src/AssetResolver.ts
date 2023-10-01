@@ -156,13 +156,11 @@ export class AssetResolver implements IAssetResolver {
     if (locateResult === null) return null
 
     const asset: IAsset | null = await api.locator.findAssetByGuid(locateResult.guid)
-    if (asset !== null && asset.hash === locateResult.hash) return asset
+    if (asset !== null && asset.hash === locateResult.hash) return { ...asset }
 
     const resolveResult = await this._resolve(locateResult, api)
     if (resolveResult === null) return null
-
-    await api.locator.insertAsset(absoluteSrcPath, resolveResult.asset)
-    return resolveResult.asset
+    return { ...resolveResult.asset }
   }
 
   protected async _locate(
@@ -183,6 +181,9 @@ export class AssetResolver implements IAssetResolver {
     const args: IAssetPluginResolveArgs = { lastStageResult, loadContent }
     const plugins: IAssetResolvePlugin[] = this._resolvePlugins
     const result: IAssetPluginResolveResult | null = await resolve(args, plugins, api)
+    if (result === null) return null
+
+    await api.locator.insertAsset(lastStageResult.absoluteSrcPath, result.asset)
     return result
   }
 
@@ -192,7 +193,9 @@ export class AssetResolver implements IAssetResolver {
   ): Promise<IAssetPluginParseResult | null> {
     const loadContent = (absoluteSrcPath: string): Promise<IBinaryFileData | null> =>
       this._loadContent(absoluteSrcPath, api)
-    const args: IAssetPluginParseArgs = { lastStageResult, loadContent }
+    const resolveAsset = (absoluteSrcPath: string): Promise<IAsset | null> =>
+      this.resolve(absoluteSrcPath, api)
+    const args: IAssetPluginParseArgs = { lastStageResult, loadContent, resolveAsset }
     const plugins: IAssetParsePlugin[] = this._parsePlugins
     const result: IAssetPluginParseResult | null = await parse(args, plugins, api)
     return result
@@ -204,9 +207,9 @@ export class AssetResolver implements IAssetResolver {
   ): Promise<IAssetPluginPolishResult | null> {
     const loadContent = (absoluteSrcPath: string): Promise<IBinaryFileData | null> =>
       this._loadContent(absoluteSrcPath, api)
-    const resolveAssetMeta = (absoluteSrcPath: string): Promise<IAssetMeta | null> =>
-      this._resolveAssetMeta(absoluteSrcPath, api)
-    const args: IAssetPluginPolishArgs = { lastStageResult, loadContent, resolveAssetMeta }
+    const resolveAsset = (absoluteSrcPath: string): Promise<IAsset | null> =>
+      this.resolve(absoluteSrcPath, api)
+    const args: IAssetPluginPolishArgs = { lastStageResult, loadContent, resolveAsset }
     const plugins: IAssetPolishPlugin[] = this._polishPlugins
     const result: IAssetPluginPolishResult | null = await polish(args, plugins, api)
     return result
@@ -223,15 +226,5 @@ export class AssetResolver implements IAssetResolver {
     const result: IAssetPluginLocateResult | null = await this._locate(args, api)
     if (result === null) return null
     return result.content
-  }
-
-  protected async _resolveAssetMeta(
-    absoluteSrcPath: string,
-    api: IAssetResolverApi,
-  ): Promise<IAssetMeta | null> {
-    const asset: IAsset | null = await this.resolve(absoluteSrcPath, api)
-    if (asset === null) return null
-    const { uri, slug } = asset
-    return { uri, slug }
   }
 }

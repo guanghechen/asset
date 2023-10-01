@@ -1,4 +1,4 @@
-import type { IAssetMeta } from '../asset'
+import type { IAsset } from '../asset'
 import type { IBinaryFileData } from '../asset-file'
 import type { AssetDataTypeEnum } from '../enum'
 
@@ -9,10 +9,10 @@ export interface IAssetPluginPolishApi {
    */
   loadContent(srcPathRelativeToCurDir: string): Promise<IBinaryFileData | null>
   /**
-   * Resolve asset by srcPathId.
-   * @param srcPathId
+   * Resolve asset by absoluteSrcPath.
+   * @param srcPathRelativeToCurDir
    */
-  resolveAssetMeta(srcPathId: string): Promise<Readonly<IAssetMeta> | null>
+  resolveAsset(srcPathRelativeToCurDir: string): Promise<Readonly<IAsset> | null>
 }
 
 export interface IAssetPluginPolishNext {

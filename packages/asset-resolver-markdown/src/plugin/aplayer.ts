@@ -1,5 +1,5 @@
 import type {
-  IAssetMeta,
+  IAsset,
   IAssetPluginPolishApi,
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
@@ -35,9 +35,7 @@ export function markdownPluginAplayer(): IMarkdownResolverPlugin {
             if (rawAplayer.audio) {
               const resolveUri = async (url: string | undefined): Promise<string | undefined> => {
                 const refPath: string | null = url ? decodeURIComponent(url) : null
-                const asset: IAssetMeta | null = refPath
-                  ? await api.resolveAssetMeta(refPath)
-                  : null
+                const asset: IAsset | null = refPath ? await api.resolveAsset(refPath) : null
                 return asset ? asset.slug || asset.uri : url
               }
 

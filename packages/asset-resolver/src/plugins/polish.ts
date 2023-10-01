@@ -1,7 +1,6 @@
 import type {
   AssetDataTypeEnum,
   IAsset,
-  IAssetMeta,
   IAssetPluginPolishApi,
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
@@ -18,7 +17,7 @@ export async function polish(
   plugins: ReadonlyArray<IAssetPolishPlugin>,
   api: IAssetResolverApi,
 ): Promise<IAssetPluginPolishResult | null> {
-  const { lastStageResult, loadContent, resolveAssetMeta } = args
+  const { lastStageResult, loadContent, resolveAsset } = args
   const { absoluteSrcPath, asset, content, encoding, data } = lastStageResult
   const input: IAssetPluginPolishInput = {
     sourcetype: asset.sourcetype,
@@ -33,10 +32,10 @@ export async function polish(
       if (refPath === null) return null
       return loadContent(refPath)
     },
-    resolveAssetMeta: async relativePath => {
+    resolveAsset: async relativePath => {
       const refPath: string | null = api.resolveRefPath(curDir, relativePath)
       if (refPath === null) return null
-      return resolveAssetMeta(refPath)
+      return resolveAsset(refPath)
     },
   }
   const reducer: IAssetPluginPolishNext = plugins.reduceRight<IAssetPluginPolishNext>(
@@ -64,10 +63,10 @@ export interface IAssetPluginPolishArgs {
    */
   loadContent: (absoluteSrcPath: string) => Promise<IBinaryFileData | null>
   /**
-   * Resolve asset by srcPathId.
+   * Resolve asset by absoluteSrcPath.
    * @param absoluteSrcPath
    */
-  resolveAssetMeta(absoluteSrcPath: string): Promise<Readonly<IAssetMeta> | null>
+  resolveAsset(absoluteSrcPath: string): Promise<Readonly<IAsset> | null>
 }
 
 export interface IAssetPluginPolishResult {
