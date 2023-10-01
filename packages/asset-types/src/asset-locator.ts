@@ -17,6 +17,12 @@ export interface IAssetLocator {
   findAsset(predicate: (asset: Readonly<IAsset>) => boolean): Promise<IAsset | null>
 
   /**
+   * Find asset by guid
+   * @param guid
+   */
+  findAssetByGuid(guid: string): Promise<IAsset | null>
+
+  /**
    * Find the asset by source path.
    * @param absoluteSrcPath
    */

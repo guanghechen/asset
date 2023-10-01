@@ -41,6 +41,11 @@ export class AssetLocator implements IAssetLocator {
     return null
   }
 
+  public async findAssetByGuid(guid: string): Promise<IAsset | null> {
+    const asset: IAsset | undefined = this._assetMap.get(guid)
+    return asset ?? null
+  }
+
   public async findAssetBySrcPath(absoluteSrcPath: string): Promise<IAsset | null> {
     const pathResolver: IAssetPathResolver = this._pathResolver
     const srcRoot: string | null = pathResolver.findSrcRoot(absoluteSrcPath)

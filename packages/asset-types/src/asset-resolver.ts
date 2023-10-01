@@ -1,6 +1,5 @@
 import type { IAsset } from './asset'
 import type { IAssetResolverApi } from './asset-resolver-api'
-import type { IAssetPluginLocateOutput } from './asset-resolver-plugin/locate'
 import type {
   IAssetLocatePlugin,
   IAssetParsePlugin,
@@ -15,18 +14,6 @@ export type IAssetResolverPlugin = IAssetPlugin &
   Partial<IAssetResolvePlugin> &
   Partial<IAssetParsePlugin> &
   Partial<IAssetPolishPlugin>
-
-export interface IAssetLocatedData {
-  output: IAssetPluginLocateOutput
-}
-
-export interface IAssetResolvedData {
-  asset: IAsset
-  /**
-   * Source file encoding.
-   */
-  encoding: BufferEncoding | undefined
-}
 
 export interface IAssetProcessedData {
   asset: IAsset

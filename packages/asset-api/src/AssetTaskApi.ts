@@ -95,7 +95,7 @@ export class AssetTaskApi implements IAssetTaskApi {
     const tasks: Array<Promise<void>> = []
 
     for (const absoluteSrcPath of absoluteSrcPaths) {
-      const asset: IAsset | null = await resolverApi.locator.locateAsset(absoluteSrcPath)
+      const asset: IAsset | null = await resolverApi.locator.findAssetBySrcPath(absoluteSrcPath)
       tasks.push(resolverApi.locator.removeAsset(absoluteSrcPath))
       if (asset) {
         reporter.verbose('[AssetTasApi.remove] uri({})', asset.uri)

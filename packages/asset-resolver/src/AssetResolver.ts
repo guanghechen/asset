@@ -219,9 +219,13 @@ export class AssetResolver implements IAssetResolver {
     const locateResult = await this._locate(absoluteSrcPath, api)
     if (locateResult === null) return null
 
+    const asset: IAsset | null = await api.locator.findAssetByGuid(locateResult.guid)
+    if (asset !== null && asset.hash === locateResult.hash) return asset
+
     const resolveResult = await this._resolve(locateResult, api)
     if (resolveResult === null) return null
 
+    await api.locator.insertAsset(absoluteSrcPath, resolveResult.asset)
     return resolveResult.asset
   }
 
