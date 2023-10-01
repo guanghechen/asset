@@ -509,7 +509,6 @@ __metadata:
   resolution: "@guanghechen/asset-generator@workspace:packages/asset-generator"
   dependencies:
     "@guanghechen/asset-api": ^1.0.0-alpha.39
-    "@guanghechen/asset-manager": ^1.0.0-alpha.20
     "@guanghechen/asset-resolver": ^1.0.0-alpha.20
     "@guanghechen/asset-resolver-file": ^1.0.0-alpha.37
     "@guanghechen/asset-resolver-image": ^1.0.0-alpha.37
@@ -517,14 +516,6 @@ __metadata:
     "@guanghechen/asset-types": ^1.0.0-alpha.38
     "@guanghechen/types": ^1.0.0-alpha.6
     "@yozora/ast": ^2.3.0
-  languageName: unknown
-  linkType: soft
-
-"@guanghechen/asset-manager@^1.0.0-alpha.20, @guanghechen/asset-manager@workspace:packages/asset-manager":
-  version: 0.0.0-use.local
-  resolution: "@guanghechen/asset-manager@workspace:packages/asset-manager"
-  dependencies:
-    "@guanghechen/asset-types": ^1.0.0-alpha.38
   languageName: unknown
   linkType: soft
 
@@ -568,7 +559,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver@workspace:packages/asset-resolver"
   dependencies:
-    "@guanghechen/asset-manager": ^1.0.0-alpha.20
     "@guanghechen/asset-types": ^1.0.0-alpha.38
     "@guanghechen/asset-util": ^1.0.0-alpha.24
     "@guanghechen/types": ^1.0.0-alpha.6
