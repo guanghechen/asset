@@ -4,7 +4,6 @@ import type {
   IAssetResolverApi,
   IAssetSourceStorage,
   IAssetUriResolver,
-  IBinaryFileData,
   IEncodingDetector,
 } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/types'
@@ -23,7 +22,7 @@ export class AssetResolverApi implements IAssetResolverApi {
   public readonly pathResolver: IAssetPathResolver
   public readonly sourceStorage: IAssetSourceStorage
   public readonly uriResolver: IAssetUriResolver
-  protected readonly _encodingDetector: IEncodingDetector
+  public readonly encodingDetector: IEncodingDetector
   protected readonly _reporter: IReporter
 
   constructor(props: IAssetResolverApiProps) {
@@ -33,15 +32,8 @@ export class AssetResolverApi implements IAssetResolverApi {
     this.pathResolver = pathResolver
     this.uriResolver = uriResolver
     this.sourceStorage = sourceStorage
-    this._encodingDetector = encodingDetector
+    this.encodingDetector = encodingDetector
     this._reporter = reporter
-  }
-
-  public async detectEncoding(
-    src: string,
-    data: IBinaryFileData,
-  ): Promise<BufferEncoding | undefined> {
-    return this._encodingDetector.detect(src, data)
   }
 
   public async resolveRefPath(curDir: string, refPath: string): Promise<string | null> {

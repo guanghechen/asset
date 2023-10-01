@@ -43,7 +43,7 @@ export async function locate(
     pathResolver: api.pathResolver,
     sourceStorage: api.sourceStorage,
     uriResolver: api.uriResolver,
-    detectEncoding: (src, data) => api.detectEncoding(src, data),
+    detectEncoding: (src, data) => api.encodingDetector.detect(src, data),
     parseSrcPathFromUrl: url => api.pathResolver.parseFromUrl(url),
   }
   const fallback: IAssetPluginLocateNext = async embryo => {
@@ -54,7 +54,10 @@ export async function locate(
         .trim()
         .replace(/\s+/, ' ')
         .replace(/\.[^.]+$/, '')
-      const encoding: BufferEncoding | undefined = await api.detectEncoding(src, input.content)
+      const encoding: BufferEncoding | undefined = await api.encodingDetector.detect(
+        src,
+        input.content,
+      )
       const output: IAssetPluginLocateOutput = {
         src,
         title,
