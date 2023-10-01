@@ -1,10 +1,14 @@
 import type { IBinaryFileData } from '../asset-file'
+import type { IAssetLocator } from '../asset-locator'
 import type { IAssetPathResolver } from '../asset-path-resolver'
 import type { IAssetSourceStorage } from '../asset-storage-source'
+import type { IAssetUriResolver } from '../asset-uri-resolver'
 
 export interface IAssetPluginLocateApi {
+  readonly locator: IAssetLocator
   readonly pathResolver: IAssetPathResolver
   readonly sourceStorage: IAssetSourceStorage
+  readonly uriResolver: IAssetUriResolver
   /**
    * Detect content encoding.
    * @param src

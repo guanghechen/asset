@@ -7,11 +7,13 @@ import type {
   IBinaryFileData,
   IEncodingDetector,
 } from '@guanghechen/asset-types'
+import type { IReporter } from '@guanghechen/types'
 
 export interface IAssetResolverApiProps {
   encodingDetector: IEncodingDetector
   locator: IAssetLocator
   pathResolver: IAssetPathResolver
+  reporter: IReporter
   sourceStorage: IAssetSourceStorage
   uriResolver: IAssetUriResolver
 }
@@ -22,15 +24,17 @@ export class AssetResolverApi implements IAssetResolverApi {
   public readonly sourceStorage: IAssetSourceStorage
   public readonly uriResolver: IAssetUriResolver
   protected readonly _encodingDetector: IEncodingDetector
+  protected readonly _reporter: IReporter
 
   constructor(props: IAssetResolverApiProps) {
-    const { encodingDetector, locator, pathResolver, sourceStorage, uriResolver } = props
+    const { encodingDetector, locator, pathResolver, reporter, sourceStorage, uriResolver } = props
 
     this.locator = locator
     this.pathResolver = pathResolver
     this.uriResolver = uriResolver
     this.sourceStorage = sourceStorage
     this._encodingDetector = encodingDetector
+    this._reporter = reporter
   }
 
   public async detectEncoding(
@@ -40,16 +44,18 @@ export class AssetResolverApi implements IAssetResolverApi {
     return this._encodingDetector.detect(src, data)
   }
 
-  public resolveGUID(absoluteSrcPath: string): Promise<string> {
-    return this.locator.resolveGUID(absoluteSrcPath)
-  }
-
   public async resolveRefPath(curDir: string, refPath: string): Promise<string | null> {
     const absoluteSrcPath: string = this.pathResolver.absolute(curDir, refPath)
     const srcRoot: string | null = this.pathResolver.findSrcRoot(absoluteSrcPath)
-    if (srcRoot === null) return null
+    if (srcRoot === null) {
+      this._reporter.warn(`[AssetResolverApi.resolveRefPath] bad ref path: ${refPath}`)
+      return null
+    }
 
     const exists: boolean = await this.sourceStorage.existFile(absoluteSrcPath)
-    return exists ? absoluteSrcPath : null
+    if (exists) return absoluteSrcPath
+
+    this._reporter.warn(`[AssetResolverApi.resolveRefPath] bad ref path: ${refPath}`)
+    return null
   }
 }

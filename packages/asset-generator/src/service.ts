@@ -44,6 +44,7 @@ export function createAssetService(params: IParams): IAssetService {
     locator,
     encodingDetector,
     pathResolver,
+    reporter,
     sourceStorage,
     uriResolver,
   })

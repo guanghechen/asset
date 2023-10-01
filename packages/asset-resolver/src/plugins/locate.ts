@@ -25,7 +25,7 @@ export async function locate(
   if (srcRoot === null) return null
 
   const content0: IBinaryFileData | undefined = await api.sourceStorage.readFile(absoluteSrcPath)
-  const guid: string = await api.resolveGUID(absoluteSrcPath)
+  const guid: string = await api.locator.resolveGUID(absoluteSrcPath)
   const hash: string = calcFingerprint(content0)
   const stat: IAssetStat = await api.sourceStorage.statFile(absoluteSrcPath)
   const relativePath: string = api.pathResolver.relative(srcRoot, absoluteSrcPath)
@@ -39,8 +39,10 @@ export async function locate(
     updatedAt: new Date(stat.mtime).toISOString(),
   }
   const pluginApi: IAssetPluginLocateApi = {
+    locator: api.locator,
     pathResolver: api.pathResolver,
     sourceStorage: api.sourceStorage,
+    uriResolver: api.uriResolver,
     detectEncoding: (src, data) => api.detectEncoding(src, data),
     parseSrcPathFromUrl: url => api.pathResolver.parseFromUrl(url),
   }
