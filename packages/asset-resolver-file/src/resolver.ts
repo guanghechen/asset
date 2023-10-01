@@ -1,5 +1,6 @@
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
+  IAssetPlugin,
   IAssetPluginPolishApi,
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
@@ -8,8 +9,8 @@ import type {
   IAssetPluginResolveInput,
   IAssetPluginResolveNext,
   IAssetPluginResolveOutput,
-  IAssetResolverPlugin,
-  IBinaryFileData,
+  IAssetPolishPlugin,
+  IAssetResolvePlugin,
 } from '@guanghechen/asset-types'
 import { mime, normalizePattern } from '@guanghechen/asset-util'
 import type { IFileAssetPolishOutput } from './types'
@@ -32,15 +33,15 @@ export interface IAssetResolverFileProps {
   rejected?: RegExp[] | RegExp | ((src: string) => boolean)
 }
 
-export class AssetResolverFile implements IAssetResolverPlugin {
+export class AssetResolverFile implements IAssetPlugin, IAssetResolvePlugin, IAssetPolishPlugin {
   public readonly displayName: string
-  protected readonly resolvable: (filename: string) => boolean
+  protected readonly resolvable: (src: string) => boolean
 
   constructor(props: IAssetResolverFileProps = {}) {
     this.displayName = props.displayName ?? '@guanghechen/asset-resolver-file'
     const accepted = normalizePattern(props.accepted) ?? (() => true)
     const rejected = normalizePattern(props.rejected) ?? (() => false)
-    this.resolvable = (filename: string): boolean => accepted(filename) && !rejected(filename)
+    this.resolvable = (src: string): boolean => accepted(src) && !rejected(src)
   }
 
   public async resolve(
@@ -51,15 +52,15 @@ export class AssetResolverFile implements IAssetResolverPlugin {
   ): Promise<IAssetPluginResolveOutput | null> {
     if (!embryo && this.resolvable(input.src)) {
       const sourcetype: string = FileAssetType
-      const mimetype: string = mime.getType(input.filename) ?? 'unknown'
+      const mimetype: string = mime.getType(input.src) ?? 'unknown'
       const uri: string | null = await api.resolveUri(sourcetype, mimetype)
       const result: IAssetPluginResolveOutput = {
         sourcetype,
         mimetype,
-        title: input.title,
         description: null,
         slug: null,
         uri,
+        title: input.title,
         createdAt: input.createdAt,
         updatedAt: input.updatedAt,
         categories: [],
@@ -73,18 +74,15 @@ export class AssetResolverFile implements IAssetResolverPlugin {
   public async polish(
     input: Readonly<IAssetPluginPolishInput>,
     embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api: Readonly<IAssetPluginPolishApi>,
+    api_: Readonly<IAssetPluginPolishApi>,
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isFileAssetPolishInput(input)) {
-      const content: IBinaryFileData | null = await api.loadContent(input.filename)
-      if (content !== null) {
-        const result: IFileAssetPolishOutput = {
-          datatype: AssetDataTypeEnum.BINARY,
-          data: content,
-        }
-        return next(result)
+      const result: IFileAssetPolishOutput = {
+        datatype: AssetDataTypeEnum.BINARY,
+        data: input.content,
       }
+      return next(result)
     }
     return next(embryo)
   }

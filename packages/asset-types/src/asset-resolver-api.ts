@@ -1,31 +1,21 @@
 import type { IBinaryFileData } from './asset-file'
 import type { IAssetLocator } from './asset-locator'
 import type { IAssetPathResolver } from './asset-path-resolver'
-import type { IAssetPluginResolveInput } from './asset-resolver-plugin/resolve'
+import type { IAssetSourceStorage } from './asset-storage-source'
 import type { IAssetUriResolver } from './asset-uri-resolver'
 
 export interface IAssetResolverApi {
   readonly locator: IAssetLocator
   readonly pathResolver: IAssetPathResolver
+  readonly sourceStorage: IAssetSourceStorage
   readonly uriResolver: IAssetUriResolver
 
   /**
    * Detect file encoding.
-   * @param absoluteSrcPath
+   * @param src
+   * @param data
    */
-  detectEncoding(absoluteSrcPath: string): Promise<BufferEncoding | undefined>
-
-  /**
-   * Create an initial asset.
-   * @param absoluteSrcPath
-   */
-  initAsset(absoluteSrcPath: string): Promise<IAssetPluginResolveInput | null>
-
-  /**
-   * Load content by source file srcPath.
-   * @param absoluteSrcPath
-   */
-  loadContent(absoluteSrcPath: string): Promise<IBinaryFileData | null>
+  detectEncoding(src: string, data: IBinaryFileData): Promise<BufferEncoding | undefined>
 
   /**
    * Resolve the refPath to an absolute filepath as long as the result is under the source storage
@@ -34,4 +24,10 @@ export interface IAssetResolverApi {
    * @param srcPath
    */
   resolveRefPath(curDir: string, refPath: string): string | null
+
+  /**
+   * Resolve the guid by absolute source path.
+   * @param absoluteSrcPath
+   */
+  resolveGUID(absoluteSrcPath: string): Promise<string>
 }

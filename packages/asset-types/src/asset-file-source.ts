@@ -11,5 +11,4 @@ export interface ISourceItem {
   absoluteSrcPath: string
   stat: IAssetStat
   data: IBinaryFileData
-  encoding: BufferEncoding | undefined
 }

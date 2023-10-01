@@ -137,12 +137,12 @@ export class AssetService implements IAssetService {
     return this._resolverApi.locator.findAsset(predicate)
   }
 
-  public async locateAsset(absoluteSrcPath: string): Promise<IAsset | null> {
-    return this._taskApi.locate(absoluteSrcPath)
-  }
-
   public async findSrcPathByUri(uri: string): Promise<string | null> {
     return this._resolverApi.locator.findSrcPathByUri(uri)
+  }
+
+  public async resolveAsset(absoluteSrcPath: string): Promise<IAsset | null> {
+    return this._taskApi.resolve(absoluteSrcPath)
   }
 
   // In watching mode, use scheduler to schedule tasks.

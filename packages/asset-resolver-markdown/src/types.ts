@@ -64,7 +64,7 @@ export interface IMarkdownResolverPluginContext {
   getPresetDefinitions: () => Definition[] | undefined
   getPresetFootnoteDefinitions: () => FootnoteDefinition[] | undefined
   parseMarkdown: (content: string) => Root
-  resolvable: (filename: string) => boolean
+  resolvable: (src: string) => boolean
 }
 
 export type IMarkdownResolverPlugin = (ctx: IMarkdownResolverPluginContext) => IAssetResolverPlugin

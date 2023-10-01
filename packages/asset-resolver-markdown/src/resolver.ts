@@ -2,6 +2,7 @@ import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAssetMeta,
   IAssetParsePlugin,
+  IAssetPlugin,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginParseNext,
@@ -17,7 +18,6 @@ import type {
   IAssetPolishPlugin,
   IAssetResolvePlugin,
   IAssetResolverPlugin,
-  IBinaryFileData,
 } from '@guanghechen/asset-types'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
 import { ParagraphType } from '@yozora/ast'
@@ -41,9 +41,9 @@ interface IProps {
   parser: IParser
   /**
    * Check if the given file is in markdown format.
-   * @default filename => /\.md$/.test(filename)
+   * @default {src => /\.md$/.test(src)}
    */
-  resolvable?(filename: string): boolean
+  resolvable?(src: string): boolean
   /**
    * Get preset definitions.
    */
@@ -54,7 +54,9 @@ interface IProps {
   getPresetFootnoteDefinitions?: () => FootnoteDefinition[] | undefined
 }
 
-export class AssetResolverMarkdown implements IAssetResolverPlugin {
+export class AssetResolverMarkdown
+  implements IAssetPlugin, IAssetResolverPlugin, IAssetParsePlugin, IAssetPolishPlugin
+{
   public readonly displayName: string = '@guanghechen/asset-resolver-markdown'
   protected readonly ctx: IMarkdownResolverPluginContext
   protected readonly frontmatterRegex: RegExp
@@ -76,7 +78,7 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
       })
     }
     const resolvable: IMarkdownResolverPluginContext['resolvable'] =
-      props.resolvable ?? (filename => /\.md$/.test(filename))
+      props.resolvable ?? (src => /\.md$/.test(src))
     const ctx: IMarkdownResolverPluginContext = {
       getPresetDefinitions,
       getPresetFootnoteDefinitions,
@@ -109,57 +111,48 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     api: Readonly<IAssetPluginResolveApi>,
     next: IAssetPluginResolveNext,
   ): Promise<IAssetPluginResolveOutput | null> {
-    if (this.ctx.resolvable(input.filename)) {
-      const rawSrcContent: IBinaryFileData | null = await api.loadContent(input.filename)
-      if (rawSrcContent) {
-        const rawContent = rawSrcContent.toString(input.encoding)
-        const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
-        const frontmatter: Record<string, any> = match[1]
-          ? (yaml.load(match[1]) as Record<string, any>)
-          : {}
-        const createdAt: string =
-          frontmatter.createdAt != null
-            ? dayjs(frontmatter.createdAt).toISOString()
-            : input.createdAt
-        const updatedAt: string =
-          frontmatter.updatedAt != null
-            ? dayjs(frontmatter.updatedAt).toISOString()
-            : input.updatedAt
-        const title: string = frontmatter.title
-          ? collectTexts(this.ctx.parseMarkdown(frontmatter.title).children).join(' ') ||
-            input.title
-          : input.title
-        const sourcetype: string = MarkdownAssetType
-        const mimetype: string = 'application/json'
-        const uri: string | null = await api.resolveUri(sourcetype, mimetype)
-        const slug: string | null = await api.resolveSlug({
-          uri,
-          slug: typeof frontmatter.slug === 'string' ? frontmatter.slug : null,
-          title,
-        })
-        const result: IAssetPluginResolveOutput = {
-          sourcetype,
-          mimetype,
-          title,
-          description: frontmatter.description || title,
-          slug,
-          uri,
-          createdAt,
-          updatedAt,
-          categories: isTwoDimensionArrayOfT(frontmatter.categories, isString)
-            ? frontmatter.categories
-            : [],
-          tags: isArrayOfT(frontmatter.tags, isString) ? frontmatter.tags : [],
-        }
-
-        const reducer: IAssetPluginResolveNext =
-          this._resolvePlugins.reduceRight<IAssetPluginResolveNext>(
-            (internalNext, middleware) => embryo =>
-              middleware.resolve(input, embryo, api, internalNext),
-            next,
-          )
-        return reducer(result)
+    if (this.ctx.resolvable(input.src)) {
+      const rawContent: string = input.content.toString(input.encoding)
+      const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
+      const frontmatter: Record<string, any> = match[1]
+        ? (yaml.load(match[1]) as Record<string, any>)
+        : {}
+      const createdAt: string =
+        frontmatter.createdAt != null ? dayjs(frontmatter.createdAt).toISOString() : input.createdAt
+      const updatedAt: string =
+        frontmatter.updatedAt != null ? dayjs(frontmatter.updatedAt).toISOString() : input.updatedAt
+      const title: string = frontmatter.title
+        ? collectTexts(this.ctx.parseMarkdown(frontmatter.title).children).join(' ') || input.title
+        : input.title
+      const sourcetype: string = MarkdownAssetType
+      const mimetype: string = 'application/json'
+      const uri: string | null = await api.resolveUri(sourcetype, mimetype)
+      const slug: string | null = await api.resolveSlug({
+        uri,
+        slug: typeof frontmatter.slug === 'string' ? frontmatter.slug : null,
+      })
+      const result: IAssetPluginResolveOutput = {
+        sourcetype,
+        mimetype,
+        title,
+        description: frontmatter.description || title,
+        slug,
+        uri,
+        createdAt,
+        updatedAt,
+        categories: isTwoDimensionArrayOfT(frontmatter.categories, isString)
+          ? frontmatter.categories
+          : [],
+        tags: isArrayOfT(frontmatter.tags, isString) ? frontmatter.tags : [],
       }
+
+      const reducer: IAssetPluginResolveNext =
+        this._resolvePlugins.reduceRight<IAssetPluginResolveNext>(
+          (internalNext, middleware) => embryo =>
+            middleware.resolve(input, embryo, api, internalNext),
+          next,
+        )
+      return reducer(result)
     }
     return next(embryo)
   }
@@ -171,31 +164,26 @@ export class AssetResolverMarkdown implements IAssetResolverPlugin {
     next: IAssetPluginParseNext,
   ): Promise<IAssetPluginParseOutput | null> {
     if (input.sourcetype === MarkdownAssetType) {
-      const rawSrcContent: IBinaryFileData | null = await api.loadContent(input.filename)
-      if (rawSrcContent) {
-        const rawContent = rawSrcContent.toString(input.encoding)
-        const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
-        const frontmatter: Record<string, any> = match[1]
-          ? (yaml.load(match[1]) as Record<string, any>)
-          : {}
-        const titleAst: Root = this.ctx.parseMarkdown(frontmatter.title || input.title)
-        const title: Paragraph =
-          titleAst.children.length === 1 && titleAst.children[0].type === ParagraphType
-            ? (titleAst.children[0] as Paragraph)
-            : { type: ParagraphType, children: collectInlineNodes(titleAst) }
-        const ast: Root = this.ctx.parseMarkdown(rawContent.slice(match[0].length))
-        const result: IAssetPluginParseOutput<IMarkdownParsedData> = {
-          data: { title, ast, frontmatter },
-        }
-
-        const reducer: IAssetPluginParseNext =
-          this._parsePlugins.reduceRight<IAssetPluginParseNext>(
-            (internalNext, middleware) => embryo =>
-              middleware.parse(input, embryo, api, internalNext),
-            next,
-          )
-        return reducer(result)
+      const rawContent: string = input.content.toString(input.encoding)
+      const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
+      const frontmatter: Record<string, any> = match[1]
+        ? (yaml.load(match[1]) as Record<string, any>)
+        : {}
+      const titleAst: Root = this.ctx.parseMarkdown(frontmatter.title || input.title)
+      const title: Paragraph =
+        titleAst.children.length === 1 && titleAst.children[0].type === ParagraphType
+          ? (titleAst.children[0] as Paragraph)
+          : { type: ParagraphType, children: collectInlineNodes(titleAst) }
+      const ast: Root = this.ctx.parseMarkdown(rawContent.slice(match[0].length))
+      const result: IAssetPluginParseOutput<IMarkdownParsedData> = {
+        data: { title, ast, frontmatter },
       }
+
+      const reducer: IAssetPluginParseNext = this._parsePlugins.reduceRight<IAssetPluginParseNext>(
+        (internalNext, middleware) => embryo => middleware.parse(input, embryo, api, internalNext),
+        next,
+      )
+      return reducer(result)
     }
     return next(embryo)
   }

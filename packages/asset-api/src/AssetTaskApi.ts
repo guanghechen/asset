@@ -36,10 +36,10 @@ export class AssetTaskApi implements IAssetTaskApi {
     this._dataMapUri = props.dataMapUri
   }
 
-  public async locate(absoluteSrcPath: string): Promise<IAsset | null> {
+  public async resolve(absoluteSrcPath: string): Promise<IAsset | null> {
     const resolverApi: IAssetResolverApi = this._resolverApi
     const resolver: IAssetResolver = this._resolver
-    const asset: IAsset | null = await resolver.locate(absoluteSrcPath, resolverApi)
+    const asset: IAsset | null = await resolver.resolve(absoluteSrcPath, resolverApi)
     return asset
   }
 

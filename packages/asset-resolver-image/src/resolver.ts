@@ -1,4 +1,5 @@
 import type {
+  IAssetPlugin,
   IAssetPluginPolishApi,
   IAssetPluginPolishInput,
   IAssetPluginPolishNext,
@@ -7,6 +8,7 @@ import type {
   IAssetPluginResolveInput,
   IAssetPluginResolveNext,
   IAssetPluginResolveOutput,
+  IAssetPolishPlugin,
   IAssetResolverPlugin,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
@@ -33,7 +35,7 @@ export interface IAssetResolverImageProps {
   rejected?: RegExp[] | RegExp | ((src: string) => boolean)
 }
 
-export class AssetResolverImage implements IAssetResolverPlugin {
+export class AssetResolverImage implements IAssetPlugin, IAssetResolverPlugin, IAssetPolishPlugin {
   public readonly displayName: string
   protected readonly accepted: (src: string) => boolean
   protected readonly rejected: (src: string) => boolean
@@ -52,7 +54,7 @@ export class AssetResolverImage implements IAssetResolverPlugin {
   ): Promise<IAssetPluginResolveOutput | null> {
     if (!embryo && this.accepted(input.src) && !this.rejected(input.src)) {
       const sourcetype: string = ImageAssetType
-      const mimetype: string = mime.getType(input.filename) ?? 'unknown'
+      const mimetype: string = mime.getType(input.src) ?? 'unknown'
       let uri: string | null = await api.resolveUri(sourcetype, mimetype)
 
       if (uri?.startsWith('/')) {
@@ -60,17 +62,14 @@ export class AssetResolverImage implements IAssetResolverPlugin {
           const prefix = 'https://localhost'
           const urlObj = new URL(`${prefix}${uri}`)
           if (!urlObj.searchParams.has('width') || !urlObj.searchParams.has('height')) {
-            const rawContent: IBinaryFileData | null = await api.loadContent(input.filename)
-            if (rawContent) {
-              const result = sizeOf(rawContent)
-              if (result.width && !urlObj.searchParams.has('width')) {
-                urlObj.searchParams.set('width', String(result.width))
-              }
-              if (result.height && !urlObj.searchParams.has('height')) {
-                urlObj.searchParams.set('height', String(result.height))
-              }
-              uri = urlObj.toString().slice(prefix.length)
+            const size = sizeOf(input.content)
+            if (size.width && !urlObj.searchParams.has('width')) {
+              urlObj.searchParams.set('width', String(size.width))
             }
+            if (size.height && !urlObj.searchParams.has('height')) {
+              urlObj.searchParams.set('height', String(size.height))
+            }
+            uri = urlObj.toString().slice(prefix.length)
           }
         } catch (error) {
           console.error(error)
@@ -80,10 +79,10 @@ export class AssetResolverImage implements IAssetResolverPlugin {
       const result: IAssetPluginResolveOutput = {
         sourcetype,
         mimetype,
-        title: input.title,
         description: null,
         slug: null,
         uri,
+        title: input.title,
         createdAt: input.createdAt,
         updatedAt: input.updatedAt,
         categories: [],
@@ -97,18 +96,15 @@ export class AssetResolverImage implements IAssetResolverPlugin {
   public async polish(
     input: Readonly<IAssetPluginPolishInput>,
     embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api: Readonly<IAssetPluginPolishApi>,
+    api_: Readonly<IAssetPluginPolishApi>,
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isImageAssetPolishInput(input)) {
-      const content: IBinaryFileData | null = await api.loadContent(input.filename)
-      if (content !== null) {
-        const result: IImageAssetPolishOutput = {
-          datatype: AssetDataTypeEnum.BINARY,
-          data: content,
-        }
-        return next(result)
+      const result: IImageAssetPolishOutput = {
+        datatype: AssetDataTypeEnum.BINARY,
+        data: input.content,
       }
+      return next(result)
     }
     return next(embryo)
   }

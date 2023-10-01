@@ -7,7 +7,6 @@ import type {
   IAssetWatchOptions,
   IAssetWatcher,
   IBinaryFileData,
-  IEncodingDetector,
   IMemoAssetSourceDataStorage,
   ISourceItem,
 } from '@guanghechen/asset-types'
@@ -23,23 +22,20 @@ type IParametersOfOnRemove = [absoluteSrcPath: string, pathResolver: IAssetPathR
 interface IProps {
   dataStore: IMemoAssetSourceDataStorage
   pathResolver: IAssetPathResolver
-  encodingDetector: IEncodingDetector
 }
 
 export class MemoAssetSourceStorage implements IAssetSourceStorage {
   protected readonly _dataStore: IMemoAssetSourceDataStorage
   protected readonly _pathResolver: IAssetPathResolver
-  protected readonly _encodingDetector: IEncodingDetector
   protected readonly _monitorAdd: IMonitor<IParametersOfOnAdd>
   protected readonly _monitorChange: IMonitor<IParametersOfOnChange>
   protected readonly _monitorRemove: IMonitor<IParametersOfOnRemove>
 
   constructor(props: IProps) {
-    const { dataStore, pathResolver, encodingDetector } = props
+    const { dataStore, pathResolver } = props
 
     this._dataStore = dataStore
     this._pathResolver = pathResolver
-    this._encodingDetector = encodingDetector
     this._monitorAdd = new Monitor<IParametersOfOnAdd>('onAdd')
     this._monitorChange = new Monitor<IParametersOfOnChange>('onChange')
     this._monitorRemove = new Monitor<IParametersOfOnRemove>('onRemove')
@@ -51,16 +47,11 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
 
     const loadResult = await this._dataStore.loadOnDemand(absoluteSrcPath)
     if (loadResult !== undefined) {
-      const encoding: BufferEncoding | undefined = await this._encodingDetector.detect(
-        absoluteSrcPath,
-        async () => loadResult.data,
-      )
       const item: ISourceItem = {
         srcRoot,
         absoluteSrcPath,
         stat: loadResult.stat,
         data: loadResult.data,
-        encoding,
       }
       this._dataStore.set(absoluteSrcPath, item)
       this._monitorAdd.notify(absoluteSrcPath, this._pathResolver)
@@ -72,13 +63,6 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     )
   }
 
-  public async detectEncoding(absoluteSrcPath: string): Promise<BufferEncoding | undefined> {
-    this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
-    const loadData = (): Promise<IBinaryFileData> => this.readFile(absoluteSrcPath)
-    const encoding = await this._encodingDetector.detect(absoluteSrcPath, loadData)
-    return encoding
-  }
-
   public async readFile(absoluteSrcPath: string): Promise<IBinaryFileData> {
     const srcRoot: string = this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
 
@@ -86,16 +70,11 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     if (item === undefined) {
       const loadResult = await this._dataStore.loadOnDemand(absoluteSrcPath)
       if (loadResult !== undefined) {
-        const encoding: BufferEncoding | undefined = await this._encodingDetector.detect(
-          absoluteSrcPath,
-          async () => loadResult.data,
-        )
         item = {
           srcRoot,
           absoluteSrcPath,
           stat: { birthtime: loadResult.stat.birthtime, mtime: loadResult.stat.mtime },
           data: loadResult.data,
-          encoding,
         }
         this._dataStore.set(absoluteSrcPath, item)
         this._monitorAdd.notify(absoluteSrcPath, this._pathResolver)
@@ -130,11 +109,6 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
   public async updateFile(absoluteSrcPath: string, data: IBinaryFileData): Promise<void> {
     const srcRoot: string = this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
     const existItem: ISourceItem | undefined = this._dataStore.get(absoluteSrcPath)
-    const encoding: BufferEncoding | undefined = await this._encodingDetector.detect(
-      absoluteSrcPath,
-      async () => data,
-    )
-
     const mtime: Date = new Date()
     const birthtime = existItem?.stat.birthtime ?? mtime
     const resolvedItem: ISourceItem = {
@@ -142,7 +116,6 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
       absoluteSrcPath,
       stat: { birthtime, mtime },
       data,
-      encoding,
     }
 
     if (existItem) {

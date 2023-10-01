@@ -5,7 +5,7 @@ export interface IAssetTaskApi {
    * Locate the asset by the given filepath.
    * @param absoluteSrcPath
    */
-  locate(absoluteSrcPath: string): Promise<IAsset | null>
+  resolve(absoluteSrcPath: string): Promise<IAsset | null>
   /**
    * Create assets on the given srcPaths.
    * @param absoluteSrcPaths

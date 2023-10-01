@@ -30,6 +30,9 @@ export interface IAssetPlugin {
   readonly displayName: string
 }
 
+/**
+ * Hooks for locating asset.
+ */
 export interface IAssetLocatePlugin extends IAssetPlugin {
   locate(
     input: Readonly<IAssetPluginLocateInput>,

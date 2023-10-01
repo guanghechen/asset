@@ -1,6 +1,8 @@
 import type { IAsset } from './asset'
 import type { IAssetResolverApi } from './asset-resolver-api'
+import type { IAssetPluginLocateOutput } from './asset-resolver-plugin/locate'
 import type {
+  IAssetLocatePlugin,
   IAssetParsePlugin,
   IAssetPlugin,
   IAssetPolishPlugin,
@@ -9,9 +11,14 @@ import type {
 import type { AssetDataTypeEnum } from './enum'
 
 export type IAssetResolverPlugin = IAssetPlugin &
+  Partial<IAssetLocatePlugin> &
   Partial<IAssetResolvePlugin> &
   Partial<IAssetParsePlugin> &
   Partial<IAssetPolishPlugin>
+
+export interface IAssetLocatedData {
+  output: IAssetPluginLocateOutput
+}
 
 export interface IAssetResolvedData {
   asset: IAsset
@@ -50,5 +57,5 @@ export interface IAssetResolver {
    * @param absoluteSrcPath
    * @param api
    */
-  locate(absoluteSrcPath: string, api: IAssetResolverApi): Promise<IAsset | null>
+  resolve(absoluteSrcPath: string, api: IAssetResolverApi): Promise<IAsset | null>
 }

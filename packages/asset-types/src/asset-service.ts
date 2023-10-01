@@ -46,7 +46,7 @@ export interface IAssetService {
    * Locate the asset by the given filepath.
    * @param absoluteSrcPath
    */
-  locateAsset(absoluteSrcPath: string): Promise<IAsset | null>
+  resolveAsset(absoluteSrcPath: string): Promise<IAsset | null>
 
   /**
    * Need to call `this.prepare()` in advance.

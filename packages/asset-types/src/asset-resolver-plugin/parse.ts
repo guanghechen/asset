@@ -28,13 +28,17 @@ export interface IAssetPluginParseInput {
    */
   title: string
   /**
-   * The source file name.
+   * Relative path to the source root.
    */
-  filename: string
+  src: string
   /**
    * File extension (without dot).
    */
   extname: string | undefined
+  /**
+   * Source file content.
+   */
+  content: IBinaryFileData
   /**
    * Source file encoding.
    */

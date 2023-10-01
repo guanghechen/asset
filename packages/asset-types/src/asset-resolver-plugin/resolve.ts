@@ -34,9 +34,25 @@ export interface IAssetPluginResolveInput {
    */
   hash: string
   /**
-   * Source virtual filepath (*nix style).
+   * Relative path to the source root.
    */
   src: string
+  /**
+   * File extension (without dot).
+   */
+  extname: string | undefined
+  /**
+   * Asset content.
+   */
+  content: IBinaryFileData
+  /**
+   * Source file encoding.
+   */
+  encoding: BufferEncoding | undefined
+  /**
+   * Asset title.
+   */
+  title: string
   /**
    * The created date of the asset (ISOString).
    */
@@ -45,41 +61,17 @@ export interface IAssetPluginResolveInput {
    * The last modification date of the asset (ISOString).
    */
   updatedAt: string
-  /**
-   * Asset title.
-   */
-  title: string
-  /**
-   * The source file name.
-   */
-  filename: string
-  /**
-   * File extension (without dot).
-   */
-  extname: string | undefined
-  /**
-   * Source file encoding.
-   */
-  encoding: BufferEncoding | undefined
 }
 
 export interface IAssetPluginResolveOutput {
-  /**
-   * Asset source content type.
-   */
-  sourcetype: string
   /**
    * Asset MIME type.
    */
   mimetype: string
   /**
-   * Title of asset.
+   * Asset source content type.
    */
-  title: string
-  /**
-   * Description of the content.
-   */
-  description: string | null
+  sourcetype: string
   /**
    * A stable page url to reveal this asset.
    */
@@ -88,6 +80,14 @@ export interface IAssetPluginResolveOutput {
    * A stage url to
    */
   uri: string | null
+  /**
+   * Title of asset.
+   */
+  title: string
+  /**
+   * Description of the content.
+   */
+  description: string | null
   /**
    * The created date of the asset (ISOString).
    */

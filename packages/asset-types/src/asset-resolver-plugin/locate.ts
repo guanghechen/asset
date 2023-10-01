@@ -1,5 +1,17 @@
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface IAssetPluginLocateApi {}
+import type { IBinaryFileData } from '../asset-file'
+import type { IAssetPathResolver } from '../asset-path-resolver'
+import type { IAssetSourceStorage } from '../asset-storage-source'
+
+export interface IAssetPluginLocateApi {
+  readonly pathResolver: IAssetPathResolver
+  readonly sourceStorage: IAssetSourceStorage
+  /**
+   * Detect content encoding.
+   * @param src
+   * @param data
+   */
+  detectEncoding(src: string, data: IBinaryFileData): Promise<BufferEncoding | undefined>
+}
 
 export interface IAssetPluginLocateNext {
   (embryo: Readonly<IAssetPluginLocateOutput> | null): Promise<IAssetPluginLocateOutput | null>
@@ -7,12 +19,9 @@ export interface IAssetPluginLocateNext {
 
 export interface IAssetPluginLocateInput {
   /**
-   * Absolute source path.
+   * Relative src path.
    */
-  absoluteSrcPath: string
-}
-
-export interface IAssetPluginLocateOutput {
+  relativePath: string
   /**
    * Asset global unique identifier.
    */
@@ -22,9 +31,9 @@ export interface IAssetPluginLocateOutput {
    */
   hash: string
   /**
-   * Source virtual filepath (*nix style).
+   * Asset content.
    */
-  src: string
+  content: IBinaryFileData
   /**
    * The created date of the asset (ISOString).
    */
@@ -33,20 +42,31 @@ export interface IAssetPluginLocateOutput {
    * The last modification date of the asset (ISOString).
    */
   updatedAt: string
+}
+
+export interface IAssetPluginLocateOutput {
+  /**
+   * Relative src path. (*nix style).
+   */
+  src: string
   /**
    * Asset title.
    */
   title: string
   /**
-   * The source file name.
+   * Asset content.
    */
-  filename: string
-  /**
-   * File extension (without dot).
-   */
-  extname: string | undefined
+  content: IBinaryFileData
   /**
    * Source file encoding.
    */
   encoding: BufferEncoding | undefined
+  /**
+   * The created date of the asset (ISOString).
+   */
+  createdAt: string
+  /**
+   * The last modification date of the asset (ISOString).
+   */
+  updatedAt: string
 }

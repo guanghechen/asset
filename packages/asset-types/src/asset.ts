@@ -7,10 +7,6 @@ export interface IAssetMeta {
    * A stable page url to reveal this asset.
    */
   slug: string | null
-  /**
-   * Title of asset.
-   */
-  title: string
 }
 
 export interface IAssetLocation {
@@ -19,24 +15,28 @@ export interface IAssetLocation {
    */
   guid: string
   /**
-   * Asset source content type.
+   * The fingerprint of the asset content.
    */
-  sourcetype: string
+  hash: string
   /**
    * Asset MIME type.
    */
   mimetype: string
+  /**
+   * Asset source content type.
+   */
+  sourcetype: string
   /**
    * File extension (without dot prefix).
    */
   extname: string | undefined
 }
 
-export interface IAsset extends IAssetMeta, IAssetLocation {
+export interface IAssetDetail {
   /**
-   * The fingerprint of the asset content.
+   * Title of asset.
    */
-  hash: string
+  title: string
   /**
    * Description of the content.
    */
@@ -58,3 +58,5 @@ export interface IAsset extends IAssetMeta, IAssetLocation {
    */
   tags: string[]
 }
+
+export interface IAsset extends IAssetMeta, IAssetLocation, IAssetDetail {}

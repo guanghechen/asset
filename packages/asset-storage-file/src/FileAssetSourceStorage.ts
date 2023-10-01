@@ -7,7 +7,6 @@ import type {
   IAssetWatchOptions,
   IAssetWatcher,
   IBinaryFileData,
-  IEncodingDetector,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import chokidar from 'chokidar'
@@ -17,7 +16,6 @@ import { readFile, stat, unlink, writeFile } from 'node:fs/promises'
 
 interface IProps {
   pathResolver: IAssetPathResolver
-  encodingDetector: IEncodingDetector
   decipher?: IAssetDecipher
   watchOptions?: Partial<chokidar.WatchOptions>
 }
@@ -29,14 +27,12 @@ const defaultDecipher: IAssetDecipher = {
 export class FileAssetSourceStorage implements IAssetSourceStorage {
   protected readonly _decipher: IAssetDecipher
   protected readonly _pathResolver: IAssetPathResolver
-  protected readonly _encodingDetector: IEncodingDetector
   protected readonly _watchOptions: Partial<chokidar.WatchOptions>
 
   constructor(props: IProps) {
-    const { pathResolver, encodingDetector, decipher, watchOptions = {} } = props
+    const { pathResolver, decipher, watchOptions = {} } = props
 
     this._pathResolver = pathResolver
-    this._encodingDetector = encodingDetector
     this._decipher = decipher ?? defaultDecipher
     this._watchOptions = watchOptions
   }
@@ -51,13 +47,6 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
 
     const assertion: boolean = (await stat(absoluteSrcPath)).isFile()
     invariant(assertion, `[assertExistedFile] Not a file. (${absoluteSrcPath})`)
-  }
-
-  public async detectEncoding(absoluteSrcPath: string): Promise<BufferEncoding | undefined> {
-    this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
-    const loadData = (): Promise<IBinaryFileData> => this.readFile(absoluteSrcPath)
-    const encoding = await this._encodingDetector.detect(absoluteSrcPath, loadData)
-    return encoding
   }
 
   public async readFile(absoluteSrcPath: string): Promise<IBinaryFileData> {
