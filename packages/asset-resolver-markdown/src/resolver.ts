@@ -195,23 +195,25 @@ export class AssetResolverMarkdown
     next: IAssetPluginPolishNext,
   ): Promise<IAssetPluginPolishOutput | null> {
     if (isMarkdownAssetPolishInput(input) && input.data) {
-      const ast: Root = await shallowMutateAstInPreorderAsync(input.data.ast, null, async node => {
-        const n = node as unknown as Resource
-        if (n.url === undefined) return node
+      const ast: Root = await shallowMutateAstInPreorderAsync(
+        input.data.ast,
+        o => (o as unknown as Resource).url !== undefined,
+        async node => {
+          const n = node as unknown as Resource
+          const p: string | null = api.parseSrcPathFromUrl(n.url)
+          if (!p) return node
 
-        const p: string | null = api.parseSrcPathFromUrl(n.url)
-        if (!p) return node
+          const refPath: string | null = await api.resolveRefPath(p)
+          if (refPath === null) return node
 
-        const refPath: string | null = await api.resolveRefPath(p)
-        if (refPath === null) return node
-
-        const asset: IAsset | null = await api.resolveAsset(refPath)
-        if (asset) {
-          const url: string = asset.slug || asset.uri
-          return n.url === url ? node : { ...node, url }
-        }
-        return node
-      })
+          const asset: IAsset | null = await api.resolveAsset(refPath)
+          if (asset) {
+            const url: string = asset.slug || asset.uri
+            return n.url === url ? node : { ...node, url }
+          }
+          return node
+        },
+      )
 
       const { frontmatter, title } = input.data
       const result: IAssetPluginPolishOutput<IMarkdownPolishedData> = {

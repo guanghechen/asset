@@ -40,14 +40,22 @@ export class AssetResolverApi implements IAssetResolverApi {
     const absoluteSrcPath: string = this.pathResolver.absolute(curDir, refPath)
     const srcRoot: string | null = this.pathResolver.findSrcRoot(absoluteSrcPath)
     if (srcRoot === null) {
-      this._reporter.warn(`[AssetResolverApi.resolveRefPath] bad ref path: ${refPath}`)
+      this._reporter.warn(
+        '[AssetResolverApi.resolveRefPath] cannot find any srcRoot. refPath: {}, curDir: {}',
+        refPath,
+        curDir,
+      )
       return null
     }
 
     const exists: boolean = await this.sourceStorage.existFile(absoluteSrcPath)
     if (exists) return absoluteSrcPath
 
-    this._reporter.warn(`[AssetResolverApi.resolveRefPath] bad ref path: ${refPath}`)
+    this._reporter.warn(
+      '[AssetResolverApi.resolveRefPath] cannot find the file. refPath: {}, curDir: {}',
+      refPath,
+      curDir,
+    )
     return null
   }
 }
