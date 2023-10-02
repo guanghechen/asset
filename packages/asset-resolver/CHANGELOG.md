@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.22](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.21...@guanghechen/asset-resolver@1.0.0-alpha.22) (2023-10-02)
+
+
+### Bug Fixes
+
+* 🐛 image url was not resolved properly ([c2f1b18](https://github.com/guanghechen/asset/commit/c2f1b1842d1d28fdc6c496d38cfcacd0888a369e))
+
+
+
+
+
 # [1.0.0-alpha.21](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.20...@guanghechen/asset-resolver@1.0.0-alpha.21) (2023-10-01)
 
 

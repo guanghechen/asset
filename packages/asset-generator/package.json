@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-generator",
-  "version": "1.0.0-alpha.7",
+  "version": "1.0.0-alpha.8",
   "description": "file asset",
   "author": {
     "name": "guanghechen",
@@ -41,10 +41,10 @@
   },
   "dependencies": {
     "@guanghechen/asset-api": "^1.0.0-alpha.40",
-    "@guanghechen/asset-resolver": "^1.0.0-alpha.21",
+    "@guanghechen/asset-resolver": "^1.0.0-alpha.22",
     "@guanghechen/asset-resolver-file": "^1.0.0-alpha.38",
     "@guanghechen/asset-resolver-image": "^1.0.0-alpha.38",
-    "@guanghechen/asset-resolver-markdown": "^1.0.0-alpha.41",
+    "@guanghechen/asset-resolver-markdown": "^1.0.0-alpha.42",
     "@guanghechen/asset-types": "^1.0.0-alpha.39",
     "@guanghechen/types": "^1.0.0-alpha.6",
     "@yozora/ast": "^2.3.0"
