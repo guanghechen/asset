@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.23](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.22...@guanghechen/asset-resolver@1.0.0-alpha.23) (2023-10-04)
+
+
+### Performance Improvements
+
+* ⬆️ upgrade dependencies ([13dec20](https://github.com/guanghechen/asset/commit/13dec20e863b16c04585c448dfaa867d4c79d27d))
+
+
+
+
+
 # [1.0.0-alpha.22](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.21...@guanghechen/asset-resolver@1.0.0-alpha.22) (2023-10-02)
 
 
