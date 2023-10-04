@@ -491,7 +491,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/asset-api@^1.0.0-alpha.41, @guanghechen/asset-api@workspace:packages/asset-api":
+"@guanghechen/asset-api@^1.0.0-alpha.42, @guanghechen/asset-api@workspace:packages/asset-api":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-api@workspace:packages/asset-api"
   dependencies:
@@ -508,7 +508,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-generator@workspace:packages/asset-generator"
   dependencies:
-    "@guanghechen/asset-api": ^1.0.0-alpha.41
+    "@guanghechen/asset-api": ^1.0.0-alpha.42
     "@guanghechen/asset-resolver": ^1.0.0-alpha.23
     "@guanghechen/asset-resolver-file": ^1.0.0-alpha.39
     "@guanghechen/asset-resolver-image": ^1.0.0-alpha.39

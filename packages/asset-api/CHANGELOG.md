@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.42](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.41...@guanghechen/asset-api@1.0.0-alpha.42) (2023-10-04)
+
+
+### Performance Improvements
+
+* ⬆️ remove unused dependencies ([6a02ecb](https://github.com/guanghechen/asset/commit/6a02ecbeb8828de37db2c5515e0e1d5b17cb7a0e))
+
+
+
+
+
 # [1.0.0-alpha.41](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.40...@guanghechen/asset-api@1.0.0-alpha.41) (2023-10-04)
 
 
