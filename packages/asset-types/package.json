@@ -38,5 +38,8 @@
   "scripts": {
     "build": "rimraf lib/ && cross-env NODE_ENV=production rollup -c ../../rollup.config.mjs",
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
+  },
+  "dependencies": {
+    "@guanghechen/monitor.types": "^1.0.0-alpha.1"
   }
 }

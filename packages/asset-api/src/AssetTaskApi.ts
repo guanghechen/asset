@@ -11,7 +11,7 @@ import type {
   IJsonFileData,
   ITargetItem,
 } from '@guanghechen/asset-types'
-import type { IReporter } from '@guanghechen/types'
+import type { IReporter } from '@guanghechen/reporter.types'
 
 interface IProps {
   resolver: IAssetResolver

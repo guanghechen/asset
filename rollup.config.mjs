@@ -1,8 +1,4 @@
-import {
-  DependencyCategory,
-  createRollupConfig,
-  tsPresetConfigBuilder,
-} from '@guanghechen/rollup-config'
+import { createRollupConfig, tsPresetConfigBuilder } from '@guanghechen/rollup-config'
 import path from 'node:path'
 
 export default async function rollupConfig() {
@@ -21,10 +17,6 @@ export default async function rollupConfig() {
         },
       }),
     ],
-    classifyDependency: id => {
-      if (id === '@guanghechen/shared') return DependencyCategory.BUILTIN
-      return DependencyCategory.UNKNOWN
-    },
   })
   return config
 }

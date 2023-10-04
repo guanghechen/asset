@@ -1,6 +1,7 @@
 import type { AssetChangeEventEnum, IAssetTaskApi, IAssetTaskData } from '@guanghechen/asset-types'
+import type { IPipelineMaterial } from '@guanghechen/pipeline'
 import { Pipeline } from '@guanghechen/pipeline'
-import type { IPipelineMaterial, ITask } from '@guanghechen/types'
+import type { ITask } from '@guanghechen/task'
 import { AssetTask } from './AssetTask'
 import type { IAssetTaskPipeline } from './types'
 

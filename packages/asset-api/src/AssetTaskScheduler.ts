@@ -1,7 +1,9 @@
 import type { IAssetTaskApi, IAssetTaskData } from '@guanghechen/asset-types'
-import { ErrorLevelEnum, TaskStatusEnum } from '@guanghechen/constant'
+import { ErrorLevelEnum } from '@guanghechen/error.types'
+import type { IReporter } from '@guanghechen/reporter.types'
 import { Scheduler } from '@guanghechen/scheduler'
-import type { IReporter, ITask } from '@guanghechen/types'
+import { TaskStatusEnum } from '@guanghechen/task'
+import type { ITask } from '@guanghechen/task'
 import { AssetTaskPipeline } from './AssetTaskPipeline'
 import type { IAssetTaskScheduler } from './types'
 

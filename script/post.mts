@@ -28,13 +28,13 @@ import type {
   IAssetSourceStorage,
   IAssetTargetStorage,
 } from '@guanghechen/asset-types'
-import type { IReporter } from '@guanghechen/types'
+import type { IReporter } from '@guanghechen/reporter.types'
 import { YozoraParser } from '@yozora/parser'
 import path from 'node:path'
 import url from 'node:url'
 
 const enum AssetGroupEnum {
-  POST = 'post'
+  POST = 'post',
 }
 
 export const isEnvDevelopment: boolean = process.env.NODE_ENV === 'development'

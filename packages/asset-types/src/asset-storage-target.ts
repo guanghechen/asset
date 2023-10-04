@@ -1,4 +1,4 @@
-import type { IMonitorUnsubscribe } from '@guanghechen/types'
+import type { IMonitorUnsubscribe } from '@guanghechen/monitor.types'
 import type { IFileData } from './asset-file'
 import type { ITargetItem, ITargetItemWithoutData } from './asset-file-target'
 
