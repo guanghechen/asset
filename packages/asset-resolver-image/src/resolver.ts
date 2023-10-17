@@ -1,12 +1,7 @@
 import type {
   IAssetPlugin,
-  IAssetPluginPolishApi,
-  IAssetPluginPolishInput,
-  IAssetPluginPolishNext,
-  IAssetPluginPolishOutput,
-  IAssetPluginResolveApi,
-  IAssetPluginResolveInput,
-  IAssetPluginResolveNext,
+  IAssetPluginPolishMiddleware,
+  IAssetPluginResolveMiddleware,
   IAssetPluginResolveOutput,
   IAssetPolishPlugin,
   IAssetResolverPlugin,
@@ -45,12 +40,7 @@ export class AssetResolverImage implements IAssetPlugin, IAssetResolverPlugin, I
     this.rejected = normalizePattern(props.rejected) ?? (() => false)
   }
 
-  public async resolve(
-    input: Readonly<IAssetPluginResolveInput>,
-    embryo: Readonly<IAssetPluginResolveOutput> | null,
-    api: Readonly<IAssetPluginResolveApi>,
-    next: IAssetPluginResolveNext,
-  ): Promise<IAssetPluginResolveOutput | null> {
+  public readonly resolve: IAssetPluginResolveMiddleware = async (input, embryo, api, next) => {
     if (!embryo && this.accepted(input.src) && !this.rejected(input.src)) {
       const sourcetype: string = ImageAssetType
       const mimetype: string = mime.getType(input.src) ?? 'unknown'
@@ -92,12 +82,7 @@ export class AssetResolverImage implements IAssetPlugin, IAssetResolverPlugin, I
     return next(embryo)
   }
 
-  public async polish(
-    input: Readonly<IAssetPluginPolishInput>,
-    embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api_: Readonly<IAssetPluginPolishApi>,
-    next: IAssetPluginPolishNext,
-  ): Promise<IAssetPluginPolishOutput | null> {
+  public readonly polish: IAssetPluginPolishMiddleware = async (input, embryo, _api, next) => {
     if (isImageAssetPolishInput(input)) {
       const result: IImageAssetPolishOutput = {
         datatype: AssetDataTypeEnum.BINARY,

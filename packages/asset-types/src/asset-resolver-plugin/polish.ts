@@ -25,10 +25,6 @@ export interface IAssetPluginPolishApi {
   resolveRefPath(srcPathRelativeToCurDir: string): Promise<string | null>
 }
 
-export interface IAssetPluginPolishNext {
-  (embryo: Readonly<IAssetPluginPolishOutput> | null): Promise<IAssetPluginPolishOutput | null>
-}
-
 export interface IAssetPluginPolishInput<D = unknown> {
   /**
    * Asset source content type.

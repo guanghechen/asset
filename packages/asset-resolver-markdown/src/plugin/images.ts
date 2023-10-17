@@ -1,10 +1,4 @@
-import type {
-  IAssetPluginPolishApi,
-  IAssetPluginPolishInput,
-  IAssetPluginPolishNext,
-  IAssetPluginPolishOutput,
-  IAssetResolverPlugin,
-} from '@guanghechen/asset-types'
+import type { IAssetResolverPlugin } from '@guanghechen/asset-types'
 import type { Definition, Image, ImageReference } from '@yozora/ast'
 import { ImageReferenceType, ImageType } from '@yozora/ast'
 import { traverseAst } from '@yozora/ast-util'
@@ -44,12 +38,7 @@ export function markdownPluginImages(params: IParams = {}): IMarkdownResolverPlu
       get displayName(): string {
         return '@guanghechen/asset-resolver-markdown/images'
       },
-      async polish(
-        input: Readonly<IAssetPluginPolishInput>,
-        embryo: Readonly<IAssetPluginPolishOutput> | null,
-        _api: Readonly<IAssetPluginPolishApi>,
-        next: IAssetPluginPolishNext,
-      ): Promise<IAssetPluginPolishOutput | null> {
+      async polish(input, embryo, _api, next) {
         if (isMarkdownPolishOutput(input, embryo)) {
           const data: IMarkdownPolishedData = embryo.data
           const images: IPreviewImageItem[] = []

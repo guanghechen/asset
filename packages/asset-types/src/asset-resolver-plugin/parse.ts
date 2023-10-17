@@ -24,10 +24,6 @@ export interface IAssetPluginParseApi {
   resolveSlug(meta: Readonly<IAssetMeta>): Promise<string | null>
 }
 
-export interface IAssetPluginParseNext {
-  (embryo: Readonly<IAssetPluginParseOutput> | null): Promise<IAssetPluginParseOutput | null>
-}
-
 export interface IAssetPluginParseInput {
   /**
    * Asset source content type.

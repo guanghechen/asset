@@ -1,11 +1,4 @@
-import type {
-  IAsset,
-  IAssetPluginPolishApi,
-  IAssetPluginPolishInput,
-  IAssetPluginPolishNext,
-  IAssetPluginPolishOutput,
-  IAssetResolverPlugin,
-} from '@guanghechen/asset-types'
+import type { IAsset, IAssetResolverPlugin } from '@guanghechen/asset-types'
 import type {
   IMarkdownAssetPolishOutput,
   IMarkdownPolishedData,
@@ -17,15 +10,10 @@ import type { IAPlayerAudioItem, IAplayerOptions } from '../types.aplayer'
 export function markdownPluginAplayer(): IMarkdownResolverPlugin {
   const plugin: IMarkdownResolverPlugin = (): IAssetResolverPlugin => {
     return {
-      get displayName(): string {
+      get displayName() {
         return '@guanghechen/asset-resolver-markdown/aplayer'
       },
-      async polish(
-        input: Readonly<IAssetPluginPolishInput>,
-        embryo: Readonly<IAssetPluginPolishOutput> | null,
-        api: Readonly<IAssetPluginPolishApi>,
-        next: IAssetPluginPolishNext,
-      ): Promise<IAssetPluginPolishOutput | null> {
+      async polish(input, embryo, api, next) {
         if (isMarkdownPolishOutput(input, embryo)) {
           const data: IMarkdownPolishedData = embryo.data
           if (data.frontmatter.aplayer) {

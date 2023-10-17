@@ -1,10 +1,4 @@
-import type {
-  IAssetPluginParseApi,
-  IAssetPluginParseInput,
-  IAssetPluginParseNext,
-  IAssetPluginParseOutput,
-  IAssetResolverPlugin,
-} from '@guanghechen/asset-types'
+import type { IAssetResolverPlugin } from '@guanghechen/asset-types'
 import type { Text } from '@yozora/ast'
 import { TextType } from '@yozora/ast'
 import { shallowMutateAstInPreorder } from '@yozora/ast-util'
@@ -29,12 +23,7 @@ export function markdownPluginStripSpace(params: IParams = {}): IMarkdownResolve
         return '@guanghechen/asset-resolver-markdown/stripSpace'
       },
 
-      async parse(
-        input: Readonly<IAssetPluginParseInput>,
-        embryo: Readonly<IAssetPluginParseOutput> | null,
-        _api: Readonly<IAssetPluginParseApi>,
-        next: IAssetPluginParseNext,
-      ): Promise<IAssetPluginParseOutput | null> {
+      async parse(input, embryo, _api, next) {
         if (isMarkdownAssetParseOutput(input, embryo) && embryo.data) {
           let ast = embryo.data.ast
           if (betweenChineseCharacters) {

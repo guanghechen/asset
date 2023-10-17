@@ -1,10 +1,4 @@
-import type {
-  IAssetPluginPolishApi,
-  IAssetPluginPolishInput,
-  IAssetPluginPolishNext,
-  IAssetPluginPolishOutput,
-  IAssetResolverPlugin,
-} from '@guanghechen/asset-types'
+import type { IAssetResolverPlugin } from '@guanghechen/asset-types'
 import { calcHeadingToc } from '@yozora/ast-util'
 import type {
   IMarkdownAssetPolishOutput,
@@ -28,12 +22,7 @@ export function markdownPluginToc(params: IParams = {}): IMarkdownResolverPlugin
       get displayName(): string {
         return '@guanghechen/asset-resolver-markdown/toc'
       },
-      async polish(
-        input: Readonly<IAssetPluginPolishInput>,
-        embryo: Readonly<IAssetPluginPolishOutput> | null,
-        _api: Readonly<IAssetPluginPolishApi>,
-        next: IAssetPluginPolishNext,
-      ): Promise<IAssetPluginPolishOutput | null> {
+      async polish(input, embryo, _api, next) {
         if (isMarkdownPolishOutput(input, embryo)) {
           const data: IMarkdownPolishedData = embryo.data
           const toc = calcHeadingToc(data.ast, identifierPrefix)

@@ -3,23 +3,23 @@ import type {
   IAsset,
   IAssetParsePlugin,
   IAssetPlugin,
-  IAssetPluginParseApi,
-  IAssetPluginParseInput,
+  IAssetPluginParseMiddleware,
+  IAssetPluginParseMiddlewares,
   IAssetPluginParseNext,
   IAssetPluginParseOutput,
-  IAssetPluginPolishApi,
-  IAssetPluginPolishInput,
+  IAssetPluginPolishMiddleware,
+  IAssetPluginPolishMiddlewares,
   IAssetPluginPolishNext,
   IAssetPluginPolishOutput,
-  IAssetPluginResolveApi,
-  IAssetPluginResolveInput,
+  IAssetPluginResolveMiddleware,
+  IAssetPluginResolveMiddlewares,
   IAssetPluginResolveNext,
   IAssetPluginResolveOutput,
   IAssetPolishPlugin,
-  IAssetResolvePlugin,
   IAssetResolverPlugin,
 } from '@guanghechen/asset-types'
 import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
+import { AsyncMiddlewares } from '@guanghechen/middleware'
 import { ParagraphType } from '@yozora/ast'
 import type { Definition, FootnoteDefinition, Paragraph, Resource, Root } from '@yozora/ast'
 import { collectInlineNodes, collectTexts, shallowMutateAstInPreorderAsync } from '@yozora/ast-util'
@@ -60,9 +60,9 @@ export class AssetResolverMarkdown
   public readonly displayName: string = '@guanghechen/asset-resolver-markdown'
   protected readonly ctx: IMarkdownResolverPluginContext
   protected readonly frontmatterRegex: RegExp
-  private readonly _resolvePlugins: IAssetResolvePlugin[]
-  private readonly _parsePlugins: IAssetParsePlugin[]
-  private readonly _polishPlugins: IAssetPolishPlugin[]
+  private readonly _resolveMiddlewares: IAssetPluginResolveMiddlewares
+  private readonly _parseMiddlewares: IAssetPluginParseMiddlewares
+  private readonly _polishMiddlewares: IAssetPluginPolishMiddlewares
 
   constructor(props: IProps) {
     const parser: IParser = props.parser
@@ -88,29 +88,33 @@ export class AssetResolverMarkdown
 
     this.ctx = ctx
     this.frontmatterRegex = /^\s*[-]{3,}\n\s*([\s\S]*?)[-]{3,}\n/
-    this._resolvePlugins = []
-    this._parsePlugins = []
-    this._polishPlugins = []
+    this._resolveMiddlewares = new AsyncMiddlewares()
+    this._parseMiddlewares = new AsyncMiddlewares()
+    this._polishMiddlewares = new AsyncMiddlewares()
   }
 
   public use(...markdownResolverPlugins: IMarkdownResolverPlugin[]): this {
     for (const markdownResolverPlugin of markdownResolverPlugins) {
       const plugin: IAssetResolverPlugin = markdownResolverPlugin(this.ctx)
       if (plugin.displayName) {
-        if (plugin.resolve) this._resolvePlugins.push(plugin as IAssetResolvePlugin)
-        if (plugin.parse) this._parsePlugins.push(plugin as IAssetParsePlugin)
-        if (plugin.polish) this._polishPlugins.push(plugin as IAssetPolishPlugin)
+        if (plugin.resolve) {
+          const middleware: IAssetPluginResolveMiddleware = plugin.resolve.bind(plugin)
+          this._resolveMiddlewares.use(middleware)
+        }
+        if (plugin.parse) {
+          const middleware: IAssetPluginParseMiddleware = plugin.parse.bind(plugin)
+          this._parseMiddlewares.use(middleware)
+        }
+        if (plugin.polish) {
+          const middleware: IAssetPluginPolishMiddleware = plugin.polish.bind(plugin)
+          this._polishMiddlewares.use(middleware)
+        }
       }
     }
     return this
   }
 
-  public async resolve(
-    input: Readonly<IAssetPluginResolveInput>,
-    embryo: Readonly<IAssetPluginResolveOutput> | null,
-    api: Readonly<IAssetPluginResolveApi>,
-    next: IAssetPluginResolveNext,
-  ): Promise<IAssetPluginResolveOutput | null> {
+  public readonly resolve: IAssetPluginResolveMiddleware = async (input, embryo, api, next) => {
     if (this.ctx.resolvable(input.src)) {
       const rawContent: string = input.content.toString(input.encoding)
       const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
@@ -146,23 +150,13 @@ export class AssetResolverMarkdown
         tags: isArrayOfT(frontmatter.tags, isString) ? frontmatter.tags : [],
       }
 
-      const reducer: IAssetPluginResolveNext =
-        this._resolvePlugins.reduceRight<IAssetPluginResolveNext>(
-          (internalNext, middleware) => embryo =>
-            middleware.resolve(input, embryo, api, internalNext),
-          next,
-        )
+      const reducer: IAssetPluginResolveNext = this._resolveMiddlewares.reducer(input, api)
       return reducer(result)
     }
     return next(embryo)
   }
 
-  public async parse(
-    input: Readonly<IAssetPluginParseInput>,
-    embryo: Readonly<IAssetPluginParseOutput> | null,
-    api: Readonly<IAssetPluginParseApi>,
-    next: IAssetPluginParseNext,
-  ): Promise<IAssetPluginParseOutput | null> {
+  public readonly parse: IAssetPluginParseMiddleware = async (input, embryo, api, next) => {
     if (input.sourcetype === MarkdownAssetType) {
       const rawContent: string = input.content.toString(input.encoding)
       const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
@@ -179,21 +173,13 @@ export class AssetResolverMarkdown
         data: { title, ast, frontmatter },
       }
 
-      const reducer: IAssetPluginParseNext = this._parsePlugins.reduceRight<IAssetPluginParseNext>(
-        (internalNext, middleware) => embryo => middleware.parse(input, embryo, api, internalNext),
-        next,
-      )
+      const reducer: IAssetPluginParseNext = this._parseMiddlewares.reducer(input, api)
       return reducer(result)
     }
     return next(embryo)
   }
 
-  public async polish(
-    input: Readonly<IAssetPluginPolishInput>,
-    embryo: Readonly<IAssetPluginPolishOutput> | null,
-    api: Readonly<IAssetPluginPolishApi>,
-    next: IAssetPluginPolishNext,
-  ): Promise<IAssetPluginPolishOutput | null> {
+  public readonly polish: IAssetPluginPolishMiddleware = async (input, embryo, api, next) => {
     if (isMarkdownAssetPolishInput(input) && input.data) {
       const ast: Root = await shallowMutateAstInPreorderAsync(
         input.data.ast,
@@ -221,12 +207,7 @@ export class AssetResolverMarkdown
         data: { title, ast, frontmatter },
       }
 
-      const reducer: IAssetPluginPolishNext =
-        this._polishPlugins.reduceRight<IAssetPluginPolishNext>(
-          (internalNext, middleware) => embryo =>
-            middleware.polish(input, embryo, api, internalNext),
-          next,
-        )
+      const reducer: IAssetPluginPolishNext = this._polishMiddlewares.reducer(input, api)
       return reducer(result)
     }
     return next(embryo)

@@ -30,10 +30,6 @@ export interface IAssetPluginResolveApi {
   resolveUri(sourcetype: string, mimetype: string): Promise<string>
 }
 
-export interface IAssetPluginResolveNext {
-  (embryo: Readonly<IAssetPluginResolveOutput> | null): Promise<IAssetPluginResolveOutput | null>
-}
-
 export interface IAssetPluginResolveInput {
   /**
    * Asset global unique identifier.

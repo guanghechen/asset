@@ -14,10 +14,6 @@ export interface IAssetPluginLocateApi {
   parseSrcPathFromUrl(url: string): string | null
 }
 
-export interface IAssetPluginLocateNext {
-  (embryo: Readonly<IAssetPluginLocateOutput> | null): Promise<IAssetPluginLocateOutput | null>
-}
-
 export interface IAssetPluginLocateInput {
   /**
    * Relative src path.

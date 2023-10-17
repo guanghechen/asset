@@ -1,10 +1,4 @@
-import type {
-  IAssetPluginResolveApi,
-  IAssetPluginResolveInput,
-  IAssetPluginResolveNext,
-  IAssetPluginResolveOutput,
-  IAssetResolverPlugin,
-} from '@guanghechen/asset-types'
+import type { IAssetPluginResolveOutput, IAssetResolverPlugin } from '@guanghechen/asset-types'
 import { normalizeUrlPath } from '@guanghechen/asset-util'
 import type { IMarkdownResolverPlugin } from '../types'
 import { isMarkdownAssetResolveOutput } from '../types'
@@ -34,12 +28,7 @@ export function markdownPluginSlug(params: IParams = {}): IMarkdownResolverPlugi
       get displayName(): string {
         return '@guanghechen/asset-resolver-markdown/slug'
       },
-      async resolve(
-        input: Readonly<IAssetPluginResolveInput>,
-        embryo: Readonly<IAssetPluginResolveOutput> | null,
-        _api: Readonly<IAssetPluginResolveApi>,
-        next: IAssetPluginResolveNext,
-      ): Promise<IAssetPluginResolveOutput | null> {
+      async resolve(input, embryo, _api, next) {
         if (isMarkdownAssetResolveOutput(embryo)) {
           let slug: string | null = await resolveSlug(embryo.slug, input.src)
           if (slug) slug = normalizeUrlPath(slug)
