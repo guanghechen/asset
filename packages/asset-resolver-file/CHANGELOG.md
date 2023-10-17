@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.40](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-file@1.0.0-alpha.39...@guanghechen/asset-resolver-file@1.0.0-alpha.40) (2023-10-17)
+
+
+### Performance Improvements
+
+* :art:  refactor plugins with @guanghechen/middleware ([aca2fe2](https://github.com/guanghechen/asset/commit/aca2fe2d8500fd796c8a569452ff8c8501c40121))
+
+
+
+
+
 # [1.0.0-alpha.39](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-file@1.0.0-alpha.38...@guanghechen/asset-resolver-file@1.0.0-alpha.39) (2023-10-04)
 
 **Note:** Version bump only for package @guanghechen/asset-resolver-file

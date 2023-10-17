@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.24](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.23...@guanghechen/asset-resolver@1.0.0-alpha.24) (2023-10-17)
+
+
+### Performance Improvements
+
+* :art:  refactor plugins with @guanghechen/middleware ([aca2fe2](https://github.com/guanghechen/asset/commit/aca2fe2d8500fd796c8a569452ff8c8501c40121))
+* ⬆️ upgrade dependencies ([04a4e91](https://github.com/guanghechen/asset/commit/04a4e918a9d2146126f56b6982e7f0fef1aa26f7))
+
+
+
+
+
 # [1.0.0-alpha.23](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.22...@guanghechen/asset-resolver@1.0.0-alpha.23) (2023-10-04)
 
 
