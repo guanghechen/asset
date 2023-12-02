@@ -42,9 +42,9 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.41",
     "@guanghechen/asset-util": "^1.0.0-alpha.27",
-    "@guanghechen/helper-is": "^5.0.8",
-    "@guanghechen/middleware": "^1.0.0-alpha.2",
-    "@guanghechen/parse-lineno": "^2.3.8",
+    "@guanghechen/helper-is": "^6.0.0-alpha.0",
+    "@guanghechen/middleware": "^1.0.0-alpha.6",
+    "@guanghechen/parse-lineno": "^2.3.10",
     "@yozora/ast": "^2.3.0",
     "@yozora/ast-util": "^2.3.0",
     "@yozora/character": "^2.3.0",
@@ -52,6 +52,6 @@
     "js-yaml": "^4.1.0"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.7"
+    "@types/js-yaml": "^4.0.9"
   }
 }

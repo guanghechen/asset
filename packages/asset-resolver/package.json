@@ -42,10 +42,10 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.41",
     "@guanghechen/asset-util": "^1.0.0-alpha.27",
-    "@guanghechen/reporter.types": "^1.0.0-alpha.4",
+    "@guanghechen/reporter.types": "^1.0.0-alpha.9",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@types/uuid": "^9.0.5"
+    "@types/uuid": "^9.0.7"
   }
 }
