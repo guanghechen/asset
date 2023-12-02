@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-generator",
-  "version": "1.0.0-alpha.11",
+  "version": "1.0.0-alpha.12",
   "description": "file asset",
   "author": {
     "name": "guanghechen",
@@ -40,12 +40,12 @@
     "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
   },
   "dependencies": {
-    "@guanghechen/asset-api": "^1.0.0-alpha.43",
-    "@guanghechen/asset-resolver": "^1.0.0-alpha.24",
-    "@guanghechen/asset-resolver-file": "^1.0.0-alpha.40",
-    "@guanghechen/asset-resolver-image": "^1.0.0-alpha.40",
-    "@guanghechen/asset-resolver-markdown": "^1.0.0-alpha.44",
-    "@guanghechen/asset-types": "^1.0.0-alpha.41",
+    "@guanghechen/asset-api": "^1.0.0-alpha.44",
+    "@guanghechen/asset-resolver": "^1.0.0-alpha.25",
+    "@guanghechen/asset-resolver-file": "^1.0.0-alpha.41",
+    "@guanghechen/asset-resolver-image": "^1.0.0-alpha.41",
+    "@guanghechen/asset-resolver-markdown": "^1.0.0-alpha.45",
+    "@guanghechen/asset-types": "^1.0.0-alpha.42",
     "@guanghechen/reporter.types": "^1.0.0-alpha.9",
     "@yozora/ast": "^2.3.0"
   }
