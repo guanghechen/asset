@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.44](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-memo@1.0.0-alpha.43...@guanghechen/asset-storage-memo@1.0.0-alpha.44) (2024-01-17)
+
+
+### Performance Improvements
+
+* ⬆️ upgrade dependencies ([ab46e43](https://github.com/guanghechen/asset/commit/ab46e4366730ea6b2f930445aa975a891e7955dd))
+
+
+
+
+
 # [1.0.0-alpha.43](https://github.com/guanghechen/asset/compare/@guanghechen/asset-storage-memo@1.0.0-alpha.42...@guanghechen/asset-storage-memo@1.0.0-alpha.43) (2023-12-02)
 
 
