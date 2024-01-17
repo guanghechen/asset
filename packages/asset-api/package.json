@@ -42,9 +42,9 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.42",
     "@guanghechen/error.types": "^1.0.0-alpha.8",
-    "@guanghechen/pipeline": "^1.0.0-alpha.22",
+    "@guanghechen/pipeline": "^1.0.0-alpha.25",
     "@guanghechen/reporter.types": "^1.0.0-alpha.9",
-    "@guanghechen/scheduler": "^6.0.0-alpha.24",
-    "@guanghechen/task": "^1.0.0-alpha.22"
+    "@guanghechen/scheduler": "^6.0.0-alpha.28",
+    "@guanghechen/task": "^1.0.0-alpha.25"
   }
 }
