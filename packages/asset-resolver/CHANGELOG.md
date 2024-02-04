@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.27](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.26...@guanghechen/asset-resolver@1.0.0-alpha.27) (2024-02-04)
+
+
+### Performance Improvements
+
+* ⬆️ upgrade devDependencies ([9718fc5](https://github.com/guanghechen/asset/commit/9718fc5f05870cf63df0e09d98da4754929e4505))
+
+
+
+
+
 # [1.0.0-alpha.26](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.25...@guanghechen/asset-resolver@1.0.0-alpha.26) (2024-01-17)
 
 **Note:** Version bump only for package @guanghechen/asset-resolver

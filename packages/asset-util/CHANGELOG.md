@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.30](https://github.com/guanghechen/asset/compare/@guanghechen/asset-util@1.0.0-alpha.29...@guanghechen/asset-util@1.0.0-alpha.30) (2024-02-04)
+
+
+### Bug Fixes
+
+* 🐛 mime.define only allowed on customized instance ([65888ca](https://github.com/guanghechen/asset/commit/65888ca22a4720d72705b3c84fe7a5e373e6a09f))
+
+
+
+
+
 # [1.0.0-alpha.29](https://github.com/guanghechen/asset/compare/@guanghechen/asset-util@1.0.0-alpha.28...@guanghechen/asset-util@1.0.0-alpha.29) (2024-01-17)
 
 
