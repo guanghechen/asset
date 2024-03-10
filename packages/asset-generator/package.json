@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-generator",
-  "version": "1.0.0-alpha.16",
+  "version": "1.0.0-alpha.17",
   "description": "file asset",
   "author": {
     "name": "guanghechen",
@@ -33,7 +33,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/asset-api": "^1.0.0-alpha.47",
+    "@guanghechen/asset-api": "^1.0.0-alpha.48",
     "@guanghechen/asset-resolver": "^1.0.0-alpha.28",
     "@guanghechen/asset-resolver-file": "^1.0.0-alpha.44",
     "@guanghechen/asset-resolver-image": "^1.0.0-alpha.44",

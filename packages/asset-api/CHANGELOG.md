@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.48](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.47...@guanghechen/asset-api@1.0.0-alpha.48) (2024-03-10)
+
+### Bug Fixes
+
+- should call next when the embryo exist
+  ([c80ac13](https://github.com/guanghechen/asset/commit/c80ac13fbf89703dfa60984332d437b165318563))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [1.0.0-alpha.47](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.46...@guanghechen/asset-api@1.0.0-alpha.47) (2024-03-10)
 
 ### Performance Improvements
