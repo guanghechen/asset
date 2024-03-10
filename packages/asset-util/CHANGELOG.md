@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.31](https://github.com/guanghechen/asset/compare/@guanghechen/asset-util@1.0.0-alpha.30...@guanghechen/asset-util@1.0.0-alpha.31) (2024-03-10)
+
+### Performance Improvements
+
+- 🔧 use nx
+  ([64753a6](https://github.com/guanghechen/asset/commit/64753a60c157bf65a8d4ef6af26933c7ad4637e9))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [1.0.0-alpha.30](https://github.com/guanghechen/asset/compare/@guanghechen/asset-util@1.0.0-alpha.29...@guanghechen/asset-util@1.0.0-alpha.30) (2024-02-04)
 
 ### Bug Fixes

@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-util",
-  "version": "1.0.0-alpha.30",
+  "version": "1.0.0-alpha.31",
   "description": "Asset parser core.",
   "author": {
     "name": "guanghechen",
@@ -33,7 +33,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.43",
+    "@guanghechen/asset-types": "^1.0.0-alpha.44",
     "mime": "^4.0.1"
   }
 }

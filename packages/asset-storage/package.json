@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-storage",
-  "version": "1.0.0-alpha.44",
+  "version": "1.0.0-alpha.45",
   "description": "Asset storage.",
   "author": {
     "name": "guanghechen",
@@ -33,7 +33,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.43",
+    "@guanghechen/asset-types": "^1.0.0-alpha.44",
     "@guanghechen/invariant": "^6.0.0-alpha.1",
     "@guanghechen/monitor": "^1.0.0-alpha.28"
   }

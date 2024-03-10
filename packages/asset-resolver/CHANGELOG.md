@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.28](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.27...@guanghechen/asset-resolver@1.0.0-alpha.28) (2024-03-10)
+
+### Performance Improvements
+
+- 🔧 use nx
+  ([64753a6](https://github.com/guanghechen/asset/commit/64753a60c157bf65a8d4ef6af26933c7ad4637e9))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [1.0.0-alpha.27](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver@1.0.0-alpha.26...@guanghechen/asset-resolver@1.0.0-alpha.27) (2024-02-04)
 
 ### Performance Improvements
