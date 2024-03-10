@@ -1,4 +1,13 @@
 {
+  "title": {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "value": "Simple asset resolver"
+      }
+    ]
+  },
   "ast": {
     "type": "root",
     "children": [
@@ -133,6 +142,7 @@
     }
   },
   "ecmaImports": [],
+  "images": [],
   "toc": {
     "children": [
       {

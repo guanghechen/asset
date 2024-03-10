@@ -1,4 +1,13 @@
 {
+  "title": {
+    "type": "paragraph",
+    "children": [
+      {
+        "type": "text",
+        "value": "b"
+      }
+    ]
+  },
   "ast": {
     "type": "root",
     "children": [
@@ -51,6 +60,7 @@
   },
   "footnoteDefinitionMap": {},
   "ecmaImports": [],
+  "images": [],
   "toc": {
     "children": [
       {
