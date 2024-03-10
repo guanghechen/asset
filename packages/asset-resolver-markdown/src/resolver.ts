@@ -18,7 +18,6 @@ import type {
   IAssetPolishPlugin,
   IAssetResolverPlugin,
 } from '@guanghechen/asset-types'
-import { isArrayOfT, isString, isTwoDimensionArrayOfT } from '@guanghechen/helper-is'
 import { AsyncMiddlewares } from '@guanghechen/middleware'
 import { ParagraphType } from '@yozora/ast'
 import type { Definition, FootnoteDefinition, Paragraph, Resource, Root } from '@yozora/ast'
@@ -144,10 +143,17 @@ export class AssetResolverMarkdown
         description: frontmatter.description || title,
         createdAt,
         updatedAt,
-        categories: isTwoDimensionArrayOfT(frontmatter.categories, isString)
-          ? frontmatter.categories
-          : [],
-        tags: isArrayOfT(frontmatter.tags, isString) ? frontmatter.tags : [],
+        categories:
+          Array.isArray(frontmatter.categories) &&
+          frontmatter.categories.every(
+            item => Array.isArray(item) && item.every(x => typeof x === 'string'),
+          )
+            ? frontmatter.categories
+            : [],
+        tags:
+          Array.isArray(frontmatter.tags) && frontmatter.tags.every(x => typeof x === 'string')
+            ? frontmatter.tags
+            : [],
       }
 
       const reducer: IAssetPluginResolveNext = this._resolveMiddlewares.reducer(input, api)
