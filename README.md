@@ -50,7 +50,7 @@
 
 <div align="center" style="color: orange">
 
-  ***Still under development, not recommended to use it yet.***
+**_Still under development, not recommended to use it yet._**
 
 </div>
 
@@ -59,8 +59,7 @@ consumed by static sites. It should support build indexes and watch-mode in deve
 
 ## Contact
 
-* [Github issues](https://github.com/guanghechen/asset/issues)
-
+- [Github issues](https://github.com/guanghechen/asset/issues)
 
 ## License
 

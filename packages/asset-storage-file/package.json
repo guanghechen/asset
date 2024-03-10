@@ -23,9 +23,6 @@
   "types": "./lib/types/index.d.ts",
   "source": "./src/index.ts",
   "license": "MIT",
-  "engines": {
-    "node": ">= 16.15.1"
-  },
   "files": [
     "lib/",
     "!lib/**/*.js.map",
@@ -35,10 +32,6 @@
     "LICENSE",
     "README.md"
   ],
-  "scripts": {
-    "build": "rimraf lib/ && cross-env NODE_ENV=production rollup -c ../../rollup.config.mjs",
-    "prepublishOnly": "cross-env ROLLUP_SHOULD_SOURCEMAP=false yarn build"
-  },
   "dependencies": {
     "@guanghechen/asset-storage": "^1.0.0-alpha.44",
     "@guanghechen/asset-types": "^1.0.0-alpha.43",

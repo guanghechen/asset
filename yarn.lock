@@ -62,20 +62,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/eslint-parser@npm:7.23.10":
-  version: 7.23.10
-  resolution: "@babel/eslint-parser@npm:7.23.10"
-  dependencies:
-    "@nicolo-ribaudo/eslint-scope-5-internals": 5.1.1-v1
-    eslint-visitor-keys: ^2.1.0
-    semver: ^6.3.1
-  peerDependencies:
-    "@babel/core": ^7.11.0
-    eslint: ^7.5.0 || ^8.0.0
-  checksum: 81249edee14f95720044f393b5b0a681a230ac2bde3d656b0c55b1cec4c5cb99ce0584ef6acd2e5413acc7905daee1b2e1db8e3fab18a3a74c508098a584ec9a
-  languageName: node
-  linkType: hard
-
 "@babel/generator@npm:^7.23.6, @babel/generator@npm:^7.7.2":
   version: 7.23.6
   resolution: "@babel/generator@npm:7.23.6"
@@ -258,17 +244,6 @@ __metadata:
   peerDependencies:
     "@babel/core": ^7.0.0-0
   checksum: 24f34b196d6342f28d4bad303612d7ff566ab0a013ce89e775d98d6f832969462e7235f3e7eaf17678a533d4be0ba45d3ae34ab4e5a9dcbda5d98d49e5efa2fc
-  languageName: node
-  linkType: hard
-
-"@babel/plugin-syntax-import-assertions@npm:^7.23.3":
-  version: 7.23.3
-  resolution: "@babel/plugin-syntax-import-assertions@npm:7.23.3"
-  dependencies:
-    "@babel/helper-plugin-utils": ^7.22.5
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  checksum: 883e6b35b2da205138caab832d54505271a3fee3fc1e8dc0894502434fc2b5d517cbe93bbfbfef8068a0fb6ec48ebc9eef3f605200a489065ba43d8cddc1c9a7
   languageName: node
   linkType: hard
 
@@ -547,7 +522,6 @@ __metadata:
     "@guanghechen/helper-is": ^6.0.0-alpha.1
     "@guanghechen/middleware": ^1.0.1
     "@guanghechen/parse-lineno": ^2.3.10
-    "@types/js-yaml": ^4.0.9
     "@yozora/ast": ^2.3.1
     "@yozora/ast-util": ^2.3.1
     "@yozora/character": ^2.3.1
@@ -563,7 +537,6 @@ __metadata:
     "@guanghechen/asset-types": ^1.0.0-alpha.43
     "@guanghechen/asset-util": ^1.0.0-alpha.30
     "@guanghechen/reporter.types": ^1.0.0-alpha.10
-    "@types/uuid": ^9.0.8
     uuid: ^9.0.1
   languageName: unknown
   linkType: soft
@@ -588,7 +561,6 @@ __metadata:
     "@guanghechen/asset-types": ^1.0.0-alpha.43
     "@guanghechen/invariant": ^6.0.0-alpha.1
     "@guanghechen/monitor": ^1.0.0-alpha.28
-    "@types/micromatch": ^4.0.6
     micromatch: ^4.0.5
   languageName: unknown
   linkType: soft
@@ -617,7 +589,6 @@ __metadata:
   resolution: "@guanghechen/asset-util@workspace:packages/asset-util"
   dependencies:
     "@guanghechen/asset-types": ^1.0.0-alpha.43
-    "@types/mime": ^3.0.4
     mime: ^4.0.1
   languageName: unknown
   linkType: soft
@@ -627,8 +598,6 @@ __metadata:
   resolution: "@guanghechen/asset@workspace:."
   dependencies:
     "@babel/core": 7.24.0
-    "@babel/eslint-parser": 7.23.10
-    "@babel/plugin-syntax-import-assertions": ^7.23.3
     "@guanghechen/chalk": ^1.0.0-alpha.12
     "@guanghechen/conventional-changelog": ^6.0.0-alpha.0
     "@guanghechen/eslint-config": ^6.0.0-alpha.1
@@ -640,8 +609,11 @@ __metadata:
     "@guanghechen/rollup-config-cli": ^6.0.0-alpha.10
     "@guanghechen/script-doc-link": ^6.0.0-alpha.13
     "@types/jest": ^29.5.12
+    "@types/js-yaml": ^4.0.9
+    "@types/micromatch": ^4.0.6
     "@types/mime": ^3.0.4
     "@types/node": ^18.19.22
+    "@types/uuid": ^9.0.8
     "@yozora/parser": ^2.3.1
     cross-env: 7.0.3
     eslint: 8.57.0
@@ -654,6 +626,7 @@ __metadata:
     lerna: ^8.1.2
     lint-staged: ^15.2.2
     npm-run-all: ^4.1.5
+    nx: ^18.0.8
     pinst: ^3.0.0
     prettier: 3.2.5
     rimraf: ^5.0.5
@@ -828,20 +801,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/reporter@npm:^1.0.0-alpha.28":
-  version: 1.0.0-alpha.28
-  resolution: "@guanghechen/reporter@npm:1.0.0-alpha.28"
-  dependencies:
-    "@guanghechen/chalk.types": ^1.0.0-alpha.9
-    "@guanghechen/reporter.types": ^1.0.0-alpha.10
-    "@guanghechen/types": ^1.0.0-alpha.10
-    dayjs: ^1.11.10
-    json5: ^2.2.3
-  checksum: 6aa67024f0277215983d368a5b16e52a25fe6130f78166cc7cc433a56467ea8ec699910ccde10a0a4c90194fecd7e1e876fac5d72a541f5f99c737808f2737f2
-  languageName: node
-  linkType: hard
-
-"@guanghechen/reporter@npm:^1.0.0-alpha.29":
+"@guanghechen/reporter@npm:^1.0.0-alpha.28, @guanghechen/reporter@npm:^1.0.0-alpha.29":
   version: 1.0.0-alpha.29
   resolution: "@guanghechen/reporter@npm:1.0.0-alpha.29"
   dependencies:
@@ -1377,15 +1337,6 @@ __metadata:
     yargs: 17.7.2
     yargs-parser: 21.1.1
   checksum: 6f29d198445e7253740d50ba0aa3bdad4b68edaf61bfeb6496af1b511f93ff288db395261a671d690c7de93e6304766e0e24b71935edcbb4ec4d8fb1bd682c6c
-  languageName: node
-  linkType: hard
-
-"@nicolo-ribaudo/eslint-scope-5-internals@npm:5.1.1-v1":
-  version: 5.1.1-v1
-  resolution: "@nicolo-ribaudo/eslint-scope-5-internals@npm:5.1.1-v1"
-  dependencies:
-    eslint-scope: 5.1.1
-  checksum: f2e3b2d6a6e2d9f163ca22105910c9f850dc4897af0aea3ef0a5886b63d8e1ba6505b71c99cb78a3bba24a09557d601eb21c8dede3f3213753fcfef364eb0e57
   languageName: node
   linkType: hard
 
@@ -4875,7 +4826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-scope@npm:5.1.1, eslint-scope@npm:^5.1.1":
+"eslint-scope@npm:^5.1.1":
   version: 5.1.1
   resolution: "eslint-scope@npm:5.1.1"
   dependencies:
@@ -4892,13 +4843,6 @@ __metadata:
     esrecurse: ^4.3.0
     estraverse: ^5.2.0
   checksum: ec97dbf5fb04b94e8f4c5a91a7f0a6dd3c55e46bfc7bbcd0e3138c3a76977570e02ed89a1810c778dcd72072ff0e9621ba1379b4babe53921d71e2e4486fda3e
-  languageName: node
-  linkType: hard
-
-"eslint-visitor-keys@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "eslint-visitor-keys@npm:2.1.0"
-  checksum: e3081d7dd2611a35f0388bbdc2f5da60b3a3c5b8b6e928daffff7391146b434d691577aa95064c8b7faad0b8a680266bcda0a42439c18c717b80e6718d7e267d
   languageName: node
   linkType: hard
 
@@ -8328,7 +8272,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nx@npm:18.0.8, nx@npm:>=17.1.2 < 19":
+"nx@npm:18.0.8, nx@npm:>=17.1.2 < 19, nx@npm:^18.0.8":
   version: 18.0.8
   resolution: "nx@npm:18.0.8"
   dependencies:

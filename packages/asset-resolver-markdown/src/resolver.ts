@@ -41,7 +41,7 @@ interface IProps {
   parser: IParser
   /**
    * Check if the given file is in markdown format.
-   * @default {src => /\.md$/.test(src)}
+   * @default src => /\.md$/.test(src)
    */
   resolvable?(src: string): boolean
   /**

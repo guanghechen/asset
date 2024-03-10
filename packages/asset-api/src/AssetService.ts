@@ -16,7 +16,7 @@ import type { IReporter } from '@guanghechen/reporter.types'
 import { AssetDataConsumer } from './AssetDataConsumer'
 import { AssetTaskApi } from './AssetTaskApi'
 import { AssetTaskScheduler } from './AssetTaskScheduler'
-import type { IAssetTaskScheduler } from './types'
+import type { IAssetTaskScheduler } from './AssetTaskScheduler'
 
 interface IProps {
   reporter: IReporter

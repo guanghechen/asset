@@ -10,24 +10,20 @@
   },
   "overrides": [
     {
-      "files": ["**/*.js", "**/*.mjs"],
-      "parser": "@babel/eslint-parser",
-      "parserOptions": {
-        "ecmaFeatures": {
-          "globalReturn": false,
-          "impliedStrict": true
-        },
-        "ecmaVersion": 2018,
-        "sourceType": "module",
-        "requireConfigFile": false,
-        "allowImportExportEverywhere": true,
-        "babelOptions": {
-          "plugins": ["@babel/plugin-syntax-import-assertions"]
-        }
+      "files": ["**/*.mjs"],
+      "extends": ["@guanghechen", "prettier"],
+      "parser": "@typescript-eslint/parser"
+    },
+    {
+      "files": ["script/**/*.mjs"],
+      "extends": ["@guanghechen", "prettier"],
+      "parser": "@typescript-eslint/parser",
+      "rules": {
+        "import/no-extraneous-dependencies": 0
       }
     },
     {
-      "files": ["**/*.ts", "**/*.mts"],
+      "files": ["**/*.ts", "**/*mts"],
       "extends": ["@guanghechen", "@guanghechen/ts", "prettier"],
       "rules": {
         "@typescript-eslint/method-signature-style": 0,
@@ -48,12 +44,7 @@
       }
     },
     {
-      "files": [
-        "**/__test__/*.spec.ts",
-        "**/__test__/util/*.ts",
-        "**/__test__/util/*.mts",
-        "jest.setup.ts"
-      ],
+      "files": ["**/__test__/*.ts", "**/__test__/*.mts", "jest.setup.ts"],
       "extends": ["@guanghechen", "@guanghechen/ts", "plugin:jest/recommended", "prettier"],
       "rules": {
         "@typescript-eslint/ban-ts-comment": 0,
