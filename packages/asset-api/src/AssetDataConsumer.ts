@@ -25,7 +25,7 @@ export class AssetDataConsumer implements IProductConsumer<D, T> {
     _api: IProductConsumerApi,
     next: IProductConsumerNext<ITask>,
   ): Promise<ITask | null> {
-    if (embryo !== null) return embryo
+    if (embryo !== null) return next(embryo)
     const task: T = new AssetTask(this._api, data.type, data.absoluteSrcPaths)
     return next(task)
   }
