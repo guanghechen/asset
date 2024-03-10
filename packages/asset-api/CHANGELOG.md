@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.49](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.48...@guanghechen/asset-api@1.0.0-alpha.49) (2024-03-10)
+
+### Performance Improvements
+
+- ⬆️ ugprade scheduler and observable
+  ([85b5184](https://github.com/guanghechen/asset/commit/85b5184f07376f5aeb2b61d47ed28a42c2f6ac92))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [1.0.0-alpha.48](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.47...@guanghechen/asset-api@1.0.0-alpha.48) (2024-03-10)
 
 ### Bug Fixes
