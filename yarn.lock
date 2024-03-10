@@ -473,9 +473,9 @@ __metadata:
     "@guanghechen/asset-types": ^1.0.0-alpha.44
     "@guanghechen/error.types": ^1.0.1
     "@guanghechen/reporter.types": ^1.0.0-alpha.10
-    "@guanghechen/scheduler": ^6.0.0-beta.5
+    "@guanghechen/scheduler": ^6.0.0-beta.6
     "@guanghechen/subscriber": ^1.0.0-alpha.1
-    "@guanghechen/task": ^1.0.0-beta.4
+    "@guanghechen/task": ^1.0.0-beta.5
   languageName: unknown
   linkType: soft
 
@@ -776,13 +776,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/observable@npm:^6.1.0":
-  version: 6.1.0
-  resolution: "@guanghechen/observable@npm:6.1.0"
+"@guanghechen/observable@npm:^6.1.1":
+  version: 6.1.1
+  resolution: "@guanghechen/observable@npm:6.1.1"
   dependencies:
     "@guanghechen/disposable": ^1.0.0-alpha.4
     "@guanghechen/subscriber": ^1.0.0-alpha.1
-  checksum: 7e132d2421c1f82839df7d215b89803ee11fd6261d573d3b73b4b2baa4e1795af50e7531270cf64e34d2c6b244b1829d58f9cf4bf27b61acaa5f885aaffb989d
+  checksum: a65db0cbc9deb7b0e177cdc5558fad253256f463693c484a0ec6122768b53fe9d911d862367f400bcb756edc8e40dce28c7a6d3a2364328d3e1dcbc4c47485e4
   languageName: node
   linkType: hard
 
@@ -861,17 +861,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/scheduler@npm:^6.0.0-beta.5":
-  version: 6.0.0-beta.5
-  resolution: "@guanghechen/scheduler@npm:6.0.0-beta.5"
+"@guanghechen/scheduler@npm:^6.0.0-beta.6":
+  version: 6.0.0-beta.6
+  resolution: "@guanghechen/scheduler@npm:6.0.0-beta.6"
   dependencies:
     "@guanghechen/error.types": ^1.0.1
     "@guanghechen/middleware": ^1.0.1
-    "@guanghechen/observable": ^6.1.0
+    "@guanghechen/observable": ^6.1.1
     "@guanghechen/reporter.types": ^1.0.0-alpha.10
     "@guanghechen/subscriber": ^1.0.0-alpha.1
-    "@guanghechen/task": ^1.0.0-beta.4
-  checksum: 8f160cc826e5aa0a8978da6a486575a822145c3dbd90306f113b72bbb6e97f35fd47c87c24559e769471a256aa39ea54d294485ad28280b4e44aebe9e8cbd3eb
+    "@guanghechen/task": ^1.0.0-beta.5
+  checksum: 4c4f2a4ecf71f97f78dcfa8a57dcd665102c098f7dc7a83ba8030550de0ef53fd303c23777eb8589e56fc750ffd72630bbcebb041896f52f2cea4f5d0495912f
   languageName: node
   linkType: hard
 
@@ -902,13 +902,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@guanghechen/task@npm:^1.0.0-beta.4":
-  version: 1.0.0-beta.4
-  resolution: "@guanghechen/task@npm:1.0.0-beta.4"
+"@guanghechen/task@npm:^1.0.0-beta.5":
+  version: 1.0.0-beta.5
+  resolution: "@guanghechen/task@npm:1.0.0-beta.5"
   dependencies:
     "@guanghechen/error.types": ^1.0.1
-    "@guanghechen/observable": ^6.1.0
-  checksum: 9aee6e263b40765ee478e06ade4e43b69ad99aa4bf784ba874cc10ae9dee8045dcab06780c2305151948db97971d6012b79a10202569c5ef1c1cda95e0c79040
+    "@guanghechen/observable": ^6.1.1
+  checksum: d453921fe1987bea207c9f1ff9a56422bf4beb4d16469554de7fd42541f4c4a073f86714cb6b583005c5e154fe4584593232c572e8dd7cf39ebc846d6358aad5
   languageName: node
   linkType: hard
 
