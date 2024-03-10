@@ -2,7 +2,7 @@ import type {
   IAsyncMiddleware,
   IAsyncMiddlewareNext,
   IAsyncMiddlewares,
-} from '@guanghechen/middleware.types'
+} from '@guanghechen/middleware'
 import type {
   IAssetPluginLocateApi,
   IAssetPluginLocateInput,

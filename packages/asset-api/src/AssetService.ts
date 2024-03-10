@@ -13,6 +13,7 @@ import type {
   IAssetWatcher,
 } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/reporter.types'
+import { AssetDataConsumer } from './AssetDataConsumer'
 import { AssetTaskApi } from './AssetTaskApi'
 import { AssetTaskScheduler } from './AssetTaskScheduler'
 import type { IAssetTaskScheduler } from './types'
@@ -55,7 +56,9 @@ export class AssetService implements IAssetService {
       targetStorage,
       dataMapUri,
     })
-    const scheduler: IAssetTaskScheduler = new AssetTaskScheduler(taskApi, reporter)
+    const scheduler: IAssetTaskScheduler = new AssetTaskScheduler(reporter)
+      //
+      .use(new AssetDataConsumer('asset-consumer', taskApi))
 
     this.pathResolver = pathResolver
     this.dataMapUri = dataMapUri
@@ -73,7 +76,7 @@ export class AssetService implements IAssetService {
     this._status = 'prepared'
 
     const scheduler: IAssetTaskScheduler = this._scheduler
-    if (scheduler.terminated) return
+    if (scheduler.status.terminated) return
 
     await scheduler.start()
   }
@@ -83,14 +86,12 @@ export class AssetService implements IAssetService {
     this._status = 'closed'
 
     const scheduler: IAssetTaskScheduler = this._scheduler
-    if (scheduler.terminated) return
+    if (scheduler.status.terminated) return
 
     const watchers: IAssetServiceWatcher[] = this._watchers.slice()
     this._watchers.length = 0
     await Promise.all(watchers.map(watcher => watcher.unwatch()))
-
-    await scheduler.finish()
-    scheduler.cleanup()
+    await scheduler.complete()
   }
 
   public async buildByPaths(absoluteSrcPaths: ReadonlyArray<string>): Promise<void> {

@@ -1,6 +1,6 @@
 import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type { IAssetTaskApi } from '@guanghechen/asset-types'
-import { AtomicTask } from '@guanghechen/task'
+import { AtomicTask, TaskStrategyEnum } from '@guanghechen/task'
 
 export class AssetTask extends AtomicTask {
   protected readonly _api: IAssetTaskApi
@@ -12,7 +12,7 @@ export class AssetTask extends AtomicTask {
     type: AssetChangeEventEnum,
     absoluteSrcPaths: ReadonlyArray<string>,
   ) {
-    super(type)
+    super(type, TaskStrategyEnum.ABORT_ON_ERROR)
     this._api = api
     this._type = type
     this._absoluteSrcPaths = absoluteSrcPaths.slice()

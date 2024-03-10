@@ -1,6 +1,6 @@
 export * from './AssetService'
 export * from './AssetTask'
 export * from './AssetTaskApi'
-export * from './AssetTaskPipeline'
+export * from './AssetDataCooker'
 export * from './AssetTaskScheduler'
 export * from './types'

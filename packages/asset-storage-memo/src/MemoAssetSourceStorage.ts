@@ -165,9 +165,9 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
 
     return {
       unwatch: async (): Promise<void> => {
-        unsubscribeOnAdd?.()
-        unsubscribeOnChange?.()
-        unsubscribeOnRemove?.()
+        unsubscribeOnAdd?.unsubscribe()
+        unsubscribeOnChange?.unsubscribe()
+        unsubscribeOnRemove?.unsubscribe()
       },
     }
   }

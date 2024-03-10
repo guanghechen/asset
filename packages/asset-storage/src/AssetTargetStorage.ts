@@ -14,9 +14,11 @@ import type {
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
 import { Monitor } from '@guanghechen/monitor'
-import type { IMonitor, IMonitorUnsubscribe } from '@guanghechen/monitor'
+import type { IMonitor } from '@guanghechen/monitor'
+import type { IUnsubscribable } from '@guanghechen/subscriber'
 
 const noop = (..._args: any[]): void => {}
+const noopUnsubscribable: IUnsubscribable = { unsubscribe: noop }
 
 export class AssetTargetStorage implements IAssetTargetStorage {
   protected readonly _monitorFileWritten: IMonitor<IParametersOfOnFileWritten>
@@ -41,19 +43,25 @@ export class AssetTargetStorage implements IAssetTargetStorage {
     if (this._destroyed) return
 
     this._destroyed = true
-    this._monitorFileWritten.destroy()
+    this._monitorFileWritten.dispose()
   }
 
-  public monitor(monitor: Partial<IAssetTargetStorageMonitor>): IMonitorUnsubscribe {
-    if (this.destroyed) return noop
+  public monitor(monitor: Partial<IAssetTargetStorageMonitor>): IUnsubscribable {
+    if (this.destroyed) return noopUnsubscribable
 
     const { onFileWritten, onFileRemoved } = monitor
-    const unsubscribeOnFileWritten = this._monitorFileWritten.subscribe(onFileWritten)
-    const unsubscribeOnFileRemoved = this._monitorFileRemoved.subscribe(onFileRemoved)
+    const unsubscribeOnFileWritten = onFileWritten
+      ? this._monitorFileWritten.subscribe(onFileWritten)
+      : undefined
+    const unsubscribeOnFileRemoved = onFileRemoved
+      ? this._monitorFileRemoved.subscribe(onFileRemoved)
+      : undefined
 
-    return (): void => {
-      unsubscribeOnFileWritten()
-      unsubscribeOnFileRemoved()
+    return {
+      unsubscribe: (): void => {
+        unsubscribeOnFileWritten?.unsubscribe()
+        unsubscribeOnFileRemoved?.unsubscribe()
+      },
     }
   }
 

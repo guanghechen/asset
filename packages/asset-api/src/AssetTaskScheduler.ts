@@ -1,44 +1,29 @@
-import type { IAssetTaskApi, IAssetTaskData } from '@guanghechen/asset-types'
-import { ErrorLevelEnum } from '@guanghechen/error.types'
+import type { IAssetTaskData } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/reporter.types'
-import { Scheduler } from '@guanghechen/scheduler'
-import { TaskStatusEnum } from '@guanghechen/task'
-import type { ITask } from '@guanghechen/task'
-import { AssetTaskPipeline } from './AssetTaskPipeline'
-import type { IAssetTaskScheduler } from './types'
+import { Pipeline, Scheduler } from '@guanghechen/scheduler'
+import { TaskStrategyEnum } from '@guanghechen/task'
+import { AssetDataCooker } from './AssetDataCooker'
+import type { IAssetTaskPipeline, IAssetTaskScheduler } from './types'
 
 type D = IAssetTaskData
-type T = ITask
+type T = IAssetTaskData
 
 export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskScheduler {
-  constructor(api: IAssetTaskApi, reporter: IReporter) {
-    const pipeline = new AssetTaskPipeline(api)
-    super({ name: 'AssetTaskScheduler', reporter, pipeline })
+  constructor(reporter: IReporter) {
+    const pipeline: IAssetTaskPipeline = new Pipeline<D, T>('asset-pipeline')
+      //
+      .use(new AssetDataCooker('asset-cooker'))
 
-    this.monitor({
-      onAddError: (type: string, error: unknown, level: ErrorLevelEnum | undefined): void => {
-        switch (level) {
-          case ErrorLevelEnum.FATAL:
-            reporter.fatal('[AssetTaskScheduler] {}', type, error)
-            break
-          case ErrorLevelEnum.ERROR:
-            reporter.error('[AssetTaskScheduler] {}', type, error)
-            break
-          case ErrorLevelEnum.WARN:
-            reporter.warn('[AssetTaskScheduler] {}', type, error)
-            break
-          default:
-            reporter.error('[AssetTaskScheduler] {} unexpected level {}.', type, level, error)
-            break
-        }
-      },
+    super({
+      name: 'asset-scheduler',
+      pipeline,
+      strategy: TaskStrategyEnum.CONTINUE_ON_ERROR,
+      reporter,
     })
   }
 
-  public override async finish(): Promise<void> {
-    if (this.status === TaskStatusEnum.PENDING || this.alive) {
-      await this._pipeline.close()
-      await super.finish()
-    }
+  public override async complete(): Promise<void> {
+    await this._pipeline.close()
+    await super.complete()
   }
 }
