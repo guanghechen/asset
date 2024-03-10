@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.49](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.48...@guanghechen/asset-resolver-markdown@1.0.0-alpha.49) (2024-03-10)
+
+### Performance Improvements
+
+- 🎨 no longer depend on @guanghechen/helper-is
+  ([3d9dd4d](https://github.com/guanghechen/asset/commit/3d9dd4dbbd6a8f450c48cb7c56833c9a9f480ca0))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [1.0.0-alpha.48](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-markdown@1.0.0-alpha.47...@guanghechen/asset-resolver-markdown@1.0.0-alpha.48) (2024-03-10)
 
 ### Performance Improvements
