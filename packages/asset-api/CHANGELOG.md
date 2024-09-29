@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.0-alpha.50 (2024-09-29)
+
+- :arrow_up: chore: upgrade dependencies
+  ([2378703](https://github.com/guanghechen/asset/commit/2378703))
+- :wrench: chore: fix build error & fix lint
+  ([7b0b54e](https://github.com/guanghechen/asset/commit/7b0b54e))
+- :wrench: chore: fix nx config ([10fa9ca](https://github.com/guanghechen/asset/commit/10fa9ca))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [1.0.0-alpha.49](https://github.com/guanghechen/asset/compare/@guanghechen/asset-api@1.0.0-alpha.48...@guanghechen/asset-api@1.0.0-alpha.49) (2024-03-10)
 
 ### Performance Improvements

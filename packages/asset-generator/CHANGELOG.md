@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.0-alpha.19 (2024-09-29)
+
+- :arrow_up: chore: upgrade dependencies
+  ([2378703](https://github.com/guanghechen/asset/commit/2378703))
+- :wrench: chore: fix nx config ([10fa9ca](https://github.com/guanghechen/asset/commit/10fa9ca))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [1.0.0-alpha.18](https://github.com/guanghechen/asset/compare/@guanghechen/asset-generator@1.0.0-alpha.17...@guanghechen/asset-generator@1.0.0-alpha.18) (2024-03-10)
 
 **Note:** Version bump only for package @guanghechen/asset-generator

@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-resolver-image",
-  "version": "1.0.0-alpha.44",
+  "version": "1.0.0-alpha.45",
   "description": "image asset",
   "author": {
     "name": "guanghechen",
@@ -33,8 +33,8 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.44",
-    "@guanghechen/asset-util": "^1.0.0-alpha.31",
+    "@guanghechen/asset-types": "^1.0.0-alpha.45",
+    "@guanghechen/asset-util": "^1.0.0-alpha.32",
     "image-size": "^1.1.1"
   }
 }

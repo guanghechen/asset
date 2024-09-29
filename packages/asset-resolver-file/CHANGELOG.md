@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.0-alpha.45 (2024-09-29)
+
+- :wrench: chore: fix nx config ([10fa9ca](https://github.com/guanghechen/asset/commit/10fa9ca))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 # [1.0.0-alpha.44](https://github.com/guanghechen/asset/compare/@guanghechen/asset-resolver-file@1.0.0-alpha.43...@guanghechen/asset-resolver-file@1.0.0-alpha.44) (2024-03-10)
 
 ### Performance Improvements
