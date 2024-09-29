@@ -153,7 +153,7 @@ export class AssetService implements IAssetService {
     shouldIgnore?: IAssetWatchShouldIgnore,
   ): Promise<IAssetServiceWatcher> {
     if (this._status !== 'prepared') {
-      throw new Error(`AssetService is not running`)
+      throw new Error('AssetService is not running')
     }
 
     const pathResolver: IAssetPathResolver = this.pathResolver

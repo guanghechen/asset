@@ -7,12 +7,12 @@ export function normalizePattern(
 
   if (Array.isArray(pattern)) {
     if (!pattern.every(p => p instanceof RegExp)) {
-      throw new Error(`[normalizePattern] Bad pattern, not all elements are regular expression.`)
+      throw new Error('[normalizePattern] Bad pattern, not all elements are regular expression.')
     }
     return text => pattern.every(p => p.test(text))
   }
 
-  throw new Error(`[normalizePattern] Unexpected pattern.`)
+  throw new Error('[normalizePattern] Unexpected pattern.')
 }
 
 export function normalizeUrlPath(urlPath: string): string {

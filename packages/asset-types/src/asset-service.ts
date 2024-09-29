@@ -13,8 +13,8 @@ export interface IAssetService {
   prepare(): Promise<void>
 
   /**
-   * Close the asset service and waiting all of the tasks in the pipeline terminated (done / cancelled / failed),
-   * the subsequent `build` and `watch` will ignored.
+   * Close the asset service and waiting all of the tasks in the pipeline
+   * terminated (done / cancelled / failed), the subsequent `build` and `watch` will ignored.
    */
   close(): Promise<void>
 

@@ -11,13 +11,14 @@ import type {
 import invariant from '@guanghechen/invariant'
 import chokidar from 'chokidar'
 import fastGlob from 'fast-glob'
+import type { WatchOptions } from 'node:fs'
 import { existsSync } from 'node:fs'
 import { readFile, stat as statFile, unlink, writeFile } from 'node:fs/promises'
 
 interface IProps {
   pathResolver: IAssetPathResolver
   decipher?: IAssetDecipher
-  watchOptions?: Partial<chokidar.WatchOptions>
+  watchOptions?: Partial<WatchOptions>
 }
 
 const defaultDecipher: IAssetDecipher = {
@@ -27,7 +28,7 @@ const defaultDecipher: IAssetDecipher = {
 export class FileAssetSourceStorage implements IAssetSourceStorage {
   protected readonly _decipher: IAssetDecipher
   protected readonly _pathResolver: IAssetPathResolver
-  protected readonly _watchOptions: Partial<chokidar.WatchOptions>
+  protected readonly _watchOptions: Partial<WatchOptions>
 
   constructor(props: IProps) {
     const { pathResolver, decipher, watchOptions = {} } = props
