@@ -10,7 +10,6 @@
       "options": {
         "cwd": "packages/asset-storage-file",
         "parallel": false,
-        "sourceMap": true,
         "commands": ["rimraf lib"]
       }
     },
@@ -20,12 +19,10 @@
       "options": {
         "cwd": "packages/asset-storage-file",
         "parallel": false,
-        "sourceMap": true,
         "commands": ["cross-env ROLLUP_CONFIG_TYPE=lib rollup -c ../../rollup.config.mjs"]
       },
       "configurations": {
         "production": {
-          "sourceMap": false,
           "env": {
             "NODE_ENV": "production"
           }
@@ -37,7 +34,6 @@
       "options": {
         "cwd": "packages/asset-storage-file",
         "parallel": false,
-        "sourceMap": true,
         "commands": ["cross-env ROLLUP_CONFIG_TYPE=lib rollup -c ../../rollup.config.mjs -w"]
       }
     }
