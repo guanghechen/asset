@@ -34,10 +34,10 @@
   ],
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.44",
-    "@guanghechen/error.types": "^1.0.1",
-    "@guanghechen/reporter.types": "^1.0.0-alpha.10",
-    "@guanghechen/scheduler": "^6.0.0-beta.6",
-    "@guanghechen/subscriber": "^1.0.0-alpha.1",
-    "@guanghechen/task": "^1.0.0-beta.5"
+    "@guanghechen/error.types": "^1.0.5",
+    "@guanghechen/reporter.types": "^1.0.4",
+    "@guanghechen/scheduler": "^6.0.5",
+    "@guanghechen/subscriber": "^1.0.2",
+    "@guanghechen/task": "^1.0.3"
   }
 }

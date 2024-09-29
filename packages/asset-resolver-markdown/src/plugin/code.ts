@@ -1,5 +1,5 @@
 import type { IAssetResolverPlugin } from '@guanghechen/asset-types'
-import { collectIntervals } from '@guanghechen/parse-lineno'
+import { collectIntervals } from '@guanghechen/std'
 import type { Code } from '@yozora/ast'
 import { CodeType } from '@yozora/ast'
 import { shallowMutateAstInPreorderAsync } from '@yozora/ast-util'

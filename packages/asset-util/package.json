@@ -34,6 +34,6 @@
   ],
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.44",
-    "mime": "^4.0.1"
+    "mime": "^4.0.4"
   }
 }

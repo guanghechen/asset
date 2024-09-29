@@ -35,8 +35,8 @@
   "dependencies": {
     "@guanghechen/asset-storage": "^1.0.0-alpha.45",
     "@guanghechen/asset-types": "^1.0.0-alpha.44",
-    "@guanghechen/invariant": "^6.0.0-alpha.1",
-    "chokidar": "3.6.0",
+    "@guanghechen/invariant": "^6.0.3",
+    "chokidar": "4.0.1",
     "fast-glob": "^3.3.2"
   }
 }

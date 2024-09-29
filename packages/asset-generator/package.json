@@ -39,7 +39,7 @@
     "@guanghechen/asset-resolver-image": "^1.0.0-alpha.44",
     "@guanghechen/asset-resolver-markdown": "^1.0.0-alpha.49",
     "@guanghechen/asset-types": "^1.0.0-alpha.44",
-    "@guanghechen/reporter.types": "^1.0.0-alpha.10",
-    "@yozora/ast": "^2.3.1"
+    "@guanghechen/reporter.types": "^1.0.4",
+    "@yozora/ast": "^2.3.3"
   }
 }
