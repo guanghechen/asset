@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.0-alpha.51 (2024-09-29)
+
+- :arrow_up: chore: upgrade dependencies
+  ([01ea96f](https://github.com/guanghechen/asset/commit/01ea96f))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## 1.0.0-alpha.50 (2024-09-29)
 
 - :arrow_up: chore: upgrade dependencies

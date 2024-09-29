@@ -540,7 +540,7 @@ __metadata:
     "@guanghechen/asset-resolver": ^1.0.0-alpha.29
     "@guanghechen/asset-resolver-file": ^1.0.0-alpha.45
     "@guanghechen/asset-resolver-image": ^1.0.0-alpha.45
-    "@guanghechen/asset-resolver-markdown": ^1.0.0-alpha.50
+    "@guanghechen/asset-resolver-markdown": ^1.0.0-alpha.51
     "@guanghechen/asset-types": ^1.0.0-alpha.45
     "@guanghechen/reporter.types": ^1.0.4
     "@yozora/ast": ^2.3.4
@@ -566,7 +566,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@guanghechen/asset-resolver-markdown@^1.0.0-alpha.50, @guanghechen/asset-resolver-markdown@workspace:packages/asset-resolver-markdown":
+"@guanghechen/asset-resolver-markdown@^1.0.0-alpha.51, @guanghechen/asset-resolver-markdown@workspace:packages/asset-resolver-markdown":
   version: 0.0.0-use.local
   resolution: "@guanghechen/asset-resolver-markdown@workspace:packages/asset-resolver-markdown"
   dependencies:
