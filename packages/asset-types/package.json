@@ -33,7 +33,7 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/middleware": "^1.0.5",
-    "@guanghechen/monitor": "^1.0.2"
+    "@guanghechen/middleware": "^1.0.6",
+    "@guanghechen/monitor": "^1.0.3"
   }
 }

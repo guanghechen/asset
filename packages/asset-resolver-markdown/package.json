@@ -35,12 +35,12 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.45",
     "@guanghechen/asset-util": "^1.0.0-alpha.32",
-    "@guanghechen/middleware": "^1.0.5",
-    "@guanghechen/std": "^1.0.3",
+    "@guanghechen/middleware": "^1.0.6",
+    "@guanghechen/std": "^1.0.4",
     "@yozora/ast": "^2.3.4",
     "@yozora/ast-util": "^2.3.4",
     "@yozora/character": "^2.3.4",
-    "dayjs": "^1.11.13",
-    "js-yaml": "^4.1.0"
+    "dayjs": "1.11.13",
+    "js-yaml": "4.1.0"
   }
 }

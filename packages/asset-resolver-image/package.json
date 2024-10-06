@@ -35,6 +35,6 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.45",
     "@guanghechen/asset-util": "^1.0.0-alpha.32",
-    "image-size": "^1.1.1"
+    "image-size": "1.1.1"
   }
 }
