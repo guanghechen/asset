@@ -37,9 +37,9 @@
     "@guanghechen/asset-util": "^1.0.0-alpha.33",
     "@guanghechen/middleware": "^1.0.6",
     "@guanghechen/std": "^1.0.4",
-    "@yozora/ast": "^2.3.4",
-    "@yozora/ast-util": "^2.3.4",
-    "@yozora/character": "^2.3.4",
+    "@yozora/ast": "^2.3.5",
+    "@yozora/ast-util": "^2.3.5",
+    "@yozora/character": "^2.3.5",
     "dayjs": "1.11.13",
     "js-yaml": "4.1.0"
   }

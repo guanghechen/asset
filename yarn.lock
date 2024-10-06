@@ -550,7 +550,7 @@ __metadata:
     "@guanghechen/asset-resolver-markdown": ^1.0.0-alpha.52
     "@guanghechen/asset-types": ^1.0.0-alpha.46
     "@guanghechen/reporter.types": ^1.0.5
-    "@yozora/ast": ^2.3.4
+    "@yozora/ast": ^2.3.5
   languageName: unknown
   linkType: soft
 
@@ -581,9 +581,9 @@ __metadata:
     "@guanghechen/asset-util": ^1.0.0-alpha.33
     "@guanghechen/middleware": ^1.0.6
     "@guanghechen/std": ^1.0.4
-    "@yozora/ast": ^2.3.4
-    "@yozora/ast-util": ^2.3.4
-    "@yozora/character": ^2.3.4
+    "@yozora/ast": ^2.3.5
+    "@yozora/ast-util": ^2.3.5
+    "@yozora/character": ^2.3.5
     dayjs: 1.11.13
     js-yaml: 4.1.0
   languageName: unknown
@@ -2544,450 +2544,450 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@yozora/ast-util@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/ast-util@npm:2.3.4"
+"@yozora/ast-util@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/ast-util@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-  checksum: 322451d50c67de9e3107ff4e9b6e6c9f8202715dfdb5433c55e9917de39c26590c0ccc5ab67441e5c76070760f83a4d1f6728a36198bb642d93cfec9b4d21dca
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+  checksum: f884d132a53d8de77eed4a1fdba86f36d5477530250abef860e7800199cf4f65a1e220ecdc6a54458c164ab1bc77cd46da3b4e07f11bd318bc627e55019b2c11
   languageName: node
   linkType: hard
 
-"@yozora/ast@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/ast@npm:2.3.4"
-  checksum: 61cfb5be074e00b833cd0f8ceb6a488aef5fee5cbd7dc9f135c764adcc755d957f95a903fc18d8778c4872ce046b4121638e3f2842b14dfd4c32e80bfd690b2b
+"@yozora/ast@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/ast@npm:2.3.5"
+  checksum: 5180520a742818afb69edd35f864deedb3cb1f75f8a733f478ef1ea46cb4f1c7cc0e758138ee48613491e119d7c60519decd6dd9e1edb77744f9501660e15e58
   languageName: node
   linkType: hard
 
-"@yozora/character@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/character@npm:2.3.4"
-  checksum: 404de5bbbe66c72c53e7630c6c0468c6ed7277fbf438bca534d00103fccb84bb48fb24cbfcddd9184a82fe5751ac68392cd90b3cfa1308607a03815543c5f0dc
+"@yozora/character@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/character@npm:2.3.5"
+  checksum: 8a195f7a96f8e31fc7e5486b5a7dd258671691c5a9232b28f840f77c9fa03ef34c01771a4dc9f201506520d2d05740264e8df6e7efbb488cd357f833c18b9167
   languageName: node
   linkType: hard
 
-"@yozora/core-parser@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/core-parser@npm:2.3.4"
+"@yozora/core-parser@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/core-parser@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/ast-util": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/invariant": ^2.3.4
-  checksum: e07438dc4f36262c64c2a32ef91b5b53a2b0e64ee12092b9de1c143b0efbbb1b99a1360ad664f41f365af69843c98f86ffaf4e397545e87b3666d1e78cf1d25e
+    "@yozora/ast": ^2.3.5
+    "@yozora/ast-util": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/invariant": ^2.3.5
+  checksum: da6507d9f467b55c3d616c4d9ff9267361cb03be0d089d659d7a1a65cb5f7930eedd97c7a640262fb910ac8cf8d9abd683c4a1ae67eecc29ab8917310152176c
   languageName: node
   linkType: hard
 
-"@yozora/core-tokenizer@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/core-tokenizer@npm:2.3.4"
+"@yozora/core-tokenizer@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/core-tokenizer@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-  checksum: 0c55e2b456d72587c224ac35f8c23fd16d3a6f5780e47e425703cae066b8f99b63fe1324e1346d41c79230934e706276ff15d3a5b3e824a81754afe1e20bf883
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+  checksum: 4c3e94857f0311c635a275cf259b1ce0cd04490277769eb7a4d26bc075558f6ef5d0d2f5e395c31ad76c139d4d64f7b2dfaeaa358de109752be681006ccc065d
   languageName: node
   linkType: hard
 
-"@yozora/invariant@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/invariant@npm:2.3.4"
-  checksum: 11fcbe6d4838730bc008a8e08b16fc5e778554ca98330e06694a8bc67fd8e7a86c138dad881c22eb64bbfcfb460b09fddd2ed9ac6a7b7ad1a71aa4d7a66db9ee
+"@yozora/invariant@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/invariant@npm:2.3.5"
+  checksum: dd688791bfdd792eff153e46b4277366c9648aa0ba5ae010bbb52ff6f730a4c965fcb1e26d6989d0117270281f567d7385ebf91b77b337d9fdef64aa4d012ea1
   languageName: node
   linkType: hard
 
-"@yozora/parser@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/parser@npm:2.3.4"
+"@yozora/parser@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/parser@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/core-parser": ^2.3.4
-    "@yozora/tokenizer-admonition": ^2.3.4
-    "@yozora/tokenizer-autolink": ^2.3.4
-    "@yozora/tokenizer-autolink-extension": ^2.3.4
-    "@yozora/tokenizer-blockquote": ^2.3.4
-    "@yozora/tokenizer-break": ^2.3.4
-    "@yozora/tokenizer-definition": ^2.3.4
-    "@yozora/tokenizer-delete": ^2.3.4
-    "@yozora/tokenizer-ecma-import": ^2.3.4
-    "@yozora/tokenizer-emphasis": ^2.3.4
-    "@yozora/tokenizer-fenced-code": ^2.3.4
-    "@yozora/tokenizer-footnote": ^2.3.4
-    "@yozora/tokenizer-footnote-definition": ^2.3.4
-    "@yozora/tokenizer-footnote-reference": ^2.3.4
-    "@yozora/tokenizer-heading": ^2.3.4
-    "@yozora/tokenizer-html-block": ^2.3.4
-    "@yozora/tokenizer-html-inline": ^2.3.4
-    "@yozora/tokenizer-image": ^2.3.4
-    "@yozora/tokenizer-image-reference": ^2.3.4
-    "@yozora/tokenizer-indented-code": ^2.3.4
-    "@yozora/tokenizer-inline-code": ^2.3.4
-    "@yozora/tokenizer-inline-math": ^2.3.4
-    "@yozora/tokenizer-link": ^2.3.4
-    "@yozora/tokenizer-link-reference": ^2.3.4
-    "@yozora/tokenizer-list": ^2.3.4
-    "@yozora/tokenizer-math": ^2.3.4
-    "@yozora/tokenizer-paragraph": ^2.3.4
-    "@yozora/tokenizer-setext-heading": ^2.3.4
-    "@yozora/tokenizer-table": ^2.3.4
-    "@yozora/tokenizer-text": ^2.3.4
-    "@yozora/tokenizer-thematic-break": ^2.3.4
-  checksum: d4322e002acde094e9cfbfdf390033e48540550276e41e5b4c08b7d6ce5c8f107dad50ffc996e68be54549cef9bafdb5f06f9a8902d844a1213beabb868998ad
+    "@yozora/ast": ^2.3.5
+    "@yozora/core-parser": ^2.3.5
+    "@yozora/tokenizer-admonition": ^2.3.5
+    "@yozora/tokenizer-autolink": ^2.3.5
+    "@yozora/tokenizer-autolink-extension": ^2.3.5
+    "@yozora/tokenizer-blockquote": ^2.3.5
+    "@yozora/tokenizer-break": ^2.3.5
+    "@yozora/tokenizer-definition": ^2.3.5
+    "@yozora/tokenizer-delete": ^2.3.5
+    "@yozora/tokenizer-ecma-import": ^2.3.5
+    "@yozora/tokenizer-emphasis": ^2.3.5
+    "@yozora/tokenizer-fenced-code": ^2.3.5
+    "@yozora/tokenizer-footnote": ^2.3.5
+    "@yozora/tokenizer-footnote-definition": ^2.3.5
+    "@yozora/tokenizer-footnote-reference": ^2.3.5
+    "@yozora/tokenizer-heading": ^2.3.5
+    "@yozora/tokenizer-html-block": ^2.3.5
+    "@yozora/tokenizer-html-inline": ^2.3.5
+    "@yozora/tokenizer-image": ^2.3.5
+    "@yozora/tokenizer-image-reference": ^2.3.5
+    "@yozora/tokenizer-indented-code": ^2.3.5
+    "@yozora/tokenizer-inline-code": ^2.3.5
+    "@yozora/tokenizer-inline-math": ^2.3.5
+    "@yozora/tokenizer-link": ^2.3.5
+    "@yozora/tokenizer-link-reference": ^2.3.5
+    "@yozora/tokenizer-list": ^2.3.5
+    "@yozora/tokenizer-math": ^2.3.5
+    "@yozora/tokenizer-paragraph": ^2.3.5
+    "@yozora/tokenizer-setext-heading": ^2.3.5
+    "@yozora/tokenizer-table": ^2.3.5
+    "@yozora/tokenizer-text": ^2.3.5
+    "@yozora/tokenizer-thematic-break": ^2.3.5
+  checksum: 96fc4a14d1f7a188e97a5f9ee6ebf967b34b579fabd17ced957a505a455af804b04cc13bf4528a0230253f076436a92ea237a083449056cdcb8dafcb844a8ca4
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-admonition@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-admonition@npm:2.3.4"
+"@yozora/tokenizer-admonition@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-admonition@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/tokenizer-fenced-block": ^2.3.4
-  checksum: 1f9d23a90ae4faead579c3db4b2f6a097d798b44f153201a3cb027bb3baa5909b73ef6d9dc24364c2a9b01a272a2903a02df7cb0c2dfc1b59204ff7e4d4dd179
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/tokenizer-fenced-block": ^2.3.5
+  checksum: d44daba5fee0e52f61f8fb3b8bbfcbf75041e51743816425d952f199df1a161d0ff45f4b5b8446b80e2138a9fc5b09099a9084cc65c19b3556d41045f2c41783
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-autolink-extension@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-autolink-extension@npm:2.3.4"
+"@yozora/tokenizer-autolink-extension@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-autolink-extension@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/tokenizer-autolink": ^2.3.4
-  checksum: c32215553fc510eaff856932e37bef870d6753a3dd4784fbb68dc6f6c9f067584b5a1d6dfe2431e2f0152b156d8ef997be654f9066e75a28ce68ced97b9ded80
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/tokenizer-autolink": ^2.3.5
+  checksum: 6968cc439fe998ed4eb20c722c6b28c4684adbe4f9ef9f5fbe9596773fbfac8ca3c19d3a769c7c03b778ffbae2e3f9f0b711bad2a00e6d1881eb81ec4b9b59d8
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-autolink@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-autolink@npm:2.3.4"
+"@yozora/tokenizer-autolink@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-autolink@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 1f52bc6bb5f18e039f65e5d79ef5be5c4c0f2ab521df47b547c52423a27d9008d95bb3c7dcfb1ce3c6f99cda0c0496d3efef17a76ed9b3ccce16bd0c6125071e
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: a371eef10be67172652aea31eea1b393c0bedcf65e89759a87dd397238f2a4bc43063fcaa4a155d92a401ce8ab1f5a5d983c62067f8c0064ce7952b3a829edb5
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-blockquote@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-blockquote@npm:2.3.4"
+"@yozora/tokenizer-blockquote@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-blockquote@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 3e1fced0f32d2b7d40061caa2d330bd13280f21cdcf2a583d8553dc8b1dc0ae0287d06b6170e179916a8ec573bafe07fba577ee551ea1a3d0571c7ad755c778b
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 918a7221b8d6f3621526fb0aebf0446f276c73aa0c9634a256f79383e304fe75ef9299841c972257accfb7d2f8ce84b321ebcb779f5532242b202e326d5ea849
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-break@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-break@npm:2.3.4"
+"@yozora/tokenizer-break@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-break@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 77ddc378a81510cdcf43afc2d56a40a19b28f632d9013948ed2fc8e17ffedf6dedfe24b31165676bda92369923ddd485a39969134a60a3fe5aad501fafde3555
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: c6921e7ec560f9138b681ffa3131c21fd211773715f9e1bb11269e77a9bc1cdbf7795fe5550ccaed3a769cd6ccdad944ab292020d66db6af20605235e8c975f1
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-definition@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-definition@npm:2.3.4"
+"@yozora/tokenizer-definition@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-definition@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: e0ed2a7adcba4c4b10373c2a41743e69150b16d18f333e4b0814221b0533a0ee79d4e520dae0885575cc0f0d121d85b15017efac179fd1e77dc8a75ffef71b7f
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 36a6ccc2dcbcd94e9181454d5fd771b9278c9faaa940b04f32fa1b3eb91fa6ce691e15ea2052c6d354cf236dc61d60096a9cfa7726ed311b7ee99340609cf6d7
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-delete@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-delete@npm:2.3.4"
+"@yozora/tokenizer-delete@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-delete@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: c4842395b1e15a9fae142e709247abdb22037f5ee3cb6d2d161fd7962307f424b8e46761539e771a98da951e5b0311017099b888892d3d382883a754e426ccd8
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 1fdbc5a6c1943c4575affb794ef82ece24929691822dc41152890d51070c3f5ba3c6f87a9aff396692d8ee65132efc66505c7b2ecf221bbd7f8f6c18ba4d9ed9
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-ecma-import@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-ecma-import@npm:2.3.4"
+"@yozora/tokenizer-ecma-import@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-ecma-import@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 5bcd27cfc062b49bfb96c50b843203f1e3b2df3efd0f6424c082c960d0866f10a352a5712b0f349c7b3c20ce5e9edf9628927d39a9547a151284e986deecd180
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 8e04670a9f3c0da9b25fe492db4bad1e1a41190f7779a5206f197f2c22d9ebb23bb981c5d04fd0c0aaf84bc14f838b08c947e7ead14361abc4df2a61688804c9
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-emphasis@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-emphasis@npm:2.3.4"
+"@yozora/tokenizer-emphasis@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-emphasis@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 4b6f36aab80202ae6fdeafe5af43903ea81d26f7bd250bff590fe871ea5d1ed3fd640034fb9130692c49d6e4e7ac40fda1a92cd16d744d5f75c005b12e1463a9
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 8df501f1a004bd2d3170ab4b59d4d468053b671df539ddff50d501a30e2442ffa863745be080f3aeb65b1b20edde1f841ff38e8e3c2bd059e9c8530517deb843
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-fenced-block@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-fenced-block@npm:2.3.4"
+"@yozora/tokenizer-fenced-block@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-fenced-block@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 54259e379ff2ef6016fc486e0d1842e769594e6dd121428a40ccecd9ed9296ff088bb49229c606ff5e6affb24ffdfb3c70eea6e06c87bb4e02be4caee2abe303
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 219bf712ecdbff9fec85dbac6011c5c400c7acf431221f2694e3c21e6f00dd061aea2eb13b4f8810e1fe3f431ad9adcdeeb51b1fb5875ce0373f1dad1ac2b601
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-fenced-code@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-fenced-code@npm:2.3.4"
+"@yozora/tokenizer-fenced-code@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-fenced-code@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/tokenizer-fenced-block": ^2.3.4
-  checksum: 71257810bfadfe0b27342496276199c71fc4eb5580a82eabb436b84d4c41969fe99a0933f01093ea82978a58a62d3aa032e97eed64262886d5c05be811d06b01
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/tokenizer-fenced-block": ^2.3.5
+  checksum: 6d7a70bc8318e40c4aa035f684d3e13cefc05fd33a2370c9de6382a914b9e09ebdbf99e36e70beff0f85270a678f4ad2437f072bd63b910d2d80bee065148a70
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-footnote-definition@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-footnote-definition@npm:2.3.4"
+"@yozora/tokenizer-footnote-definition@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-footnote-definition@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: e1bad4da490e35c904a8786275812912afcceda564c09c928738e0b22b7c170317975e1be0a06ae1b48a0ea2b8879c1f19c59cdcf8aafbd6e155a127c5302869
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: e06328cbef20981d5af7b6a03b9a741e49266c4d314fd3f71dffd902ff321a08db4efb051c2de718e425f060e315806985ed9df4cd0583178276032cbf6f197e
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-footnote-reference@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-footnote-reference@npm:2.3.4"
+"@yozora/tokenizer-footnote-reference@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-footnote-reference@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/tokenizer-footnote-definition": ^2.3.4
-  checksum: 9aaa69f44115f5b96121cdfd59ddb533a121969527885b25073d592f7a4ad4bffeed8c19f709f79e6792444f724ddd95d6a041409769c40b427e1162a299edf8
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/tokenizer-footnote-definition": ^2.3.5
+  checksum: 130c89c29e2c1ccf22419f4e6d2460c9e31013ecf33e752d741ac79cce376e1446d7c6ca152ea3984a6778304bcf1306b74e348b512a745186f871bf0f222a88
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-footnote@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-footnote@npm:2.3.4"
+"@yozora/tokenizer-footnote@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-footnote@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/tokenizer-link": ^2.3.4
-  checksum: 060b6a9f4f9f6ea7392c8327f374c2ff677929e9a5591072478da609b0733b6d6fd7ce8a41ad7f30871e160239ea95b8d4cd92ddd50a6519a265479713d918d4
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/tokenizer-link": ^2.3.5
+  checksum: e253c28794deb043a1e1af44c616323c65e27ea30849f51fa04178affd1e5c5d0af712da600c906bf31f5be1bc045b1ba238bd8154aa2d390756a94a95f83fd6
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-heading@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-heading@npm:2.3.4"
+"@yozora/tokenizer-heading@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-heading@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: c2dcbd5617c86695520e08278d8712337f10d1ac245bcba7a12ff42a154dcb1f389a527554cca28ec99c0bf8e191371998f27b82c42483d84d0b607a5c0b9afc
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 157d0cddc0f5a20ff64027cf70a98e43a79f11b5685d1c331d1b9b0757733ae5004f7505e819945d172906fa6527cf00061b6cbc3e436c93890e37c6f90a053e
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-html-block@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-html-block@npm:2.3.4"
+"@yozora/tokenizer-html-block@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-html-block@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: c420fd6acb6e170718f7cb964aa7677bf0c70026f1168d66fdaae6d1a69a0bf75ccfe79684b4a8decffb929cc60dbc77cea4e44776879625e74696195345599e
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 447959691137128775b3e966a7ab3078eb8352fe2a9ca9132bfffe3bf511258b6e9085151622c844730f110d5c5b327b7016a03d429a6933e10a8af085e8e32a
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-html-inline@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-html-inline@npm:2.3.4"
+"@yozora/tokenizer-html-inline@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-html-inline@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/tokenizer-html-block": ^2.3.4
-  checksum: 07ab4a85355972f70c16a1b91fcf6e28bb7f9c3a147f35fa7171ca247a8b72c511b9abf4b0a10e8e29aff9ff164962be35f948eb650b33390c74631e6dc1a749
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/tokenizer-html-block": ^2.3.5
+  checksum: 6b0a8be6329d31515777178174b49fbac1e4e01ae1d1928611870f12c6ac2a33a1bfbc2b99c83ff14c4574ba8e9b0bb597d408a81b03784607cac723b2c9271c
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-image-reference@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-image-reference@npm:2.3.4"
+"@yozora/tokenizer-image-reference@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-image-reference@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/tokenizer-image": ^2.3.4
-    "@yozora/tokenizer-link": ^2.3.4
-    "@yozora/tokenizer-link-reference": ^2.3.4
-  checksum: 4b04dea0d56f06ef32564e16091fcd9c009d2adb0e80a8eef45ef05a3cb958c6a7bd14b85b31b280c8adee992e0f0629409bee303414e34fa387b1a2bfa6b7d8
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/tokenizer-image": ^2.3.5
+    "@yozora/tokenizer-link": ^2.3.5
+    "@yozora/tokenizer-link-reference": ^2.3.5
+  checksum: 44e27413b4c56089fbbd2567b952585257f61545eebe2448fbe944d820dccbebd74f3af659bd757d4c5f30f4181a897b17efbdc0176eed06b3224dab42dbf4fb
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-image@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-image@npm:2.3.4"
+"@yozora/tokenizer-image@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-image@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/tokenizer-link": ^2.3.4
-  checksum: fc1a6e19fde4573071816cb2a4e907dbbeb9c8d18e71c4252d4bee78751c66da7f7147b1024353efc5e72d35122862b2286677c67c6de1cf3cb4fc77f4d2dddd
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/tokenizer-link": ^2.3.5
+  checksum: 4baeea85166e7858b3e1b7f3e6fa2367cf899840a864d5e4f90a3e31e561e1d7d7eb97127b282f15b0099fcb9bc76ca4b3bfa46afdcf982d9a613bec5a283583
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-indented-code@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-indented-code@npm:2.3.4"
+"@yozora/tokenizer-indented-code@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-indented-code@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: a6dac39212563c8c09836fcd52136a663cf9ede500caec7ef3dc869d7da4bc72b91cbfa15ef18317e6503472daacf14440dfa22aedb0d593568e3fc97a441f77
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 22bba523c4b42de1701ec08d7042be8b324eefb438d4d400d18600ffe85f050956edd7a3a21c695cb5f1effba4be692ae9862f1dae402f8ee5c5ea0b8b9bd41d
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-inline-code@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-inline-code@npm:2.3.4"
+"@yozora/tokenizer-inline-code@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-inline-code@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 583d9a26bac9f7075b2de637b41ae80ea0a8696423d3d6823e53c2b5fceeee9d50c1c7a649dc6be9e1b20582e966e7fb121e702a21caea273b19798dad88a96b
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 7b864c6c5767393d5c1b39708baac050c01fb2c38cecb7c77a26c16323af91c92541a627d8430ce101c2299bdd9df0e90908f2a394faaf7bbe854cd3a9831de2
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-inline-math@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-inline-math@npm:2.3.4"
+"@yozora/tokenizer-inline-math@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-inline-math@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 8b12983056ff4330f5ee11827b67a86bcb3d4d4d414052cbd51b5d600f842784be5c4cdd3e16657bad6617c8b9198b677381160dd3236c711918b9b23cfbaab7
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 007906705f94302e4ff15fff866c342e545af73f961324f2aae7f00772df6905982bafbb2d767bd2fcbe829805dfb3db5cd216dc76ec4276a4cb67d82877c252
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-link-reference@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-link-reference@npm:2.3.4"
+"@yozora/tokenizer-link-reference@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-link-reference@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/tokenizer-link": ^2.3.4
-  checksum: 47d9be3915572eeea508d66a754305ce51aa3fdb90dc0a1d4a61689814954681079624a9fa4de0931e937b6991bb869a8a9d6dd5b6eae83048a4b3a75cc29107
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/tokenizer-link": ^2.3.5
+  checksum: 7a1c9697eda4fe74a7c2fa8f3cc095bf7bccd17499fd33bb7b000d5d49f3441175a5c1947d97521eba2350df0431ff6f0e433b435abc3bc06d0696a37b5ef057
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-link@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-link@npm:2.3.4"
+"@yozora/tokenizer-link@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-link@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: e57ec4b66c164c70758445ee4120ad01f46590483796be60001821c3b252cf7b2722e1da49d9708cf29d4d0fe0654bb24e9114793836e5edd2db7082b964c470
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: d5225a3763ad0472f67df8a9f0ff4add68b276db3ae6d210bbd9cd67b2664dbd5dcb9f63f298935109e1ab5ecc7cd56bdc8f1f153316de53403a2e5dc7482da0
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-list@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-list@npm:2.3.4"
+"@yozora/tokenizer-list@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-list@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 82eb5b940ef239c0a7e92b82dea8c7c073b9a5e8e514536fe9d6f92297c5c28ec4a3e0007347de0409ae8e53b2652016d5bc43e1cfc0d71266e3900c500303c7
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: ca9ea83ba7625d9e4df144397a72422ae1e2f1c6e03a0a88c68551a98c0646c8eb457de7bc9c35bda069a1f3929d99d6b3be02cce8b0babd4b3392909e51d0bc
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-math@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-math@npm:2.3.4"
+"@yozora/tokenizer-math@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-math@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-    "@yozora/tokenizer-fenced-block": ^2.3.4
-  checksum: c7870ff2ceca970671b407823fd806463cf9a2158ec6685aa682f2e9d93637cfbd2c65012094885760f9ae3c282732d49339b02455497d517bb1ed5c2c73677b
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+    "@yozora/tokenizer-fenced-block": ^2.3.5
+  checksum: f6495113202d73763763b1dc78f79e2a27f7b666b847cf2355808c34a37a2cb636e8b1f566ab4ccd60a21ebb25a9d379e71bf686a5b78c8818ca6d59507dd6da
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-paragraph@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-paragraph@npm:2.3.4"
+"@yozora/tokenizer-paragraph@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-paragraph@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 203beb024f6bfd1c8666744f37261ff3c9f11fa39cfe79bae6c7130d98d2f73f94d6aaa303ca47ffe83b7ee1ddfbdc57bfe43a2f738f5d8aa2d59266c5d4994d
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 818504c6e4a98154ff6342a1c9db5d2bfeaec3b4c4275fec71f06ebef206715960466e55879cb1750df73d6e1d0bf78fda444a297092719ddc4364e8951b42ef
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-setext-heading@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-setext-heading@npm:2.3.4"
+"@yozora/tokenizer-setext-heading@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-setext-heading@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: dc9f71022baedc479499e8d75484697d768df65e9f0e5b4c3a0d9572dec7fbc3d0c7655d5c23c639238ac345608e6473c782a5806191ae4bf44d2b6fad9a14e1
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 5621dcebc02a99d95277390dca557354b9567286eac5205a2bf7eac6ec84a70720122ff39990784fcb556498ab782e51c10de3853f6ca636751689eeef769a56
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-table@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-table@npm:2.3.4"
+"@yozora/tokenizer-table@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-table@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: cc5f9d4578abc24844038d4621bfc1a8db822b98709fae1b135c6da3ce529a1bad16d2a81f4464213ef3c85cadc85b85f71b3bbdbe10c36bafe3b000f13aeab8
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 5653a1f2596a1298f11058fba6412db0def6feb11b9d4cb307d1ba4581d70f4bf8f3310967c8060e77daca211e9b97e47ffaf997b41827e8a9cd525cb781c773
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-text@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-text@npm:2.3.4"
+"@yozora/tokenizer-text@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-text@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: e8885f2491243ef86cc53df4790cffa000b0c01099f58165941e217a3990a510d1a198cb0963ba445853f9e6f20a1e3f5077515aeb35f0256854da9a5732684a
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: 0d0ff76c521fe8e5907dc25f093b287df2c236b0636321467bbca8be9f2418edaec4d96df40552d5fe7ae0ecb124321c97d8bade71dbfa22497fe73cabf40877
   languageName: node
   linkType: hard
 
-"@yozora/tokenizer-thematic-break@npm:^2.3.4":
-  version: 2.3.4
-  resolution: "@yozora/tokenizer-thematic-break@npm:2.3.4"
+"@yozora/tokenizer-thematic-break@npm:^2.3.5":
+  version: 2.3.5
+  resolution: "@yozora/tokenizer-thematic-break@npm:2.3.5"
   dependencies:
-    "@yozora/ast": ^2.3.4
-    "@yozora/character": ^2.3.4
-    "@yozora/core-tokenizer": ^2.3.4
-  checksum: 504527eb8216a615773095e2171f2aaebe4e8e87479fdf3e3979a1b75c8a739a85c82c7097204c2c04c0d84938de341920173bd2313c60fba9c25303e4f632ed
+    "@yozora/ast": ^2.3.5
+    "@yozora/character": ^2.3.5
+    "@yozora/core-tokenizer": ^2.3.5
+  checksum: e26cda9958a8524e312dcd29c70250a1242cb1fcc002a72b2ea376778587bc5f6f83f7ee673e27e9f13c51214ba4778f49269d2ba884d16ce5d886e349dddaa4
   languageName: node
   linkType: hard
 
@@ -9639,7 +9639,7 @@ __metadata:
     "@types/mime": 4.0.0
     "@types/node": 20.16.10
     "@types/uuid": 10.0.0
-    "@yozora/parser": ^2.3.4
+    "@yozora/parser": ^2.3.5
     cross-env: 7.0.3
     eslint: 9.12.0
     husky: 9.1.6
