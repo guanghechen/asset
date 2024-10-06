@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.0-alpha.46 (2024-10-06)
+
+- :arrow_up: chore: upgrade devDependencies
+  ([2261118](https://github.com/guanghechen/asset/commit/2261118))
+- :wrench: chore: fix nx config ([a03db97](https://github.com/guanghechen/asset/commit/a03db97))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## 1.0.0-alpha.45 (2024-09-29)
 
 - :wrench: chore: fix nx config ([10fa9ca](https://github.com/guanghechen/asset/commit/10fa9ca))
