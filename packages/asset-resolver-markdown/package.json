@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-resolver-markdown",
-  "version": "1.0.0-alpha.53",
+  "version": "1.0.0-alpha.54",
   "description": "markdown asset",
   "author": {
     "name": "guanghechen",
@@ -33,8 +33,8 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.46",
-    "@guanghechen/asset-util": "^1.0.0-alpha.33",
+    "@guanghechen/asset-types": "^1.0.0-alpha.47",
+    "@guanghechen/asset-util": "^1.0.0-alpha.34",
     "@guanghechen/middleware": "^1.0.6",
     "@guanghechen/std": "^1.0.4",
     "@yozora/ast": "^2.3.12",

@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## 1.0.0-alpha.52 (2025-07-04)
+
+- chore: upgrade dependencies ([41122a6](https://github.com/guanghechen/asset/commit/41122a6))
+
+# Change Log
+
+All notable changes to this project will be documented in this file. See
+[Conventional Commits](https://conventionalcommits.org) for commit guidelines.
+
 ## 1.0.0-alpha.51 (2024-10-06)
 
 - :arrow_up: chore: upgrade devDependencies
