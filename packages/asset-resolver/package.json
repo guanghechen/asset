@@ -36,6 +36,6 @@
     "@guanghechen/asset-types": "^1.0.0-alpha.46",
     "@guanghechen/asset-util": "^1.0.0-alpha.33",
     "@guanghechen/reporter.types": "^1.0.5",
-    "uuid": "10.0.0"
+    "uuid": "11.1.0"
   }
 }

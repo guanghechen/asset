@@ -34,7 +34,7 @@
   ],
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.46",
-    "@guanghechen/invariant": "^6.0.4",
-    "@guanghechen/monitor": "^1.0.3"
+    "@guanghechen/invariant": "^6.0.5",
+    "@guanghechen/monitor": "^1.0.4"
   }
 }

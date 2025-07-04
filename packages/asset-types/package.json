@@ -34,6 +34,6 @@
   ],
   "dependencies": {
     "@guanghechen/middleware": "^1.0.6",
-    "@guanghechen/monitor": "^1.0.3"
+    "@guanghechen/monitor": "^1.0.4"
   }
 }
