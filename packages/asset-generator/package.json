@@ -33,14 +33,14 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/asset-api": "^1.0.0-alpha.52",
-    "@guanghechen/asset-resolver": "^1.0.0-alpha.31",
-    "@guanghechen/asset-resolver-file": "^1.0.0-alpha.47",
-    "@guanghechen/asset-resolver-image": "^1.0.0-alpha.47",
-    "@guanghechen/asset-resolver-markdown": "^1.0.0-alpha.54",
-    "@guanghechen/asset-types": "^1.0.0-alpha.47",
+    "@guanghechen/asset-api": "workspace:^",
+    "@guanghechen/asset-resolver": "workspace:^",
+    "@guanghechen/asset-resolver-file": "workspace:^",
+    "@guanghechen/asset-resolver-image": "workspace:^",
+    "@guanghechen/asset-resolver-markdown": "workspace:^",
+    "@guanghechen/asset-types": "workspace:^",
     "@guanghechen/reporter.types": "^1.0.5",
-    "@yozora/ast": "^2.3.12"
+    "@yozora/ast": "^2.3.14"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",

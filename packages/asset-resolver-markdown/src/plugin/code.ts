@@ -1,10 +1,25 @@
 import type { IAssetResolverPlugin } from '@guanghechen/asset-types'
-import { collectIntervals } from '@guanghechen/std'
 import type { Code } from '@yozora/ast'
 import { CodeType } from '@yozora/ast'
 import { shallowMutateAstInPreorderAsync } from '@yozora/ast-util'
 import type { IMarkdownAssetParseOutput, IMarkdownResolverPlugin } from '../types'
 import { isMarkdownAssetParseOutput } from '../types'
+
+function parseLineIntervals(input: string): Array<[number, number]> {
+  const intervals: Array<[number, number]> = []
+  for (const token of input.split(',')) {
+    const raw = token.trim()
+    if (!raw) continue
+
+    const [lhs, rhs] = raw.split('-', 2)
+    const start = Number.parseInt(lhs, 10)
+    const end = rhs == null ? start : Number.parseInt(rhs, 10)
+    if (!Number.isFinite(start) || !Number.isFinite(end)) continue
+
+    intervals.push(start <= end ? [start, end] : [end, start])
+  }
+  return intervals
+}
 
 interface IParams {
   /**
@@ -65,7 +80,7 @@ export function markdownPluginCode(params: IParams = {}): IMarkdownResolverPlugi
 
               const srcLineMatch = srcLineRegex.exec(meta!)
               if (srcLineMatch != null) {
-                const lineIntervals: Array<[number, number]> = collectIntervals(srcLineMatch[1])
+                const lineIntervals: Array<[number, number]> = parseLineIntervals(srcLineMatch[1])
 
                 let commonIndent = Number.MAX_SAFE_INTEGER
                 if (lineIntervals.length > 0) {

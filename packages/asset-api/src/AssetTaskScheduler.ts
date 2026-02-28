@@ -20,7 +20,7 @@ export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskSch
       name: 'asset-scheduler',
       pipeline,
       strategy: TaskStrategyEnum.CONTINUE_ON_ERROR,
-      reporter,
+      reporter: reporter as any,
     })
   }
 

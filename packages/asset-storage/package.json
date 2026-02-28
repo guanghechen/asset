@@ -33,9 +33,9 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.47",
-    "@guanghechen/invariant": "^6.0.5",
-    "@guanghechen/monitor": "^1.0.4"
+    "@guanghechen/asset-types": "workspace:^",
+    "@guanghechen/invariant": "^7.0.2",
+    "@guanghechen/monitor": "^2.0.0"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",

@@ -33,9 +33,9 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.47",
-    "@guanghechen/asset-util": "^1.0.0-alpha.34",
-    "image-size": "1.2.1"
+    "@guanghechen/asset-types": "workspace:^",
+    "@guanghechen/asset-util": "workspace:^",
+    "image-size": "2.0.2"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",

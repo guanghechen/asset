@@ -33,10 +33,10 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.47",
-    "@guanghechen/asset-util": "^1.0.0-alpha.34",
+    "@guanghechen/asset-types": "workspace:^",
+    "@guanghechen/asset-util": "workspace:^",
     "@guanghechen/reporter.types": "^1.0.5",
-    "uuid": "11.1.0"
+    "uuid": "13.0.0"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",

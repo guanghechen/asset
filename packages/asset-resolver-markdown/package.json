@@ -33,15 +33,15 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/asset-types": "^1.0.0-alpha.47",
-    "@guanghechen/asset-util": "^1.0.0-alpha.34",
-    "@guanghechen/middleware": "^1.0.6",
-    "@guanghechen/std": "^1.0.4",
-    "@yozora/ast": "^2.3.12",
-    "@yozora/ast-util": "^2.3.12",
-    "@yozora/character": "^2.3.12",
-    "dayjs": "1.11.13",
-    "js-yaml": "4.1.0"
+    "@guanghechen/asset-types": "workspace:^",
+    "@guanghechen/asset-util": "workspace:^",
+    "@guanghechen/middleware": "^2.0.2",
+    "@guanghechen/std": "^2.0.2",
+    "@yozora/ast": "^2.3.14",
+    "@yozora/ast-util": "^2.3.14",
+    "@yozora/character": "^2.3.14",
+    "dayjs": "1.11.19",
+    "js-yaml": "4.1.1"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",
