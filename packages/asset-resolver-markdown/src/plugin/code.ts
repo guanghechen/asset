@@ -40,16 +40,16 @@ interface IParams {
 
 export function markdownPluginCode(params: IParams = {}): IMarkdownResolverPlugin {
   const srcEncoding: BufferEncoding = params.sourceEncoding ?? 'utf8'
-  const srcFileRegex: RegExp = new RegExp(
+  const srcFileRegex = new RegExp(
     `(?:^|\\b)${params.sourceFileToken ?? 'sourcefile'}="([^"]+)"`,
     'i',
   )
-  const srcLineRegex: RegExp = new RegExp(
+  const srcLineRegex = new RegExp(
     `(?:^|\\b)${params.sourceLineToken ?? 'sourceline'}="([^"]+)"`,
     'i',
   )
-  const indentRegex: RegExp = /^\s*/
-  const lineRegex: RegExp = /\r|\n|\n\r/g
+  const indentRegex = /^\s*/
+  const lineRegex = /\r|\n|\n\r/g
 
   const plugin: IMarkdownResolverPlugin = (): IAssetResolverPlugin => {
     return {

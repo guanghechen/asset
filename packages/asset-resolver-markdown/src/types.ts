@@ -57,7 +57,7 @@ export interface IPreviewImageItem {
 }
 
 export const MarkdownAssetType = 'markdown'
-// eslint-disable-next-line @typescript-eslint/no-redeclare
+
 export type MarkdownAssetType = typeof MarkdownAssetType
 
 export interface IMarkdownResolverPluginContext {

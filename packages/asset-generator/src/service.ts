@@ -37,7 +37,7 @@ export function createAssetService(params: IParams): IAssetService {
     resolver,
   } = params
 
-  const dataMapUri: string = `/api/${group}.asset.map.json`
+  const dataMapUri = `/api/${group}.asset.map.json`
   const uriResolver: IAssetUriResolver = createAssetUriResolver(group)
   const locator: IAssetLocator = new AssetLocator({ GUID_NAMESPACE, pathResolver })
   const resolverApi: IAssetResolverApi = new AssetResolverApi({

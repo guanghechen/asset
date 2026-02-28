@@ -5,7 +5,7 @@ import type {
 } from '@guanghechen/asset-types'
 
 export const FileAssetType = 'file'
-// eslint-disable-next-line @typescript-eslint/no-redeclare
+
 export type FileAssetType = typeof FileAssetType
 
 export type IFileAssetPolishInputData = void

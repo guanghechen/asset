@@ -5,7 +5,7 @@ import type {
 } from '@guanghechen/asset-types'
 
 export const ImageAssetType = 'image'
-// eslint-disable-next-line @typescript-eslint/no-redeclare
+
 export type ImageAssetType = typeof ImageAssetType
 
 export type IImageAssetPolishInputData = void

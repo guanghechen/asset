@@ -24,7 +24,7 @@ export class AssetDataCooker implements IMaterialCooker<D, T> {
     if (embryo !== null) return next(embryo)
 
     const type: AssetChangeEventEnum = data.type
-    const absoluteSrcPathSet: Set<string> = new Set(data.absoluteSrcPaths)
+    const absoluteSrcPathSet = new Set<string>(data.absoluteSrcPaths)
     for (const sibiling of api.subsequent()) {
       if (sibiling.data.type !== type) break
       api.invalidate(sibiling)

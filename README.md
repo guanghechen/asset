@@ -34,10 +34,10 @@
       />
     </a>
     <a href="https://github.com/vitest-dev/vitest">
-        <img
+      <img
         alt="Tested with Vitest"
         src="https://img.shields.io/badge/tested_with-vitest-6E9F18.svg"
-        />
+      />
     </a>
     <a href="https://github.com/prettier/prettier">
       <img

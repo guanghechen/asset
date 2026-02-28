@@ -120,7 +120,7 @@ export class AssetTargetStorage implements IAssetTargetStorage {
   }
 
   public async writeFile(rawItem: ITargetItem): Promise<void> {
-    const __title__: string = `[${this.constructor.name}.writeFile]`
+    const __title__ = `[${this.constructor.name}.writeFile]`
     const uri: string = this.resolveUriFromTargetItem(rawItem)
     const fileItem = this._fileItemMap.get(uri)
 

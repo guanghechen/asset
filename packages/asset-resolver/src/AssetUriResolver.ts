@@ -25,7 +25,7 @@ export class AssetUriResolver implements IAssetUriResolver {
     const { guid, mimetype } = asset
     const extname: string | undefined = mime.getExtension(mimetype) ?? asset.extname
     const uriPrefix: string = await this._resolveUriPrefix(asset)
-    const uri: string = `/${uriPrefix}/${guid}`
+    const uri = `/${uriPrefix}/${guid}`
     return normalizeUrlPath(extname ? `${uri}.${extname}` : uri)
   }
 }

@@ -128,7 +128,7 @@ export class AssetResolverMarkdown
         ? collectTexts(this.ctx.parseMarkdown(frontmatter.title).children).join(' ') || input.title
         : input.title
       const sourcetype: string = MarkdownAssetType
-      const mimetype: string = 'application/json'
+      const mimetype = 'application/json'
       const uri: string | null = await api.resolveUri(sourcetype, mimetype)
       const slug: string | null = await api.resolveSlug({
         uri,
