@@ -10,7 +10,7 @@ import type {
   IAssetResolverPlugin,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
-import type { IReporter } from '@guanghechen/reporter.types'
+import type { IReporter } from '@guanghechen/reporter'
 import {
   type IAssetPluginLocateArgs,
   type IAssetPluginLocateResult,

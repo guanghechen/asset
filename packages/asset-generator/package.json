@@ -39,7 +39,7 @@
     "@guanghechen/asset-resolver-image": "workspace:^",
     "@guanghechen/asset-resolver-markdown": "workspace:^",
     "@guanghechen/asset-types": "workspace:^",
-    "@guanghechen/reporter.types": "^1.0.5",
+    "@guanghechen/reporter": "^3.3.0",
     "@yozora/ast": "^2.3.14"
   },
   "scripts": {

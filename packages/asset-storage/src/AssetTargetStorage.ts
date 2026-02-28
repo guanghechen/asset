@@ -13,23 +13,45 @@ import type {
   ITargetItemWithoutData,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
-import { Monitor } from '@guanghechen/monitor'
-import type { IMonitor } from '@guanghechen/monitor'
+import { Subscriber, Subscribers } from '@guanghechen/subscriber'
 import type { IUnsubscribable } from '@guanghechen/subscriber'
+
+class EventMonitor<P extends any[]> {
+  private readonly _subscribers: Subscribers<P>
+
+  constructor() {
+    this._subscribers = new Subscribers<P>()
+  }
+
+  public subscribe(callback: (...args: P) => void): IUnsubscribable {
+    const subscriber = new Subscriber<P>({
+      onNext: value => callback(...value),
+    })
+    return this._subscribers.subscribe(subscriber)
+  }
+
+  public notify(...args: P): void {
+    this._subscribers.notify(args, undefined)
+  }
+
+  public dispose(): void {
+    this._subscribers.dispose()
+  }
+}
 
 const noop = (..._args: any[]): void => {}
 const noopUnsubscribable: IUnsubscribable = { unsubscribe: noop }
 
 export class AssetTargetStorage implements IAssetTargetStorage {
-  protected readonly _monitorFileWritten: IMonitor<IParametersOfOnFileWritten>
-  protected readonly _monitorFileRemoved: IMonitor<IParametersOfOnFileRemoved>
+  protected readonly _monitorFileWritten: EventMonitor<IParametersOfOnFileWritten>
+  protected readonly _monitorFileRemoved: EventMonitor<IParametersOfOnFileRemoved>
   protected readonly _fileItemMap: Map<string, ITargetItemWithoutData>
   protected readonly _dataStorage: IAssetTargetDataStorage
   private _destroyed: boolean
 
   constructor(dataStorage: IAssetTargetDataStorage) {
-    this._monitorFileWritten = new Monitor<IParametersOfOnFileWritten>('onFileWritten')
-    this._monitorFileRemoved = new Monitor<IParametersOfOnFileRemoved>('onFileRemoved')
+    this._monitorFileWritten = new EventMonitor<IParametersOfOnFileWritten>()
+    this._monitorFileRemoved = new EventMonitor<IParametersOfOnFileRemoved>()
     this._fileItemMap = new Map<string, ITargetItemWithoutData>()
     this._dataStorage = dataStorage
     this._destroyed = false
@@ -44,6 +66,7 @@ export class AssetTargetStorage implements IAssetTargetStorage {
 
     this._destroyed = true
     this._monitorFileWritten.dispose()
+    this._monitorFileRemoved.dispose()
   }
 
   public monitor(monitor: Partial<IAssetTargetStorageMonitor>): IUnsubscribable {

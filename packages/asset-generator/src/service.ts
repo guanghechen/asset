@@ -11,7 +11,7 @@ import type {
   IAssetUriResolver,
   IEncodingDetector,
 } from '@guanghechen/asset-types'
-import type { IReporter } from '@guanghechen/reporter.types'
+import type { IReporter } from '@guanghechen/reporter'
 import { createAssetUriResolver } from './uri'
 
 interface IParams {

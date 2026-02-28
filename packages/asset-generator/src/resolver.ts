@@ -17,7 +17,7 @@ import {
 } from '@guanghechen/asset-resolver-markdown'
 import type { IMarkdownResolverPlugin, IParser } from '@guanghechen/asset-resolver-markdown'
 import type { IAssetResolver } from '@guanghechen/asset-types'
-import type { IReporter } from '@guanghechen/reporter.types'
+import type { IReporter } from '@guanghechen/reporter'
 import type { Definition, FootnoteDefinition } from '@yozora/ast'
 import path from 'node:path'
 

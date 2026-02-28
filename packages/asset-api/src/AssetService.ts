@@ -12,7 +12,7 @@ import type {
   IAssetWatchShouldIgnore,
   IAssetWatcher,
 } from '@guanghechen/asset-types'
-import type { IReporter } from '@guanghechen/reporter.types'
+import type { IReporter } from '@guanghechen/reporter'
 import { AssetDataConsumer } from './AssetDataConsumer'
 import { AssetTaskApi } from './AssetTaskApi'
 import { AssetTaskScheduler } from './AssetTaskScheduler'

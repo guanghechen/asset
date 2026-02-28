@@ -35,7 +35,7 @@
   "dependencies": {
     "@guanghechen/asset-types": "workspace:^",
     "@guanghechen/invariant": "^7.0.2",
-    "@guanghechen/monitor": "^2.0.0"
+    "@guanghechen/subscriber": "^2.1.1"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",

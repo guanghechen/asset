@@ -5,15 +5,12 @@ import type {
   IAssetTargetStorage,
   IPathResolver,
 } from '@guanghechen/asset-types'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { chalk } from '@guanghechen/chalk/node'
-import { Reporter, ReporterLevelEnum } from '@guanghechen/reporter'
+import { Reporter } from '@guanghechen/reporter'
 import { AssetGenerator, FIXTURE_TARGET_ROOT } from './post.mjs'
 
-const reporter = new Reporter(chalk, {
-  baseName: 'prebuild',
-  level: ReporterLevelEnum.VERBOSE,
+const reporter = new Reporter({
+  prefix: 'prebuild',
+  level: 'debug',
 })
 const pathResolver: IPathResolver = new PathResolver()
 const fileTargetDataStore: IAssetTargetDataStorage = new FileAssetTargetDataStorage({

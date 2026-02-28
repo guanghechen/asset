@@ -1,5 +1,5 @@
 import type { IAssetTaskData } from '@guanghechen/asset-types'
-import type { IReporter } from '@guanghechen/reporter.types'
+import type { IReporter } from '@guanghechen/reporter'
 import type { IPipeline, IScheduler } from '@guanghechen/scheduler'
 import { Pipeline, Scheduler } from '@guanghechen/scheduler'
 import { TaskStrategyEnum } from '@guanghechen/task'

@@ -11,8 +11,8 @@ import type {
   ISourceItem,
 } from '@guanghechen/asset-types'
 import invariant from '@guanghechen/invariant'
-import { Monitor } from '@guanghechen/monitor'
-import type { IMonitor } from '@guanghechen/monitor'
+import { Subscriber, Subscribers } from '@guanghechen/subscriber'
+import type { IUnsubscribable } from '@guanghechen/subscriber'
 import micromatch from 'micromatch'
 
 type IParametersOfOnAdd = [absoluteSrcPath: string, pathResolver: IAssetPathResolver]
@@ -24,21 +24,40 @@ interface IProps {
   pathResolver: IAssetPathResolver
 }
 
+class EventMonitor<P extends any[]> {
+  private readonly _subscribers: Subscribers<P>
+
+  constructor() {
+    this._subscribers = new Subscribers<P>()
+  }
+
+  public subscribe(callback: (...args: P) => void): IUnsubscribable {
+    const subscriber = new Subscriber<P>({
+      onNext: value => callback(...value),
+    })
+    return this._subscribers.subscribe(subscriber)
+  }
+
+  public notify(...args: P): void {
+    this._subscribers.notify(args, undefined)
+  }
+}
+
 export class MemoAssetSourceStorage implements IAssetSourceStorage {
   protected readonly _dataStore: IMemoAssetSourceDataStorage
   protected readonly _pathResolver: IAssetPathResolver
-  protected readonly _monitorAdd: IMonitor<IParametersOfOnAdd>
-  protected readonly _monitorChange: IMonitor<IParametersOfOnChange>
-  protected readonly _monitorRemove: IMonitor<IParametersOfOnRemove>
+  protected readonly _monitorAdd: EventMonitor<IParametersOfOnAdd>
+  protected readonly _monitorChange: EventMonitor<IParametersOfOnChange>
+  protected readonly _monitorRemove: EventMonitor<IParametersOfOnRemove>
 
   constructor(props: IProps) {
     const { dataStore, pathResolver } = props
 
     this._dataStore = dataStore
     this._pathResolver = pathResolver
-    this._monitorAdd = new Monitor<IParametersOfOnAdd>('onAdd')
-    this._monitorChange = new Monitor<IParametersOfOnChange>('onChange')
-    this._monitorRemove = new Monitor<IParametersOfOnRemove>('onRemove')
+    this._monitorAdd = new EventMonitor<IParametersOfOnAdd>()
+    this._monitorChange = new EventMonitor<IParametersOfOnChange>()
+    this._monitorRemove = new EventMonitor<IParametersOfOnRemove>()
   }
 
   public async assertExistedFile(absoluteSrcPath: string): Promise<void | never> {

@@ -11,7 +11,7 @@ import type {
   IJsonFileData,
   ITargetItem,
 } from '@guanghechen/asset-types'
-import type { IReporter } from '@guanghechen/reporter.types'
+import type { IReporter } from '@guanghechen/reporter'
 
 interface IProps {
   resolver: IAssetResolver
@@ -98,7 +98,7 @@ export class AssetTaskApi implements IAssetTaskApi {
       const asset: IAsset | null = await resolverApi.locator.findAssetBySrcPath(absoluteSrcPath)
       tasks.push(resolverApi.locator.removeAsset(absoluteSrcPath))
       if (asset) {
-        reporter.verbose('[AssetTasApi.remove] uri({})', asset.uri)
+        reporter.debug('[AssetTasApi.remove] uri({})', asset.uri)
         tasks.push(this._targetStorage.removeFile(asset.uri))
       }
     }
@@ -118,7 +118,7 @@ export class AssetTaskApi implements IAssetTaskApi {
 
     const reporter: IReporter = this._reporter
     const uri: string = this._targetStorage.resolveUriFromTargetItem(item)
-    reporter.verbose('[AssetTasApi._saveAsset] uri: {}', uri)
+    reporter.debug('[AssetTasApi._saveAsset] uri: {}', uri)
 
     // validation
     const { datatype } = item
