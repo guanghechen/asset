@@ -35,5 +35,9 @@
   "dependencies": {
     "@guanghechen/asset-types": "^1.0.0-alpha.47",
     "mime": "4.0.7"
+  },
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.mjs",
+    "clean": "rimraf lib"
   }
 }

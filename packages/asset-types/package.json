@@ -35,5 +35,9 @@
   "dependencies": {
     "@guanghechen/middleware": "^1.0.6",
     "@guanghechen/monitor": "^1.0.4"
+  },
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.mjs",
+    "clean": "rimraf lib"
   }
 }

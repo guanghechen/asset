@@ -38,5 +38,9 @@
     "@guanghechen/invariant": "^6.0.5",
     "@guanghechen/monitor": "^1.0.4",
     "micromatch": "4.0.8"
+  },
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.mjs",
+    "clean": "rimraf lib"
   }
 }

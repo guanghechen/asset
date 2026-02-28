@@ -39,5 +39,9 @@
     "@guanghechen/scheduler": "^6.0.7",
     "@guanghechen/subscriber": "^1.0.3",
     "@guanghechen/task": "^1.0.5"
+  },
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.mjs",
+    "clean": "rimraf lib"
   }
 }

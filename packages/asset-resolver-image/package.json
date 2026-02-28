@@ -36,5 +36,9 @@
     "@guanghechen/asset-types": "^1.0.0-alpha.47",
     "@guanghechen/asset-util": "^1.0.0-alpha.34",
     "image-size": "1.2.1"
+  },
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.mjs",
+    "clean": "rimraf lib"
   }
 }

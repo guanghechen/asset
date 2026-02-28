@@ -38,5 +38,9 @@
     "@guanghechen/invariant": "^6.0.5",
     "chokidar": "4.0.3",
     "fast-glob": "3.3.3"
+  },
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.mjs",
+    "clean": "rimraf lib"
   }
 }

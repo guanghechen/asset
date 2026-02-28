@@ -41,5 +41,9 @@
     "@guanghechen/asset-types": "^1.0.0-alpha.47",
     "@guanghechen/reporter.types": "^1.0.5",
     "@yozora/ast": "^2.3.12"
+  },
+  "scripts": {
+    "build": "rollup -c ../../rollup.config.mjs",
+    "clean": "rimraf lib"
   }
 }
