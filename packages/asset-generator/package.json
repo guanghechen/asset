@@ -40,7 +40,7 @@
     "@guanghechen/asset-resolver-markdown": "workspace:^",
     "@guanghechen/asset-types": "workspace:^",
     "@guanghechen/reporter": "^3.3.0",
-    "@yozora/ast": "^2.3.14"
+    "@yozora/ast": "^2.3.16"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",
