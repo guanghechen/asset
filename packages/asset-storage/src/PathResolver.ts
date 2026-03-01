@@ -1,5 +1,5 @@
 import type { IPathResolver } from '@guanghechen/asset-types'
-import invariant from '@guanghechen/invariant'
+import assertInvariant from '@guanghechen/invariant'
 import path from 'node:path'
 
 const hashRegex = /#([\s\S]*)$/
@@ -8,7 +8,7 @@ const urlRegex = /^\w+:\/\//
 export class PathResolver implements IPathResolver {
   public assertAbsolutePath(absoluteFilepath: string, caller?: string): void | never {
     const title: string = caller ?? 'AssetPathResolver.assetAbsolutePath'
-    invariant(
+    assertInvariant(
       this.isAbsolutePath(absoluteFilepath),
       `[${title}] not an absolute filepath. absoluteFilepath: ${absoluteFilepath}`,
     )
@@ -16,7 +16,7 @@ export class PathResolver implements IPathResolver {
 
   public assertRelativePath(basedir: string, filepath: string, caller?: string): void | never {
     const title: string = caller ?? 'AssetPathResolver.assertRelativePath'
-    invariant(
+    assertInvariant(
       this.isRelativePath(basedir, filepath),
       `[${title}] not a relative filepath. basedir: ${basedir}, filepath: ${filepath}`,
     )

@@ -23,7 +23,7 @@ import { ParagraphType } from '@yozora/ast'
 import type { Definition, FootnoteDefinition, Paragraph, Resource, Root } from '@yozora/ast'
 import { collectInlineNodes, collectTexts, shallowMutateAstInPreorderAsync } from '@yozora/ast-util'
 import dayjs from 'dayjs'
-import yaml from 'js-yaml'
+import { load as loadYaml } from 'js-yaml'
 import type {
   IMarkdownParsedData,
   IMarkdownPolishedData,
@@ -118,7 +118,7 @@ export class AssetResolverMarkdown
       const rawContent: string = input.content.toString(input.encoding)
       const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
       const frontmatter: Record<string, any> = match[1]
-        ? (yaml.load(match[1]) as Record<string, any>)
+        ? (loadYaml(match[1]) as Record<string, any>)
         : {}
       const createdAt: string =
         frontmatter.createdAt != null ? dayjs(frontmatter.createdAt).toISOString() : input.createdAt
@@ -167,7 +167,7 @@ export class AssetResolverMarkdown
       const rawContent: string = input.content.toString(input.encoding)
       const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
       const frontmatter: Record<string, any> = match[1]
-        ? (yaml.load(match[1]) as Record<string, any>)
+        ? (loadYaml(match[1]) as Record<string, any>)
         : {}
       const titleAst: Root = this.ctx.parseMarkdown(frontmatter.title || input.title)
       const title: Paragraph =

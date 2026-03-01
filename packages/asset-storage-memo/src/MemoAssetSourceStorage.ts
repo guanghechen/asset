@@ -10,7 +10,7 @@ import type {
   IMemoAssetSourceDataStorage,
   ISourceItem,
 } from '@guanghechen/asset-types'
-import invariant from '@guanghechen/invariant'
+import assertInvariant from '@guanghechen/invariant'
 import { Subscriber, Subscribers } from '@guanghechen/subscriber'
 import type { IUnsubscribable } from '@guanghechen/subscriber'
 import micromatch from 'micromatch'
@@ -110,14 +110,20 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
       }
     }
 
-    invariant(!!item, `[${this.constructor.name}.readFile] invalid filepath: ${absoluteSrcPath}`)
+    assertInvariant(
+      !!item,
+      `[${this.constructor.name}.readFile] invalid filepath: ${absoluteSrcPath}`,
+    )
     return item.data
   }
 
   public async removeFile(absoluteSrcPath: string): Promise<void> {
     this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
     const item: ISourceItem | undefined = this._dataStore.get(absoluteSrcPath)
-    invariant(!!item, `[${this.constructor.name}.removeFile] invalid filepath: ${absoluteSrcPath}`)
+    assertInvariant(
+      !!item,
+      `[${this.constructor.name}.removeFile] invalid filepath: ${absoluteSrcPath}`,
+    )
     this._dataStore.delete(absoluteSrcPath)
     this._monitorRemove.notify(absoluteSrcPath, this._pathResolver)
   }
@@ -131,7 +137,10 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
       item = this._dataStore.get(absoluteSrcPath)
     }
 
-    invariant(!!item, `[${this.constructor.name}.statFile] invalid filepath: ${absoluteSrcPath}`)
+    assertInvariant(
+      !!item,
+      `[${this.constructor.name}.statFile] invalid filepath: ${absoluteSrcPath}`,
+    )
     return item.stat
   }
 

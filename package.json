@@ -35,7 +35,6 @@
   },
   "devDependencies": {
     "@eslint/js": "9.39.2",
-    "@guanghechen/invariant": "^7.0.2",
     "@guanghechen/reporter": "^3.3.0",
     "@rollup/plugin-commonjs": "29.0.0",
     "@rollup/plugin-json": "6.1.0",

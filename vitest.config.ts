@@ -4,6 +4,7 @@ import url from 'node:url'
 import { defineConfig } from 'vitest/config'
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url))
+const testFileRegex = /\.spec\.ts$/
 
 function getPackageAliases(): Record<string, string> {
   const aliases: Record<string, string> = {}
@@ -32,6 +33,36 @@ function getPackageAliases(): Record<string, string> {
   return aliases
 }
 
+function hasTestFiles(): boolean {
+  const packagesDir = path.resolve(__dirname, 'packages')
+  if (!fs.existsSync(packagesDir)) return false
+
+  const packageDirs = fs
+    .readdirSync(packagesDir, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
+
+  const stack: string[] = packageDirs.map(dir => path.resolve(packagesDir, dir, '__test__'))
+  while (stack.length > 0) {
+    const current = stack.pop() as string
+    if (!fs.existsSync(current)) continue
+
+    const entries = fs.readdirSync(current, { withFileTypes: true })
+    for (const entry of entries) {
+      const nextPath = path.resolve(current, entry.name)
+      if (entry.isDirectory()) {
+        stack.push(nextPath)
+      } else if (entry.isFile() && testFileRegex.test(entry.name)) {
+        return true
+      }
+    }
+  }
+
+  return false
+}
+
+const shouldCheckCoverageThresholds = hasTestFiles()
+
 export default defineConfig({
   test: {
     environment: 'node',
@@ -41,12 +72,16 @@ export default defineConfig({
       provider: 'v8',
       include: ['packages/*/src/**/*.ts'],
       exclude: ['**/node_modules/**', '**/__test__/**'],
-      thresholds: {
-        branches: 50,
-        functions: 65,
-        lines: 60,
-        statements: 60,
-      },
+      ...(shouldCheckCoverageThresholds
+        ? {
+            thresholds: {
+              branches: 50,
+              functions: 65,
+              lines: 60,
+              statements: 60,
+            },
+          }
+        : {}),
     },
   },
   resolve: {

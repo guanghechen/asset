@@ -14,7 +14,7 @@ import type {
 } from '@guanghechen/asset-types'
 import { mime } from '@guanghechen/asset-util'
 import type { IReporter } from '@guanghechen/reporter'
-import YozoraParser from '@yozora/parser'
+import YozoraMarkdownParser from '@yozora/parser'
 import path from 'node:path'
 import url from 'node:url'
 
@@ -28,7 +28,7 @@ export const FIXTURE_ROOT = path.join(__dirname, 'fixtures/asset-build')
 export const FIXTURE_SOURCE_ROOT = path.join(FIXTURE_ROOT, 'src')
 export const FIXTURE_TARGET_ROOT = path.join(FIXTURE_ROOT, 'static')
 
-const parser: IParser = new YozoraParser({
+const parser: IParser = new YozoraMarkdownParser({
   defaultParseOptions: { shouldReservePosition: false },
 })
 

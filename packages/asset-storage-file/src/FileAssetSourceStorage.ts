@@ -8,8 +8,8 @@ import type {
   IAssetWatcher,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
-import invariant from '@guanghechen/invariant'
-import chokidar from 'chokidar'
+import assertInvariant from '@guanghechen/invariant'
+import { watch as watchFiles } from 'chokidar'
 import fastGlob from 'fast-glob'
 import type { WatchOptions } from 'node:fs'
 import { existsSync } from 'node:fs'
@@ -41,13 +41,13 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
   public async assertExistedFile(absoluteSrcPath: string): Promise<void | never> {
     this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
 
-    invariant(
+    assertInvariant(
       existsSync(absoluteSrcPath),
       `[assertExistedFile] Cannot find file. (${absoluteSrcPath})`,
     )
 
     const assertion: boolean = (await statFile(absoluteSrcPath)).isFile()
-    invariant(assertion, `[assertExistedFile] Not a file. (${absoluteSrcPath})`)
+    assertInvariant(assertion, `[assertExistedFile] Not a file. (${absoluteSrcPath})`)
   }
 
   public async existFile(absoluteSrcPath: string): Promise<boolean> {
@@ -88,7 +88,7 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     // Ensure the cwd is a safe absolute filepath.
     pathResolver.assertSafeAbsolutePath(cwd)
 
-    const watcher = chokidar.watch(patterns, {
+    const watcher = watchFiles(patterns, {
       persistent: true,
       ...this._watchOptions,
       cwd,

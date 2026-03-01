@@ -12,7 +12,7 @@ import type {
   ITargetItem,
   ITargetItemWithoutData,
 } from '@guanghechen/asset-types'
-import invariant from '@guanghechen/invariant'
+import assertInvariant from '@guanghechen/invariant'
 import { Subscriber, Subscribers } from '@guanghechen/subscriber'
 import type { IUnsubscribable } from '@guanghechen/subscriber'
 
@@ -124,7 +124,7 @@ export class AssetTargetStorage implements IAssetTargetStorage {
     const uri: string = this.resolveUriFromTargetItem(rawItem)
     const fileItem = this._fileItemMap.get(uri)
 
-    invariant(
+    assertInvariant(
       !fileItem || fileItem.datatype === rawItem.datatype,
       `${__title__} invalid uri(${uri})`,
     )
