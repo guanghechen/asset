@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-storage-file",
-  "version": "1.0.0-alpha.48",
+  "version": "1.0.0",
   "description": "File storage for assets.",
   "author": {
     "name": "guanghechen",

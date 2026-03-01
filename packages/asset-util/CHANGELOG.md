@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.0.0
+
+### Patch Changes
+
+- Release @guanghechen/asset-util as a patch update.
+  - :arrow_up: chore(deps): upgrade dependencies and align workspace ranges
+  - :wrench: chore: migrate monorepo from lerna/nx to pnpm workspace scripts
+
+- Updated dependencies:
+  - @guanghechen/asset-types@1.0.0
+
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

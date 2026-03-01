@@ -1,5 +1,19 @@
 # Change Log
 
+## 1.0.0
+
+### Patch Changes
+
+- Release @guanghechen/asset-storage-memo as a patch update.
+  - :wrench: chore(tooling): fix lint imports and handle empty coverage runs
+  - :wrench: chore(deps): remove legacy dependencies and align scripts
+  - :arrow_up: chore(deps): upgrade dependencies and align workspace ranges
+  - :wrench: chore: migrate monorepo from lerna/nx to pnpm workspace scripts
+
+- Updated dependencies:
+  - @guanghechen/asset-types@1.0.0
+  - @guanghechen/asset-storage@1.0.0
+
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 

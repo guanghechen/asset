@@ -1,5 +1,24 @@
 # Change Log
 
+## 1.0.0
+
+### Patch Changes
+
+- Release @guanghechen/asset-generator as a patch update.
+  - :arrow_up: chore(deps): upgrade dependencies with eslint 9
+  - :wrench: chore(config): align eslint and rollup configs with sora
+  - :wrench: chore(deps): remove legacy dependencies and align scripts
+  - :arrow_up: chore(deps): upgrade dependencies and align workspace ranges
+  - :wrench: chore: migrate monorepo from lerna/nx to pnpm workspace scripts
+
+- Updated dependencies:
+  - @guanghechen/asset-resolver@1.0.0
+  - @guanghechen/asset-resolver-image@1.0.0
+  - @guanghechen/asset-types@1.0.0
+  - @guanghechen/asset-resolver-file@1.0.0
+  - @guanghechen/asset-resolver-markdown@1.0.0
+  - @guanghechen/asset-api@1.0.0
+
 All notable changes to this project will be documented in this file. See
 [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
