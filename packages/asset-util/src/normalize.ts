@@ -16,25 +16,23 @@ export function normalizePattern(
 }
 
 export function normalizeUrlPath(urlPath: string): string {
-  const isAbsolute = urlPath.startsWith('/')
-  const pieces = urlPath
-    .split(/[/\\]+/g)
-    .map(x => x.trim())
-    .filter(piece => !!piece)
-  const pieceStack: string[] = []
-  for (const piece of pieces) {
-    if (/^\./.test(piece)) {
-      if (piece === '.') {
-        if (pieceStack.length > 0) continue
-      } else if (piece === '..') {
-        if (pieceStack.length > 0) {
-          pieceStack.pop()
-          continue
-        }
+  const isAbsolute: boolean = urlPath.startsWith('/')
+  const stack: string[] = []
+  let dirCount = 0
+  for (const raw of urlPath.split(/[/\\]+/g)) {
+    const piece: string = raw.trim()
+    if (!piece || piece === '.') continue
+    if (piece === '..') {
+      if (dirCount > 0) {
+        stack.pop()
+        dirCount -= 1
+        continue
       }
+    } else {
+      dirCount += 1
     }
-    pieceStack.push(piece)
+    stack.push(piece)
   }
-  const p = pieceStack.join('/')
+  const p: string = stack.join('/')
   return isAbsolute ? '/' + p : p
 }
