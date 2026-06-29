@@ -28,7 +28,8 @@ export class AssetDataCooker implements IMaterialCooker<D, T> {
     for (const sibiling of api.subsequent()) {
       if (sibiling.data.type !== type) break
       api.invalidate(sibiling)
-      for (const absoluteSrcPath of data.absoluteSrcPaths) absoluteSrcPathSet.add(absoluteSrcPath)
+      for (const absoluteSrcPath of sibiling.data.absoluteSrcPaths)
+        absoluteSrcPathSet.add(absoluteSrcPath)
     }
 
     if (absoluteSrcPathSet.size <= 0) return next(embryo)
