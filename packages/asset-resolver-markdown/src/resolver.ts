@@ -116,10 +116,7 @@ export class AssetResolverMarkdown
   public readonly resolve: IAssetPluginResolveMiddleware = async (input, embryo, api, next) => {
     if (this.ctx.resolvable(input.src)) {
       const rawContent: string = input.content.toString(input.encoding)
-      const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
-      const frontmatter: Record<string, any> = match[1]
-        ? (loadYaml(match[1]) as Record<string, any>)
-        : {}
+      const { frontmatter } = this._parseFrontmatter(rawContent)
       const createdAt: string =
         frontmatter.createdAt != null ? dayjs(frontmatter.createdAt).toISOString() : input.createdAt
       const updatedAt: string =
@@ -165,10 +162,7 @@ export class AssetResolverMarkdown
   public readonly parse: IAssetPluginParseMiddleware = async (input, embryo, api, next) => {
     if (input.sourcetype === MarkdownAssetType) {
       const rawContent: string = input.content.toString(input.encoding)
-      const match: string[] | null = this.frontmatterRegex.exec(rawContent) ?? ['', '']
-      const frontmatter: Record<string, any> = match[1]
-        ? (loadYaml(match[1]) as Record<string, any>)
-        : {}
+      const { match, frontmatter } = this._parseFrontmatter(rawContent)
       const titleAst: Root = this.ctx.parseMarkdown(frontmatter.title || input.title)
       const title: Paragraph =
         titleAst.children.length === 1 && titleAst.children[0].type === ParagraphType
@@ -217,5 +211,26 @@ export class AssetResolverMarkdown
       return reducer(result)
     }
     return next(embryo)
+  }
+
+  /**
+   * Extract and parse the YAML frontmatter from raw content. Malformed YAML is
+   * isolated to an empty frontmatter so a single bad file never aborts the batch.
+   */
+  protected _parseFrontmatter(rawContent: string): {
+    match: string[]
+    frontmatter: Record<string, any>
+  } {
+    const match: string[] = this.frontmatterRegex.exec(rawContent) ?? ['', '']
+    if (!match[1]) return { match, frontmatter: {} }
+
+    try {
+      const loaded: unknown = loadYaml(match[1])
+      const frontmatter: Record<string, any> =
+        loaded !== null && typeof loaded === 'object' ? (loaded as Record<string, any>) : {}
+      return { match, frontmatter }
+    } catch {
+      return { match, frontmatter: {} }
+    }
   }
 }
