@@ -36,7 +36,7 @@
     "@guanghechen/asset-types": "workspace:^",
     "@guanghechen/asset-util": "workspace:^",
     "@guanghechen/reporter": "^3.3.0",
-    "uuid": "13.0.0"
+    "uuid": "14.0.1"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",

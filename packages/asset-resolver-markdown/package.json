@@ -40,8 +40,8 @@
     "@yozora/ast": "^2.3.16",
     "@yozora/ast-util": "^2.3.16",
     "@yozora/character": "^2.3.16",
-    "dayjs": "1.11.19",
-    "js-yaml": "4.1.1"
+    "dayjs": "1.11.21",
+    "js-yaml": "5.2.0"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",

@@ -35,9 +35,9 @@
   "dependencies": {
     "@guanghechen/asset-types": "workspace:^",
     "@guanghechen/reporter": "^3.3.0",
-    "@guanghechen/scheduler": "^7.1.1",
+    "@guanghechen/scheduler": "^7.1.3",
     "@guanghechen/subscriber": "^2.1.1",
-    "@guanghechen/task": "^2.1.1"
+    "@guanghechen/task": "^2.1.3"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",
