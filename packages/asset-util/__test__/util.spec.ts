@@ -59,11 +59,12 @@ describe('normalizeUrlPath', () => {
     expect(normalizeUrlPath('a/..')).toBe('')
   })
 
-  // Current contract: absolute paths are NOT clamped at the root — a leading ".." that
-  // escapes the root is preserved rather than dropped (differs from path.posix.normalize).
-  it('does not clamp ".." that escapes an absolute root', () => {
-    expect(normalizeUrlPath('/../a')).toBe('/../a')
-    expect(normalizeUrlPath('/a/../../b')).toBe('/../b')
+  // An absolute root has no parent, so a leading ".." that escapes it is dropped
+  // (clamped at the root), matching path.posix.normalize.
+  it('clamps ".." that escapes an absolute root', () => {
+    expect(normalizeUrlPath('/../a')).toBe('/a')
+    expect(normalizeUrlPath('/../../x')).toBe('/x')
+    expect(normalizeUrlPath('/a/../../b')).toBe('/b')
   })
 })
 

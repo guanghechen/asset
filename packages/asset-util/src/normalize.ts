@@ -28,6 +28,7 @@ export function normalizeUrlPath(urlPath: string): string {
         dirCount -= 1
         continue
       }
+      if (isAbsolute) continue
     } else {
       dirCount += 1
     }
