@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- Fix AssetDataCooker sibling task path coalescing, refresh dependencies, and add unit coverage.
+
 ## 1.0.0
 
 ### Patch Changes

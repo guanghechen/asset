@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- Refresh dependencies and add unit coverage for resolver behavior.
+- Updated dependencies:
+  - @guanghechen/asset-util@1.0.1
+
 ## 1.0.0
 
 ### Patch Changes

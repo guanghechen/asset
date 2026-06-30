@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- Harden frontmatter parsing, refresh dependencies, and add unit coverage.
+- Updated dependencies:
+  - @guanghechen/asset-util@1.0.1
+
 ## 1.0.0
 
 ### Patch Changes

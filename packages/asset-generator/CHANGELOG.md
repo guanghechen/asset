@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- Add unit coverage for asset generator workflows.
+- Updated dependencies:
+  - @guanghechen/asset-resolver@1.0.1
+  - @guanghechen/asset-resolver-file@1.0.1
+  - @guanghechen/asset-resolver-markdown@1.0.1
+  - @guanghechen/asset-api@1.0.1
+  - @guanghechen/asset-resolver-image@1.0.1
+
 ## 1.0.0
 
 ### Patch Changes

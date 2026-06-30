@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- Fix normalizeUrlPath handling for absolute-root and leading parent-directory paths, with unit
+  coverage.
+
 ## 1.0.0
 
 ### Patch Changes

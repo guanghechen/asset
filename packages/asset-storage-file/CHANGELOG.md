@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- Add unit coverage for file storage behavior.
+- Updated dependencies:
+  - @guanghechen/asset-storage@1.0.1
+
 ## 1.0.0
 
 ### Patch Changes

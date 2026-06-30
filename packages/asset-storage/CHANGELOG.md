@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- Add storage specs and coverage for hardened frontmatter-related flows.
+
 ## 1.0.0
 
 ### Patch Changes

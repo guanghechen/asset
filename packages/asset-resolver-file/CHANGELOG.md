@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- Add unit coverage for file resolver behavior.
+- Updated dependencies:
+  - @guanghechen/asset-util@1.0.1
+
 ## 1.0.0
 
 ### Patch Changes
