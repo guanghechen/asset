@@ -35,8 +35,8 @@
   "dependencies": {
     "@guanghechen/asset-storage": "workspace:^",
     "@guanghechen/asset-types": "workspace:^",
-    "@guanghechen/invariant": "^7.0.2",
-    "@guanghechen/subscriber": "^2.1.1",
+    "@guanghechen/invariant": "^7.0.3",
+    "@guanghechen/subscriber": "^2.1.2",
     "micromatch": "4.0.8"
   },
   "scripts": {

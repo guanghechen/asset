@@ -35,13 +35,13 @@
   "dependencies": {
     "@guanghechen/asset-types": "workspace:^",
     "@guanghechen/asset-util": "workspace:^",
-    "@guanghechen/middleware": "^2.0.2",
-    "@guanghechen/std": "^2.0.2",
-    "@yozora/ast": "^2.3.16",
-    "@yozora/ast-util": "^2.3.16",
-    "@yozora/character": "^2.3.16",
+    "@guanghechen/middleware": "^2.0.3",
+    "@guanghechen/std": "^2.0.3",
+    "@yozora/ast": "^2.4.0",
+    "@yozora/ast-util": "^2.4.0",
+    "@yozora/character": "^2.4.0",
     "dayjs": "1.11.21",
-    "js-yaml": "5.2.0"
+    "js-yaml": "5.2.3"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",

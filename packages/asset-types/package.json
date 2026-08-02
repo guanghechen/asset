@@ -33,8 +33,8 @@
     "README.md"
   ],
   "dependencies": {
-    "@guanghechen/middleware": "^2.0.2",
-    "@guanghechen/subscriber": "^2.1.1"
+    "@guanghechen/middleware": "^2.0.3",
+    "@guanghechen/subscriber": "^2.1.2"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",
