@@ -3,6 +3,7 @@ import assertInvariant from '@guanghechen/invariant'
 import path from 'node:path'
 
 const hashRegex = /#([\s\S]*)$/
+const parentDirPrefix = `..${path.sep}`
 const urlRegex = /^\w+:\/\//
 
 export class PathResolver implements IPathResolver {
@@ -52,7 +53,11 @@ export class PathResolver implements IPathResolver {
   public isRelativePath(basedir: string, filepath: string): boolean {
     const absoluteFilepath: string = this.absolute(basedir, filepath)
     const relativeFilepath: string = this._relative(basedir, absoluteFilepath)
-    return !relativeFilepath.startsWith('..')
+    return (
+      relativeFilepath !== '..' &&
+      !relativeFilepath.startsWith(parentDirPrefix) &&
+      !path.isAbsolute(relativeFilepath)
+    )
   }
 
   protected _relative(basedir: string, absoluteFilepath: string): string {

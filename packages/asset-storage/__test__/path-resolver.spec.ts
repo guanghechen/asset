@@ -9,6 +9,7 @@ describe('PathResolver', () => {
   it('treats in-tree paths as relative', () => {
     expect(r.isRelativePath(base, 'src/a.md')).toBe(true)
     expect(r.isRelativePath(base, 'src/../a.md')).toBe(true)
+    expect(r.isRelativePath(base, '..foo/a.md')).toBe(true)
   })
 
   it('rejects traversal that escapes the base dir', () => {
@@ -17,6 +18,10 @@ describe('PathResolver', () => {
 
   it('does not confuse a sibling prefix dir with being inside', () => {
     expect(r.isRelativePath(path.resolve('/srv/proj'), path.resolve('/srv/project/x'))).toBe(false)
+  })
+
+  it.runIf(process.platform === 'win32')('rejects a path on another drive', () => {
+    expect(r.isRelativePath('C:\\srv\\project', 'D:\\outside\\a.md')).toBe(false)
   })
 
   it('resolves absolute paths idempotently', () => {
