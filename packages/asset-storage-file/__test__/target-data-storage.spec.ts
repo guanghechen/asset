@@ -76,9 +76,18 @@ describe('FileAssetTargetDataStorage round-trips by datatype', () => {
 })
 
 describe('FileAssetTargetDataStorage edge cases', () => {
-  it('strips leading slash and query/hash when resolving a path', () => {
+  it('resolves safe URI paths without rejecting parent-like names', () => {
     expect(storage._resolvePathFromUri('/a/b.json?v=1#x')).toBe(path.join(ROOT, 'a/b.json'))
+    expect(storage._resolvePathFromUri('/a/../b.json')).toBe(path.join(ROOT, 'b.json'))
+    expect(storage._resolvePathFromUri('/..foo/b.json')).toBe(path.join(ROOT, '..foo/b.json'))
   })
+
+  it.each(['/../../outside.json', '//tmp/outside.json'])(
+    'rejects a URI path that escapes rootDir: %s',
+    uri => {
+      expect(() => storage._resolvePathFromUri(uri)).toThrow(/escapes rootDir/)
+    },
+  )
 
   it('removes a written file', async () => {
     await storage.save('/rm/a.bin', {

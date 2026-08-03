@@ -13,6 +13,8 @@ import { existsSync, mkdirSync } from 'node:fs'
 import { readFile, unlink, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
+const parentDirPrefix = `..${path.sep}`
+
 interface IProps {
   rootDir: string
   pathResolver: IPathResolver
@@ -99,6 +101,14 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
 
   public _resolvePathFromUri(uri: string): string {
     const p: string = uri.replace(/^[/\\]/, '').replace(/[?#][\s\S]+$/, '')
+    const normalizedPath: string = path.normalize(p)
+    if (
+      path.isAbsolute(normalizedPath) ||
+      normalizedPath === '..' ||
+      normalizedPath.startsWith(parentDirPrefix)
+    ) {
+      throw new TypeError(`[FileAssetTargetDataStorage] uri escapes rootDir: ${uri}`)
+    }
     return this.pathResolver.absolute(this.rootDir, p)
   }
 }
