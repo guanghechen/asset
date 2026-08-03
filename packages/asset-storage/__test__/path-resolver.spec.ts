@@ -23,6 +23,7 @@ describe('PathResolver', () => {
     const abs = path.resolve('/srv/project/a.md')
     expect(r.absolute(base, abs)).toBe(abs)
     expect(r.absolute(base, 'a.md')).toBe(abs)
+    expect(r.absolute(base, 'dir/../a.md')).toBe(abs)
   })
 
   it('classifies absolute paths and urls', () => {

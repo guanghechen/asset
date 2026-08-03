@@ -24,9 +24,7 @@ export class PathResolver implements IPathResolver {
 
   public absolute(basedir: string, filepath: string): string {
     if (this.isAbsolutePath(filepath)) return filepath
-    const absoluteFilepath: string = path.resolve(basedir, path.normalize(filepath))
-    const normalizedFilepath: string = path.normalize(absoluteFilepath)
-    return normalizedFilepath
+    return path.resolve(basedir, filepath)
   }
 
   public relative(basedir: string, filepath: string): string {
