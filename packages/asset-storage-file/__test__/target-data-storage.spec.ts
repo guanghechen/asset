@@ -22,6 +22,20 @@ afterAll(() => {
 const fileItem = (datatype: AssetDataTypeEnum, encoding?: BufferEncoding): ITargetItemWithoutData =>
   ({ datatype, encoding }) as ITargetItemWithoutData
 
+const textItem = (data: string): ITargetItem =>
+  ({ datatype: AssetDataTypeEnum.TEXT, data, encoding: 'utf8' }) as ITargetItem
+
+async function expectOperationsToRejectPathEscape(
+  targetStorage: FileAssetTargetDataStorage,
+  uri: string,
+): Promise<void> {
+  await expect(targetStorage.load(uri, fileItem(AssetDataTypeEnum.TEXT, 'utf8'))).rejects.toThrow(
+    /escapes rootDir/,
+  )
+  await expect(targetStorage.save(uri, textItem('changed'))).rejects.toThrow(/escapes rootDir/)
+  await expect(targetStorage.remove(uri)).rejects.toThrow(/escapes rootDir/)
+}
+
 describe('FileAssetTargetDataStorage round-trips by datatype', () => {
   it('binary', async () => {
     await storage.save('/bin/a.bin', {
@@ -82,7 +96,7 @@ describe('FileAssetTargetDataStorage edge cases', () => {
     expect(storage._resolvePathFromUri('/..foo/b.json')).toBe(path.join(ROOT, '..foo/b.json'))
   })
 
-  it.each(['/../../outside.json', '//tmp/outside.json'])(
+  it.each(['/../../outside.json', '//tmp/outside.json', 'http://example.com/outside.json'])(
     'rejects a URI path that escapes rootDir: %s',
     uri => {
       expect(() => storage._resolvePathFromUri(uri)).toThrow(/escapes rootDir/)
@@ -96,6 +110,195 @@ describe('FileAssetTargetDataStorage edge cases', () => {
     } as ITargetItem)
     await storage.remove('/rm/a.bin')
     expect(fs.existsSync(path.join(ROOT, 'rm/a.bin'))).toBe(false)
+  })
+
+  it('supports concurrent writes into a new directory', async () => {
+    await Promise.all([
+      storage.save('/concurrent/a.txt', textItem('a')),
+      storage.save('/concurrent/b.txt', textItem('b')),
+    ])
+    expect(fs.readFileSync(path.join(ROOT, 'concurrent/a.txt'), 'utf8')).toBe('a')
+    expect(fs.readFileSync(path.join(ROOT, 'concurrent/b.txt'), 'utf8')).toBe('b')
+  })
+
+  it('allows operations through a directory symlink that stays inside rootDir', async () => {
+    const realDirpath = path.join(ROOT, 'real-dir')
+    const symlinkPath = path.join(ROOT, 'internal-dir')
+    fs.mkdirSync(realDirpath)
+    fs.symlinkSync(realDirpath, symlinkPath, process.platform === 'win32' ? 'junction' : 'dir')
+
+    await storage.save('/internal-dir/nested/a.txt', textItem('inside'))
+    expect(
+      await storage.load('/internal-dir/nested/a.txt', fileItem(AssetDataTypeEnum.TEXT, 'utf8')),
+    ).toBe('inside')
+    await storage.remove('/internal-dir/nested/a.txt')
+    expect(fs.existsSync(path.join(realDirpath, 'nested/a.txt'))).toBe(false)
+  })
+
+  it('rejects operations through a directory symlink', async () => {
+    const outsideDir = fs.mkdtempSync(path.join(os.tmpdir(), 'asset-tgt-outside-'))
+    const symlinkPath = path.join(ROOT, 'linked-dir')
+    const outsideFilepath = path.join(outsideDir, 'a.txt')
+    fs.writeFileSync(outsideFilepath, 'outside')
+    fs.symlinkSync(outsideDir, symlinkPath, process.platform === 'win32' ? 'junction' : 'dir')
+
+    try {
+      await expectOperationsToRejectPathEscape(storage, '/linked-dir/a.txt')
+      expect(fs.readFileSync(outsideFilepath, 'utf8')).toBe('outside')
+    } finally {
+      fs.rmSync(symlinkPath, { recursive: true, force: true })
+      fs.rmSync(outsideDir, { recursive: true, force: true })
+    }
+  })
+
+  it.runIf(process.platform !== 'win32')(
+    'does not create through a dangling directory symlink outside rootDir',
+    async () => {
+      const outsideDir = fs.mkdtempSync(path.join(os.tmpdir(), 'asset-tgt-outside-'))
+      const outsideTargetDirpath = path.join(outsideDir, 'missing-target')
+      const symlinkPath = path.join(ROOT, 'dangling-dir')
+      fs.symlinkSync(outsideTargetDirpath, symlinkPath, 'dir')
+
+      try {
+        await expect(
+          storage.save('/dangling-dir/nested/a.txt', textItem('escaped')),
+        ).rejects.toThrow()
+        expect(fs.existsSync(outsideTargetDirpath)).toBe(false)
+      } finally {
+        fs.rmSync(symlinkPath, { force: true })
+        fs.rmSync(outsideDir, { recursive: true, force: true })
+      }
+    },
+  )
+
+  it.runIf(process.platform !== 'win32')(
+    'keeps saving in the canonical directory when its symlink alias is retargeted',
+    async () => {
+      const realDirpath = path.join(ROOT, 'retarget-save-real')
+      const outsideDir = fs.mkdtempSync(path.join(os.tmpdir(), 'asset-tgt-outside-'))
+      const symlinkPath = path.join(ROOT, 'retarget-save-link')
+      fs.mkdirSync(realDirpath)
+      fs.symlinkSync(realDirpath, symlinkPath, 'dir')
+
+      class RetargetingStorage extends FileAssetTargetDataStorage {
+        protected override async _resolveSafeSavePath(uri: string): Promise<string> {
+          const filepath = await super._resolveSafeSavePath(uri)
+          fs.unlinkSync(symlinkPath)
+          fs.symlinkSync(outsideDir, symlinkPath, 'dir')
+          return filepath
+        }
+      }
+
+      try {
+        const retargetingStorage = new RetargetingStorage({
+          rootDir: ROOT,
+          pathResolver: new PathResolver(),
+        })
+        await retargetingStorage.save('/retarget-save-link/a.txt', textItem('inside'))
+
+        expect(fs.readFileSync(path.join(realDirpath, 'a.txt'), 'utf8')).toBe('inside')
+        expect(fs.existsSync(path.join(outsideDir, 'a.txt'))).toBe(false)
+      } finally {
+        fs.rmSync(symlinkPath, { recursive: true, force: true })
+        fs.rmSync(outsideDir, { recursive: true, force: true })
+      }
+    },
+  )
+
+  it.runIf(process.platform !== 'win32')(
+    'removes from the canonical directory when its symlink alias is retargeted',
+    async () => {
+      const realDirpath = path.join(ROOT, 'retarget-remove-real')
+      const outsideDir = fs.mkdtempSync(path.join(os.tmpdir(), 'asset-tgt-outside-'))
+      const symlinkPath = path.join(ROOT, 'retarget-remove-link')
+      fs.mkdirSync(realDirpath)
+      fs.writeFileSync(path.join(realDirpath, 'a.txt'), 'inside')
+      fs.writeFileSync(path.join(outsideDir, 'a.txt'), 'outside')
+      fs.symlinkSync(realDirpath, symlinkPath, 'dir')
+
+      class RetargetingStorage extends FileAssetTargetDataStorage {
+        protected override async _resolveSafeRemovePath(uri: string): Promise<string> {
+          const filepath = await super._resolveSafeRemovePath(uri)
+          fs.unlinkSync(symlinkPath)
+          fs.symlinkSync(outsideDir, symlinkPath, 'dir')
+          return filepath
+        }
+      }
+
+      try {
+        const retargetingStorage = new RetargetingStorage({
+          rootDir: ROOT,
+          pathResolver: new PathResolver(),
+        })
+        await retargetingStorage.remove('/retarget-remove-link/a.txt')
+
+        expect(fs.existsSync(path.join(realDirpath, 'a.txt'))).toBe(false)
+        expect(fs.readFileSync(path.join(outsideDir, 'a.txt'), 'utf8')).toBe('outside')
+      } finally {
+        fs.rmSync(symlinkPath, { recursive: true, force: true })
+        fs.rmSync(outsideDir, { recursive: true, force: true })
+      }
+    },
+  )
+
+  it.runIf(process.platform !== 'win32')(
+    'allows saving through a file symlink that stays inside rootDir',
+    async () => {
+      const realFilepath = path.join(ROOT, 'real-file.txt')
+      const symlinkPath = path.join(ROOT, 'internal-file.txt')
+      fs.writeFileSync(realFilepath, 'inside')
+      fs.symlinkSync(realFilepath, symlinkPath, 'file')
+
+      await storage.save('/internal-file.txt', textItem('changed'))
+      expect(fs.readFileSync(realFilepath, 'utf8')).toBe('changed')
+    },
+  )
+
+  it.runIf(process.platform !== 'win32')(
+    'rejects access through an external file symlink',
+    async () => {
+      const outsideDir = fs.mkdtempSync(path.join(os.tmpdir(), 'asset-tgt-outside-'))
+      const symlinkPath = path.join(ROOT, 'linked-file.txt')
+      const outsideFilepath = path.join(outsideDir, 'a.txt')
+      fs.writeFileSync(outsideFilepath, 'outside')
+      fs.symlinkSync(outsideFilepath, symlinkPath, 'file')
+
+      try {
+        await expect(
+          storage.load('/linked-file.txt', fileItem(AssetDataTypeEnum.TEXT, 'utf8')),
+        ).rejects.toThrow(/escapes rootDir/)
+        await expect(storage.save('/linked-file.txt', textItem('changed'))).rejects.toThrow(
+          /escapes rootDir/,
+        )
+        await storage.remove('/linked-file.txt')
+        expect(fs.existsSync(symlinkPath)).toBe(false)
+        expect(fs.readFileSync(outsideFilepath, 'utf8')).toBe('outside')
+      } finally {
+        fs.rmSync(symlinkPath, { force: true })
+        fs.rmSync(outsideDir, { recursive: true, force: true })
+      }
+    },
+  )
+
+  it.runIf(process.platform !== 'win32')('pins the initial rootDir symlink target', async () => {
+    const realRootDir = path.join(ROOT, 'root-real')
+    const otherRootDir = path.join(ROOT, 'root-other')
+    const symlinkRootDir = path.join(ROOT, 'root-link')
+    fs.mkdirSync(realRootDir)
+    fs.mkdirSync(otherRootDir)
+    fs.symlinkSync(realRootDir, symlinkRootDir, 'dir')
+    const symlinkStorage = new FileAssetTargetDataStorage({
+      rootDir: symlinkRootDir,
+      pathResolver: new PathResolver(),
+    })
+
+    await symlinkStorage.save('/a.txt', textItem('inside'))
+    fs.unlinkSync(symlinkRootDir)
+    fs.symlinkSync(otherRootDir, symlinkRootDir, 'dir')
+    await symlinkStorage.save('/b.txt', textItem('pinned'))
+
+    expect(fs.readFileSync(path.join(realRootDir, 'b.txt'), 'utf8')).toBe('pinned')
+    expect(fs.existsSync(path.join(otherRootDir, 'b.txt'))).toBe(false)
   })
 
   it('throws on an unknown datatype for both save and load', async () => {
