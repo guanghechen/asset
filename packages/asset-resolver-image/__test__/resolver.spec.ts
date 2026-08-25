@@ -69,7 +69,7 @@ describe('AssetResolverImage.resolve', () => {
     expect(output!.uri).toBe('https://cdn/x.png')
   })
 
-  it('swallows decode errors and keeps the original uri', async () => {
+  it('keeps the original uri for unsupported image data', async () => {
     const spy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const resolver = new AssetResolverImage()
     const output = await resolver.resolve(
@@ -79,7 +79,7 @@ describe('AssetResolverImage.resolve', () => {
       identity,
     )
     expect(output!.uri).toBe('/img/g')
-    expect(spy).toHaveBeenCalled()
+    expect(spy).not.toHaveBeenCalled()
     spy.mockRestore()
   })
 

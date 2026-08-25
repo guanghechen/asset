@@ -1,4 +1,5 @@
 export * from './hash'
+export * from './image'
 export * from './mime'
 export * from './misc'
 export * from './normalize'

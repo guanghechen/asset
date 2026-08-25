@@ -34,8 +34,7 @@
   ],
   "dependencies": {
     "@guanghechen/asset-types": "workspace:^",
-    "@guanghechen/asset-util": "workspace:^",
-    "image-size": "2.0.2"
+    "@guanghechen/asset-util": "workspace:^"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",

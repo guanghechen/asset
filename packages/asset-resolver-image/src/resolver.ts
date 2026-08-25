@@ -7,8 +7,7 @@ import type {
   IAssetResolverPlugin,
 } from '@guanghechen/asset-types'
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
-import { mime, normalizePattern } from '@guanghechen/asset-util'
-import sizeOf from 'image-size'
+import { imageSize, mime, normalizePattern } from '@guanghechen/asset-util'
 import type { IImageAssetPolishOutput } from './types'
 import { ImageAssetType, isImageAssetPolishInput } from './types'
 
@@ -29,6 +28,11 @@ export interface IAssetResolverImageProps {
   rejected?: RegExp[] | RegExp | ((src: string) => boolean)
 }
 
+/**
+ * Resolve image assets and infer dimensions for PNG (including CgBI), JPEG, GIF,
+ * WebP, and BMP data. Other formats remain valid image assets but are returned
+ * without inferred width or height parameters.
+ */
 export class AssetResolverImage implements IAssetPlugin, IAssetResolverPlugin, IAssetPolishPlugin {
   public readonly displayName: string
   protected readonly accepted: (src: string) => boolean
@@ -51,11 +55,11 @@ export class AssetResolverImage implements IAssetPlugin, IAssetResolverPlugin, I
           const prefix = 'https://localhost'
           const urlObj = new URL(`${prefix}${uri}`)
           if (!urlObj.searchParams.has('width') || !urlObj.searchParams.has('height')) {
-            const size = sizeOf(input.content)
-            if (size.width && !urlObj.searchParams.has('width')) {
+            const size = imageSize(input.content)
+            if (size?.width && !urlObj.searchParams.has('width')) {
               urlObj.searchParams.set('width', String(size.width))
             }
-            if (size.height && !urlObj.searchParams.has('height')) {
+            if (size?.height && !urlObj.searchParams.has('height')) {
               urlObj.searchParams.set('height', String(size.height))
             }
             uri = urlObj.toString().slice(prefix.length)
