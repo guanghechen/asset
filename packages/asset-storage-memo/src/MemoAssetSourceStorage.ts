@@ -1,3 +1,4 @@
+import { createAssetWatchPathMatcher } from '@guanghechen/asset-storage'
 import type {
   IAssetCollectOptions,
   IAssetFileChangedCallback,
@@ -166,20 +167,22 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     }
   }
 
-  public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
+  public watch(pathPatterns: ReadonlyArray<RegExp>, options: IAssetWatchOptions): IAssetWatcher {
     const { cwd, onAdd, onChange, onRemove, shouldIgnore = () => false } = options
     const pathResolver: IAssetPathResolver = this._pathResolver
 
     // Ensure the cwd is a safe absolute filepath.
     pathResolver.assertSafeAbsolutePath(cwd)
 
+    if (pathPatterns.length === 0) return { unwatch: async (): Promise<void> => undefined }
+
+    const isMatched = createAssetWatchPathMatcher(pathPatterns)
     const wrapper = (fn: IAssetFileChangedCallback): ((filepath: string) => void) => {
       return (filepath: string): void => {
         const absoluteSrcPath: string = pathResolver.absolute(cwd, filepath)
+        if (!isMatched(absoluteSrcPath)) return
         if (shouldIgnore(absoluteSrcPath, pathResolver)) return
-        if (micromatch.isMatch(absoluteSrcPath, patterns, { dot: true })) {
-          fn(absoluteSrcPath, pathResolver)
-        }
+        fn(absoluteSrcPath, pathResolver)
       }
     }
 

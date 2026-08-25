@@ -149,7 +149,7 @@ export class AssetService implements IAssetService {
   // In watching mode, use scheduler to schedule tasks.
   public async watch(
     cwd: string,
-    acceptedPattern: ReadonlyArray<string>,
+    acceptedPathPatterns: ReadonlyArray<RegExp>,
     shouldIgnore?: IAssetWatchShouldIgnore,
   ): Promise<IAssetServiceWatcher> {
     if (this._status !== 'prepared') {
@@ -161,8 +161,12 @@ export class AssetService implements IAssetService {
     // Ensure the cwd is a safe absolute filepath.
     pathResolver.assertSafeAbsolutePath(cwd)
 
+    if (acceptedPathPatterns.length === 0) {
+      return { unwatch: async (): Promise<void> => undefined }
+    }
+
     const scheduler: IAssetTaskScheduler = this._scheduler
-    const watcher: IAssetWatcher = this._sourceStorage.watch(acceptedPattern.slice(), {
+    const watcher: IAssetWatcher = this._sourceStorage.watch(acceptedPathPatterns, {
       cwd,
       onAdd: filepath => {
         const srcPath: string = pathResolver.absolute(cwd, filepath)

@@ -82,7 +82,7 @@ describe('MemoAssetSourceStorage.watch', () => {
     const onAdd = vi.fn()
     const onChange = vi.fn()
     const onRemove = vi.fn()
-    const watcher = storage.watch([path.join(ROOT, '**/*.txt')], {
+    const watcher = storage.watch([/\/[^/]+\.txt$/gu], {
       cwd: ROOT,
       onAdd,
       onChange,
@@ -106,12 +106,22 @@ describe('MemoAssetSourceStorage.watch', () => {
   it('ignores paths rejected by shouldIgnore', async () => {
     const storage = createStorage()
     const onAdd = vi.fn()
-    storage.watch([path.join(ROOT, '**/*.txt')], {
+    storage.watch([/\/[^/]+\.txt$/u], {
       cwd: ROOT,
       onAdd,
       shouldIgnore: absPath => absPath.endsWith('skip.txt'),
     })
     await storage.updateFile(src('skip.txt'), Buffer.from('x'))
     expect(onAdd).not.toHaveBeenCalled()
+  })
+
+  it('does not subscribe when no path patterns are provided', async () => {
+    const storage = createStorage()
+    const onAdd = vi.fn()
+    const watcher = storage.watch([], { cwd: ROOT, onAdd })
+
+    await storage.updateFile(src('ignored.txt'), Buffer.from('x'))
+    expect(onAdd).not.toHaveBeenCalled()
+    await watcher.unwatch()
   })
 })

@@ -88,7 +88,7 @@ describe('AssetService lifecycle guards', () => {
     const { service } = harness
     await expect(service.buildByPaths([src('a.txt')])).rejects.toThrow(/not running/)
     await expect(service.buildByPatterns(ROOT, ['**/*.txt'])).rejects.toThrow(/prepared|pending/)
-    await expect(service.watch(ROOT, ['**/*.txt'])).rejects.toThrow(/not running/)
+    await expect(service.watch(ROOT, [/\.txt$/u])).rejects.toThrow(/not running/)
   })
 
   it('prepare() and close() are idempotent', async () => {
@@ -132,10 +132,21 @@ describe('AssetService.buildByPatterns', () => {
 })
 
 describe('AssetService.watch', () => {
+  it('does not subscribe when no path patterns are provided', async () => {
+    const { service, sourceStorage } = harness
+    await service.prepare()
+    const watcher = await service.watch(ROOT, [])
+
+    const p = src('ignored.txt')
+    await sourceStorage.updateFile(p, Buffer.from('ignored'))
+    expect(await service.findAsset(asset => asset.title === 'ignored')).toBeNull()
+    await watcher.unwatch()
+  })
+
   it('builds on add/change and tears down on remove', async () => {
     const { service, sourceStorage, targetStorage } = harness
     await service.prepare()
-    const watcher = await service.watch(ROOT, [path.join(ROOT, '**/*.txt')])
+    const watcher = await service.watch(ROOT, [/\.txt$/u])
 
     const dataAt = async (uri: string): Promise<Buffer | undefined> =>
       (await targetStorage.resolveFile(uri))?.data as Buffer | undefined

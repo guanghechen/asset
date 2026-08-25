@@ -1,3 +1,4 @@
+import { createAssetWatchPathMatcher } from '@guanghechen/asset-storage'
 import type {
   IAssetCollectOptions,
   IAssetDecipher,
@@ -10,15 +11,15 @@ import type {
 } from '@guanghechen/asset-types'
 import assertInvariant from '@guanghechen/invariant'
 import { watch as watchFiles } from 'chokidar'
+import type { ChokidarOptions } from 'chokidar'
 import fastGlob from 'fast-glob'
-import type { WatchOptions } from 'node:fs'
 import { existsSync } from 'node:fs'
 import { readFile, stat as statFile, unlink, writeFile } from 'node:fs/promises'
 
 interface IProps {
   pathResolver: IAssetPathResolver
   decipher?: IAssetDecipher
-  watchOptions?: Partial<WatchOptions>
+  watchOptions?: ChokidarOptions
 }
 
 const defaultDecipher: IAssetDecipher = {
@@ -28,7 +29,7 @@ const defaultDecipher: IAssetDecipher = {
 export class FileAssetSourceStorage implements IAssetSourceStorage {
   protected readonly _decipher: IAssetDecipher
   protected readonly _pathResolver: IAssetPathResolver
-  protected readonly _watchOptions: Partial<WatchOptions>
+  protected readonly _watchOptions: ChokidarOptions
 
   constructor(props: IProps) {
     const { pathResolver, decipher, watchOptions = {} } = props
@@ -81,42 +82,34 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     await writeFile(absoluteSrcPath, data)
   }
 
-  public watch(patterns: string[], options: IAssetWatchOptions): IAssetWatcher {
+  public watch(pathPatterns: ReadonlyArray<RegExp>, options: IAssetWatchOptions): IAssetWatcher {
     const { cwd, onAdd, onChange, onRemove, shouldIgnore = () => false } = options
     const pathResolver: IAssetPathResolver = this._pathResolver
 
     // Ensure the cwd is a safe absolute filepath.
     pathResolver.assertSafeAbsolutePath(cwd)
 
-    const watcher = watchFiles(patterns, {
+    if (pathPatterns.length === 0) return { unwatch: async (): Promise<void> => undefined }
+
+    const isMatched = createAssetWatchPathMatcher(pathPatterns)
+    const wrap = (callback: (filepath: string, resolver: IAssetPathResolver) => void) => {
+      return (filepath: string): void => {
+        const absoluteSrcPath: string = pathResolver.absolute(cwd, filepath)
+        if (!isMatched(absoluteSrcPath)) return
+        if (shouldIgnore(absoluteSrcPath, pathResolver)) return
+        callback(absoluteSrcPath, pathResolver)
+      }
+    }
+
+    const watcher = watchFiles('.', {
       persistent: true,
       ...this._watchOptions,
       cwd,
     })
 
-    if (onAdd) {
-      watcher.on('add', filepath => {
-        const absoluteSrcPath: string = pathResolver.absolute(cwd, filepath)
-        if (shouldIgnore(absoluteSrcPath, pathResolver)) return
-        onAdd(absoluteSrcPath, pathResolver)
-      })
-    }
-
-    if (onChange) {
-      watcher.on('change', filepath => {
-        const absoluteSrcPath: string = pathResolver.absolute(cwd, filepath)
-        if (shouldIgnore(absoluteSrcPath, pathResolver)) return
-        onChange(absoluteSrcPath, pathResolver)
-      })
-    }
-
-    if (onRemove) {
-      watcher.on('unlink', filepath => {
-        const absoluteSrcPath: string = pathResolver.absolute(cwd, filepath)
-        if (shouldIgnore(absoluteSrcPath, pathResolver)) return
-        onRemove(absoluteSrcPath, pathResolver)
-      })
-    }
+    if (onAdd) watcher.on('add', wrap(onAdd))
+    if (onChange) watcher.on('change', wrap(onChange))
+    if (onRemove) watcher.on('unlink', wrap(onRemove))
 
     let unWatching = false
     return {

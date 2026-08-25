@@ -20,6 +20,18 @@ afterAll(() => {
 
 const src = (name: string): string => path.join(ROOT, name)
 
+async function delay(timeoutMs: number): Promise<void> {
+  await new Promise<void>(resolve => setTimeout(resolve, timeoutMs))
+}
+
+async function waitFor(predicate: () => boolean, timeoutMs = 5000): Promise<void> {
+  const deadline: number = Date.now() + timeoutMs
+  while (!predicate()) {
+    if (Date.now() >= deadline) throw new Error('Timed out while waiting for a file watcher event')
+    await delay(25)
+  }
+}
+
 describe('FileAssetSourceStorage', () => {
   it('writes, reads, stats and detects a real file', async () => {
     const p = src('a.txt')
@@ -80,5 +92,87 @@ describe('FileAssetSourceStorage', () => {
     const p = src('enc.txt')
     await storage.updateFile(p, Buffer.from('x'))
     expect(await deciphered.readFile(p)).toEqual(Buffer.from('[x]'))
+  })
+
+  it('watches the directory and filters add/change/remove events by path pattern', async () => {
+    const added: string[] = []
+    const changed: string[] = []
+    const removed: string[] = []
+    const watcher = storage.watch([/\/watch-event-[^/]*\.txt$/gu], {
+      cwd: ROOT,
+      onAdd: filepath => added.push(filepath),
+      onChange: filepath => changed.push(filepath),
+      onRemove: filepath => removed.push(filepath),
+    })
+
+    const nestedDir = src('watch-event-dir')
+    const matchingPath = path.join(nestedDir, 'watch-event-a.txt')
+    const nonMatchingPath = path.join(nestedDir, 'watch-event-a.md')
+
+    try {
+      await delay(500)
+      fs.mkdirSync(nestedDir, { recursive: true })
+      fs.writeFileSync(matchingPath, 'v1')
+      fs.writeFileSync(nonMatchingPath, 'ignored')
+      await waitFor(() => added.length === 1)
+      expect(added).toEqual([matchingPath])
+
+      fs.writeFileSync(matchingPath, 'v2')
+      await waitFor(() => changed.length === 1)
+      expect(changed).toEqual([matchingPath])
+
+      fs.unlinkSync(matchingPath)
+      await waitFor(() => removed.length === 1)
+      expect(removed).toEqual([matchingPath])
+    } finally {
+      await watcher.unwatch()
+    }
+  })
+
+  it('emits matching initial paths and ignores rejected and post-unwatch paths', async () => {
+    const initialPath = src('watch-filter-initial.txt')
+    const acceptedPath = src('watch-filter-accepted.txt')
+    const rejectedPath = src('watch-filter-rejected.txt')
+    const stoppedPath = src('watch-filter-stopped.txt')
+    fs.writeFileSync(initialPath, 'initial')
+
+    const added: string[] = []
+    const watcher = storage.watch([/\/watch-filter-[^/]*\.txt$/u], {
+      cwd: ROOT,
+      onAdd: filepath => added.push(filepath),
+      shouldIgnore: filepath => filepath === rejectedPath,
+    })
+
+    try {
+      await waitFor(() => added.length === 1)
+      expect(added).toEqual([initialPath])
+
+      fs.writeFileSync(acceptedPath, 'accepted')
+      fs.writeFileSync(rejectedPath, 'rejected')
+      await waitFor(() => added.length === 2)
+      await delay(100)
+      expect(added).toEqual([initialPath, acceptedPath])
+
+      await watcher.unwatch()
+      fs.writeFileSync(stoppedPath, 'stopped')
+      await delay(100)
+      expect(added).toEqual([initialPath, acceptedPath])
+    } finally {
+      await watcher.unwatch()
+    }
+  })
+
+  it('returns a no-op watcher when no path patterns are provided', async () => {
+    const added: string[] = []
+    const watcher = storage.watch([], {
+      cwd: ROOT,
+      onAdd: filepath => added.push(filepath),
+    })
+
+    fs.writeFileSync(src('watch-empty.txt'), 'ignored')
+    await delay(100)
+    expect(added).toEqual([])
+    await watcher.unwatch()
+    await watcher.unwatch()
   })
 })

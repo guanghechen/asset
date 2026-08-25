@@ -46,6 +46,7 @@ export class AssetGenerator {
   public readonly reporter: IReporter
   public readonly services: IAssetService[]
   public readonly acceptedPatterns: string[]
+  public readonly acceptedPathPatterns: RegExp[]
 
   constructor(reporter: IReporter, targetStorage: IAssetTargetStorage) {
     const flights: IAssetResolverFlights = {
@@ -95,21 +96,24 @@ export class AssetGenerator {
         return service
       })
 
+    const acceptedFileExtensions: string[] = [
+      'md',
+      'jpg',
+      'png',
+      'jpeg',
+      'gif',
+      'txt',
+      'pdf',
+      'cpp',
+      'ts',
+      'py',
+      'lyric',
+    ]
+
     this.reporter = reporter
     this.services = services
-    this.acceptedPatterns = [
-      '**/*.md',
-      '**/*.jpg',
-      '**/*.png',
-      '**/*.jpeg',
-      '**/*.gif',
-      '**/*.txt',
-      '**/*.pdf',
-      '**/*.cpp',
-      '**/*.ts',
-      '**/*.py',
-      '**/*.lyric',
-    ]
+    this.acceptedPatterns = acceptedFileExtensions.map(extension => `**/*.${extension}`)
+    this.acceptedPathPatterns = [new RegExp(`\\.(?:${acceptedFileExtensions.join('|')})$`, 'u')]
   }
 
   public async prepare(): Promise<void> {
@@ -141,14 +145,16 @@ export class AssetGenerator {
   }
 
   public async watch(): Promise<IAssetServiceWatcher> {
-    const { reporter, services, acceptedPatterns } = this
+    const { reporter, services, acceptedPathPatterns } = this
 
     console.log()
     reporter.info('[post] start watching...')
     const watchers: IAssetServiceWatcher[] = await Promise.all(
       services
         .map(service =>
-          service.pathResolver.srcRoots.map(srcRoot => service.watch(srcRoot, acceptedPatterns)),
+          service.pathResolver.srcRoots.map(srcRoot =>
+            service.watch(srcRoot, acceptedPathPatterns),
+          ),
         )
         .flat(),
     )

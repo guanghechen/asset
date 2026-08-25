@@ -41,6 +41,10 @@ export interface IAssetSourceStorage {
   removeFile(absoluteSrcPath: string): Promise<void>
   statFile(absoluteSrcPath: string): Promise<IAssetStat>
   updateFile(absoluteSrcPath: string, data: IBinaryFileData): Promise<void>
-  watch(patterns: ReadonlyArray<string>, options: IAssetWatchOptions): IAssetWatcher
+  /**
+   * Watch source changes whose normalized absolute paths match at least one pattern.
+   * Paths passed to patterns always use forward slashes. Stateful `g` and `y` flags are ignored.
+   */
+  watch(pathPatterns: ReadonlyArray<RegExp>, options: IAssetWatchOptions): IAssetWatcher
   collect(patterns: ReadonlyArray<string>, options: IAssetCollectOptions): Promise<string[]>
 }

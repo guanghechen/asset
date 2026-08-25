@@ -50,12 +50,13 @@ export interface IAssetService {
 
   /**
    * Need to call `this.prepare()` in advance.
-   * @param acceptedPattern
+   * Patterns are applied to normalized absolute source paths using forward slashes.
+   * @param acceptedPathPatterns
    * @param shouldIgnore
    */
   watch(
     cwd: string,
-    acceptedPattern: ReadonlyArray<string>,
+    acceptedPathPatterns: ReadonlyArray<RegExp>,
     shouldIgnore?: IAssetWatchShouldIgnore,
   ): Promise<IAssetServiceWatcher>
 }
