@@ -84,9 +84,9 @@ export class AssetTaskApi implements IAssetTaskApi {
           throw new TypeError(`[AssetTaskApi.create] Unexpected datatype: ${datatype}`)
       }
     }
-    if (tasks.length > 0) tasks.push(this._saveAssetDataMap())
 
     await Promise.all(tasks)
+    if (tasks.length > 0) await this._saveAssetDataMap()
   }
 
   public async remove(absoluteSrcPaths: ReadonlyArray<string>): Promise<void> {
@@ -102,15 +102,14 @@ export class AssetTaskApi implements IAssetTaskApi {
         tasks.push(this._targetStorage.removeFile(asset.uri))
       }
     }
-    if (tasks.length > 0) tasks.push(this._saveAssetDataMap())
-
     await Promise.all(tasks)
+    if (tasks.length > 0) await this._saveAssetDataMap()
   }
 
-  public async update(absoluteSrcPath: ReadonlyArray<string>): Promise<void> {
-    const resolverApi: IAssetResolverApi = this._resolverApi
-    await Promise.all(absoluteSrcPath.map(srcPath => resolverApi.locator.removeAsset(srcPath)))
-    await this.create(absoluteSrcPath)
+  public async update(absoluteSrcPaths: ReadonlyArray<string>): Promise<void> {
+    // Invalidate first; a failed rebuild leaves the asset removed.
+    await this.remove(absoluteSrcPaths)
+    await this.create(absoluteSrcPaths)
   }
 
   protected async _saveAsset(item: ITargetItem): Promise<void> {

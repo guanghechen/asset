@@ -155,7 +155,9 @@ describe('AssetTaskApi.remove', () => {
 })
 
 describe('AssetTaskApi.update', () => {
-  it('removes the existing asset then re-creates it', async () => {
+  it('removes the previous target before creating its replacement', async () => {
+    const srcPath = '/srv/a.txt'
+    const oldUri = `/from/${srcPath}`
     const processed: IAssetProcessedData[] = [
       {
         asset: asset('/a.bin'),
@@ -165,13 +167,33 @@ describe('AssetTaskApi.update', () => {
       },
     ] as IAssetProcessedData[]
     const { api, targetStorage, removeAsset } = createApi(processed)
+    await targetStorage.writeFile({
+      datatype: AssetDataTypeEnum.BINARY,
+      asset: asset(oldUri),
+      data: Buffer.from('old'),
+    } as never)
 
-    await api.update(['/srv/a.txt'])
+    await api.update([srcPath])
 
-    // remove half
-    expect(removeAsset).toHaveBeenCalledWith('/srv/a.txt')
-    // re-create half: the processed asset and the refreshed data map are written back
+    expect(removeAsset).toHaveBeenCalledWith(srcPath)
+    expect(await targetStorage.resolveFile(oldUri)).toBeUndefined()
     expect((await targetStorage.resolveFile('/a.bin'))!.data).toEqual(Buffer.from('b'))
+    expect(await targetStorage.resolveFile('/api/test.asset.map.json')).toBeDefined()
+  })
+
+  it('keeps the previous target removed when processing returns no result', async () => {
+    const srcPath = '/srv/a.txt'
+    const oldUri = `/from/${srcPath}`
+    const { api, targetStorage } = createApi([])
+    await targetStorage.writeFile({
+      datatype: AssetDataTypeEnum.BINARY,
+      asset: asset(oldUri),
+      data: Buffer.from('old'),
+    } as never)
+
+    await api.update([srcPath])
+
+    expect(await targetStorage.resolveFile(oldUri)).toBeUndefined()
     expect(await targetStorage.resolveFile('/api/test.asset.map.json')).toBeDefined()
   })
 })
