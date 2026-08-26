@@ -36,7 +36,8 @@ describe('PathResolver', () => {
     expect(r.isAbsolutePath('relative/x')).toBe(false)
   })
 
-  it('parseFromUrl strips hash and decodes, rejects absolute', () => {
+  it('parseFromUrl strips query and hash, decodes, and rejects absolute', () => {
+    expect(r.parseFromUrl('a%20b.md?v=1#frag')).toBe('a b.md')
     expect(r.parseFromUrl('a%20b.md#frag')).toBe('a b.md')
     expect(r.parseFromUrl('/abs.md')).toBeNull()
   })

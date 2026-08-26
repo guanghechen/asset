@@ -2,8 +2,8 @@ import type { IPathResolver } from '@guanghechen/asset-types'
 import assertInvariant from '@guanghechen/invariant'
 import path from 'node:path'
 
-const hashRegex = /#([\s\S]*)$/
 const parentDirPrefix = `..${path.sep}`
+const urlSuffixRegex = /[?#][\s\S]*$/
 const urlRegex = /^\w+:\/\//
 
 export class PathResolver implements IPathResolver {
@@ -40,7 +40,7 @@ export class PathResolver implements IPathResolver {
 
   public parseFromUrl(url: string): string | null {
     if (this.isAbsolutePath(url)) return null
-    const p: string = url.replace(hashRegex, '')
+    const p: string = url.replace(urlSuffixRegex, '')
     return decodeURIComponent(p)
   }
 
