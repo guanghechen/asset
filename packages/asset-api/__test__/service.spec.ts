@@ -14,7 +14,7 @@ import {
 import type { IAssetResolverApi, IAssetSourceStorage } from '@guanghechen/asset-types'
 import { Reporter } from '@guanghechen/reporter'
 import path from 'node:path'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AssetService } from '../src'
 
 const ROOT = path.resolve('/srv/project')
@@ -132,6 +132,21 @@ describe('AssetService.buildByPatterns', () => {
 })
 
 describe('AssetService.watch', () => {
+  it('closes a watcher when the service closes during its readiness delay', async () => {
+    const { service, sourceStorage } = harness
+    const unwatch = vi.fn(async () => {})
+    vi.spyOn(sourceStorage, 'watch').mockReturnValue({ unwatch })
+    await service.prepare()
+
+    const watcherPromise = service.watch(ROOT, [/\.txt$/u])
+    await service.close()
+    const watcher = await watcherPromise
+
+    expect(unwatch).toHaveBeenCalledOnce()
+    await watcher.unwatch()
+    expect(unwatch).toHaveBeenCalledOnce()
+  })
+
   it('does not subscribe when no path patterns are provided', async () => {
     const { service, sourceStorage } = harness
     await service.prepare()

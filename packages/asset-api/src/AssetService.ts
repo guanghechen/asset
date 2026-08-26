@@ -186,9 +186,6 @@ export class AssetService implements IAssetService {
       shouldIgnore,
     })
 
-    // delay 500ms
-    await new Promise<void>(resolve => setTimeout(resolve, 500))
-
     let unWatching = false
     const serviceWatcher: IAssetServiceWatcher = {
       unwatch: async (): Promise<void> => {
@@ -198,7 +195,12 @@ export class AssetService implements IAssetService {
         await watcher.unwatch()
       },
     }
+
+    // Register before the readiness delay so close() cannot miss an active watcher.
     this._watchers.push(serviceWatcher)
+
+    // delay 500ms
+    await new Promise<void>(resolve => setTimeout(resolve, 500))
     return serviceWatcher
   }
 }
