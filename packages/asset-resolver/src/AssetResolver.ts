@@ -140,6 +140,9 @@ export class AssetResolver implements IAssetResolver {
       IAssetPluginPolishResult
     >('polish', parseResults, input => this._polish(input, api))
 
+    await Promise.all(
+      polishResults.map(result => api.locator.insertAsset(result.absoluteSrcPath, result.asset)),
+    )
     const results: IAssetProcessedData[] = polishResults.map(polishResult => ({
       asset: polishResult.asset,
       datatype: polishResult.datatype,
@@ -159,6 +162,8 @@ export class AssetResolver implements IAssetResolver {
 
     const resolveResult = await this._resolve(locateResult, api)
     if (resolveResult === null) return null
+
+    await api.locator.insertAsset(locateResult.absoluteSrcPath, resolveResult.asset)
     return { ...resolveResult.asset }
   }
 
@@ -180,9 +185,6 @@ export class AssetResolver implements IAssetResolver {
     const args: IAssetPluginResolveArgs = { lastStageResult, loadContent }
     const plugins: IAssetResolvePlugin[] = this._resolvePlugins
     const result: IAssetPluginResolveResult | null = await resolve(args, plugins, api)
-    if (result === null) return null
-
-    await api.locator.insertAsset(lastStageResult.absoluteSrcPath, result.asset)
     return result
   }
 

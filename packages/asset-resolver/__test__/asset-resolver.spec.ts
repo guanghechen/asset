@@ -104,13 +104,50 @@ describe('AssetResolver.resolve', () => {
 describe('AssetResolver.process', () => {
   it('runs every source path through locate -> resolve -> parse -> polish', async () => {
     const api = createApi()
-    const results = await createResolver().process(
-      [path.join(SRC_ROOT, 'a.txt'), path.join(SRC_ROOT, 'b.txt')],
-      api,
-    )
+    const srcPaths = [path.join(SRC_ROOT, 'a.txt'), path.join(SRC_ROOT, 'b.txt')]
+    const results = await createResolver().process(srcPaths, api)
     expect(results).toHaveLength(2)
     expect(results[0]).toMatchObject({ datatype: 'binary' })
     expect(results[0].asset.sourcetype).toBe(FileAssetType)
+    const indexedAsset = await api.locator.findAssetBySrcPath(srcPaths[0])
+    expect(indexedAsset).not.toBeNull()
+    expect(results.some(result => result.asset.guid === indexedAsset!.guid)).toBe(true)
+  })
+
+  it('does not index a source path dropped during polish', async () => {
+    const api = createApi()
+    const srcPath = path.join(SRC_ROOT, 'a.txt')
+    const dropPlugin = {
+      displayName: 'drop-polish-result',
+      polish: vi.fn(async () => null),
+    } as unknown as IAssetResolverPlugin
+
+    const results = await createResolver().use(dropPlugin).process([srcPath], api)
+
+    expect(results).toEqual([])
+    expect(await api.locator.findAssetBySrcPath(srcPath)).toBeNull()
+  })
+
+  it('does not index a source path when polish fails', async () => {
+    const api = createApi()
+    const srcPath = path.join(SRC_ROOT, 'a.txt')
+    const failPlugin = {
+      displayName: 'fail-polish',
+      polish: vi.fn(async () => {
+        throw new Error('polish failed')
+      }),
+    } as unknown as IAssetResolverPlugin
+
+    const failure = await createResolver()
+      .use(failPlugin)
+      .process([srcPath], api)
+      .then(
+        () => null,
+        (error: unknown) => error,
+      )
+
+    expect(Array.isArray(failure)).toBe(true)
+    expect(await api.locator.findAssetBySrcPath(srcPath)).toBeNull()
   })
 
   it('drops paths that fail to locate and warns', async () => {

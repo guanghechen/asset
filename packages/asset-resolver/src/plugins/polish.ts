@@ -41,6 +41,7 @@ export async function polish(
   if (output === null) return null
 
   const result: IAssetPluginPolishResult = {
+    absoluteSrcPath,
     asset,
     encoding,
     datatype: output.datatype,
@@ -64,6 +65,7 @@ export interface IAssetPluginPolishArgs {
 }
 
 export interface IAssetPluginPolishResult {
+  absoluteSrcPath: string
   asset: IAsset
   encoding: BufferEncoding | undefined
   datatype: AssetDataTypeEnum
