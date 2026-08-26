@@ -116,29 +116,61 @@ describe('AssetTaskApi.create', () => {
   })
 
   it('throws for text assets missing an encoding', async () => {
+    const absoluteSrcPath = '/srv/a.txt'
     const processed = [
       {
-        absoluteSrcPath: '/srv/a.txt',
+        absoluteSrcPath,
         asset: asset('/a.txt'),
         datatype: AssetDataTypeEnum.TEXT,
         data: 'text',
         encoding: undefined,
       },
     ] as unknown as IAssetProcessedData[]
-    await expect(createApi(processed).api.create(['/srv/a'])).rejects.toThrow(/encoding/)
+    const { api, targetStorage, removeAsset } = createApi(processed)
+    const writeFile = vi.spyOn(targetStorage, 'writeFile')
+
+    await expect(api.create([absoluteSrcPath])).rejects.toThrow(/encoding/)
+
+    expect(writeFile).not.toHaveBeenCalled()
+    expect(removeAsset).toHaveBeenCalledWith(absoluteSrcPath)
   })
 
-  it('throws for an unexpected datatype', async () => {
+  it('does not touch targets when a datatype is unexpected', async () => {
+    const goodSrcPath = '/srv/good.bin'
+    const badSrcPath = '/srv/bad'
     const processed = [
       {
-        absoluteSrcPath: '/srv/a',
-        asset: asset('/a'),
+        absoluteSrcPath: goodSrcPath,
+        asset: asset('/good.bin'),
+        datatype: AssetDataTypeEnum.BINARY,
+        data: Buffer.from('good'),
+        encoding: undefined,
+      },
+      {
+        absoluteSrcPath: badSrcPath,
+        asset: asset('/bad'),
         datatype: AssetDataTypeEnum.ASSET_MAP,
         data: {},
         encoding: undefined,
       },
     ] as unknown as IAssetProcessedData[]
-    await expect(createApi(processed).api.create(['/srv/a'])).rejects.toThrow(/Unexpected datatype/)
+    const { api, targetStorage, removeAsset } = createApi(processed)
+    await targetStorage.writeFile({
+      datatype: AssetDataTypeEnum.BINARY,
+      asset: asset('/good.bin'),
+      data: Buffer.from('old'),
+    })
+    const writeFile = vi.spyOn(targetStorage, 'writeFile')
+    const removeFile = vi.spyOn(targetStorage, 'removeFile')
+
+    await expect(api.create([goodSrcPath, badSrcPath])).rejects.toThrow(/Unexpected datatype/)
+
+    expect(removeAsset).toHaveBeenCalledWith(goodSrcPath)
+    expect(removeAsset).toHaveBeenCalledWith(badSrcPath)
+    expect(writeFile).not.toHaveBeenCalled()
+    expect(removeFile).not.toHaveBeenCalled()
+    expect((await targetStorage.resolveFile('/good.bin'))!.data).toEqual(Buffer.from('old'))
+    expect(await targetStorage.resolveFile('/api/test.asset.map.json')).toBeUndefined()
   })
 
   it('cleans successful sibling targets when a batch write fails', async () => {

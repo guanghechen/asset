@@ -47,55 +47,69 @@ export class AssetTaskApi implements IAssetTaskApi {
     const resolverApi: IAssetResolverApi = this._resolverApi
     const resolver: IAssetResolver = this._resolver
     const results: IAssetProcessedData[] = await resolver.process(absoluteSrcPaths, resolverApi)
-    const tasks: Array<Promise<void>> = []
+    const items: ITargetItem[] = []
+    let targetWritesStarted = false
 
-    for (const result of results) {
-      const { asset, data, datatype } = result
-      switch (datatype) {
-        case AssetDataTypeEnum.BINARY: {
-          const item: ITargetItem = {
-            datatype: AssetDataTypeEnum.BINARY,
-            asset,
-            data: data as IBinaryFileData,
+    try {
+      // Validate the whole batch before calling _saveAsset(). Promises start eagerly, so creating
+      // them here could write earlier items before a later item fails validation.
+      for (const result of results) {
+        const { asset, data, datatype } = result
+        switch (datatype) {
+          case AssetDataTypeEnum.BINARY: {
+            const item: ITargetItem = {
+              datatype: AssetDataTypeEnum.BINARY,
+              asset,
+              data: data as IBinaryFileData,
+            }
+            items.push(item)
+            break
           }
-          tasks.push(this._saveAsset(item))
-          break
-        }
-        case AssetDataTypeEnum.TEXT: {
-          const item: ITargetItem = {
-            datatype: AssetDataTypeEnum.TEXT,
-            asset,
-            data: data as string,
-            encoding: result.encoding as BufferEncoding,
+          case AssetDataTypeEnum.TEXT: {
+            if (data !== null && !result.encoding) {
+              throw new Error('[AssetTaskApi.create] encoding is required for text type file')
+            }
+            const item: ITargetItem = {
+              datatype: AssetDataTypeEnum.TEXT,
+              asset,
+              data: data as string,
+              encoding: result.encoding as BufferEncoding,
+            }
+            items.push(item)
+            break
           }
-          tasks.push(this._saveAsset(item))
-          break
-        }
-        case AssetDataTypeEnum.JSON: {
-          const item: ITargetItem = {
-            datatype: AssetDataTypeEnum.JSON,
-            asset,
-            data: data as IJsonFileData,
+          case AssetDataTypeEnum.JSON: {
+            const item: ITargetItem = {
+              datatype: AssetDataTypeEnum.JSON,
+              asset,
+              data: data as IJsonFileData,
+            }
+            items.push(item)
+            break
           }
-          tasks.push(this._saveAsset(item))
-          break
+          default:
+            throw new TypeError(`[AssetTaskApi.create] Unexpected datatype: ${datatype}`)
         }
-        default:
-          throw new TypeError(`[AssetTaskApi.create] Unexpected datatype: ${datatype}`)
       }
-    }
 
-    const settledTasks: Array<PromiseSettledResult<void>> = await Promise.allSettled(tasks)
-    const failure: PromiseRejectedResult | undefined = settledTasks.find(
-      (result): result is PromiseRejectedResult => result.status === 'rejected',
-    )
-    if (failure) {
+      // From this point, a rejected write may leave partial targets that require cleanup.
+      targetWritesStarted = true
+      const settledTasks: Array<PromiseSettledResult<void>> = await Promise.allSettled(
+        items.map(item => this._saveAsset(item)),
+      )
+      const failure: PromiseRejectedResult | undefined = settledTasks.find(
+        (result): result is PromiseRejectedResult => result.status === 'rejected',
+      )
+      if (failure) throw failure.reason
+    } catch (error) {
       const cleanupTasks: Array<Promise<void>> = results.map(result =>
         resolverApi.locator.removeAsset(result.absoluteSrcPath),
       )
-      for (const result of results) {
-        if (result.data !== null)
-          cleanupTasks.push(this._targetStorage.removeFile(result.asset.uri))
+      if (targetWritesStarted) {
+        for (const result of results) {
+          if (result.data !== null)
+            cleanupTasks.push(this._targetStorage.removeFile(result.asset.uri))
+        }
       }
 
       const cleanupResults: Array<PromiseSettledResult<void>> =
@@ -105,12 +119,12 @@ export class AssetTaskApi implements IAssetTaskApi {
       )
       if (cleanupErrors.length > 0) {
         throw new AggregateError(
-          [failure.reason, ...cleanupErrors],
-          '[AssetTaskApi.create] target write and cleanup failed',
-          { cause: failure.reason },
+          [error, ...cleanupErrors],
+          '[AssetTaskApi.create] asset creation and cleanup failed',
+          { cause: error },
         )
       }
-      throw failure.reason
+      throw error
     }
     if (results.length > 0) await this._saveAssetDataMap()
   }
