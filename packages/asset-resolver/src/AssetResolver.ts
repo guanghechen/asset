@@ -147,7 +147,19 @@ export class AssetResolver implements IAssetResolver {
         insertedSrcPaths.push(result.absoluteSrcPath)
       }
     } catch (error) {
-      await Promise.all(insertedSrcPaths.map(srcPath => api.locator.removeAsset(srcPath)))
+      const cleanupResults: Array<PromiseSettledResult<void>> = await Promise.allSettled(
+        insertedSrcPaths.map(srcPath => api.locator.removeAsset(srcPath)),
+      )
+      const cleanupErrors: unknown[] = cleanupResults.flatMap(result =>
+        result.status === 'rejected' ? [result.reason] : [],
+      )
+      if (cleanupErrors.length > 0) {
+        throw new AggregateError(
+          [error, ...cleanupErrors],
+          '[AssetResolver.process] locator insert and cleanup failed',
+          { cause: error },
+        )
+      }
       throw error
     }
     const results: IAssetProcessedData[] = polishResults.map(polishResult => ({

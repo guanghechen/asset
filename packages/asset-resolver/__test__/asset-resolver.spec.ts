@@ -131,6 +131,32 @@ describe('AssetResolver.process', () => {
     expect(await api.locator.findAssetBySrcPath(srcPaths[1])).toBeNull()
   })
 
+  it('preserves the locator insert failure when cleanup also fails', async () => {
+    const api = createApi()
+    const insertAsset = api.locator.insertAsset.bind(api.locator)
+    const primaryError = new Error('URI collision')
+    const cleanupError = new Error('locator cleanup failed')
+    let insertCount = 0
+    vi.spyOn(api.locator, 'insertAsset').mockImplementation(async (absoluteSrcPath, asset) => {
+      insertCount += 1
+      if (insertCount === 2) throw primaryError
+      await insertAsset(absoluteSrcPath, asset)
+    })
+    vi.spyOn(api.locator, 'removeAsset').mockRejectedValueOnce(cleanupError)
+    const srcPaths = [path.join(SRC_ROOT, 'a.txt'), path.join(SRC_ROOT, 'b.txt')]
+
+    const failure = await createResolver()
+      .process(srcPaths, api)
+      .then(
+        () => null,
+        (error: unknown) => error,
+      )
+
+    expect(failure).toBeInstanceOf(AggregateError)
+    expect((failure as AggregateError).errors).toEqual([primaryError, cleanupError])
+    expect((failure as AggregateError).cause).toBe(primaryError)
+  })
+
   it('does not index a source path dropped during polish', async () => {
     const api = createApi()
     const srcPath = path.join(SRC_ROOT, 'a.txt')
