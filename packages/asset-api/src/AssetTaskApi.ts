@@ -85,8 +85,15 @@ export class AssetTaskApi implements IAssetTaskApi {
       }
     }
 
-    await Promise.all(tasks)
-    if (tasks.length > 0) await this._saveAssetDataMap()
+    try {
+      await Promise.all(tasks)
+    } catch (error) {
+      await Promise.all(
+        results.map(result => resolverApi.locator.removeAsset(result.absoluteSrcPath)),
+      )
+      throw error
+    }
+    if (results.length > 0) await this._saveAssetDataMap()
   }
 
   public async remove(absoluteSrcPaths: ReadonlyArray<string>): Promise<void> {

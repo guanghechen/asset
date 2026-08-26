@@ -107,7 +107,7 @@ describe('AssetResolver.process', () => {
     const srcPaths = [path.join(SRC_ROOT, 'a.txt'), path.join(SRC_ROOT, 'b.txt')]
     const results = await createResolver().process(srcPaths, api)
     expect(results).toHaveLength(2)
-    expect(results[0]).toMatchObject({ datatype: 'binary' })
+    expect(results[0]).toMatchObject({ absoluteSrcPath: expect.any(String), datatype: 'binary' })
     expect(results[0].asset.sourcetype).toBe(FileAssetType)
     const indexedAsset = await api.locator.findAssetBySrcPath(srcPaths[0])
     expect(indexedAsset).not.toBeNull()

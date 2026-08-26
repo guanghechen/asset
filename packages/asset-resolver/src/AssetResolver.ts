@@ -144,6 +144,7 @@ export class AssetResolver implements IAssetResolver {
       polishResults.map(result => api.locator.insertAsset(result.absoluteSrcPath, result.asset)),
     )
     const results: IAssetProcessedData[] = polishResults.map(polishResult => ({
+      absoluteSrcPath: polishResult.absoluteSrcPath,
       asset: polishResult.asset,
       datatype: polishResult.datatype,
       data: polishResult.data,

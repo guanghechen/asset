@@ -16,6 +16,7 @@ export type IAssetResolverPlugin = IAssetPlugin &
   Partial<IAssetPolishPlugin>
 
 export interface IAssetProcessedData {
+  absoluteSrcPath: string
   asset: IAsset
   datatype: AssetDataTypeEnum
   data: unknown

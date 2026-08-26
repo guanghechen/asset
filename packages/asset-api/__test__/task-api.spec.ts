@@ -68,13 +68,21 @@ describe('AssetTaskApi.create', () => {
   it('saves binary, text and json assets plus the data map', async () => {
     const processed: IAssetProcessedData[] = [
       {
+        absoluteSrcPath: '/srv/a.bin',
         asset: asset('/a.bin'),
         datatype: AssetDataTypeEnum.BINARY,
         data: Buffer.from('b'),
         encoding: undefined,
       },
-      { asset: asset('/a.txt'), datatype: AssetDataTypeEnum.TEXT, data: 'text', encoding: 'utf8' },
       {
+        absoluteSrcPath: '/srv/a.txt',
+        asset: asset('/a.txt'),
+        datatype: AssetDataTypeEnum.TEXT,
+        data: 'text',
+        encoding: 'utf8',
+      },
+      {
+        absoluteSrcPath: '/srv/a.json',
         asset: asset('/a.json'),
         datatype: AssetDataTypeEnum.JSON,
         data: { x: 1 },
@@ -94,6 +102,7 @@ describe('AssetTaskApi.create', () => {
   it('skips items whose data is null but still writes the data map', async () => {
     const processed = [
       {
+        absoluteSrcPath: '/srv/a.bin',
         asset: asset('/a.bin'),
         datatype: AssetDataTypeEnum.BINARY,
         data: null,
@@ -109,6 +118,7 @@ describe('AssetTaskApi.create', () => {
   it('throws for text assets missing an encoding', async () => {
     const processed = [
       {
+        absoluteSrcPath: '/srv/a.txt',
         asset: asset('/a.txt'),
         datatype: AssetDataTypeEnum.TEXT,
         data: 'text',
@@ -120,9 +130,35 @@ describe('AssetTaskApi.create', () => {
 
   it('throws for an unexpected datatype', async () => {
     const processed = [
-      { asset: asset('/a'), datatype: AssetDataTypeEnum.ASSET_MAP, data: {}, encoding: undefined },
+      {
+        absoluteSrcPath: '/srv/a',
+        asset: asset('/a'),
+        datatype: AssetDataTypeEnum.ASSET_MAP,
+        data: {},
+        encoding: undefined,
+      },
     ] as unknown as IAssetProcessedData[]
     await expect(createApi(processed).api.create(['/srv/a'])).rejects.toThrow(/Unexpected datatype/)
+  })
+
+  it('removes locator entries when a target write fails', async () => {
+    const absoluteSrcPath = '/srv/a.bin'
+    const processed: IAssetProcessedData[] = [
+      {
+        absoluteSrcPath,
+        asset: asset('/a.bin'),
+        datatype: AssetDataTypeEnum.BINARY,
+        data: Buffer.from('b'),
+        encoding: undefined,
+      },
+    ]
+    const { api, targetStorage, removeAsset } = createApi(processed)
+    vi.spyOn(targetStorage, 'writeFile').mockRejectedValueOnce(new Error('target write failed'))
+
+    await expect(api.create([absoluteSrcPath])).rejects.toThrow(/target write failed/)
+
+    expect(removeAsset).toHaveBeenCalledWith(absoluteSrcPath)
+    expect(await targetStorage.resolveFile('/api/test.asset.map.json')).toBeUndefined()
   })
 
   it('does nothing when there are no processed results', async () => {
@@ -160,6 +196,7 @@ describe('AssetTaskApi.update', () => {
     const oldUri = `/from/${srcPath}`
     const processed: IAssetProcessedData[] = [
       {
+        absoluteSrcPath: srcPath,
         asset: asset('/a.bin'),
         datatype: AssetDataTypeEnum.BINARY,
         data: Buffer.from('b'),
