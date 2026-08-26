@@ -109,13 +109,22 @@ export class AssetService implements IAssetService {
       pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
     }
 
+    // waitTaskTerminated() only waits for completion; task failures are stored on the scheduler.
+    const errorOffset: number = scheduler.errors.length
     const code: number = await scheduler.schedule({
       type: AssetChangeEventEnum.MODIFIED,
       absoluteSrcPaths: absoluteSrcPaths,
     })
+    if (code < 0) throw new Error('[AssetService.buildByPaths] scheduler rejected the build')
 
     reporter.debug('[AssetService.buildByPaths] building. absoluteSrcPaths:', absoluteSrcPaths)
     await scheduler.waitTaskTerminated(code)
+    if (scheduler.errors.length > errorOffset) {
+      throw new AggregateError(
+        scheduler.errors.slice(errorOffset),
+        '[AssetService.buildByPaths] build failed',
+      )
+    }
     reporter.debug('[AssetService.buildByPaths] finished. absoluteSrcPaths:', absoluteSrcPaths)
   }
 

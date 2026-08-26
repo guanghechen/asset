@@ -117,6 +117,18 @@ describe('AssetService.buildByPaths', () => {
     await service.prepare()
     await expect(service.buildByPaths([])).resolves.toBeUndefined()
   })
+
+  it('rejects a failed build and remains usable', async () => {
+    const { service, targetStorage } = harness
+    await service.prepare()
+
+    await expect(service.buildByPaths([src('missing.txt')])).rejects.toThrow(/build failed/)
+    await expect(service.buildByPaths([src('a.txt')])).resolves.toBeUndefined()
+
+    const asset = await service.resolveAsset(src('a.txt'))
+    expect(asset).not.toBeNull()
+    expect(await targetStorage.resolveFile(asset!.uri)).toBeDefined()
+  })
 })
 
 describe('AssetService.buildByPatterns', () => {
