@@ -42,6 +42,54 @@ describe('AssetLocator insert / find / remove', () => {
     expect(await locator.findAsset(x => x.uri === '/uri/a')).toBe(a)
   })
 
+  it('removes the stale uri mapping when replacing an asset', async () => {
+    const locator = createLocator()
+    const absoluteSrcPath = '/srv/a.md'
+    const guid = await locator.resolveGUID(absoluteSrcPath)
+
+    await locator.insertAsset(absoluteSrcPath, asset({ guid, uri: '/uri/old' }))
+    await locator.insertAsset(absoluteSrcPath, asset({ guid, uri: '/uri/new' }))
+
+    expect(await locator.findSrcPathByUri('/uri/old')).toBeNull()
+    expect(await locator.findSrcPathByUri('/uri/new')).toBe(absoluteSrcPath)
+  })
+
+  it('rejects uri collisions without mutating either index', async () => {
+    const locator = createLocator()
+    const srcA = '/srv/a.md'
+    const srcB = '/srv/b.md'
+    const guidA = await locator.resolveGUID(srcA)
+    const guidB = await locator.resolveGUID(srcB)
+    const a = asset({ guid: guidA, uri: '/uri/a' })
+    const b = asset({ guid: guidB, uri: '/uri/shared' })
+
+    await locator.insertAsset(srcA, a)
+    await locator.insertAsset(srcB, b)
+    await expect(
+      locator.insertAsset(srcA, asset({ guid: guidA, uri: '/uri/shared' })),
+    ).rejects.toThrow(/URI collision/)
+
+    expect(await locator.findAssetByGuid(guidA)).toBe(a)
+    expect(await locator.findAssetByGuid(guidB)).toBe(b)
+    expect(await locator.findSrcPathByUri('/uri/a')).toBe(srcA)
+    expect(await locator.findSrcPathByUri('/uri/shared')).toBe(srcB)
+  })
+
+  it('rejects inconsistent removal before mutating either index', async () => {
+    const locator = createLocator()
+    const absoluteSrcPath = '/srv/a.md'
+    const guid = await locator.resolveGUID(absoluteSrcPath)
+    const a = asset({ guid, uri: '/uri/a' })
+    await locator.insertAsset(absoluteSrcPath, a)
+
+    const uri2src = (locator as unknown as { _uri2src: Map<string, string> })._uri2src
+    uri2src.set(a.uri, '/srv/b.md')
+
+    await expect(locator.removeAsset(absoluteSrcPath)).rejects.toThrow(/inconsistent URI mapping/)
+    expect(await locator.findAssetByGuid(guid)).toBe(a)
+    expect(await locator.findSrcPathByUri(a.uri)).toBe('/srv/b.md')
+  })
+
   it('returns null for unknown lookups', async () => {
     const locator = createLocator()
     expect(await locator.findAssetByGuid('nope')).toBeNull()

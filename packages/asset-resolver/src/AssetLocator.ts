@@ -61,6 +61,21 @@ export class AssetLocator implements IAssetLocator {
 
   public async insertAsset(absoluteSrcPath: string, asset: IAsset): Promise<void> {
     this._pathResolver.assertSafeAbsolutePath(absoluteSrcPath)
+    const previousAsset: IAsset | undefined = this._assetMap.get(asset.guid)
+    if (previousAsset !== undefined) {
+      const previousUriOwner: string | undefined = this._uri2src.get(previousAsset.uri)
+      if (previousUriOwner !== absoluteSrcPath) {
+        throw new Error(`[AssetLocator.insertAsset] inconsistent URI mapping: ${previousAsset.uri}`)
+      }
+    }
+
+    const uriOwner: string | undefined = this._uri2src.get(asset.uri)
+    if (uriOwner !== undefined && previousAsset?.uri !== asset.uri) {
+      throw new Error(`[AssetLocator.insertAsset] URI collision: ${asset.uri}`)
+    }
+
+    if (previousAsset !== undefined && previousAsset.uri !== asset.uri)
+      this._uri2src.delete(previousAsset.uri)
     this._assetMap.set(asset.guid, asset)
     this._uri2src.set(asset.uri, absoluteSrcPath)
   }
@@ -70,6 +85,11 @@ export class AssetLocator implements IAssetLocator {
     const guid: string = await this.resolveGUID(absoluteSrcPath)
     const asset: IAsset | undefined = this._assetMap.get(guid)
     if (asset === undefined) return
+
+    const uriOwner: string | undefined = this._uri2src.get(asset.uri)
+    if (uriOwner !== absoluteSrcPath) {
+      throw new Error(`[AssetLocator.removeAsset] inconsistent URI mapping: ${asset.uri}`)
+    }
 
     this._assetMap.delete(asset.guid)
     this._uri2src.delete(asset.uri)
