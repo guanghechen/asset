@@ -85,13 +85,32 @@ export class AssetTaskApi implements IAssetTaskApi {
       }
     }
 
-    try {
-      await Promise.all(tasks)
-    } catch (error) {
-      await Promise.all(
-        results.map(result => resolverApi.locator.removeAsset(result.absoluteSrcPath)),
+    const settledTasks: Array<PromiseSettledResult<void>> = await Promise.allSettled(tasks)
+    const failure: PromiseRejectedResult | undefined = settledTasks.find(
+      (result): result is PromiseRejectedResult => result.status === 'rejected',
+    )
+    if (failure) {
+      const cleanupTasks: Array<Promise<void>> = results.map(result =>
+        resolverApi.locator.removeAsset(result.absoluteSrcPath),
       )
-      throw error
+      for (const result of results) {
+        if (result.data !== null)
+          cleanupTasks.push(this._targetStorage.removeFile(result.asset.uri))
+      }
+
+      const cleanupResults: Array<PromiseSettledResult<void>> =
+        await Promise.allSettled(cleanupTasks)
+      const cleanupErrors: unknown[] = cleanupResults.flatMap(result =>
+        result.status === 'rejected' ? [result.reason] : [],
+      )
+      if (cleanupErrors.length > 0) {
+        throw new AggregateError(
+          [failure.reason, ...cleanupErrors],
+          '[AssetTaskApi.create] target write and cleanup failed',
+          { cause: failure.reason },
+        )
+      }
+      throw failure.reason
     }
     if (results.length > 0) await this._saveAssetDataMap()
   }

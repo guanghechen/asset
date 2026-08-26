@@ -141,24 +141,109 @@ describe('AssetTaskApi.create', () => {
     await expect(createApi(processed).api.create(['/srv/a'])).rejects.toThrow(/Unexpected datatype/)
   })
 
-  it('removes locator entries when a target write fails', async () => {
+  it('cleans successful sibling targets when a batch write fails', async () => {
+    const goodSrcPath = '/srv/good.bin'
+    const badSrcPath = '/srv/bad.bin'
+    const processed: IAssetProcessedData[] = [
+      {
+        absoluteSrcPath: goodSrcPath,
+        asset: asset('/good.bin'),
+        datatype: AssetDataTypeEnum.BINARY,
+        data: Buffer.from('good'),
+        encoding: undefined,
+      },
+      {
+        absoluteSrcPath: badSrcPath,
+        asset: asset('/bad.bin'),
+        datatype: AssetDataTypeEnum.BINARY,
+        data: Buffer.from('bad'),
+        encoding: undefined,
+      },
+    ]
+    const { api, targetStorage, removeAsset } = createApi(processed)
+    const writeFile = targetStorage.writeFile.bind(targetStorage)
+    vi.spyOn(targetStorage, 'writeFile').mockImplementation(async item => {
+      if (targetStorage.resolveUriFromTargetItem(item) === '/bad.bin') {
+        throw new Error('target write failed')
+      }
+      await writeFile(item)
+    })
+
+    await expect(api.create([goodSrcPath, badSrcPath])).rejects.toThrow(/target write failed/)
+
+    expect(removeAsset).toHaveBeenCalledWith(goodSrcPath)
+    expect(removeAsset).toHaveBeenCalledWith(badSrcPath)
+    expect(await targetStorage.resolveFile('/good.bin')).toBeUndefined()
+    expect(await targetStorage.resolveFile('/bad.bin')).toBeUndefined()
+    expect(await targetStorage.resolveFile('/api/test.asset.map.json')).toBeUndefined()
+  })
+
+  it('cleans a target when writing rejects after persistence', async () => {
     const absoluteSrcPath = '/srv/a.bin'
     const processed: IAssetProcessedData[] = [
       {
         absoluteSrcPath,
         asset: asset('/a.bin'),
         datatype: AssetDataTypeEnum.BINARY,
-        data: Buffer.from('b'),
+        data: Buffer.from('a'),
         encoding: undefined,
       },
     ]
     const { api, targetStorage, removeAsset } = createApi(processed)
-    vi.spyOn(targetStorage, 'writeFile').mockRejectedValueOnce(new Error('target write failed'))
+    const subscription = targetStorage.monitor({
+      onFileWritten: () => {
+        throw new Error('monitor failed after persistence')
+      },
+    })
 
-    await expect(api.create([absoluteSrcPath])).rejects.toThrow(/target write failed/)
+    try {
+      await expect(api.create([absoluteSrcPath])).rejects.toThrow(/monitor failed/)
+    } finally {
+      subscription.unsubscribe()
+    }
 
     expect(removeAsset).toHaveBeenCalledWith(absoluteSrcPath)
+    expect(await targetStorage.resolveFile('/a.bin')).toBeUndefined()
     expect(await targetStorage.resolveFile('/api/test.asset.map.json')).toBeUndefined()
+  })
+
+  it('preserves the primary error when cleanup also fails', async () => {
+    const goodSrcPath = '/srv/good.bin'
+    const badSrcPath = '/srv/bad.bin'
+    const primaryError = new Error('target write failed')
+    const cleanupError = new Error('target cleanup failed')
+    const processed: IAssetProcessedData[] = [
+      {
+        absoluteSrcPath: goodSrcPath,
+        asset: asset('/good.bin'),
+        datatype: AssetDataTypeEnum.BINARY,
+        data: Buffer.from('good'),
+        encoding: undefined,
+      },
+      {
+        absoluteSrcPath: badSrcPath,
+        asset: asset('/bad.bin'),
+        datatype: AssetDataTypeEnum.BINARY,
+        data: Buffer.from('bad'),
+        encoding: undefined,
+      },
+    ]
+    const { api, targetStorage } = createApi(processed)
+    const writeFile = targetStorage.writeFile.bind(targetStorage)
+    vi.spyOn(targetStorage, 'writeFile').mockImplementation(async item => {
+      if (targetStorage.resolveUriFromTargetItem(item) === '/bad.bin') throw primaryError
+      await writeFile(item)
+    })
+    vi.spyOn(targetStorage, 'removeFile').mockRejectedValueOnce(cleanupError)
+
+    const failure = await api.create([goodSrcPath, badSrcPath]).then(
+      () => null,
+      (error: unknown) => error,
+    )
+
+    expect(failure).toBeInstanceOf(AggregateError)
+    expect((failure as AggregateError).errors).toEqual([primaryError, cleanupError])
+    expect((failure as AggregateError).cause).toBe(primaryError)
   })
 
   it('does nothing when there are no processed results', async () => {

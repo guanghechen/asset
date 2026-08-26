@@ -85,8 +85,13 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
   }
 
   public async remove(uri: string): Promise<void> {
-    const filepath: string = await this._resolveSafeRemovePath(uri)
-    await unlink(filepath)
+    try {
+      const filepath: string = await this._resolveSafeRemovePath(uri)
+      await unlink(filepath)
+    } catch (error) {
+      if (isMissingPathError(error)) return
+      throw error
+    }
   }
 
   public async save(uri: string, item: ITargetItem): Promise<void> {

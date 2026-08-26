@@ -112,6 +112,10 @@ describe('FileAssetTargetDataStorage edge cases', () => {
     expect(fs.existsSync(path.join(ROOT, 'rm/a.bin'))).toBe(false)
   })
 
+  it('ignores missing files on remove', async () => {
+    await expect(storage.remove('/missing-dir/a.bin')).resolves.toBeUndefined()
+  })
+
   it('supports concurrent writes into a new directory', async () => {
     await Promise.all([
       storage.save('/concurrent/a.txt', textItem('a')),
