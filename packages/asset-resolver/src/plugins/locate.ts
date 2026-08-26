@@ -79,7 +79,7 @@ export async function locate(
   const output: IAssetPluginLocateOutput | null = await reducer(null)
   if (output === null) return null
 
-  const extname: string | undefined = src.match(extnameRegex)?.[1]
+  const extname: string | undefined = output.src.match(extnameRegex)?.[1]
   const result: IAssetPluginLocateResult = {
     absoluteSrcPath,
     guid,

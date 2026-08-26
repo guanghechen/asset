@@ -1,5 +1,10 @@
 import { AssetResolverFile, FileAssetType } from '@guanghechen/asset-resolver-file'
-import type { IAssetResolverApi, IAssetResolverPlugin, IAssetStat } from '@guanghechen/asset-types'
+import type {
+  IAssetPluginLocateMiddleware,
+  IAssetResolverApi,
+  IAssetResolverPlugin,
+  IAssetStat,
+} from '@guanghechen/asset-types'
 import path from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import { AssetLocator, AssetResolver, AssetResolverApi, AssetUriResolver } from '../src'
@@ -71,6 +76,23 @@ describe('AssetResolver.use', () => {
 })
 
 describe('AssetResolver.resolve', () => {
+  it('derives the extension from a src rewritten by a locate plugin', async () => {
+    const locate: IAssetPluginLocateMiddleware = async (_input, embryo, _api, next) => {
+      const output = await next(embryo)
+      return output === null ? null : { ...output, src: 'renamed.custom' }
+    }
+    const renamePlugin = {
+      displayName: 'rename-src',
+      locate,
+    } satisfies IAssetResolverPlugin
+    const resolver = new AssetResolver({ reporter }).use(renamePlugin).use(new AssetResolverFile())
+
+    const asset = await resolver.resolve(path.join(SRC_ROOT, 'note.txt'), createApi())
+
+    expect(asset).toMatchObject({ extname: 'custom' })
+    expect(asset!.uri).toMatch(/\.custom$/u)
+  })
+
   it('locates and resolves a source file into an asset', async () => {
     const api = createApi()
     const asset = await createResolver().resolve(path.join(SRC_ROOT, 'note.txt'), api)
