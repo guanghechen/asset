@@ -76,11 +76,16 @@ describe('FileAssetSourceStorage', () => {
     expect(await storage.existFile(p)).toBe(false)
   })
 
-  it('collects files by glob pattern', async () => {
+  it('collects recursively by normalized absolute path patterns', async () => {
     await storage.updateFile(src('c1.md'), Buffer.from('1'))
     await storage.updateFile(src('c2.md'), Buffer.from('2'))
-    const collected = await storage.collect(['*.md'], { cwd: ROOT })
-    expect(collected.map(p => path.basename(p)).sort()).toEqual(['c1.md', 'c2.md'])
+    const nestedDir = src('collect-nested')
+    fs.mkdirSync(nestedDir)
+    await storage.updateFile(path.join(nestedDir, '.hidden.md'), Buffer.from('3'))
+
+    const collected = await storage.collect([/\/(?:c1|c2|\.hidden)\.md$/u], { cwd: ROOT })
+
+    expect(collected.map(p => path.basename(p)).sort()).toEqual(['.hidden.md', 'c1.md', 'c2.md'])
   })
 
   it('decodes content through a custom decipher', async () => {

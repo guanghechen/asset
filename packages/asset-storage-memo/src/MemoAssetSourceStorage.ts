@@ -14,7 +14,6 @@ import type {
 import assertInvariant from '@guanghechen/invariant'
 import { Subscriber, Subscribers } from '@guanghechen/subscriber'
 import type { IUnsubscribable } from '@guanghechen/subscriber'
-import micromatch from 'micromatch'
 
 type IParametersOfOnAdd = [absoluteSrcPath: string, pathResolver: IAssetPathResolver]
 type IParametersOfOnChange = [absoluteSrcPath: string, pathResolver: IAssetPathResolver]
@@ -204,7 +203,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
   }
 
   public async collect(
-    patterns_: Iterable<string>,
+    pathPatterns: ReadonlyArray<RegExp>,
     options: IAssetCollectOptions,
   ): Promise<string[]> {
     const cwd: string = options.cwd
@@ -213,14 +212,13 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
     // Ensure the cwd is a safe absolute filepath.
     pathResolver.assertSafeAbsolutePath(cwd)
 
-    const patterns: string[] = Array.from(patterns_)
+    if (pathPatterns.length === 0) return []
+
+    const isMatched = createAssetWatchPathMatcher(pathPatterns)
     const filepaths: string[] = []
     for (const item of this._dataStore.values()) {
-      if (pathResolver.isRelativePath(item.srcRoot, cwd)) {
-        const filepath: string = pathResolver.relative(cwd, item.absoluteSrcPath)
-        if (micromatch.isMatch(filepath, patterns, { dot: true })) {
-          filepaths.push(item.absoluteSrcPath)
-        }
+      if (pathResolver.isRelativePath(cwd, item.absoluteSrcPath)) {
+        if (isMatched(item.absoluteSrcPath)) filepaths.push(item.absoluteSrcPath)
       }
     }
     return filepaths

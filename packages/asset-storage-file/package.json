@@ -36,8 +36,7 @@
     "@guanghechen/asset-storage": "workspace:^",
     "@guanghechen/asset-types": "workspace:^",
     "@guanghechen/invariant": "^7.0.3",
-    "chokidar": "5.0.0",
-    "fast-glob": "3.3.3"
+    "chokidar": "5.0.0"
   },
   "scripts": {
     "build": "rollup -c ../../rollup.config.mjs",

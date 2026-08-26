@@ -12,9 +12,8 @@ import type {
 import assertInvariant from '@guanghechen/invariant'
 import { watch as watchFiles } from 'chokidar'
 import type { ChokidarOptions } from 'chokidar'
-import fastGlob from 'fast-glob'
 import { existsSync } from 'node:fs'
-import { readFile, stat as statFile, unlink, writeFile } from 'node:fs/promises'
+import { opendir, readFile, stat as statFile, unlink, writeFile } from 'node:fs/promises'
 
 interface IProps {
   pathResolver: IAssetPathResolver
@@ -123,7 +122,7 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
   }
 
   public async collect(
-    patterns_: Iterable<string>,
+    pathPatterns: ReadonlyArray<RegExp>,
     options: IAssetCollectOptions,
   ): Promise<string[]> {
     const cwd: string = options.cwd
@@ -132,16 +131,16 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
     // Ensure the cwd is a safe absolute filepath.
     pathResolver.assertSafeAbsolutePath(cwd)
 
-    const patterns: string[] = Array.from(patterns_)
-    const filepaths: string[] = await fastGlob(patterns, {
-      cwd,
-      dot: true,
-      absolute: true,
-      onlyDirectories: false,
-      onlyFiles: true,
-      throwErrorOnBrokenSymbolicLink: true,
-      unique: true,
-    })
+    if (pathPatterns.length === 0) return []
+
+    const isMatched = createAssetWatchPathMatcher(pathPatterns)
+    const filepaths: string[] = []
+    const directory = await opendir(cwd, { recursive: true })
+    for await (const entry of directory) {
+      if (!entry.isFile()) continue
+      const absoluteSrcPath: string = pathResolver.absolute(entry.parentPath, entry.name)
+      if (isMatched(absoluteSrcPath)) filepaths.push(absoluteSrcPath)
+    }
     return filepaths
   }
 }

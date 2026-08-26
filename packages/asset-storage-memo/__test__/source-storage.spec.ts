@@ -68,11 +68,13 @@ describe('MemoAssetSourceStorage error / miss paths', () => {
 describe('MemoAssetSourceStorage.collect', () => {
   it('returns matching paths under the cwd', async () => {
     const storage = createStorage()
-    await storage.updateFile(src('a.txt'), Buffer.from('a'))
+    const cwd = src('nested')
+    await storage.updateFile(path.join(cwd, 'a.txt'), Buffer.from('a'))
+    await storage.updateFile(src('outside.txt'), Buffer.from('outside'))
     await storage.updateFile(src('b.md'), Buffer.from('b'))
 
-    const collected = await storage.collect(['**/*.txt'], { cwd: ROOT })
-    expect(collected).toEqual([src('a.txt')])
+    const collected = await storage.collect([/\/[^/]+\.txt$/u], { cwd })
+    expect(collected).toEqual([path.join(cwd, 'a.txt')])
   })
 })
 

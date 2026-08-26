@@ -26,9 +26,10 @@ export interface IAssetService {
 
   /**
    * Need to call `this.prepare()` in advance.
-   * @param acceptedPattern
+   * Patterns are applied to normalized absolute source paths using forward slashes.
+   * @param acceptedPathPatterns
    */
-  buildByPatterns(cwd: string, acceptedPattern: Iterable<string>): Promise<void>
+  buildByPatterns(cwd: string, acceptedPathPatterns: ReadonlyArray<RegExp>): Promise<void>
 
   /**
    * Find asset by predicate function.

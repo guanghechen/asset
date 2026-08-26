@@ -42,9 +42,13 @@ export interface IAssetSourceStorage {
   statFile(absoluteSrcPath: string): Promise<IAssetStat>
   updateFile(absoluteSrcPath: string, data: IBinaryFileData): Promise<void>
   /**
+   * Collect source files whose normalized absolute paths match at least one pattern.
+   * Stateful `g` and `y` flags are ignored.
+   */
+  collect(pathPatterns: ReadonlyArray<RegExp>, options: IAssetCollectOptions): Promise<string[]>
+  /**
    * Watch source changes whose normalized absolute paths match at least one pattern.
    * Paths passed to patterns always use forward slashes. Stateful `g` and `y` flags are ignored.
    */
   watch(pathPatterns: ReadonlyArray<RegExp>, options: IAssetWatchOptions): IAssetWatcher
-  collect(patterns: ReadonlyArray<string>, options: IAssetCollectOptions): Promise<string[]>
 }

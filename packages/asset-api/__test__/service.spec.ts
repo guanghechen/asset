@@ -87,7 +87,7 @@ describe('AssetService lifecycle guards', () => {
   it('rejects build/watch operations before prepare()', async () => {
     const { service } = harness
     await expect(service.buildByPaths([src('a.txt')])).rejects.toThrow(/not running/)
-    await expect(service.buildByPatterns(ROOT, ['**/*.txt'])).rejects.toThrow(/prepared|pending/)
+    await expect(service.buildByPatterns(ROOT, [/\.txt$/u])).rejects.toThrow(/prepared|pending/)
     await expect(service.watch(ROOT, [/\.txt$/u])).rejects.toThrow(/not running/)
   })
 
@@ -132,10 +132,10 @@ describe('AssetService.buildByPaths', () => {
 })
 
 describe('AssetService.buildByPatterns', () => {
-  it('collects sources by glob then builds them', async () => {
+  it('collects sources by path pattern then builds them', async () => {
     const { service, targetStorage } = harness
     await service.prepare()
-    await service.buildByPatterns(ROOT, ['**/*.txt'])
+    await service.buildByPatterns(ROOT, [/\.txt$/u])
 
     const asset = await service.findAsset(a => a.uri.endsWith('.txt'))
     expect(asset).not.toBeNull()

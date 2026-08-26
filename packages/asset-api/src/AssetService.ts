@@ -128,7 +128,10 @@ export class AssetService implements IAssetService {
     reporter.debug('[AssetService.buildByPaths] finished. absoluteSrcPaths:', absoluteSrcPaths)
   }
 
-  public async buildByPatterns(cwd: string, acceptedPattern: ReadonlyArray<string>): Promise<void> {
+  public async buildByPatterns(
+    cwd: string,
+    acceptedPathPatterns: ReadonlyArray<RegExp>,
+  ): Promise<void> {
     if (this._status !== 'prepared') {
       throw new Error(`[AssetService.buildByPatterns] service is ${this._status}.`)
     }
@@ -139,7 +142,7 @@ export class AssetService implements IAssetService {
     // Ensure the cwd is a safe absolute filepath.
     pathResolver.assertSafeAbsolutePath(cwd)
 
-    const absoluteSrcPaths: string[] = await sourceStorage.collect(acceptedPattern.slice(), { cwd })
+    const absoluteSrcPaths: string[] = await sourceStorage.collect(acceptedPathPatterns, { cwd })
     await this.buildByPaths(absoluteSrcPaths)
   }
 
