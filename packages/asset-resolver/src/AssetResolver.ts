@@ -140,9 +140,16 @@ export class AssetResolver implements IAssetResolver {
       IAssetPluginPolishResult
     >('polish', parseResults, input => this._polish(input, api))
 
-    await Promise.all(
-      polishResults.map(result => api.locator.insertAsset(result.absoluteSrcPath, result.asset)),
-    )
+    const insertedSrcPaths: string[] = []
+    try {
+      for (const result of polishResults) {
+        await api.locator.insertAsset(result.absoluteSrcPath, result.asset)
+        insertedSrcPaths.push(result.absoluteSrcPath)
+      }
+    } catch (error) {
+      await Promise.all(insertedSrcPaths.map(srcPath => api.locator.removeAsset(srcPath)))
+      throw error
+    }
     const results: IAssetProcessedData[] = polishResults.map(polishResult => ({
       absoluteSrcPath: polishResult.absoluteSrcPath,
       asset: polishResult.asset,

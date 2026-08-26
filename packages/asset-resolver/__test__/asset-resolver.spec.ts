@@ -114,6 +114,23 @@ describe('AssetResolver.process', () => {
     expect(results.some(result => result.asset.guid === indexedAsset!.guid)).toBe(true)
   })
 
+  it('removes inserted siblings when a later locator insert fails', async () => {
+    const api = createApi()
+    const insertAsset = api.locator.insertAsset.bind(api.locator)
+    let insertCount = 0
+    vi.spyOn(api.locator, 'insertAsset').mockImplementation(async (absoluteSrcPath, asset) => {
+      insertCount += 1
+      if (insertCount === 2) throw new Error('URI collision')
+      await insertAsset(absoluteSrcPath, asset)
+    })
+    const srcPaths = [path.join(SRC_ROOT, 'a.txt'), path.join(SRC_ROOT, 'b.txt')]
+
+    await expect(createResolver().process(srcPaths, api)).rejects.toThrow(/URI collision/)
+
+    expect(await api.locator.findAssetBySrcPath(srcPaths[0])).toBeNull()
+    expect(await api.locator.findAssetBySrcPath(srcPaths[1])).toBeNull()
+  })
+
   it('does not index a source path dropped during polish', async () => {
     const api = createApi()
     const srcPath = path.join(SRC_ROOT, 'a.txt')
