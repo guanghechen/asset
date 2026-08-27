@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies:
+  - @guanghechen/asset-types@2.0.0
+
 ## 1.0.1
 
 ### Patch Changes

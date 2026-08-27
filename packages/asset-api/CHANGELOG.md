@@ -1,5 +1,17 @@
 # Change Log
 
+## 2.0.0
+
+### Major Changes
+
+- Replace string glob patterns in `collect()` and `buildByPatterns()` with regular expressions
+  matched against normalized absolute source paths. File collection now skips symbolic-link entries.
+
+### Patch Changes
+
+- Updated dependencies:
+  - @guanghechen/asset-types@2.0.0
+
 ## 1.0.1
 
 ### Patch Changes

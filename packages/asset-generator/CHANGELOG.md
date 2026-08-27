@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.0.2
+
+### Patch Changes
+
+- Updated dependencies:
+  - @guanghechen/asset-api@2.0.0
+  - @guanghechen/asset-types@2.0.0
+  - @guanghechen/asset-resolver-image@2.0.0
+  - @guanghechen/asset-resolver@1.0.2
+  - @guanghechen/asset-resolver-file@1.0.2
+  - @guanghechen/asset-resolver-markdown@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes

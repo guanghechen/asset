@@ -1,5 +1,18 @@
 # Change Log
 
+## 2.0.0
+
+### Major Changes
+
+- Replace the external image-size parser with a bounded local implementation for PNG, JPEG, GIF,
+  WebP, and BMP data. Other image formats no longer receive inferred dimensions.
+
+### Patch Changes
+
+- Updated dependencies:
+  - @guanghechen/asset-types@2.0.0
+  - @guanghechen/asset-util@1.1.0
+
 ## 1.0.1
 
 ### Patch Changes
