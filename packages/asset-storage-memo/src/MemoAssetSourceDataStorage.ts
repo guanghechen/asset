@@ -13,7 +13,7 @@ export class MemoAssetSourceDataStorage implements IMemoAssetSourceDataStorage {
   protected readonly _pathResolver: IAssetPathResolver
   protected readonly _cache: Map<string, ISourceItem>
 
-  constructor(props: IMemoAssetSourceStorageDataProps) {
+  public constructor(props: IMemoAssetSourceStorageDataProps) {
     const { initialData, pathResolver } = props
     this._pathResolver = pathResolver
     this._cache = new Map<string, ISourceItem>(initialData)

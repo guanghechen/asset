@@ -38,7 +38,7 @@ export class AssetResolverImage implements IAssetPlugin, IAssetResolverPlugin, I
   protected readonly accepted: (src: string) => boolean
   protected readonly rejected: (src: string) => boolean
 
-  constructor(props: IAssetResolverImageProps = {}) {
+  public constructor(props: IAssetResolverImageProps = {}) {
     this.displayName = props.displayName ?? '@guanghechen/asset-resolver-image'
     this.accepted = normalizePattern(props.accepted) ?? (() => true)
     this.rejected = normalizePattern(props.rejected) ?? (() => false)

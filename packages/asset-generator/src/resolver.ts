@@ -1,6 +1,8 @@
+import path from 'node:path'
 import { AssetResolver } from '@guanghechen/asset-resolver'
 import { AssetResolverFile } from '@guanghechen/asset-resolver-file'
 import { AssetResolverImage } from '@guanghechen/asset-resolver-image'
+import type { IMarkdownResolverPlugin, IParser } from '@guanghechen/asset-resolver-markdown'
 import {
   AssetResolverMarkdown,
   markdownPluginAplayer,
@@ -15,11 +17,9 @@ import {
   markdownPluginTimeToRead,
   markdownPluginToc,
 } from '@guanghechen/asset-resolver-markdown'
-import type { IMarkdownResolverPlugin, IParser } from '@guanghechen/asset-resolver-markdown'
 import type { IAssetResolver } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/reporter'
 import type { Definition, FootnoteDefinition } from '@yozora/ast'
-import path from 'node:path'
 
 export interface IAssetResolverFlights {
   markdownSlug: boolean

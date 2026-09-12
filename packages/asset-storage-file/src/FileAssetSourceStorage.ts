@@ -1,3 +1,5 @@
+import { existsSync } from 'node:fs'
+import { opendir, readFile, stat as statFile, unlink, writeFile } from 'node:fs/promises'
 import { createAssetWatchPathMatcher } from '@guanghechen/asset-storage'
 import type {
   IAssetCollectOptions,
@@ -10,10 +12,8 @@ import type {
   IBinaryFileData,
 } from '@guanghechen/asset-types'
 import assertInvariant from '@guanghechen/invariant'
-import { watch as watchFiles } from 'chokidar'
 import type { ChokidarOptions } from 'chokidar'
-import { existsSync } from 'node:fs'
-import { opendir, readFile, stat as statFile, unlink, writeFile } from 'node:fs/promises'
+import { watch as watchFiles } from 'chokidar'
 
 interface IProps {
   pathResolver: IAssetPathResolver
@@ -30,7 +30,7 @@ export class FileAssetSourceStorage implements IAssetSourceStorage {
   protected readonly _pathResolver: IAssetPathResolver
   protected readonly _watchOptions: ChokidarOptions
 
-  constructor(props: IProps) {
+  public constructor(props: IProps) {
     const { pathResolver, decipher, watchOptions = {} } = props
 
     this._pathResolver = pathResolver

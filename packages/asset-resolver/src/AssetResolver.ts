@@ -11,22 +11,14 @@ import type {
   IBinaryFileData,
 } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/reporter'
-import {
-  type IAssetPluginLocateArgs,
-  type IAssetPluginLocateResult,
-  locate,
-} from './plugins/locate'
-import { type IAssetPluginParseArgs, type IAssetPluginParseResult, parse } from './plugins/parse'
-import {
-  type IAssetPluginPolishArgs,
-  type IAssetPluginPolishResult,
-  polish,
-} from './plugins/polish'
-import {
-  type IAssetPluginResolveArgs,
-  type IAssetPluginResolveResult,
-  resolve,
-} from './plugins/resolve'
+import type { IAssetPluginLocateArgs, IAssetPluginLocateResult } from './plugins/locate'
+import { locate } from './plugins/locate'
+import type { IAssetPluginParseArgs, IAssetPluginParseResult } from './plugins/parse'
+import { parse } from './plugins/parse'
+import type { IAssetPluginPolishArgs, IAssetPluginPolishResult } from './plugins/polish'
+import { polish } from './plugins/polish'
+import type { IAssetPluginResolveArgs, IAssetPluginResolveResult } from './plugins/resolve'
+import { resolve } from './plugins/resolve'
 
 export interface IAssetResolverProps {
   reporter: IReporter
@@ -39,7 +31,7 @@ export class AssetResolver implements IAssetResolver {
   private readonly _parsePlugins: IAssetParsePlugin[]
   private readonly _polishPlugins: IAssetPolishPlugin[]
 
-  constructor(props: IAssetResolverProps) {
+  public constructor(props: IAssetResolverProps) {
     this._reporter = props.reporter
     this._locatePlugins = []
     this._resolvePlugins = []

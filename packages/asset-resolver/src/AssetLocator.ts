@@ -17,7 +17,7 @@ export class AssetLocator implements IAssetLocator {
   protected readonly _assetMap: Map<string, IAsset> // map asset.guid to asset
   protected readonly _uri2src: Map<string, string> // map asset.uri to src
 
-  constructor(props: IAssetLocatorProps) {
+  public constructor(props: IAssetLocatorProps) {
     const { GUID_NAMESPACE, pathResolver } = props
     const assetMap: Map<string, IAsset> = new Map<string, IAsset>()
     const uri2src: Map<string, string> = new Map<string, string>()

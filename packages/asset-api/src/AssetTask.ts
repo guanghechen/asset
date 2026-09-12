@@ -1,5 +1,5 @@
-import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type { IAssetTaskApi } from '@guanghechen/asset-types'
+import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import { AtomicTask, TaskStrategyEnum } from '@guanghechen/task'
 
 export class AssetTask extends AtomicTask {
@@ -7,7 +7,7 @@ export class AssetTask extends AtomicTask {
   protected readonly _type: AssetChangeEventEnum
   protected readonly _absoluteSrcPaths: string[]
 
-  constructor(
+  public constructor(
     api: IAssetTaskApi,
     type: AssetChangeEventEnum,
     absoluteSrcPaths: ReadonlyArray<string>,

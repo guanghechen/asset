@@ -1,3 +1,5 @@
+import path from 'node:path'
+import url from 'node:url'
 import type { IAssetResolverFlights } from '@guanghechen/asset-generator'
 import { createAssetService, createAsstResolver } from '@guanghechen/asset-generator'
 import type { IParser } from '@guanghechen/asset-resolver-markdown'
@@ -15,10 +17,8 @@ import type {
 import { mime } from '@guanghechen/asset-util'
 import type { IReporter } from '@guanghechen/reporter'
 import YozoraMarkdownParser from '@yozora/parser'
-import path from 'node:path'
-import url from 'node:url'
 
-const enum AssetGroupEnum {
+enum AssetGroupEnum {
   POST = 'post',
 }
 
@@ -48,7 +48,7 @@ export class AssetGenerator {
   public readonly acceptedPatterns: string[]
   public readonly acceptedPathPatterns: RegExp[]
 
-  constructor(reporter: IReporter, targetStorage: IAssetTargetStorage) {
+  public constructor(reporter: IReporter, targetStorage: IAssetTargetStorage) {
     const flights: IAssetResolverFlights = {
       markdownSlug: true,
       markdownCode: true,
@@ -132,13 +132,11 @@ export class AssetGenerator {
     console.log()
     reporter.info('[post] building...')
     await Promise.all(
-      services
-        .map(service =>
-          service.pathResolver.srcRoots.map(srcRoot =>
-            service.buildByPatterns(srcRoot, acceptedPatterns),
-          ),
-        )
-        .flat(),
+      services.flatMap(service =>
+        service.pathResolver.srcRoots.map(srcRoot =>
+          service.buildByPatterns(srcRoot, acceptedPatterns),
+        ),
+      ),
     )
     reporter.info('[post] built.')
     console.log()
@@ -150,13 +148,9 @@ export class AssetGenerator {
     console.log()
     reporter.info('[post] start watching...')
     const watchers: IAssetServiceWatcher[] = await Promise.all(
-      services
-        .map(service =>
-          service.pathResolver.srcRoots.map(srcRoot =>
-            service.watch(srcRoot, acceptedPathPatterns),
-          ),
-        )
-        .flat(),
+      services.flatMap(service =>
+        service.pathResolver.srcRoots.map(srcRoot => service.watch(srcRoot, acceptedPathPatterns)),
+      ),
     )
     reporter.info('[post] watching...')
     console.log()

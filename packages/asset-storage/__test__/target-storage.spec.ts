@@ -1,6 +1,6 @@
 import { MemoAssetTargetDataStore } from '@guanghechen/asset-storage-memo'
-import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type { IAsset, ITargetItem } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import { describe, expect, it, vi } from 'vitest'
 import { AssetTargetStorage } from '../src'
 

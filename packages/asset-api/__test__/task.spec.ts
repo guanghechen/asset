@@ -1,5 +1,5 @@
-import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type { IAssetTaskApi } from '@guanghechen/asset-types'
+import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import { describe, expect, it, vi } from 'vitest'
 import { AssetTask } from '../src'
 

@@ -1,4 +1,4 @@
-import type { IAssetResolverPlugin } from '@guanghechen/asset-types'
+import type { IAssetPluginParseOutput, IAssetResolverPlugin } from '@guanghechen/asset-types'
 import type { Code } from '@yozora/ast'
 import { CodeType } from '@yozora/ast'
 import { shallowMutateAstInPreorderAsync } from '@yozora/ast-util'
@@ -56,7 +56,7 @@ export function markdownPluginCode(params: IParams = {}): IMarkdownResolverPlugi
       get displayName(): string {
         return '@guanghechen/asset-resolver-markdown/code'
       },
-      async parse(input, embryo, api, next) {
+      async parse(input, embryo, api, next): Promise<IAssetPluginParseOutput | null> {
         if (isMarkdownAssetParseOutput(input, embryo) && embryo.data) {
           const ast = await shallowMutateAstInPreorderAsync(
             embryo.data.ast,

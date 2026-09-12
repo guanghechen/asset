@@ -1,5 +1,5 @@
-import { CodeType, InlineMathType, MathType } from '@yozora/ast'
 import type { Root } from '@yozora/ast'
+import { CodeType, InlineMathType, MathType } from '@yozora/ast'
 import { YozoraParser } from '@yozora/parser'
 import { describe, expect, it } from 'vitest'
 import { getTimeToRead } from '../src/util/timeToRead'

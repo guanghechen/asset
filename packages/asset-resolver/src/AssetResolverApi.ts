@@ -25,7 +25,7 @@ export class AssetResolverApi implements IAssetResolverApi {
   public readonly encodingDetector: IEncodingDetector
   protected readonly _reporter: IReporter
 
-  constructor(props: IAssetResolverApiProps) {
+  public constructor(props: IAssetResolverApiProps) {
     const { encodingDetector, locator, pathResolver, reporter, sourceStorage, uriResolver } = props
 
     this.locator = locator

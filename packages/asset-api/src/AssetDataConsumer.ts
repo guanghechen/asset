@@ -14,7 +14,7 @@ export class AssetDataConsumer implements IProductConsumer<D, T> {
   public readonly name: string
   protected readonly _api: IAssetTaskApi
 
-  constructor(name: string, api: IAssetTaskApi) {
+  public constructor(name: string, api: IAssetTaskApi) {
     this.name = name
     this._api = api
   }

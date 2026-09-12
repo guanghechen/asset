@@ -1,4 +1,5 @@
-import { AssetDataTypeEnum } from '@guanghechen/asset-types'
+import { lstat, mkdir, readFile, realpath, unlink, writeFile } from 'node:fs/promises'
+import path from 'node:path'
 import type {
   IAssetTargetDataStorage,
   IBinaryFileData,
@@ -9,8 +10,7 @@ import type {
   ITargetItemWithoutData,
   ITextFileData,
 } from '@guanghechen/asset-types'
-import { lstat, mkdir, readFile, realpath, unlink, writeFile } from 'node:fs/promises'
-import path from 'node:path'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 
 const parentDirPrefix = `..${path.sep}`
 const supportedDataTypes: ReadonlySet<AssetDataTypeEnum> = new Set([
@@ -52,7 +52,7 @@ export class FileAssetTargetDataStorage implements IAssetTargetDataStorage {
   protected readonly _prettier: boolean
   private _realRootDir?: string
 
-  constructor(props: IProps) {
+  public constructor(props: IProps) {
     const { rootDir, pathResolver, prettier = true } = props
     this.rootDir = rootDir
     this.pathResolver = pathResolver

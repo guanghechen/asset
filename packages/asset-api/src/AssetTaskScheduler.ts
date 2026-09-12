@@ -11,7 +11,7 @@ type T = IAssetTaskData
 export type IAssetTaskScheduler = IScheduler<D, T>
 
 export class AssetTaskScheduler extends Scheduler<D, T> implements IAssetTaskScheduler {
-  constructor(reporter: IReporter) {
+  public constructor(reporter: IReporter) {
     const pipeline: IPipeline<D, T> = new Pipeline<D, T>('asset-pipeline')
       //
       .use(new AssetDataCooker('asset-cooker'))

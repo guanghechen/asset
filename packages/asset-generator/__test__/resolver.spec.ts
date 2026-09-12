@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { AssetLocator, AssetResolverApi, AssetUriResolver } from '@guanghechen/asset-resolver'
 import { FileAssetType } from '@guanghechen/asset-resolver-file'
 import { ImageAssetType } from '@guanghechen/asset-resolver-image'
@@ -7,7 +8,6 @@ import { MemoAssetSourceDataStorage, MemoAssetSourceStorage } from '@guanghechen
 import type { IAssetResolverApi } from '@guanghechen/asset-types'
 import { Reporter } from '@guanghechen/reporter'
 import { YozoraParser } from '@yozora/parser'
-import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { createAsstResolver } from '../src'
 import type { IAssetResolverFlights } from '../src/resolver'

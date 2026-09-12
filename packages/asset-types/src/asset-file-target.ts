@@ -28,7 +28,10 @@ export interface IAssetMapTargetItem {
 }
 
 export type ITargetItem =
-  IBinaryTargetItem | ITextTargetItem | IJsonTargetItem | IAssetMapTargetItem
+  | IBinaryTargetItem
+  | ITextTargetItem
+  | IJsonTargetItem
+  | IAssetMapTargetItem
 
 export type IBinaryTargetItemWithoutData = Omit<IBinaryTargetItem, 'data'>
 export type ITextTargetItemWithoutData = Omit<ITextTargetItem, 'data'>

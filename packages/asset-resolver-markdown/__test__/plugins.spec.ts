@@ -7,10 +7,11 @@ import type {
   IAssetResolverPlugin,
 } from '@guanghechen/asset-types'
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
-import { ImageReferenceType, ParagraphType } from '@yozora/ast'
 import type { Paragraph, Root } from '@yozora/ast'
+import { ImageReferenceType, ParagraphType } from '@yozora/ast'
 import { YozoraParser } from '@yozora/parser'
 import { describe, expect, it } from 'vitest'
+import type { IMarkdownResolverPlugin, IMarkdownResolverPluginContext } from '../src'
 import {
   MarkdownAssetType,
   markdownPluginAplayer,
@@ -25,7 +26,6 @@ import {
   markdownPluginTimeToRead,
   markdownPluginToc,
 } from '../src'
-import type { IMarkdownResolverPlugin, IMarkdownResolverPluginContext } from '../src'
 
 const identity = async <T>(embryo: T): Promise<T> => embryo
 const parser = new YozoraParser()

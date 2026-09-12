@@ -1,4 +1,3 @@
-import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type {
   IAsset,
   IAssetPathResolver,
@@ -12,11 +11,12 @@ import type {
   IAssetWatchShouldIgnore,
   IAssetWatcher,
 } from '@guanghechen/asset-types'
+import { AssetChangeEventEnum } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/reporter'
 import { AssetDataConsumer } from './AssetDataConsumer'
 import { AssetTaskApi } from './AssetTaskApi'
-import { AssetTaskScheduler } from './AssetTaskScheduler'
 import type { IAssetTaskScheduler } from './AssetTaskScheduler'
+import { AssetTaskScheduler } from './AssetTaskScheduler'
 
 interface IProps {
   reporter: IReporter
@@ -39,7 +39,7 @@ export class AssetService implements IAssetService {
   protected readonly _watchers: IAssetServiceWatcher[]
   protected _status: 'pending' | 'prepared' | 'closed'
 
-  constructor(props: IProps) {
+  public constructor(props: IProps) {
     const {
       reporter,
       resolver,

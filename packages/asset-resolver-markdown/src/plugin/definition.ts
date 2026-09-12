@@ -1,4 +1,4 @@
-import type { IAssetResolverPlugin } from '@guanghechen/asset-types'
+import type { IAssetPluginPolishOutput, IAssetResolverPlugin } from '@guanghechen/asset-types'
 import type { Definition } from '@yozora/ast'
 import { DefinitionType } from '@yozora/ast'
 import { calcDefinitionMap, shallowMutateAstInPreorder } from '@yozora/ast-util'
@@ -29,7 +29,7 @@ export function markdownPluginDefinition(params: IParams = {}): IMarkdownResolve
       get displayName(): string {
         return '@guanghechen/asset-resolver-markdown/definition'
       },
-      async polish(input, embryo, _api, next) {
+      async polish(input, embryo, _api, next): Promise<IAssetPluginPolishOutput | null> {
         if (isMarkdownPolishOutput(input, embryo)) {
           const data: IMarkdownPolishedData = embryo.data
           const { root, definitionMap } = calcDefinitionMap(

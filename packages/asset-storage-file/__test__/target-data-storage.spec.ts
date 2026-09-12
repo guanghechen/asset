@@ -1,9 +1,9 @@
-import { PathResolver } from '@guanghechen/asset-storage'
-import { AssetDataTypeEnum } from '@guanghechen/asset-types'
-import type { ITargetItem, ITargetItemWithoutData } from '@guanghechen/asset-types'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
+import { PathResolver } from '@guanghechen/asset-storage'
+import type { ITargetItem, ITargetItemWithoutData } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { FileAssetTargetDataStorage } from '../src'
 

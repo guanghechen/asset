@@ -1,6 +1,6 @@
+import path from 'node:path'
 import type { IPathResolver } from '@guanghechen/asset-types'
 import assertInvariant from '@guanghechen/invariant'
-import path from 'node:path'
 
 const parentDirPrefix = `..${path.sep}`
 const urlSuffixRegex = /[?#][\s\S]*$/

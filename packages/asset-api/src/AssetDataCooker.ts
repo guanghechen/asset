@@ -11,7 +11,7 @@ type T = IAssetTaskData
 export class AssetDataCooker implements IMaterialCooker<D, T> {
   public readonly name: string
 
-  constructor(name: string) {
+  public constructor(name: string) {
     this.name = name
   }
 

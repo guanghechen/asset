@@ -1,4 +1,4 @@
-import type { IAssetResolverPlugin } from '@guanghechen/asset-types'
+import type { IAssetPluginPolishOutput, IAssetResolverPlugin } from '@guanghechen/asset-types'
 import type { EcmaImport } from '@yozora/ast'
 import { EcmaImportType } from '@yozora/ast'
 import { collectNodes } from '@yozora/ast-util'
@@ -15,7 +15,7 @@ export function markdownPluginEcmaImport(): IMarkdownResolverPlugin {
       get displayName(): string {
         return '@guanghechen/asset-resolver-markdown/ecma-import'
       },
-      async polish(input, embryo, _api, next) {
+      async polish(input, embryo, _api, next): Promise<IAssetPluginPolishOutput | null> {
         if (isMarkdownPolishOutput(input, embryo)) {
           const data: IMarkdownPolishedData = embryo.data
           const ecmaImports = collectNodes(data.ast, [EcmaImportType]) as EcmaImport[]

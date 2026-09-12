@@ -1,4 +1,3 @@
-import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAsset,
   IAssetDataMap,
@@ -11,6 +10,7 @@ import type {
   IJsonFileData,
   ITargetItem,
 } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type { IReporter } from '@guanghechen/reporter'
 
 interface IProps {
@@ -28,7 +28,7 @@ export class AssetTaskApi implements IAssetTaskApi {
   protected readonly _targetStorage: IAssetTargetStorage
   protected readonly _dataMapUri: string
 
-  constructor(props: IProps) {
+  public constructor(props: IProps) {
     this._resolverApi = props.resolverApi
     this._resolver = props.resolver
     this._reporter = props.reporter

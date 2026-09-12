@@ -1,4 +1,4 @@
-import type { IAssetResolverPlugin } from '@guanghechen/asset-types'
+import type { IAssetPluginPolishOutput, IAssetResolverPlugin } from '@guanghechen/asset-types'
 import { FootnoteDefinitionType } from '@yozora/ast'
 import { calcFootnoteDefinitionMap, shallowMutateAstInPreorder } from '@yozora/ast-util'
 import type {
@@ -36,7 +36,7 @@ export function markdownPluginFootnote(params: IParams): IMarkdownResolverPlugin
       get displayName(): string {
         return '@guanghechen/asset-resolver-markdown/footnote'
       },
-      async polish(input, embryo, _api, next) {
+      async polish(input, embryo, _api, next): Promise<IAssetPluginPolishOutput | null> {
         if (isMarkdownPolishOutput(input, embryo)) {
           const data: IMarkdownPolishedData = embryo.data
           const { root, footnoteDefinitionMap } = calcFootnoteDefinitionMap(

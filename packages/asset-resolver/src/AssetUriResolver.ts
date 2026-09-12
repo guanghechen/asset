@@ -13,7 +13,7 @@ interface IAssetUriResolverProps {
 export class AssetUriResolver implements IAssetUriResolver {
   protected readonly _resolveUriPrefix: (asset: Readonly<IAssetLocation>) => Promise<string>
 
-  constructor(props: IAssetUriResolverProps) {
+  public constructor(props: IAssetUriResolverProps) {
     this._resolveUriPrefix = props.resolveUriPrefix
   }
 

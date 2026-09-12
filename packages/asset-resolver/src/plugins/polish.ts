@@ -1,3 +1,4 @@
+import path from 'node:path'
 import type {
   AssetDataTypeEnum,
   IAsset,
@@ -9,7 +10,6 @@ import type {
   IAssetResolverApi,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
-import path from 'node:path'
 import type { IAssetPluginParseResult } from './parse'
 
 export async function polish(

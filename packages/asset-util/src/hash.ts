@@ -1,5 +1,5 @@
-import type { IBinaryFileData } from '@guanghechen/asset-types'
 import crypto from 'node:crypto'
+import type { IBinaryFileData } from '@guanghechen/asset-types'
 
 /**
  * Calc hash value with sha1 algorithm

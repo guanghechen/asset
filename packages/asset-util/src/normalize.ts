@@ -35,5 +35,5 @@ export function normalizeUrlPath(urlPath: string): string {
     stack.push(piece)
   }
   const p: string = stack.join('/')
-  return isAbsolute ? '/' + p : p
+  return isAbsolute ? `/${p}` : p
 }

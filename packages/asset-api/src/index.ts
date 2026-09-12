@@ -1,5 +1,5 @@
+export * from './AssetDataCooker'
 export * from './AssetService'
 export * from './AssetTask'
 export * from './AssetTaskApi'
-export * from './AssetDataCooker'
 export * from './AssetTaskScheduler'

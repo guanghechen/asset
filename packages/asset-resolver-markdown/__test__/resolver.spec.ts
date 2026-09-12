@@ -6,8 +6,8 @@ import type {
   IAssetPluginResolveApi,
   IAssetPluginResolveInput,
 } from '@guanghechen/asset-types'
-import { ParagraphType } from '@yozora/ast'
 import type { Paragraph } from '@yozora/ast'
+import { ParagraphType } from '@yozora/ast'
 import { YozoraParser } from '@yozora/parser'
 import dayjs from 'dayjs'
 import { describe, expect, it } from 'vitest'

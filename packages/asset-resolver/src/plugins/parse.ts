@@ -1,3 +1,4 @@
+import path from 'node:path'
 import type {
   IAsset,
   IAssetParsePlugin,
@@ -8,7 +9,6 @@ import type {
   IAssetResolverApi,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
-import path from 'node:path'
 import type { IAssetPluginResolveResult } from './resolve'
 
 export async function parse(

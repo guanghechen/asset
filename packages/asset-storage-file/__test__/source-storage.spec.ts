@@ -1,7 +1,7 @@
-import { AssetPathResolver } from '@guanghechen/asset-storage'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
+import { AssetPathResolver } from '@guanghechen/asset-storage'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import { FileAssetSourceStorage } from '../src'
 

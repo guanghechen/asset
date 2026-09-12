@@ -1,4 +1,3 @@
-import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAssetPlugin,
   IAssetPluginPolishMiddleware,
@@ -7,6 +6,7 @@ import type {
   IAssetPolishPlugin,
   IAssetResolvePlugin,
 } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import { mime, normalizePattern } from '@guanghechen/asset-util'
 import type { IFileAssetPolishOutput } from './types'
 import { FileAssetType, isFileAssetPolishInput } from './types'
@@ -32,7 +32,7 @@ export class AssetResolverFile implements IAssetPlugin, IAssetResolvePlugin, IAs
   public readonly displayName: string
   protected readonly resolvable: (src: string) => boolean
 
-  constructor(props: IAssetResolverFileProps = {}) {
+  public constructor(props: IAssetResolverFileProps = {}) {
     this.displayName = props.displayName ?? '@guanghechen/asset-resolver-file'
     const accepted = normalizePattern(props.accepted) ?? (() => true)
     const rejected = normalizePattern(props.rejected) ?? (() => false)

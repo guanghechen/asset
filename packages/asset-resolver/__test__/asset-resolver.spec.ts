@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { AssetResolverFile, FileAssetType } from '@guanghechen/asset-resolver-file'
 import type {
   IAssetPluginLocateMiddleware,
@@ -5,7 +6,6 @@ import type {
   IAssetResolverPlugin,
   IAssetStat,
 } from '@guanghechen/asset-types'
-import path from 'node:path'
 import { describe, expect, it, vi } from 'vitest'
 import { AssetLocator, AssetResolver, AssetResolverApi, AssetUriResolver } from '../src'
 

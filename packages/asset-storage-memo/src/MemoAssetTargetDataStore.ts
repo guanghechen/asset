@@ -3,7 +3,7 @@ import type { IAssetTargetDataStorage, IFileData, ITargetItem } from '@guanghech
 export class MemoAssetTargetDataStore implements IAssetTargetDataStorage {
   protected _dataCache: Map<string, IFileData>
 
-  constructor() {
+  public constructor() {
     this._dataCache = new Map()
   }
 

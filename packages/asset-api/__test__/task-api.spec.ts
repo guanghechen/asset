@@ -1,7 +1,7 @@
 import { AssetTargetStorage } from '@guanghechen/asset-storage'
 import { MemoAssetTargetDataStore } from '@guanghechen/asset-storage-memo'
-import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type { IAsset, IAssetProcessedData } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import { Reporter } from '@guanghechen/reporter'
 import { describe, expect, it, vi } from 'vitest'
 import { AssetTaskApi } from '../src'

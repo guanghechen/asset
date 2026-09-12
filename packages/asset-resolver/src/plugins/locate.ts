@@ -1,3 +1,4 @@
+import path from 'node:path'
 import type {
   IAssetLocatePlugin,
   IAssetPluginLocateApi,
@@ -9,7 +10,6 @@ import type {
   IBinaryFileData,
 } from '@guanghechen/asset-types'
 import { calcFingerprint, normalizeUrlPath } from '@guanghechen/asset-util'
-import path from 'node:path'
 
 const extnameRegex = /\.([\w]+)$/
 

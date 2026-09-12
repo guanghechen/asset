@@ -1,5 +1,5 @@
-import type { IAssetPathResolver } from '@guanghechen/asset-types'
 import path from 'node:path'
+import type { IAssetPathResolver } from '@guanghechen/asset-types'
 import { PathResolver } from './PathResolver'
 
 export interface IAssetPathResolverProps {
@@ -17,7 +17,7 @@ export class AssetPathResolver extends PathResolver implements IAssetPathResolve
   protected readonly _caseSensitive: boolean
   protected readonly _srcRoots: string[]
 
-  constructor(props: IAssetPathResolverProps) {
+  public constructor(props: IAssetPathResolverProps) {
     super()
 
     const srcRoots: string[] = this._validateSrcRoots(props.srcRoots)

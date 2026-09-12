@@ -1,3 +1,4 @@
+import path from 'node:path'
 import {
   AssetLocator,
   AssetResolver,
@@ -13,7 +14,6 @@ import {
 } from '@guanghechen/asset-storage-memo'
 import type { IAssetResolverApi, IAssetSourceStorage } from '@guanghechen/asset-types'
 import { Reporter } from '@guanghechen/reporter'
-import path from 'node:path'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { AssetService } from '../src'
 

@@ -1,4 +1,3 @@
-import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAsset,
   IAssetMapTargetItem,
@@ -12,14 +11,15 @@ import type {
   ITargetItem,
   ITargetItemWithoutData,
 } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import assertInvariant from '@guanghechen/invariant'
-import { Subscriber, Subscribers } from '@guanghechen/subscriber'
 import type { IUnsubscribable } from '@guanghechen/subscriber'
+import { Subscriber, Subscribers } from '@guanghechen/subscriber'
 
 class EventMonitor<P extends any[]> {
   private readonly _subscribers: Subscribers<P>
 
-  constructor() {
+  public constructor() {
     this._subscribers = new Subscribers<P>()
   }
 
@@ -49,7 +49,7 @@ export class AssetTargetStorage implements IAssetTargetStorage {
   protected readonly _dataStorage: IAssetTargetDataStorage
   private _destroyed: boolean
 
-  constructor(dataStorage: IAssetTargetDataStorage) {
+  public constructor(dataStorage: IAssetTargetDataStorage) {
     this._monitorFileWritten = new EventMonitor<IParametersOfOnFileWritten>()
     this._monitorFileRemoved = new EventMonitor<IParametersOfOnFileRemoved>()
     this._fileItemMap = new Map<string, ITargetItemWithoutData>()

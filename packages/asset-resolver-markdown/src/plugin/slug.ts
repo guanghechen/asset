@@ -28,7 +28,7 @@ export function markdownPluginSlug(params: IParams = {}): IMarkdownResolverPlugi
       get displayName(): string {
         return '@guanghechen/asset-resolver-markdown/slug'
       },
-      async resolve(input, embryo, _api, next) {
+      async resolve(input, embryo, _api, next): Promise<IAssetPluginResolveOutput | null> {
         if (isMarkdownAssetResolveOutput(embryo)) {
           let slug: string | null = await resolveSlug(embryo.slug, input.src)
           if (slug) slug = normalizeUrlPath(slug)

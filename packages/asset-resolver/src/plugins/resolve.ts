@@ -1,3 +1,4 @@
+import path from 'node:path'
 import type {
   IAsset,
   IAssetDetail,
@@ -11,7 +12,6 @@ import type {
   IAssetResolverApi,
   IBinaryFileData,
 } from '@guanghechen/asset-types'
-import path from 'node:path'
 import type { IAssetPluginLocateResult } from './locate'
 
 export async function resolve(

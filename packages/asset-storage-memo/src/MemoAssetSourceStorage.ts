@@ -12,8 +12,8 @@ import type {
   ISourceItem,
 } from '@guanghechen/asset-types'
 import assertInvariant from '@guanghechen/invariant'
-import { Subscriber, Subscribers } from '@guanghechen/subscriber'
 import type { IUnsubscribable } from '@guanghechen/subscriber'
+import { Subscriber, Subscribers } from '@guanghechen/subscriber'
 
 type IParametersOfOnAdd = [absoluteSrcPath: string, pathResolver: IAssetPathResolver]
 type IParametersOfOnChange = [absoluteSrcPath: string, pathResolver: IAssetPathResolver]
@@ -27,7 +27,7 @@ interface IProps {
 class EventMonitor<P extends any[]> {
   private readonly _subscribers: Subscribers<P>
 
-  constructor() {
+  public constructor() {
     this._subscribers = new Subscribers<P>()
   }
 
@@ -50,7 +50,7 @@ export class MemoAssetSourceStorage implements IAssetSourceStorage {
   protected readonly _monitorChange: EventMonitor<IParametersOfOnChange>
   protected readonly _monitorRemove: EventMonitor<IParametersOfOnRemove>
 
-  constructor(props: IProps) {
+  public constructor(props: IProps) {
     const { dataStore, pathResolver } = props
 
     this._dataStore = dataStore

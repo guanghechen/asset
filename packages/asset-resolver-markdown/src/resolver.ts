@@ -1,4 +1,3 @@
-import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import type {
   IAsset,
   IAssetParsePlugin,
@@ -18,9 +17,10 @@ import type {
   IAssetPolishPlugin,
   IAssetResolverPlugin,
 } from '@guanghechen/asset-types'
+import { AssetDataTypeEnum } from '@guanghechen/asset-types'
 import { AsyncMiddlewares } from '@guanghechen/middleware'
-import { ParagraphType } from '@yozora/ast'
 import type { Definition, FootnoteDefinition, Paragraph, Resource, Root } from '@yozora/ast'
+import { ParagraphType } from '@yozora/ast'
 import { collectInlineNodes, collectTexts, shallowMutateAstInPreorderAsync } from '@yozora/ast-util'
 import dayjs from 'dayjs'
 import { load as loadYaml } from 'js-yaml'
@@ -63,7 +63,7 @@ export class AssetResolverMarkdown
   private readonly _parseMiddlewares: IAssetPluginParseMiddlewares
   private readonly _polishMiddlewares: IAssetPluginPolishMiddlewares
 
-  constructor(props: IProps) {
+  public constructor(props: IProps) {
     const parser: IParser = props.parser
     const getPresetDefinitions: IMarkdownResolverPluginContext['getPresetDefinitions'] =
       props.getPresetDefinitions ?? (() => undefined)

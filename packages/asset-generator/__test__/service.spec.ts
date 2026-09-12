@@ -1,8 +1,8 @@
+import path from 'node:path'
 import { FileAssetType } from '@guanghechen/asset-resolver-file'
 import { AssetPathResolver } from '@guanghechen/asset-storage'
 import type { IAssetResolverApi, IAssetService } from '@guanghechen/asset-types'
 import { Reporter } from '@guanghechen/reporter'
-import path from 'node:path'
 import { describe, expect, it } from 'vitest'
 import { createAssetService } from '../src'
 
