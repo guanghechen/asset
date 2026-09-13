@@ -20,9 +20,6 @@ importers:
       '@guanghechen/reporter':
         specifier: ^3.3.1
         version: 3.3.2
-      '@types/js-yaml':
-        specifier: 4.0.9
-        version: 4.0.9
       '@types/node':
         specifier: 24.13.3
         version: 24.13.3
@@ -62,9 +59,6 @@ importers:
       '@guanghechen/scheduler':
         specifier: ^7.1.4
         version: 7.1.5
-      '@guanghechen/subscriber':
-        specifier: ^2.1.2
-        version: 2.1.3
       '@guanghechen/task':
         specifier: ^2.1.4
         version: 2.1.5
@@ -138,9 +132,6 @@ importers:
         specifier: workspace:^
         version: link:../asset-util
       '@guanghechen/middleware':
-        specifier: ^2.0.3
-        version: 2.0.4
-      '@guanghechen/std':
         specifier: ^2.0.3
         version: 2.0.4
       '@yozora/ast':
@@ -394,9 +385,6 @@ packages:
   '@guanghechen/scheduler@7.1.5':
     resolution: {integrity: sha512-9Fm8JXj5QzetGUIRaw+9X6lHoza/n8wu3243yBmwBpuWi0Md4VSqd2y8E1D+4AhzeHwiEz2LqiIN7z7CEGAOEQ==}
 
-  '@guanghechen/std@2.0.4':
-    resolution: {integrity: sha512-cLMqK1cvB7AkrIzwqXeENg1hUeiXyKGDse84MSplp1UUzjZUDYI5d+wEu4ejfmTP33COuUxJuOIGnpSvPitX6A==}
-
   '@guanghechen/subscriber@2.1.3':
     resolution: {integrity: sha512-Z6CaHGRARO5FasD24/1+JB5y8aRlbuwI/wWGbv4VveFb6orZIRAfI+m0N/RU56pfUTYN7D/dFTj8pA51tjdGcg==}
 
@@ -548,9 +536,6 @@ packages:
 
   '@types/estree@1.0.9':
     resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
-
-  '@types/js-yaml@4.0.9':
-    resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
 
   '@types/node@24.13.3':
     resolution: {integrity: sha512-Dh8vAsV36ig5wa9OX4pXvMc9D3Veibfw2wix0CUwYODLD8nkj9UsLjASr49nPg+2eKzxhBV+v7L8pXvT4e639Q==}
@@ -1720,8 +1705,6 @@ snapshots:
       '@guanghechen/task': 2.1.5
       '@guanghechen/types': 2.2.2
 
-  '@guanghechen/std@2.0.4': {}
-
   '@guanghechen/subscriber@2.1.3':
     dependencies:
       '@guanghechen/disposable': 2.1.3
@@ -1823,8 +1806,6 @@ snapshots:
   '@types/deep-eql@4.0.2': {}
 
   '@types/estree@1.0.9': {}
-
-  '@types/js-yaml@4.0.9': {}
 
   '@types/node@24.13.3':
     dependencies:

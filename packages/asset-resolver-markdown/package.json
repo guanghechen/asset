@@ -35,7 +35,6 @@
     "@guanghechen/asset-types": "workspace:^",
     "@guanghechen/asset-util": "workspace:^",
     "@guanghechen/middleware": "^2.0.3",
-    "@guanghechen/std": "^2.0.3",
     "@yozora/ast": "^2.4.0",
     "@yozora/ast-util": "^2.4.0",
     "@yozora/character": "^2.4.0",
