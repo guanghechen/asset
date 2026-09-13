@@ -7,7 +7,7 @@ import type {
   IAssetResolverPlugin,
 } from '@guanghechen/asset-types'
 import { AssetDataTypeEnum } from '@guanghechen/asset-types'
-import type { Paragraph, Root } from '@yozora/ast'
+import type { Code, Paragraph, Root } from '@yozora/ast'
 import { ImageReferenceType, ParagraphType } from '@yozora/ast'
 import { YozoraParser } from '@yozora/parser'
 import { describe, expect, it } from 'vitest'
@@ -203,7 +203,7 @@ describe('markdownPluginCode', () => {
       indentedApi as never,
       identity,
     )
-    const code = ((out as { data: { ast: Root } }).data.ast.children[0] as { value: string }).value
+    const code = ((out as { data: { ast: Root } }).data.ast.children[0] as Code).value
     expect(code).toBe('indentedA\nindentedB') // 4-space common indent stripped, line 3 excluded
   })
 })

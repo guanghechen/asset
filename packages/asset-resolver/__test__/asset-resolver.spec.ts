@@ -12,8 +12,9 @@ import { AssetLocator, AssetResolver, AssetResolverApi, AssetUriResolver } from 
 const GUID_NAMESPACE = '1b671a64-40d5-491e-99b0-da01ff1f3341'
 const SRC_ROOT = path.resolve('/srv')
 
+const warn = vi.fn()
 const reporter = {
-  warn: vi.fn(),
+  warn,
   error: vi.fn(),
   info: vi.fn(),
   debug: vi.fn(),
@@ -216,7 +217,7 @@ describe('AssetResolver.process', () => {
   })
 
   it('drops paths that fail to locate and warns', async () => {
-    reporter.warn.mockClear()
+    warn.mockClear()
     const api = createApi({
       findSrcRoot: (p: string) => (p.includes('skip') ? null : SRC_ROOT),
     })
@@ -225,7 +226,7 @@ describe('AssetResolver.process', () => {
       api,
     )
     expect(results).toHaveLength(1)
-    expect(reporter.warn).toHaveBeenCalled()
+    expect(warn).toHaveBeenCalled()
   })
 
   it('rethrows the underlying error when a stage throws for a source path', async () => {
@@ -255,10 +256,10 @@ describe('AssetResolverApi.resolveRefPath', () => {
   })
 
   it('returns null and warns when no src root is found', async () => {
-    reporter.warn.mockClear()
+    warn.mockClear()
     const api = createApi({ findSrcRoot: () => null })
     expect(await api.resolveRefPath(SRC_ROOT, 'note.txt')).toBeNull()
-    expect(reporter.warn).toHaveBeenCalled()
+    expect(warn).toHaveBeenCalled()
   })
 
   it('returns null and warns when the file does not exist', async () => {
@@ -274,8 +275,8 @@ describe('AssetResolverApi.resolveRefPath', () => {
       sourceStorage: { existFile: async () => false } as never,
       uriResolver: new AssetUriResolver({ resolveUriPrefix: async () => 'asset' }),
     })
-    reporter.warn.mockClear()
+    warn.mockClear()
     expect(await api.resolveRefPath(SRC_ROOT, 'missing.txt')).toBeNull()
-    expect(reporter.warn).toHaveBeenCalled()
+    expect(warn).toHaveBeenCalled()
   })
 })

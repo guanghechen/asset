@@ -40,7 +40,10 @@ describe('FileAssetSourceStorage', () => {
     expect(await storage.existFile(p)).toBe(true)
     expect(await storage.readFile(p)).toEqual(Buffer.from('hello'))
     await expect(storage.assertExistedFile(p)).resolves.toBeUndefined()
-    expect((await storage.statFile(p)).isFile()).toBe(true)
+    const stat = await storage.statFile(p)
+    const expectedStat = fs.statSync(p)
+    expect(stat.birthtime).toEqual(expectedStat.birthtime)
+    expect(stat.mtime).toEqual(expectedStat.mtime)
   })
 
   it('reports missing or out-of-tree files as non-existent', async () => {

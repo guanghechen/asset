@@ -1,4 +1,5 @@
 import type {
+  IAssetMeta,
   IAssetPluginParseApi,
   IAssetPluginParseInput,
   IAssetPluginPolishApi,
@@ -11,6 +12,7 @@ import { ParagraphType } from '@yozora/ast'
 import { YozoraParser } from '@yozora/parser'
 import dayjs from 'dayjs'
 import { describe, expect, it } from 'vitest'
+import type { IMarkdownParsedData } from '../src'
 import { AssetResolverMarkdown, MarkdownAssetType } from '../src'
 
 const identity = async <T>(embryo: T): Promise<T> => embryo
@@ -28,7 +30,7 @@ function createResolver(): AssetResolverMarkdown {
 
 const resolveApi: IAssetPluginResolveApi = {
   resolveUri: async () => '/asset/post.json',
-  resolveSlug: async meta => meta.slug ?? null,
+  resolveSlug: async (meta: Readonly<IAssetMeta>) => meta.slug ?? null,
 } as unknown as IAssetPluginResolveApi
 
 function resolveInput(src: string, content: string): IAssetPluginResolveInput {
@@ -124,10 +126,11 @@ describe('AssetResolverMarkdown.parse', () => {
   it('produces an ast, paragraph title and frontmatter', async () => {
     const md = '---\ntitle: T\n---\n# Heading\n\nparagraph text'
     const out = await createResolver().parse(parseInput(md), null, parseApi, identity)
-    expect(out!.data!.ast.type).toBe('root')
-    expect(out!.data!.frontmatter.title).toBe('T')
-    expect((out!.data!.title as Paragraph).type).toBe(ParagraphType)
-    expect(JSON.stringify(out!.data!.ast)).toContain('Heading')
+    const data = out!.data as IMarkdownParsedData
+    expect(data.ast.type).toBe('root')
+    expect(data.frontmatter.title).toBe('T')
+    expect(data.title.type).toBe(ParagraphType)
+    expect(JSON.stringify(data.ast)).toContain('Heading')
   })
 
   it('passes through non-markdown inputs', async () => {
