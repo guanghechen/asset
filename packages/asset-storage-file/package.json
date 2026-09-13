@@ -34,7 +34,7 @@
   "dependencies": {
     "@guanghechen/asset-storage": "workspace:^",
     "@guanghechen/asset-types": "workspace:^",
-    "@guanghechen/invariant": "^7.0.3",
+    "@guanghechen/invariant": "^7.0.4",
     "chokidar": "5.0.0"
   },
   "scripts": {

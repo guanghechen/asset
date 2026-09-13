@@ -34,7 +34,7 @@
   "dependencies": {
     "@guanghechen/asset-types": "workspace:^",
     "@guanghechen/asset-util": "workspace:^",
-    "@guanghechen/reporter": "^3.3.1",
+    "@guanghechen/reporter": "^3.3.2",
     "uuid": "14.0.2"
   },
   "scripts": {

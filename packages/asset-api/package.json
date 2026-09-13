@@ -33,9 +33,9 @@
   ],
   "dependencies": {
     "@guanghechen/asset-types": "workspace:^",
-    "@guanghechen/reporter": "^3.3.1",
-    "@guanghechen/scheduler": "^7.1.4",
-    "@guanghechen/task": "^2.1.4"
+    "@guanghechen/reporter": "^3.3.2",
+    "@guanghechen/scheduler": "^7.1.5",
+    "@guanghechen/task": "^2.1.5"
   },
   "scripts": {
     "build": "tsdown --config ../../tsdown.config.mjs",
