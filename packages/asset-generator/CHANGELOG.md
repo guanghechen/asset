@@ -1,5 +1,18 @@
 # Change Log
 
+## 1.0.3
+
+### Patch Changes
+
+- Refresh ESM and CommonJS distributions and bundled TypeScript declarations with the updated build toolchain. Resolve public declarations before runtime exports, exclude sourcemaps from published packages, and update runtime dependencies.
+- Updated dependencies:
+  - @guanghechen/asset-api@2.0.1
+  - @guanghechen/asset-resolver@1.0.3
+  - @guanghechen/asset-resolver-file@1.0.3
+  - @guanghechen/asset-resolver-image@2.0.1
+  - @guanghechen/asset-resolver-markdown@1.0.3
+  - @guanghechen/asset-types@2.0.1
+
 ## 1.0.2
 
 ### Patch Changes

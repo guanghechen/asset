@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-storage",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Asset storage.",
   "author": {
     "name": "guanghechen",
@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-storage@1.0.0-alpha.15",
+    "url": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-storage@1.0.3",
     "directory": "packages/asset-storage"
   },
-  "homepage": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-storage@1.0.0-alpha.15/packages/asset-storage#readme",
+  "homepage": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-storage@1.0.3/packages/asset-storage#readme",
   "type": "module",
   "main": "./lib/cjs/index.cjs",
   "module": "./lib/esm/index.mjs",

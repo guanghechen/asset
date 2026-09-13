@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-util",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Asset parser core.",
   "author": {
     "name": "guanghechen",
@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-util@1.0.0-alpha.9",
+    "url": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-util@1.1.1",
     "directory": "packages/asset-util"
   },
-  "homepage": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-util@1.0.0-alpha.9/packages/asset-util#readme",
+  "homepage": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-util@1.1.1/packages/asset-util#readme",
   "type": "module",
   "main": "./lib/cjs/index.cjs",
   "module": "./lib/esm/index.mjs",

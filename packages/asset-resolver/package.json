@@ -1,6 +1,6 @@
 {
   "name": "@guanghechen/asset-resolver",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "file asset",
   "author": {
     "name": "guanghechen",
@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-resolver@1.0.0-alpha.0",
+    "url": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-resolver@1.0.3",
     "directory": "packages/asset-resolver"
   },
-  "homepage": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-resolver@1.0.0-alpha.0/packages/asset-resolver#readme",
+  "homepage": "https://github.com/guanghechen/asset/tree/@guanghechen/asset-resolver@1.0.3/packages/asset-resolver#readme",
   "type": "module",
   "main": "./lib/cjs/index.cjs",
   "module": "./lib/esm/index.mjs",
