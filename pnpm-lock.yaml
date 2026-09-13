@@ -14,6 +14,9 @@ importers:
       '@changesets/cli':
         specifier: ^3.0.1
         version: 3.0.2
+      '@guanghechen/githooks':
+        specifier: 1.0.0
+        version: 1.0.0
       '@guanghechen/reporter':
         specifier: ^3.3.1
         version: 3.3.2
@@ -32,18 +35,9 @@ importers:
       cross-env:
         specifier: 10.1.0
         version: 10.1.0
-      husky:
-        specifier: 9.1.7
-        version: 9.1.7
-      is-ci:
-        specifier: 4.1.0
-        version: 4.1.0
       lint-staged:
         specifier: 17.3.0
         version: 17.3.0
-      pinst:
-        specifier: 3.0.0
-        version: 3.0.0
       rimraf:
         specifier: 6.1.3
         version: 6.1.3
@@ -379,6 +373,11 @@ packages:
 
   '@guanghechen/disposable@2.1.3':
     resolution: {integrity: sha512-RzMCjQgCu+2kNmloP2wAgY4Qw30e+xk+APblTcJkCNN6zeMGb4TijUseC4tIyN1mn+es0zjmeEUER8bysbJMfw==}
+
+  '@guanghechen/githooks@1.0.0':
+    resolution: {integrity: sha512-r1EKAEtNNw8dNVXQXvkoLtj6KOjnDlejk4GCJSeZI5xN84he6SPiV+SLu3+gKPJu2pIzC4F44omvMYskCsMHog==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
 
   '@guanghechen/invariant@7.0.4':
     resolution: {integrity: sha512-ZLNeVn2rAtlp9Q50WrdMgSRNoSfrTiUGrfgwTGnYQkmTQR9PgDplq6Cv3vJm6rGGfa+3Zdlj7mMOtIZ7G4Q8pg==}
@@ -993,10 +992,6 @@ packages:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
     engines: {node: '>= 20.19.0'}
 
-  ci-info@4.4.0:
-    resolution: {integrity: sha512-77PSwercCZU2Fc4sX94eF8k8Pxte6JAwL4/ICZLFjJLqegs7kCuAsqqj/70NQF6TvDpgFjkubQB2FW2ZZddvQg==}
-    engines: {node: '>=8'}
-
   convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
@@ -1087,21 +1082,12 @@ packages:
     resolution: {integrity: sha512-zPGsiS+dWoTZtZ4AtpA9Y+BdSFSNWvnouNlWNoUFyAM6xHOHmdCvqO3k8AIbdamCOv4gUFUVNPf6rJFfc4UiJw==}
     hasBin: true
 
-  husky@9.1.7:
-    resolution: {integrity: sha512-5gs5ytaNjBrh5Ow3zrvdUUY+0VxIuWVL4i9irt6friV+BqdCfmV11CQTWMiBYWHbXhco+J1kHfTOUkePhCDvMA==}
-    engines: {node: '>=18'}
-    hasBin: true
-
   import-meta-resolve@4.2.0:
     resolution: {integrity: sha512-Iqv2fzaTQN28s/FwZAoFq0ZSs/7hMAHJVX+w8PZl3cY19Pxk6jFFalxQoIfW2826i/fDLXv8IiEZRIT0lDuWcg==}
 
   import-without-cache@0.4.0:
     resolution: {integrity: sha512-NkJQA7oZ4YHQhd2+H3BoRFKF3d/XNsiKpHZCQEMH9pDX27hQQLsTyOocyRgaIVtf8gHX3Nt3LPkR4e5EdtPAGQ==}
     engines: {node: ^22.18.0 || >=24.0.0}
-
-  is-ci@4.1.0:
-    resolution: {integrity: sha512-Ab9bQDQ11lWootZUI5qxgN2ZXwxNI5hTwnsvOc1wyxQ7zQ8OkEDw79mI0+9jI3x432NfwbVRru+3noJfXF6lSQ==}
-    hasBin: true
 
   isexe@2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
@@ -1272,11 +1258,6 @@ packages:
   picomatch@4.0.7:
     resolution: {integrity: sha512-qcJu88Q2IWqJsDD529JKMdwGm/dvInW4HvQnRwiH9JtihJvzGOscDtHE3x1pBKeUOTysQ8kVmLnJ2kJu7yhcGA==}
     engines: {node: '>=12'}
-
-  pinst@3.0.0:
-    resolution: {integrity: sha512-cengSmBxtCyaJqtRSvJorIIZXMXg+lJ3sIljGmtBGUVonMnMsVJbnzl6jGN1HkOWwxNuJynCJ2hXxxqCQrFDdw==}
-    engines: {node: '>=12.0.0'}
-    hasBin: true
 
   postcss@8.5.28:
     resolution: {integrity: sha512-RRuzqDtt5Y9h3quz5hWhK+TPnsmVs6WwSU6LkJMeY4HstUEDuYTG8UJSdawMRzmzAtV+KEoG8N3Qg2qLy5vM/A==}
@@ -1715,6 +1696,8 @@ snapshots:
   '@guanghechen/disposable@2.1.3':
     dependencies:
       '@guanghechen/types': 2.2.2
+
+  '@guanghechen/githooks@1.0.0': {}
 
   '@guanghechen/invariant@7.0.4': {}
 
@@ -2315,8 +2298,6 @@ snapshots:
     dependencies:
       readdirp: 5.1.1
 
-  ci-info@4.4.0: {}
-
   convert-source-map@2.0.0: {}
 
   cross-env@10.1.0:
@@ -2383,15 +2364,9 @@ snapshots:
 
   human-id@4.2.1: {}
 
-  husky@9.1.7: {}
-
   import-meta-resolve@4.2.0: {}
 
   import-without-cache@0.4.0: {}
-
-  is-ci@4.1.0:
-    dependencies:
-      ci-info: 4.4.0
 
   isexe@2.0.0: {}
 
@@ -2524,8 +2499,6 @@ snapshots:
   picocolors@1.1.1: {}
 
   picomatch@4.0.7: {}
-
-  pinst@3.0.0: {}
 
   postcss@8.5.28:
     dependencies:
